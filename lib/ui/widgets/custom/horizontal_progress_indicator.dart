@@ -16,7 +16,7 @@ class _ProgressIndicatorDemoState extends State<HorizontalProgressIndicator>
   void initState() {
     super.initState();
     controller = AnimationController(
-        duration: const Duration(milliseconds: 2484), vsync: this);
+        duration: const Duration(milliseconds: 5484), vsync: this);
     animation = Tween(begin: 0.0, end: 1.0).animate(controller)
       ..addListener(() {
         setState(() {

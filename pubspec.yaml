@@ -74,55 +74,52 @@ flutter:
     - family: Rapier
       fonts:
         - asset: assets/fonts/Rapier.ttf
-    - family: Comic Neue
-      fonts:
-        - asset: assets/fontfiles/Comic-Neue.ttf
     - family: Helvetica
       fonts:
-        - asset: assets/fontfiles/Helvetica.ttf
+        - asset: assets/fonts/Helvetica.ttf
     - family: Helvetica Neue
       fonts:
-        - asset: assets/fontfiles/Helvetica-Neue.ttf
+        - asset: assets/fonts/Helvetica-Neue.ttf
     - family: Open Sans
       fonts:
-        - asset: assets/fontfiles/Open-Sans.ttf
+        - asset: assets/fonts/Open-Sans.ttf
     - family: PT Serif
       fonts:
-        - asset: assets/fontfiles/PT-Serif.ttf
+        - asset: assets/fonts/PT-Serif.ttf
     - family: Roboto
       fonts:
-        - asset: assets/fontfiles/Roboto.ttf
+        - asset: assets/fonts/Roboto.ttf
     - family: Noto Emoji
       fonts:
-        - asset: assets/fontfiles/NotoEmoji-Regular.ttf
+        - asset: assets/fonts/NotoEmoji-Regular.ttf
     - family: lovera
       fonts:
-        - asset: assets/fontfiles/lovera.otf
+        - asset: assets/fonts/lovera.otf
     - family: montserrat
       fonts:
-        - asset: assets/fontfiles/montserrat_black.ttf
-        - asset: assets/fontfiles/montserrat_bold.ttf
-        - asset: assets/fontfiles/montserrat_extra_bold.ttf
-        - asset: assets/fontfiles/montserrat_medium.ttf
-        - asset: assets/fontfiles/montserrat_regular.ttf
-        - asset: assets/fontfiles/montserrat_semi_bold.ttf
-        - asset: assets/fontfiles/montserrat_thin.ttf
-        - asset: assets/fontfiles/montserrat_light.ttf
+        - asset: assets/fonts/montserrat_black.ttf
+        - asset: assets/fonts/montserrat_bold.ttf
+        - asset: assets/fonts/montserrat_extra_bold.ttf
+        - asset: assets/fonts/montserrat_medium.ttf
+        - asset: assets/fonts/montserrat_regular.ttf
+        - asset: assets/fonts/montserrat_semi_bold.ttf
+        - asset: assets/fonts/montserrat_thin.ttf
+        - asset: assets/fonts/montserrat_light.ttf
     - family: moonlite_solid
       fonts:
-        - asset: assets/fontfiles/moonlite_solid.otf
+        - asset: assets/fonts/moonlite_solid.otf
     - family: neuropol_x_rg
       fonts:
-        - asset: assets/fontfiles/neuropol_x_rg.ttf
+        - asset: assets/fonts/neuropol_x_rg.ttf
     - family: rapier_zero
       fonts:
-        - asset: assets/fontfiles/rapier_zero_hollow_italic.ttf
-        - asset: assets/fontfiles/rapier_zero_hollow_x.ttf
-        - asset: assets/fontfiles/rapier_zero_italic.ttf
+        - asset: assets/fonts/rapier_zero_hollow_italic.ttf
+        - asset: assets/fonts/rapier_zero_hollow_x.ttf
+        - asset: assets/fonts/rapier_zero_italic.ttf
           weight: 600
     - family: zorque
       fonts:
-        - asset: assets/fontfiles/zorque.ttf
+        - asset: assets/fonts/zorque.ttf
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
