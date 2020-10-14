@@ -1,8 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:trump_card_game/ui/screens/demo/check_internet_connection.dart';
-
+import 'package:trump_card_game/helper/exten_fun/base_application_fun.dart';
+import 'package:trump_card_game/ui/screens/login.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:trump_card_game/ui/widgets/custom/horizontal_progress_indicator.dart';
 
 class SplashScreen extends StatefulWidget {
   final Color backgroundColor = Colors.white;
@@ -15,12 +17,12 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   String _versionName = 'V1.0';
-  final splashDelay = 2;
+  final splashDelay = 3;
 
   @override
   void initState() {
     super.initState();
-
+    setScreenOrientationToLandscape();
     _loadWidget();
   }
 
@@ -30,61 +32,88 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void navigationPage() {
-    Navigator.pushReplacement(context,
-        MaterialPageRoute(builder: (BuildContext context) => InternetConnection()));
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (BuildContext context) => LogIn()));
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: InkWell(
-        child: Stack(
-          fit: StackFit.expand,
-          children: <Widget>[
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                Expanded(
-                  flex: 7,
-                  child: Container(
-                      child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+    return MaterialApp(
+      home: SafeArea(
+        child: Container(
+          decoration: new BoxDecoration(
+            image: new DecorationImage(
+              image: new AssetImage("assets/images/bg17.jpg"),
+              fit: BoxFit.cover,
+            ),
+          ),
+          child: Scaffold(
+            backgroundColor: Colors.transparent,
+            body: InkWell(
+              child: Stack(
+                fit: StackFit.expand,
+                children: <Widget>[
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
-                      /*Image.asset(
-                            'images/img_splash.png',
-                            height: 300,
-                            width: 300,
-                          ),*/
-                      Padding(
-                        padding: const EdgeInsets.only(top: 10.0),
-                      ),
-                    ],
-                  )),
-                ),
-                Expanded(
-                  child: Column(
-                    children: <Widget>[
-                      CircularProgressIndicator(),
-                      Container(
-                        height: 10,
-                      ),
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: <Widget>[
-                            Spacer(),
-                            Text(_versionName),
-                            Spacer(
-                              flex: 4,
+                      Expanded(
+                        flex: 6,
+                        child: Container(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                SizedBox(
+                                  child: ColorizeAnimatedTextKit(
+                                      onTap: () {
+                                        //print("Tap Event");
+                                      },
+                                      text: [
+                                        "CLASH OF CARDZ",
+                                        "LET'S PLAY",
+                                        "CLASH OF CARDZ",
+                                        "ROCK & ROLL",
+                                      ],
+                                      textStyle: TextStyle(
+                                          fontSize: 60.0,
+                                          fontStyle: FontStyle.normal,
+                                          fontFamily: 'Rapier'
+                                      ),
+                                      colors: [
+                                        Colors.white,
+                                        Colors.amber[400],
+                                        Colors.lightBlue,
+                                        Colors.redAccent,
+                                      ],
+                                      textAlign: TextAlign.center,
+                                      alignment: AlignmentDirectional.center, // or Alignment.topLeft
+                                    isRepeatingAnimation: true,
+                                    repeatForever: true,
+                                  ),
+                                ),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 5.0),
                             ),
-                            Text('Flutter'),
-                            Spacer(),
-                          ])
+                          ],
+                        )),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                          margin: EdgeInsets.symmetric(vertical: 20),
+                          width: 600,
+                          height: 20,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                            child: HorizontalProgressIndicator(),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ],
+          ),
         ),
       ),
     );

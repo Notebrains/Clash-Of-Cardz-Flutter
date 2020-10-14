@@ -46,9 +46,12 @@ dev_dependencies:
   e2e: ^0.6.1
   font_awesome_flutter: ^8.8.1
   flutter_screenutil: ^2.1.0
-  adobe_xd: ^1.0.0+1
   assets_audio_player: ^2.0.10
   flutter_offline: "^0.3.0"
+  circle_wheel_scroll: ^0.0.1+1
+  lottie: ^0.6.0
+  flutter_svg: ^0.19.0
+  animated_text_kit: ^2.4.0
 
 
 # For information on the generic Dart part of this file, see the
@@ -56,16 +59,70 @@ dev_dependencies:
 
 # The following section is specific to Flutter.
 flutter:
-
-  # The following line ensures that the Material Icons font is
-  # included with your application, so that you can use the icons in
-  # the material Icons class.
   uses-material-design: true
-
-  # To add assets to your application, add an assets section, like this:
   assets:
     - assets/audios/sword_sms.mp3
+    - assets/animations/gifs/
+    - assets/animations/lottiefiles/
+    - assets/icons/
+    - assets/icons/png/
+    - assets/icons/svg/
+    - assets/images/
+    - assets/videos/
 
+  fonts:
+    - family: Rapier
+      fonts:
+        - asset: assets/fonts/Rapier.ttf
+    - family: Comic Neue
+      fonts:
+        - asset: assets/fontfiles/Comic-Neue.ttf
+    - family: Helvetica
+      fonts:
+        - asset: assets/fontfiles/Helvetica.ttf
+    - family: Helvetica Neue
+      fonts:
+        - asset: assets/fontfiles/Helvetica-Neue.ttf
+    - family: Open Sans
+      fonts:
+        - asset: assets/fontfiles/Open-Sans.ttf
+    - family: PT Serif
+      fonts:
+        - asset: assets/fontfiles/PT-Serif.ttf
+    - family: Roboto
+      fonts:
+        - asset: assets/fontfiles/Roboto.ttf
+    - family: Noto Emoji
+      fonts:
+        - asset: assets/fontfiles/NotoEmoji-Regular.ttf
+    - family: lovera
+      fonts:
+        - asset: assets/fontfiles/lovera.otf
+    - family: montserrat
+      fonts:
+        - asset: assets/fontfiles/montserrat_black.ttf
+        - asset: assets/fontfiles/montserrat_bold.ttf
+        - asset: assets/fontfiles/montserrat_extra_bold.ttf
+        - asset: assets/fontfiles/montserrat_medium.ttf
+        - asset: assets/fontfiles/montserrat_regular.ttf
+        - asset: assets/fontfiles/montserrat_semi_bold.ttf
+        - asset: assets/fontfiles/montserrat_thin.ttf
+        - asset: assets/fontfiles/montserrat_light.ttf
+    - family: moonlite_solid
+      fonts:
+        - asset: assets/fontfiles/moonlite_solid.otf
+    - family: neuropol_x_rg
+      fonts:
+        - asset: assets/fontfiles/neuropol_x_rg.ttf
+    - family: rapier_zero
+      fonts:
+        - asset: assets/fontfiles/rapier_zero_hollow_italic.ttf
+        - asset: assets/fontfiles/rapier_zero_hollow_x.ttf
+        - asset: assets/fontfiles/rapier_zero_italic.ttf
+          weight: 600
+    - family: zorque
+      fonts:
+        - asset: assets/fontfiles/zorque.ttf
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
