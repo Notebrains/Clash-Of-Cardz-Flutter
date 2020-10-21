@@ -3,12 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:trump_card_game/helper/exten_fun/base_application_fun.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:trump_card_game/ui/screens/Wheel.dart';
+import 'package:trump_card_game/ui/screens/game_more_option.dart';
+import 'package:trump_card_game/ui/screens/game_result.dart';
 import 'package:trump_card_game/ui/screens/gameplay.dart';
 import 'package:trump_card_game/ui/screens/leaderboard.dart';
 import 'package:trump_card_game/ui/screens/profile.dart';
+import 'package:trump_card_game/ui/screens/semi_circle_menu.dart';
 import 'package:trump_card_game/ui/screens/setting.dart';
 import 'package:trump_card_game/ui/screens/statistics.dart';
 import 'package:trump_card_game/ui/widgets/views/view_widgets.dart';
+
+import 'game_option.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
@@ -216,7 +222,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                         ),
                         onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Gameplay()));
+                          Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => GameOption()));
                         },
                       ),
                       MaterialButton(
@@ -248,7 +254,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                         // ),
                         onPressed: () {
-                          //Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => HomeScreen()));
+                          Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Gameplay()));
                         },
                       ),
                       MaterialButton(
@@ -280,7 +286,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                         // ),
                         onPressed: () {
-                          //Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => HomeScreen()));
+                          Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => GameResult()));
                         },
                       ),
                       MaterialButton(
