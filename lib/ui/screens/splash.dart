@@ -43,7 +43,7 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Container(
           decoration: new BoxDecoration(
             image: new DecorationImage(
-              image: new AssetImage("assets/images/bg17.jpg"),
+              image: new AssetImage("assets/images/bg_img3.png"),
               fit: BoxFit.cover,
             ),
           ),
@@ -59,42 +59,43 @@ class _SplashScreenState extends State<SplashScreen> {
                       Expanded(
                         flex: 6,
                         child: Container(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                SizedBox(
-                                  child: ColorizeAnimatedTextKit(
-                                      onTap: () {
-                                        //print("Tap Event");
-                                      },
-                                      text: [
-                                        "CLASH OF CARDZ",
-                                        "LET'S PLAY",
-                                        "CLASH OF CARDZ",
-                                        "ROCK & ROLL",
-                                      ],
-                                      textStyle: TextStyle(
-                                          fontSize: 60.0,
-                                          fontStyle: FontStyle.normal,
-                                          fontFamily: 'Rapier'
-                                      ),
-                                      colors: [
-                                        Colors.white,
-                                        Colors.amber[400],
-                                        Colors.lightBlue,
-                                        Colors.redAccent,
-                                      ],
-                                      textAlign: TextAlign.center,
-                                      alignment: AlignmentDirectional.center, // or Alignment.topLeft
-                                    isRepeatingAnimation: true,
-                                    repeatForever: true,
-                                  ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              SizedBox(
+                                child: ColorizeAnimatedTextKit(
+                                  onTap: () {
+                                    //print("Tap Event");
+                                  },
+                                  text: [
+                                    "CLASH OF CARDZ",
+                                    "LET'S PLAY",
+                                    "CLASH OF CARDZ",
+                                    "ROCK & ROLL",
+                                  ],
+                                  textStyle: TextStyle(
+                                      fontSize: 60.0,
+                                      fontStyle: FontStyle.normal,
+                                      fontFamily: 'Rapier'),
+                                  colors: [
+                                    Colors.white,
+                                    Colors.amber[400],
+                                    Colors.lightBlue,
+                                    Colors.redAccent,
+                                  ],
+                                  textAlign: TextAlign.center,
+                                  alignment: AlignmentDirectional.center,
+                                  // or Alignment.topLeft
+                                  isRepeatingAnimation: true,
+                                  repeatForever: true,
                                 ),
+                              ),
                               Padding(
                                 padding: const EdgeInsets.only(top: 5.0),
-                            ),
-                          ],
-                        )),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                       Expanded(
                         flex: 1,

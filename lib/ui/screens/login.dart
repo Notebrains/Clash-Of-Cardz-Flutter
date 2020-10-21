@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:trump_card_game/helper/constantvalues/constansts.dart';
 import 'package:trump_card_game/helper/exten_fun/base_application_fun.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flip_card/flip_card.dart';
+import 'package:trump_card_game/ui/screens/home.dart';
 
 class LogIn extends StatelessWidget {
   @override
@@ -13,7 +15,7 @@ class LogIn extends StatelessWidget {
         body: Container(
           decoration: new BoxDecoration(
             image: new DecorationImage(
-              image: new AssetImage("assets/images/bg_blur_3.jpg"),
+              image: new AssetImage("assets/images/bg_img3.png"),
               fit: BoxFit.cover,
             ),
           ),
@@ -32,13 +34,13 @@ class LogIn extends StatelessWidget {
                           fontSize: 55.0,
                           fontStyle: FontStyle.normal,
                           fontFamily: 'Rapier',
-                          color: Colors.white,
+                          color: Colors.grey[700],
                         ),
                       ),
 
                       //login button
                       MaterialButton(
-                        padding: EdgeInsets.all(8.0),
+                        padding: EdgeInsets.fromLTRB(8.0, 16.0, 8.0, 8.0),
                         textColor: Colors.white70,
                         splashColor: Colors.greenAccent,
                         elevation: 4.0,
@@ -49,12 +51,15 @@ class LogIn extends StatelessWidget {
                                     'assets/icons/png/bg_button.png'),
                                 fit: BoxFit.cover),
                           ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(12.0),
+                          child: Container(
+                            width: 170,
+                            height: 45,
+                            padding: EdgeInsets.fromLTRB(24.0, 5.0, 24.0, 16.0),
                             child: Text(
                               "LOGIN",
+                              textAlign: TextAlign.center,
                               style: TextStyle(
-                                  fontSize: 20.0,
+                                  fontSize: 18.0,
                                   fontStyle: FontStyle.normal,
                                   fontFamily: 'neuropol_x_rg',
                                   color: Colors.black87),
@@ -63,7 +68,8 @@ class LogIn extends StatelessWidget {
                         ),
                         // ),
                         onPressed: () {
-                          print('Tapped');
+                          Navigator.pushReplacement(
+                              context, MaterialPageRoute(builder: (BuildContext context) => HomeScreen()));
                         },
                       ),
 
@@ -72,22 +78,17 @@ class LogIn extends StatelessWidget {
                         children: [
                           IconButton(
                             icon: SvgPicture.asset(
-                                'assets/icons/svg/google.svg',
-                                semanticsLabel: ''),
-                            color: Colors.white,
+                                'assets/icons/svg/google.svg'),
                             onPressed: () {},
                           ),
                           IconButton(
                             icon: Image.asset(
                                 'assets/icons/png/ic_google_play_games.png'),
-                            color: Colors.white,
                             onPressed: () {},
                           ),
                           IconButton(
                             icon: SvgPicture.asset(
-                                'assets/icons/svg/facebook.svg',
-                                semanticsLabel: ''),
-                            color: Colors.white,
+                                'assets/icons/svg/facebook.svg'),
                             onPressed: () {},
                           ),
                         ],
@@ -102,7 +103,8 @@ class LogIn extends StatelessWidget {
                               fontSize: 16.0,
                               fontStyle: FontStyle.normal,
                               fontFamily: 'neuropol_x_rg',
-                              color: Colors.white),
+                              fontWeight: FontWeight.bold,
+                              color: Colors.grey[700]),
                         ),
                       ),
 
@@ -112,20 +114,27 @@ class LogIn extends StatelessWidget {
                         style: TextStyle(
                             fontSize: 24.0,
                             fontStyle: FontStyle.normal,
-                            fontFamily: 'montserrat',
+                            fontFamily: 'neuropol_x_rg',
                             fontWeight: FontWeight.bold,
-                            color: Colors.white),
+                            color: Colors.grey[700]),
                       ),
                     ],
                   ),
                 ),
                 Expanded(
                   flex: 1,
-                  child: Container(
-                    child: SizedBox(
+                  child: FlipCard(
+                    speed: 1000,
+                    direction: FlipDirection.HORIZONTAL, // default
+                    front: SizedBox(
                       width: 170,
                       height: 300,
                       child: Image.asset('assets/images/img_card_demo.png'),
+                    ),
+                    back: SizedBox(
+                      width: 170,
+                      height: 300,
+                      child: Image.asset('assets/images/bg_card_back.png'),
                     ),
                   ),
                 ),

@@ -52,6 +52,7 @@ dev_dependencies:
   lottie: ^0.6.0
   flutter_svg: ^0.19.0
   animated_text_kit: ^2.4.0
+  flip_card: ^0.4.4
 
 
 # For information on the generic Dart part of this file, see the
