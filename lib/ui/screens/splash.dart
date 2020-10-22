@@ -78,7 +78,7 @@ class _SplashScreenState extends State<SplashScreen> {
                                       fontStyle: FontStyle.normal,
                                       fontFamily: 'Rapier'),
                                   colors: [
-                                    Colors.black87,
+                                    Colors.grey[700],
                                     Colors.amber[400],
                                     Colors.lightBlue,
                                     Colors.redAccent,

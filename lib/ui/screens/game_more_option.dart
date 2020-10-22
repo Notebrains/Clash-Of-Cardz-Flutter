@@ -31,11 +31,22 @@ class GameMoreOption extends StatelessWidget {
               ),
             ),
 
-            Container(
-              width: 120,
-              padding: EdgeInsets.all(5),
-              child: Center(
-                child: Text('Cricket'),
+            Listener(
+              onPointerDown: (e) { print('onPointerDown'); },
+              child: InkWell(
+                onTap: (){print('-----');},
+                onDoubleTap: (){print('-----');},
+                onLongPress:  (){print('-----');},
+                splashColor: Colors.yellow,
+                highlightColor: Colors.blue.withOpacity(0.5),
+
+                child: Container(
+                  width: 120,
+                  padding: EdgeInsets.all(5),
+                  child: Center(
+                    child: Text('Cricket'),
+                  ),
+                ),
               ),
             ),
           ],
@@ -82,6 +93,7 @@ class GameMoreOption extends StatelessWidget {
                     itemExtent: 40,
                     children: List.generate(15, _buildCircleItems),
                     radius: MediaQuery.of(context).size.width * 0.22,
+                    renderChildrenOutsideViewport: false,
                     onSelectedItemChanged: (int index) =>
                         print('Current index: $index'),
                   ),

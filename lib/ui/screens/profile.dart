@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:trump_card_game/ui/screens/home.dart';
 import 'package:trump_card_game/ui/screens/statistics.dart';
+import 'package:trump_card_game/ui/widgets/views/shimmer.dart';
 import 'package:trump_card_game/ui/widgets/views/view_widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -40,14 +41,21 @@ class Profile extends StatelessWidget {
                       children: [
                         Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            'PROFILE',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 35.0,
-                              fontStyle: FontStyle.normal,
-                              fontFamily: 'montserrat',
-                              color: Colors.grey[800],
+                          child: Shimmer.fromColors(
+                            baseColor: Colors.grey[300],
+                            highlightColor: Colors.grey[100],
+                            enabled: true,
+                            child: Center(
+                              child: Text(
+                                'PROFILE',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 35.0,
+                                  fontStyle: FontStyle.normal,
+                                  fontFamily: 'montserrat',
+                                  color: Colors.grey[800],
+                                ),
+                              ),
                             ),
                           ),
                         ),

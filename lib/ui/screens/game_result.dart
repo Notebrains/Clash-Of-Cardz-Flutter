@@ -106,10 +106,10 @@ class GameResult extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       MaterialButton(
-                        padding: EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 0.0),
+                        padding: EdgeInsets.fromLTRB(0.0, 8.0, 10.0, 0.0),
                         splashColor: Colors.grey,
                         child: Container(
-                          width: 150,
+                          width: 140,
                           height: 45,
                           decoration: BoxDecoration(
                             image: DecorationImage(
@@ -145,7 +145,7 @@ class GameResult extends StatelessWidget {
                         padding: EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 0.0),
                         splashColor: Colors.grey,
                         child: Container(
-                          width: 150,
+                          width: 140,
                           height: 45,
                           decoration: BoxDecoration(
                             image: DecorationImage(

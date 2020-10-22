@@ -1,17 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flip_card/flip_card.dart';
 import 'package:trump_card_game/helper/exten_fun/base_application_fun.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:trump_card_game/ui/screens/Wheel.dart';
 import 'package:trump_card_game/ui/screens/game_more_option.dart';
 import 'package:trump_card_game/ui/screens/game_result.dart';
 import 'package:trump_card_game/ui/screens/gameplay.dart';
 import 'package:trump_card_game/ui/screens/leaderboard.dart';
+import 'package:trump_card_game/ui/screens/login.dart';
 import 'package:trump_card_game/ui/screens/profile.dart';
-import 'package:trump_card_game/ui/screens/semi_circle_menu.dart';
 import 'package:trump_card_game/ui/screens/setting.dart';
 import 'package:trump_card_game/ui/screens/statistics.dart';
+import 'package:trump_card_game/ui/widgets/custom/carousel_auto_slider.dart';
 import 'package:trump_card_game/ui/widgets/views/view_widgets.dart';
 
 import 'game_option.dart';
@@ -77,7 +76,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               decoration: new BoxDecoration(
                                 borderRadius:
                                     new BorderRadius.all(Radius.circular(30.0)),
-                                color: Colors.black87,
+                                color: Colors.grey[800],
                                 border: Border.all(
                                     color: Colors.orangeAccent, width: 1.0),
                               ),
@@ -119,7 +118,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               decoration: new BoxDecoration(
                                 borderRadius:
                                     new BorderRadius.all(Radius.circular(30.0)),
-                                color: Colors.black87,
+                                color: Colors.grey[800],
                                 border: Border.all(
                                     color: Colors.orangeAccent, width: 1.0),
                               ),
@@ -175,7 +174,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (BuildContext context) =>
-                                          HomeScreen()));
+                                          LogIn()));
                             },
                           ),
                           decoration:
@@ -198,8 +197,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       MaterialButton(
                         splashColor: Colors.grey,
                         child: Container(
-                          width: 230,
-                          height: 55,
+                          width: 220,
+                          height: 50,
                           decoration: BoxDecoration(
                             image: DecorationImage(
                                 image: AssetImage(
@@ -229,8 +228,8 @@ class _MyHomePageState extends State<MyHomePage> {
                         padding: EdgeInsets.fromLTRB(0.0, 2.0, 0.0, 0.0),
                         splashColor: Colors.grey,
                         child: Container(
-                          width: 230,
-                          height: 55,
+                          width: 220,
+                          height: 50,
                           decoration: BoxDecoration(
                             image: DecorationImage(
                                 image: AssetImage(
@@ -261,8 +260,8 @@ class _MyHomePageState extends State<MyHomePage> {
                         padding: EdgeInsets.fromLTRB(0.0, 2.0, 0.0, 0.0),
                         splashColor: Colors.grey,
                         child: Container(
-                          width: 230,
-                          height: 55,
+                          width: 220,
+                          height: 50,
                           decoration: BoxDecoration(
                             image: DecorationImage(
                                 image: AssetImage(
@@ -293,8 +292,8 @@ class _MyHomePageState extends State<MyHomePage> {
                         padding: EdgeInsets.fromLTRB(0.0, 2.0, 0.0, 0.0),
                         splashColor: Colors.grey,
                         child: Container(
-                          width: 230,
-                          height: 55,
+                          width: 220,
+                          height: 50,
                           decoration: BoxDecoration(
                             image: DecorationImage(
                                 image: AssetImage(
@@ -318,15 +317,15 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                         // ),
                         onPressed: () {
-                          //Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => HomeScreen()));
+                          Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => GameMoreOption()));
                         },
                       ),
                       MaterialButton(
                         padding: EdgeInsets.fromLTRB(0.0, 2.0, 0.0, 0.0),
                         splashColor: Colors.grey,
                         child: Container(
-                          width: 230,
-                          height: 55,
+                          width: 220,
+                          height: 50,
                           decoration: BoxDecoration(
                             image: DecorationImage(
                                 image: AssetImage(
@@ -358,19 +357,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 Expanded(
                   flex: 10,
-                  child: FlipCard(
-                    speed: 1000,
-                    direction: FlipDirection.HORIZONTAL, // default
-                    front: SizedBox(
-                      width: 170,
-                      height: 300,
-                      child: Image.asset('assets/images/img_card_demo.png'),
-                    ),
-                    back: SizedBox(
-                      width: 170,
-                      height: 300,
-                      child: Image.asset('assets/images/bg_card_back.png'),
-                    ),
+                  child: Container(
+                    margin: EdgeInsets.fromLTRB(40, 0, 40, 0),
+                    child: CarouselAutoSlider(),
                   ),
                 ),
                 Expanded(
@@ -449,199 +438,6 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-    );
-  }
-
-  void showDialog() {
-    showGeneralDialog(
-      barrierLabel: "Label",
-      barrierDismissible: true,
-      barrierColor: Colors.black.withOpacity(0.5),
-      transitionDuration: Duration(milliseconds: 700),
-      context: context,
-      pageBuilder: (context, anim1, anim2) {
-        return Align(
-          alignment: _fromTop ? Alignment.topCenter : Alignment.bottomCenter,
-          child: Container(
-            height: 300,
-            child: SizedBox.expand(
-                child: Container(
-              decoration: new BoxDecoration(
-                image: new DecorationImage(
-                  image: new AssetImage("assets/images/bg_img3.png"),
-                  fit: BoxFit.cover,
-                ),
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  MaterialButton(
-                    splashColor: Colors.grey,
-                    child: Container(
-                      alignment: Alignment.center,
-                      width: 270,
-                      height: 60,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                            image: AssetImage('assets/icons/png/bg_button.png'),
-                            fit: BoxFit.fill),
-                      ),
-                      child: Container(
-                        padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 12.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            IconButton(
-                              icon: Image.asset(
-                                  'assets/icons/png/ic_music_on.png'),
-                              onPressed: null,
-                            ),
-                            Text(
-                              "Music",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  fontStyle: FontStyle.normal,
-                                  fontFamily: 'montserrat',
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black87),
-                            ),
-                            Switch(
-                              value: _value,
-                              onChanged: (bool newValue) {
-                                setState(() {
-                                  _value = newValue;
-                                });
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    // ),
-                    onPressed: () {
-                      //Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => HomeScreen()));
-                    },
-                  ),
-                  MaterialButton(
-                    splashColor: Colors.grey,
-                    child: Container(
-                      width: 270,
-                      height: 60,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                            image: AssetImage('assets/icons/png/bg_button.png'),
-                            fit: BoxFit.fill),
-                      ),
-                      child: Container(
-                        padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 12.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            IconButton(
-                              icon: Image.asset(
-                                  'assets/icons/png/ic_notification_on.png'),
-                              onPressed: null,
-                            ),
-                            Text(
-                              "Notification",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  fontStyle: FontStyle.normal,
-                                  fontFamily: 'montserrat',
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black87),
-                            ),
-                            Switch(
-                              value: _value,
-                              onChanged: (bool newValue) {
-                                setState(() {
-                                  _value = newValue;
-                                });
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    // ),
-                    onPressed: () {
-                      //Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => HomeScreen()));
-                    },
-                  ),
-                  MaterialButton(
-                    padding: EdgeInsets.fromLTRB(0.0, 2.0, 0.0, 0.0),
-                    splashColor: Colors.grey,
-                    child: Container(
-                      width: 270,
-                      height: 60,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                            image: AssetImage('assets/icons/png/bg_button.png'),
-                            fit: BoxFit.fill),
-                      ),
-                      child: Container(
-                        alignment: Alignment.center,
-                        padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 12.0),
-                        child: Text(
-                          "Logout",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontStyle: FontStyle.normal,
-                              fontFamily: 'neuropol_x_rg',
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black87),
-                        ),
-                      ),
-                    ),
-                    // ),
-                    onPressed: () {
-                      //Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => HomeScreen()));
-                    },
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Text(
-                      "Player Id: MIS0034521T",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontSize: 12,
-                          fontStyle: FontStyle.normal,
-                          fontFamily: 'montserrat',
-                          color: Colors.black87),
-                    ),
-                  ),
-                  Text(
-                    "Version: 1.0.1",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontSize: 12,
-                        fontStyle: FontStyle.normal,
-                        fontFamily: 'montserrat',
-                        color: Colors.black87),
-                  ),
-                ],
-              ),
-            )),
-            margin: EdgeInsets.only(top: 50, left: 112, right: 112, bottom: 50),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(20),
-            ),
-          ),
-        );
-      },
-      transitionBuilder: (context, anim1, anim2, child) {
-        return SlideTransition(
-          position:
-              Tween(begin: Offset(0, _fromTop ? -1 : 1), end: Offset(0, 0))
-                  .animate(anim1),
-          child: child,
-        );
-      },
     );
   }
 }
