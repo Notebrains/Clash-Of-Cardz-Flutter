@@ -159,7 +159,7 @@ class CircleListChildBuilderDelegate extends CircleListChildDelegate {
   /// If null, then the lower and upper limit are not known. However the [builder]
   /// must provide children for a contiguous segment. If the builder returns null
   /// at some index, the segment terminates there.
-  /// {@endtemplate}
+  /// {@end template}
   final int childCount;
 
   @override

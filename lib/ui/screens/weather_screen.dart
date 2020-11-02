@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:trump_card_game/bloc/weather_bloc.dart';
+import 'package:trump_card_game/helper/exten_fun/base_application_fun.dart';
 import 'package:trump_card_game/model/coord_model.dart';
 import 'package:trump_card_game/model/main_model.dart';
 import 'package:trump_card_game/model/responses/weather_response_model.dart';
@@ -13,19 +14,28 @@ class WeatherScreen extends StatefulWidget {
 }
 
 class WeatherScreenState extends State<WeatherScreen> {
+
+  @override
+  void initState() {
+    super.initState();
+    setScreenOrientationToLandscape();
+  }
+
   @override
   Widget build(BuildContext context) {
     weatherBloc.fetchLondonWeather();
-    return StreamBuilder(
-        stream: weatherBloc.weather,
-        builder: (context, AsyncSnapshot<WeatherResponse> snapshot) {
-          if (snapshot.hasData) {
-            return _buildWeatherScreen(snapshot.data);
-          } else if (snapshot.hasError) {
-            return Text(snapshot.error.toString());
-          }
-          return Center(child: CircularProgressIndicator());
-        });
+    return Scaffold(
+      body: StreamBuilder(
+          stream: weatherBloc.weather,
+          builder: (context, AsyncSnapshot<WeatherResponse> snapshot) {
+            if (snapshot.hasData) {
+              return _buildWeatherScreen(snapshot.data);
+            } else if (snapshot.hasError) {
+              return Text(snapshot.error.toString());
+            }
+            return Center(child: CircularProgressIndicator());
+          }),
+    );
   }
 
   Container _buildWeatherScreen(WeatherResponse data) {

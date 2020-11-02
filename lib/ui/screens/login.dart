@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:trump_card_game/helper/constantvalues/constansts.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:trump_card_game/ui/screens/home.dart';
-import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:trump_card_game/ui/widgets/custom/carousel_auto_slider.dart';
+import 'package:trump_card_game/ui/widgets/libraries/animated_text_kit/animated_text_kit.dart';
 
 class LogIn extends StatefulWidget {
   const LogIn({Key key}) : super(key: key);
@@ -88,6 +88,7 @@ class _LogInState extends State<LogIn> {
                       ),
                       // ),
                       onPressed: () {Navigator.of(context).push(new PageRouteWithAnimation());
+                      //onPressed: () {Navigator.push(context, _pageRouteBuilder());
                       },
                     ),
 

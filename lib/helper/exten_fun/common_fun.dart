@@ -1,12 +1,4 @@
 import 'package:assets_audio_player/assets_audio_player.dart';
-import 'package:flutter/services.dart';
-
-void setDeviceOrientationToLandscape() {
-  SystemChrome.setPreferredOrientations([
-    DeviceOrientation.landscapeRight,
-    DeviceOrientation.landscapeLeft,
-  ]);
-}
 
 void playAssetAudio(String audioName) {
   final assetsAudioPlayer = AssetsAudioPlayer();
@@ -15,7 +7,7 @@ void playAssetAudio(String audioName) {
   );
 }
 
-Future<void> playUrlAudio(String url) async {
+playUrlAudio(String url) async {
   try {
     final assetsAudioPlayer = AssetsAudioPlayer();
     await assetsAudioPlayer.open(

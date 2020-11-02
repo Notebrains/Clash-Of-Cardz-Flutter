@@ -3,8 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:trump_card_game/helper/exten_fun/base_application_fun.dart';
 import 'package:trump_card_game/ui/screens/login.dart';
-import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:trump_card_game/ui/widgets/custom/horizontal_progress_indicator.dart';
+import 'package:trump_card_game/ui/widgets/libraries/animated_text_kit/animated_text_kit.dart';
+
 
 class SplashScreen extends StatefulWidget {
   final Color backgroundColor = Colors.white;
@@ -23,6 +24,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     setScreenOrientationToLandscape();
+    //playUrlAudio("https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3");
     _loadWidget();
   }
 

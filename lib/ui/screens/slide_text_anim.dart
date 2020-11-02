@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:trump_card_game/helper/exten_fun/base_application_fun.dart';
 import 'package:trump_card_game/helper/exten_fun/common_fun.dart';
 
 class SlideTextAnim extends StatelessWidget {
@@ -30,7 +31,7 @@ class MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   void initState() {
     super.initState();
 
-    setDeviceOrientationToLandscape();
+    setScreenOrientationToLandscape();
 
     _animationController =
         AnimationController(vsync: this, duration: Duration(seconds: 2));
