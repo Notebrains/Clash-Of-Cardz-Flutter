@@ -111,7 +111,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               padding:
                                   new EdgeInsets.fromLTRB(30.0, 8.0, 30.0, 8.0),
                               margin: EdgeInsets.fromLTRB(8.0, 8.0, 0.0, 8.0),
-                              child: Text("Elena Denrik",
+                              child: Text("51,320",
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.w900)),

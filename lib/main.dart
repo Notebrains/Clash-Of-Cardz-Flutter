@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'ui/screens/splash.dart';
+import 'package:trump_card_game/ui/screens/splash.dart';
 
 void main() => runApp(MyRootApp());
 

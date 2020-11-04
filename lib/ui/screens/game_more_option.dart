@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:trump_card_game/helper/uihelper/circle_wheel_scroll_view.dart';
 import 'package:trump_card_game/ui/widgets/custom/button_material.dart';
+import 'package:trump_card_game/ui/widgets/libraries/semi_circle_listview/dart/circle_wheel_scroll_view.dart';
 
 class GameMoreOption extends StatelessWidget {
   Widget _buildCircleItems(int i) {
@@ -73,6 +73,7 @@ class GameMoreOption extends StatelessWidget {
                     //height: 260,
                     width: 350,
                     child: CircleListScrollView(
+                      flip: true,
                       physics: CircleFixedExtentScrollPhysics(),
                       axis: Axis.vertical,
                       itemExtent: 40,

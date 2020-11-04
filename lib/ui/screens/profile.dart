@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:trump_card_game/ui/screens/home.dart';
 import 'package:trump_card_game/ui/screens/statistics.dart';
-import 'package:trump_card_game/ui/widgets/views/shimmer.dart';
+import 'file:///E:/Downloads/MRIDAYA%20OFFICE/Flutter%20Projects/Clash-Of-Cardz-Flutter/lib/ui/widgets/libraries/shimmer.dart';
 import 'package:trump_card_game/ui/widgets/views/view_widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 

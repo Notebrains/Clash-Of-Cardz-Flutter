@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:trump_card_game/helper/exten_fun/common_fun.dart';
 import 'package:trump_card_game/helper/exten_fun/internet_fun.dart';
-import 'package:trump_card_game/ui/screens/semi_circle_menu.dart';
+import 'file:///E:/Downloads/MRIDAYA%20OFFICE/Flutter%20Projects/Clash-Of-Cardz-Flutter/lib/ui/widgets/test/semi_circle_menu.dart';
 
 class PlayerCard extends StatelessWidget {
   @override
@@ -40,14 +40,14 @@ class PlayerCardState extends State<PlayerCardStateFull>{
             children: [
               RaisedButton(
                 onPressed: (){
-                  playAssetAudio("sword_sms.mp3");
+                  //playAssetAudio("sword_sms.mp3");
                 },
                 child: const Text('Play Asset Audio',
                 style: TextStyle(fontSize: 16),),
               ),
               RaisedButton(
                 onPressed: (){
-                  playUrlAudio("https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3");
+                  //playUrlAudio("https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3");
                 },
                 child: const Text('Play Url Audio',
                   style: TextStyle(fontSize: 16),),

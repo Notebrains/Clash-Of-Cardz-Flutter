@@ -1,10 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:trump_card_game/helper/constantvalues/constansts.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:trump_card_game/bloc/api_bloc.dart';
+import 'package:trump_card_game/helper/shared_preference_data.dart';
+import 'package:trump_card_game/model/responses/login_res_model.dart';
 import 'package:trump_card_game/ui/screens/home.dart';
 import 'package:trump_card_game/ui/widgets/custom/carousel_auto_slider.dart';
 import 'package:trump_card_game/ui/widgets/libraries/animated_text_kit/animated_text_kit.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class LogIn extends StatefulWidget {
   const LogIn({Key key}) : super(key: key);
@@ -14,9 +20,13 @@ class LogIn extends StatefulWidget {
 }
 
 class _LogInState extends State<LogIn> {
+  var loggedIn = false;
+  var context;
 
   @override
   Widget build(BuildContext context) {
+    Firebase.initializeApp();
+    this.context = context;
     return Scaffold(
       body: Container(
         decoration: new BoxDecoration(
@@ -62,8 +72,7 @@ class _LogInState extends State<LogIn> {
                     MaterialButton(
                       padding: EdgeInsets.fromLTRB(8.0, 16.0, 8.0, 8.0),
                       textColor: Colors.white70,
-                      splashColor: Colors.greenAccent,
-                      elevation: 4.0,
+                      splashColor: Colors.yellow,
                       child: Container(
                         decoration: BoxDecoration(
                           image: DecorationImage(
@@ -72,11 +81,11 @@ class _LogInState extends State<LogIn> {
                               fit: BoxFit.cover),
                         ),
                         child: Container(
-                          width: 170,
+                          width: 220,
                           height: 45,
                           padding: EdgeInsets.fromLTRB(24.0, 5.0, 24.0, 16.0),
                           child: Text(
-                            "LOGIN",
+                            "LOGIN USING",
                             textAlign: TextAlign.center,
                             style: TextStyle(
                                 fontSize: 18.0,
@@ -87,7 +96,8 @@ class _LogInState extends State<LogIn> {
                         ),
                       ),
                       // ),
-                      onPressed: () {Navigator.of(context).push(new PageRouteWithAnimation());
+                      onPressed: () {
+                        //Navigator.of(context).push(new PageRouteWithAnimation());
                       //onPressed: () {Navigator.push(context, _pageRouteBuilder());
                       },
                     ),
@@ -96,19 +106,29 @@ class _LogInState extends State<LogIn> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         IconButton(
+                          highlightColor: Colors.orange[200],
                           icon: SvgPicture.asset(
                               'assets/icons/svg/google.svg'),
-                          onPressed: () {},
+                          onPressed: () {
+                            initiateSignIn("G");
+                          },
                         ),
                         IconButton(
+                          highlightColor: Colors.green[200],
                           icon: Image.asset(
                               'assets/icons/png/ic_google_play_games.png'),
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.of(context).push(new PageRouteWithAnimation());
+                          },
                         ),
+
                         IconButton(
+                          highlightColor: Colors.blue[200],
                           icon: SvgPicture.asset(
                               'assets/icons/svg/facebook.svg'),
-                          onPressed: () {},
+                          onPressed: () {
+                            initiateSignIn("FB");
+                          },
                         ),
                       ],
                     ),
@@ -153,6 +173,121 @@ class _LogInState extends State<LogIn> {
       ),
     );
   }
+
+  void initiateSignIn(String type) {
+    _handleSignIn(type).then((result) {
+      if (result == 1) {
+        setState(() {
+          loggedIn = true;
+        });
+      } else {
+
+      }
+    });
+  }
+
+  Future<int> _handleSignIn(String type) async {
+    switch (type) {
+      case "FB":
+        FacebookLoginResult facebookLoginResult = await _handleFBSignIn();
+        final accessToken = facebookLoginResult.accessToken.token;
+        print("----Fb accessToken : " + accessToken);
+        if (facebookLoginResult.status == FacebookLoginStatus.loggedIn) {
+          final facebookAuthCred = FacebookAuthProvider.getCredential(accessToken: accessToken);
+          final user = await FirebaseAuth.instance.signInWithCredential(facebookAuthCred);
+          //var user = (await firebaseAuth.signInWithCredential(facebookAuthCred)).user;
+          try {
+            print("----G User : " + user.displayName);
+            print("----G uid : " + user.uid);
+            print("----G email : " + user.email);
+            print("----G phoneNumber : " + user.phoneNumber);
+            print("----G photoUrl : " + user.photoUrl);
+            print("----G providerId : " + user.providerId);
+
+            //loginByServer(user.displayName, user.email, user.uid, user.photoUrl, "deviceToken", "memberId");
+            loginByServer("soijioejfoief", "dijdidoiascswidii@gijg.se", "8565635353", "ddw.jpg", "fsefsefsf", "MEM000019");
+          } catch (e) {
+            print(e);
+          }
+          return 1;
+        } else
+          return 0;
+        break;
+      case "G":
+        try {
+          GoogleSignInAccount googleSignInAccount = await _handleGoogleSignIn();
+          final googleAuth = await googleSignInAccount.authentication;
+          print("----G accessToken : " + googleAuth.accessToken);
+          final googleAuthCred = GoogleAuthProvider.getCredential(
+              idToken: googleAuth.idToken, accessToken: googleAuth.accessToken);
+          final user = await FirebaseAuth.instance.signInWithCredential(googleAuthCred);
+
+          try {
+            print("----F User : " + user.displayName);
+            print("----F uid : " + user.uid);
+            print("----F email : " + user.email);
+            //print("----F phoneNumber : " + user.phoneNumber);
+            print("----F photoUrl : " + user.photoUrl);
+            print("----F providerId : " + user.providerId);
+
+
+            loginByServer("soijioejfoief", "dijdidoiascswidii@gijg.se", "8565635353", "ddw.jpg", "fsefsefsf", "MEM000019");
+
+          } catch (e) {
+            print(e);
+          }
+
+          return 1;
+        } catch (error) {
+          return 0;
+        }
+    }
+    return 0;
+  }
+
+  Future<FacebookLoginResult> _handleFBSignIn() async {
+    FacebookLogin facebookLogin = FacebookLogin();
+    FacebookLoginResult facebookLoginResult =
+    await facebookLogin.logInWithReadPermissions(['email']);
+    switch (facebookLoginResult.status) {
+      case FacebookLoginStatus.cancelledByUser:
+        print("Cancelled");
+        break;
+      case FacebookLoginStatus.error:
+        print("error");
+        break;
+      case FacebookLoginStatus.loggedIn:
+        print("Logged In");
+        break;
+    }
+    return facebookLoginResult;
+  }
+
+  Future<GoogleSignInAccount> _handleGoogleSignIn() async {
+    GoogleSignIn googleSignIn = GoogleSignIn(
+        scopes: ['email', 'https://www.googleapis.com/auth/contacts.readonly']);
+    GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
+    return googleSignInAccount;
+  }
+
+  void loginByServer(String name, String email, String socialId, String image, String deviceToken, String memberId) {
+    apiBloc.fetchLoginRes(name, email, socialId, image, deviceToken, memberId);
+     StreamBuilder(
+        stream: apiBloc.loginRes,
+        builder: (context, AsyncSnapshot<LoginResModel> snapshot) {
+          if (snapshot.hasData) {
+            LoginResModel res = snapshot.data;
+            if(res.message == "login successfully"){
+              SharedPreferenceHelper().saveLogInUserData(res.responce.xApiKey, res.responce.memberid);
+              Navigator.of(context).pushReplacement(new PageRouteWithAnimation());
+            }
+          } else if (snapshot.hasError) {
+            return Text(snapshot.error.toString());
+          }
+          return Center(child: CircularProgressIndicator());
+        });
+  }
+
 }
 
 class PageRouteWithAnimation extends CupertinoPageRoute {

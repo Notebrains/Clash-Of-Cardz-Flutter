@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:trump_card_game/bloc/weather_bloc.dart';
+import 'package:trump_card_game/bloc/api_bloc.dart';
 import 'package:trump_card_game/helper/exten_fun/base_application_fun.dart';
 import 'package:trump_card_game/model/coord_model.dart';
 import 'package:trump_card_game/model/main_model.dart';
@@ -23,10 +23,10 @@ class WeatherScreenState extends State<WeatherScreen> {
 
   @override
   Widget build(BuildContext context) {
-    weatherBloc.fetchLondonWeather();
+    apiBloc.fetchLondonWeather();
     return Scaffold(
       body: StreamBuilder(
-          stream: weatherBloc.weather,
+          stream: apiBloc.weather,
           builder: (context, AsyncSnapshot<WeatherResponse> snapshot) {
             if (snapshot.hasData) {
               return _buildWeatherScreen(snapshot.data);
@@ -34,7 +34,8 @@ class WeatherScreenState extends State<WeatherScreen> {
               return Text(snapshot.error.toString());
             }
             return Center(child: CircularProgressIndicator());
-          }),
+          },
+      ),
     );
   }
 
