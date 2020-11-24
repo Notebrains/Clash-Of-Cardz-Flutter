@@ -31,8 +31,7 @@ class Views{
       double blurRadius){
     return BoxDecoration(
       image: DecorationImage(
-        image: AssetImage(
-            assetImg),
+        image: NetworkImage(assetImg),
         fit: BoxFit.cover,
       ),
       borderRadius:

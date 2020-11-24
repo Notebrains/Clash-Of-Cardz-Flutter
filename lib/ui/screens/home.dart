@@ -13,7 +13,7 @@ import 'package:trump_card_game/ui/screens/statistics.dart';
 import 'package:trump_card_game/ui/widgets/custom/carousel_auto_slider.dart';
 import 'package:trump_card_game/ui/widgets/views/view_widgets.dart';
 
-import 'game_option.dart';
+import 'game_option_with_circle_list.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
@@ -66,8 +66,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             maxWidth: 250.0,
                             maxHeight: 55.0,
                             child: Container(
-                              padding:
-                                  new EdgeInsets.fromLTRB(30.0, 8.0, 30.0, 8.0),
+                              padding: new EdgeInsets.fromLTRB(30.0, 8.0, 30.0, 8.0),
                               margin: EdgeInsets.fromLTRB(30.0, 8.0, 8.0, 8.0),
                               child: new Text("Elena Denrik",
                                   style: TextStyle(
@@ -221,7 +220,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                         ),
                         onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => GameOption()));
+                          Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => GameOptionCircleList()));
                         },
                       ),
                       MaterialButton(

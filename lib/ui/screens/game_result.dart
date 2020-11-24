@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:trump_card_game/helper/exten_fun/base_application_fun.dart';
-import 'package:trump_card_game/ui/screens/game_option.dart';
+import 'package:trump_card_game/ui/screens/game_option_with_circle_list.dart';
 import 'package:trump_card_game/ui/screens/home.dart';
 
 class GameResult extends StatelessWidget {
@@ -174,7 +174,7 @@ class GameResult extends StatelessWidget {
                               context,
                               MaterialPageRoute(
                                   builder: (BuildContext context) =>
-                                      GameOption()));
+                                      GameOptionCircleList()));
                         },
                       ),
                     ],

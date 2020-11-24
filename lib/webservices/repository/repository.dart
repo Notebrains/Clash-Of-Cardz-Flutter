@@ -1,7 +1,10 @@
+import 'package:trump_card_game/model/responses/cards_res_model.dart';
+import 'package:trump_card_game/model/responses/friends_res_model.dart';
 import 'package:trump_card_game/model/responses/login_res_model.dart';
 import 'package:trump_card_game/model/responses/statistics_res_model.dart';
 import 'package:trump_card_game/model/responses/weather_response_model.dart';
 import 'package:trump_card_game/model/responses/leaderboard_res_model.dart';
+import 'package:trump_card_game/model/responses/profile_res_model.dart';
 
 import '../api_provider/api_provider.dart';
 
@@ -16,6 +19,15 @@ class Repository {
   Future<LeaderboardResModel> fetchLeaderboardApi(String xApiKey) =>
       appApiProvider.leaderboardApi(xApiKey);
 
-  Future<StatisticsResModel> fetchStatisticsApi(String xApiKey) =>
-      appApiProvider.statisticsApi(xApiKey);
+  Future<StatisticsResModel> fetchStatisticsApi(String xApiKey, String memberId) =>
+      appApiProvider.statisticsApi(xApiKey, memberId);
+
+  Future<FriendsResModel> fetchFriends(String xApiKey) =>
+      appApiProvider.friendsApi(xApiKey);
+
+  Future<CardsResModel> fetchCardsApi(String xApiKey) =>
+      appApiProvider.cardsApi(xApiKey);
+
+  Future<ProfileResModel> fetchProfileApi(String xApiKey, String memberId) =>
+      appApiProvider.profileApi(xApiKey, memberId);
 }

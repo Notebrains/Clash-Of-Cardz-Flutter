@@ -1,8 +1,4 @@
-/// status : 1
-/// message : "Data fetched succesfully"
-/// response : [{"fullname":"ram","memberid":"MEM000001","win":"2","loss":"2","points":"250","coins":"0","redeem":"0","rank":2,"photo":""}]
-
-class StatisticsResponseModel {
+class ProfileResModel {
   int _status;
   String _message;
   List<Response> _response;
@@ -11,7 +7,7 @@ class StatisticsResponseModel {
   String get message => _message;
   List<Response> get response => _response;
 
-  StatisticsResponseModel({
+  ProfileResModel({
       int status, 
       String message, 
       List<Response> response}){
@@ -20,7 +16,7 @@ class StatisticsResponseModel {
     _response = response;
 }
 
-  StatisticsResponseModel.fromJson(dynamic json) {
+  ProfileResModel.fromJson(dynamic json) {
     _status = json["status"];
     _message = json["message"];
     if (json["response"] != null) {
@@ -51,7 +47,8 @@ class StatisticsResponseModel {
 /// coins : "0"
 /// redeem : "0"
 /// rank : 2
-/// photo : ""
+/// photo : "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRiO1D51PX-BWFxtKFukrymxo_iSk-5rBu3Fg&usqp=CAU"
+/// match_played : "6"
 
 class Response {
   String _fullname;
@@ -63,6 +60,7 @@ class Response {
   String _redeem;
   int _rank;
   String _photo;
+  String _matchPlayed;
 
   String get fullname => _fullname;
   String get memberid => _memberid;
@@ -73,6 +71,7 @@ class Response {
   String get redeem => _redeem;
   int get rank => _rank;
   String get photo => _photo;
+  String get matchPlayed => _matchPlayed;
 
   Response({
       String fullname, 
@@ -83,7 +82,8 @@ class Response {
       String coins, 
       String redeem, 
       int rank, 
-      String photo}){
+      String photo, 
+      String matchPlayed}){
     _fullname = fullname;
     _memberid = memberid;
     _win = win;
@@ -93,6 +93,7 @@ class Response {
     _redeem = redeem;
     _rank = rank;
     _photo = photo;
+    _matchPlayed = matchPlayed;
 }
 
   Response.fromJson(dynamic json) {
@@ -105,6 +106,7 @@ class Response {
     _redeem = json["redeem"];
     _rank = json["rank"];
     _photo = json["photo"];
+    _matchPlayed = json["match_played"];
   }
 
   Map<String, dynamic> toJson() {
@@ -118,6 +120,7 @@ class Response {
     map["redeem"] = _redeem;
     map["rank"] = _rank;
     map["photo"] = _photo;
+    map["match_played"] = _matchPlayed;
     return map;
   }
 

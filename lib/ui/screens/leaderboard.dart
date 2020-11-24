@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:trump_card_game/bloc/api_bloc.dart';
-import 'package:trump_card_game/helper/constantvalues/constansts.dart';
+import 'package:trump_card_game/helper/constantvalues/constants.dart';
 import 'package:trump_card_game/helper/exten_fun/base_application_fun.dart';
 import 'package:trump_card_game/model/responses/leaderboard_res_model.dart';
 
 class Leaderboard extends StatelessWidget {
-
   List<Response> listData;
 
   @override
@@ -31,7 +30,11 @@ class Leaderboard extends StatelessWidget {
               } else if (snapshot.hasError) {
                 return Text(snapshot.error.toString());
               }
-              return Center(child: CircularProgressIndicator());
+              return Center(
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.deepOrangeAccent),
+                ),
+              );
             },
           ),
         ),
@@ -54,19 +57,17 @@ class Leaderboard extends StatelessWidget {
                 width: 33,
                 height: 33,
                 child: IconButton(
-                  icon: SvgPicture.asset(
-                    'assets/icons/svg/coin.svg'
-                  ),
+                  icon: SvgPicture.asset('assets/icons/svg/coin.svg'),
                   onPressed: () {},
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.all(1.0),
-                child: Text(points,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w900),
+                child: Text(
+                  points,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.w900),
                 ),
               ),
             ],
@@ -118,8 +119,7 @@ class Leaderboard extends StatelessWidget {
                         child: DecoratedBox(
                           decoration: BoxDecoration(
                             color: Colors.greenAccent[700],
-                            borderRadius:
-                            BorderRadius.all(Radius.circular(5)),
+                            borderRadius: BorderRadius.all(Radius.circular(5)),
                             boxShadow: <BoxShadow>[
                               BoxShadow(
                                 color: Colors.blueGrey,
@@ -139,8 +139,7 @@ class Leaderboard extends StatelessWidget {
                   ),
                   ClipRRect(
                     child: CircleAvatar(
-                      backgroundImage:
-                      NetworkImage(Constants.imgUrlTest),
+                      backgroundImage: NetworkImage(Constants.imgUrlTest),
                     ),
                   ),
                 ],
@@ -153,8 +152,8 @@ class Leaderboard extends StatelessWidget {
                     alignment: Alignment.topCenter,
                     children: <Widget>[
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(
-                            20.0, 20.0, 20.0, 0.0),
+                        padding:
+                            const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
                         child: ClipRRect(
                           child: SizedBox(
                             width: 115,
@@ -183,15 +182,15 @@ class Leaderboard extends StatelessWidget {
                     alignment: Alignment.topCenter,
                     children: <Widget>[
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(
-                            20.0, 20.0, 20.0, 0.0),
+                        padding:
+                            const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
                         child: ClipRRect(
                           child: SizedBox(
                             width: 115,
                             height: 120,
                             child: DecoratedBox(
-                              decoration: BoxDecoration(
-                                  color: Colors.indigo[900]),
+                              decoration:
+                                  BoxDecoration(color: Colors.indigo[900]),
                               child: topPlayerCards(
                                   'assets/icons/svg/leaf_third.svg',
                                   '43,55,678',
@@ -287,14 +286,14 @@ class Leaderboard extends StatelessWidget {
     );
   }
 
-   Container buildList() {
+  Container buildList() {
     return Container(
       child: ListView.builder(
         physics: const AlwaysScrollableScrollPhysics(),
         padding: EdgeInsets.fromLTRB(25.0, 2.0, 16.0, 8.0),
         itemCount: listData.length,
         itemBuilder: (context, index) {
-          if(index < 3) return SizedBox();
+          if (index < 3) return SizedBox();
           return Column(
             children: [
               Row(
@@ -318,8 +317,7 @@ class Leaderboard extends StatelessWidget {
                           height: 30.0,
                           width: 1.0,
                           color: Colors.black54,
-                          margin: const EdgeInsets.only(
-                              left: 16.0, right: 0.0),
+                          margin: const EdgeInsets.only(left: 16.0, right: 0.0),
                         ),
                       ],
                     ),
