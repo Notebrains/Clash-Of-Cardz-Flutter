@@ -1,9 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:trump_card_game/model/responses/profile_res_model.dart';
+import 'package:trump_card_game/ui/screens/statistics.dart';
 import 'package:trump_card_game/ui/widgets/views/view_widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-Center buildProfileScreen(ProfileResModel data){
+class IncludeProfile extends StatelessWidget {
+  ProfileResModel data;
+
+  IncludeProfile(ProfileResModel data) {
+    this.data = data;
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Center(
       child: Row(
         children: <Widget>[
@@ -41,13 +50,7 @@ Center buildProfileScreen(ProfileResModel data){
                     width: 70,
                     height: 70,
                     margin: EdgeInsets.all(5),
-                    decoration: Views.boxDecorationWidgetForPngImage(
-                        data.response[0].photo,
-                        4.0,
-                        Colors.grey,
-                        5.0,
-                        5.0,
-                        3.0),
+                    decoration: Views.boxDecorationWidgetForPngImage(data.response[0].photo, 4.0, Colors.grey, 5.0, 5.0, 3.0),
                   ),
 
                   Padding(
@@ -55,24 +58,14 @@ Center buildProfileScreen(ProfileResModel data){
                     child: Text(
                       data.response[0].fullname,
                       textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontSize: 16.0,
-                          fontStyle: FontStyle.normal,
-                          fontFamily: 'montserrat',
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black),
+                      style: TextStyle(fontSize: 16.0, fontStyle: FontStyle.normal, fontFamily: 'montserrat', fontWeight: FontWeight.bold, color: Colors.black),
                     ),
                   ),
 
                   Text(
-                    data.response[0].fullname,
+                    data.response[0].fullname + ' | ' + data.response[0].memberid,
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontSize: 16.0,
-                        fontStyle: FontStyle.normal,
-                        fontFamily: 'montserrat',
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black),
+                    style: TextStyle(fontSize: 16.0, fontStyle: FontStyle.normal, fontFamily: 'montserrat', fontWeight: FontWeight.bold, color: Colors.black),
                   ),
 
                   Padding(
@@ -80,11 +73,7 @@ Center buildProfileScreen(ProfileResModel data){
                     child: Text(
                       "Since: 1st Jan, 2002",
                       textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontSize: 16.0,
-                          fontStyle: FontStyle.normal,
-                          fontFamily: 'montserrat',
-                          color: Colors.black),
+                      style: TextStyle(fontSize: 16.0, fontStyle: FontStyle.normal, fontFamily: 'montserrat', color: Colors.black),
                     ),
                   ),
 
@@ -93,11 +82,7 @@ Center buildProfileScreen(ProfileResModel data){
                     child: Text(
                       "20y, Female, Kol-IND",
                       textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontSize: 16.0,
-                          fontStyle: FontStyle.normal,
-                          fontFamily: 'montserrat',
-                          color: Colors.black),
+                      style: TextStyle(fontSize: 16.0, fontStyle: FontStyle.normal, fontFamily: 'montserrat', color: Colors.black),
                     ),
                   ),
 
@@ -108,34 +93,25 @@ Center buildProfileScreen(ProfileResModel data){
                     padding: EdgeInsets.all(5),
                     child: RaisedButton(
                       elevation: 5,
-                      child: const Text('View Statistics',
-                          style: TextStyle(fontSize: 16)),
+                      child: const Text('View Statistics', style: TextStyle(fontSize: 16)),
                       onPressed: () {
-                        /*Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (BuildContext context) =>
-                                    Statistics()));*/
+                        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Statistics()));
                       },
                     ),
                   ),
 
                   IconButton(
                     iconSize: 35,
-                    icon: SvgPicture.asset(
-                        'assets/icons/svg/back_black.svg'),
+                    icon: SvgPicture.asset('assets/icons/svg/back_black.svg'),
                     onPressed: () {
-                    /*  Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (BuildContext context) =>
-                                  HomeScreen()));*/
+                      Navigator.of(context, rootNavigator: true).pop(context);
                     },
                   )
                 ],
               ),
             ),
           ),
+
           Expanded(
             flex: 1,
             child: Column(
@@ -153,8 +129,7 @@ Center buildProfileScreen(ProfileResModel data){
                           children: [
                             IconButton(
                               iconSize: 55,
-                              icon: SvgPicture.asset(
-                                  'assets/icons/svg/podium.svg'),
+                              icon: SvgPicture.asset('assets/icons/svg/podium.svg'),
                               onPressed: () {},
                             ),
                             Padding(
@@ -162,23 +137,13 @@ Center buildProfileScreen(ProfileResModel data){
                               child: Text(
                                 data.response[0].rank.toString(),
                                 textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontSize: 16.0,
-                                    fontStyle: FontStyle.normal,
-                                    fontFamily: 'montserrat',
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black54),
+                                style: TextStyle(fontSize: 16.0, fontStyle: FontStyle.normal, fontFamily: 'montserrat', fontWeight: FontWeight.bold, color: Colors.black54),
                               ),
                             ),
                             Text(
                               "RANK",
                               textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: 16.0,
-                                  fontStyle: FontStyle.normal,
-                                  fontFamily: 'montserrat',
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black),
+                              style: TextStyle(fontSize: 16.0, fontStyle: FontStyle.normal, fontFamily: 'montserrat', fontWeight: FontWeight.bold, color: Colors.black),
                             ),
                           ],
                         ),
@@ -191,8 +156,7 @@ Center buildProfileScreen(ProfileResModel data){
                             IconButton(
                               padding: EdgeInsets.all(12),
                               iconSize: 40,
-                              icon: SvgPicture.asset(
-                                  'assets/icons/svg/coin.svg'),
+                              icon: SvgPicture.asset('assets/icons/svg/coin.svg'),
                               onPressed: () {},
                             ),
                             Padding(
@@ -200,23 +164,13 @@ Center buildProfileScreen(ProfileResModel data){
                               child: Text(
                                 data.response[0].points,
                                 textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontSize: 16.0,
-                                    fontStyle: FontStyle.normal,
-                                    fontFamily: 'montserrat',
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black54),
+                                style: TextStyle(fontSize: 16.0, fontStyle: FontStyle.normal, fontFamily: 'montserrat', fontWeight: FontWeight.bold, color: Colors.black54),
                               ),
                             ),
                             Text(
                               "POINTS",
                               textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: 16.0,
-                                  fontStyle: FontStyle.normal,
-                                  fontFamily: 'montserrat',
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black),
+                              style: TextStyle(fontSize: 16.0, fontStyle: FontStyle.normal, fontFamily: 'montserrat', fontWeight: FontWeight.bold, color: Colors.black),
                             ),
                           ],
                         ),
@@ -234,8 +188,7 @@ Center buildProfileScreen(ProfileResModel data){
                         children: [
                           IconButton(
                             iconSize: 50,
-                            icon: SvgPicture.asset(
-                                'assets/icons/svg/victory.svg'),
+                            icon: SvgPicture.asset('assets/icons/svg/victory.svg'),
                             onPressed: () {},
                           ),
                           Padding(
@@ -243,23 +196,13 @@ Center buildProfileScreen(ProfileResModel data){
                             child: Text(
                               data.response[0].matchPlayed,
                               textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: 16.0,
-                                  fontStyle: FontStyle.normal,
-                                  fontFamily: 'montserrat',
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black54),
+                              style: TextStyle(fontSize: 16.0, fontStyle: FontStyle.normal, fontFamily: 'montserrat', fontWeight: FontWeight.bold, color: Colors.black54),
                             ),
                           ),
                           Text(
                             "MATCH",
                             textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontSize: 16.0,
-                                fontStyle: FontStyle.normal,
-                                fontFamily: 'montserrat',
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black),
+                            style: TextStyle(fontSize: 16.0, fontStyle: FontStyle.normal, fontFamily: 'montserrat', fontWeight: FontWeight.bold, color: Colors.black),
                           ),
                         ],
                       ),
@@ -268,33 +211,21 @@ Center buildProfileScreen(ProfileResModel data){
                         children: [
                           IconButton(
                             iconSize: 50,
-                            icon: SvgPicture.asset(
-                                'assets/icons/svg/won.svg'),
+                            icon: SvgPicture.asset('assets/icons/svg/won.svg'),
                             onPressed: () {},
                           ),
                           Padding(
-                            padding:
-                            const EdgeInsets.fromLTRB(45, 0, 45, 0),
+                            padding: const EdgeInsets.fromLTRB(45, 0, 45, 0),
                             child: Text(
                               data.response[0].win,
                               textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: 16.0,
-                                  fontStyle: FontStyle.normal,
-                                  fontFamily: 'montserrat',
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black54),
+                              style: TextStyle(fontSize: 16.0, fontStyle: FontStyle.normal, fontFamily: 'montserrat', fontWeight: FontWeight.bold, color: Colors.black54),
                             ),
                           ),
                           Text(
                             "WON",
                             textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontSize: 16.0,
-                                fontStyle: FontStyle.normal,
-                                fontFamily: 'montserrat',
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black),
+                            style: TextStyle(fontSize: 16.0, fontStyle: FontStyle.normal, fontFamily: 'montserrat', fontWeight: FontWeight.bold, color: Colors.black),
                           ),
                         ],
                       ),
@@ -303,8 +234,7 @@ Center buildProfileScreen(ProfileResModel data){
                         children: [
                           IconButton(
                             iconSize: 50,
-                            icon: SvgPicture.asset(
-                                'assets/icons/svg/lost.svg'),
+                            icon: SvgPicture.asset('assets/icons/svg/lost.svg'),
                             onPressed: () {},
                           ),
                           Padding(
@@ -312,23 +242,13 @@ Center buildProfileScreen(ProfileResModel data){
                             child: Text(
                               data.response[0].loss,
                               textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: 16.0,
-                                  fontStyle: FontStyle.normal,
-                                  fontFamily: 'montserrat',
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black54),
+                              style: TextStyle(fontSize: 16.0, fontStyle: FontStyle.normal, fontFamily: 'montserrat', fontWeight: FontWeight.bold, color: Colors.black54),
                             ),
                           ),
                           Text(
                             "LOSE",
                             textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontSize: 16.0,
-                                fontStyle: FontStyle.normal,
-                                fontFamily: 'montserrat',
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black),
+                            style: TextStyle(fontSize: 16.0, fontStyle: FontStyle.normal, fontFamily: 'montserrat', fontWeight: FontWeight.bold, color: Colors.black),
                           ),
                         ],
                       ),
@@ -341,4 +261,5 @@ Center buildProfileScreen(ProfileResModel data){
         ],
       ),
     );
- }
+  }
+}

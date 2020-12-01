@@ -16,4 +16,15 @@ class SharedPreferenceHelper{
     prefs.setString('memberId', memberId);
     print('----saved $xApiKey');
   }
+
+  Future<int> getUserApiKey() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getInt('x_api_key') ?? 0;
+  }
+
+  Future<int> getUserUserMemberId() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getInt('memberId') ?? 0;
+  }
+
 }

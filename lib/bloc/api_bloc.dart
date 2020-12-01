@@ -1,31 +1,16 @@
 import 'package:rxdart/rxdart.dart';
 import 'package:trump_card_game/model/responses/cards_res_model.dart';
 import 'package:trump_card_game/model/responses/friends_res_model.dart';
+import 'package:trump_card_game/model/responses/game_option_res_model.dart';
 import 'package:trump_card_game/model/responses/login_res_model.dart';
 import 'package:trump_card_game/model/responses/profile_res_model.dart';
 import 'package:trump_card_game/model/responses/statistics_res_model.dart';
-import 'package:trump_card_game/model/responses/weather_response_model.dart';
 import 'package:trump_card_game/webservices/repository/repository.dart';
 import 'package:trump_card_game/model/responses/leaderboard_res_model.dart';
 
 
 class ApiBloc {
   Repository _repository = Repository();
-
-  //Weather
-
-  //Create a PublicSubject object responsible to add the data which is got from
-  // the server in the form of WeatherResponse object and pass it to the UI screen as a stream.
-  final _weatherFetcher = PublishSubject<WeatherResponse>();
-
-  //This method is used to pass the weather response as stream to UI
-  Stream<WeatherResponse> get weather => _weatherFetcher.stream;
-
-  fetchLondonWeather() async {
-    WeatherResponse weatherResponse = await _repository.fetchLondonWeather();
-    _weatherFetcher.sink.add(weatherResponse);
-  }
-
 
   //Login
   final _loginResFetcher = PublishSubject<LoginResModel>();
@@ -36,6 +21,17 @@ class ApiBloc {
     LoginResModel loginResponse = await _repository.fetchLoginApi(name, email, socialId, image, deviceToken, memberId);
     _loginResFetcher.sink.add(loginResponse);
   }
+
+  //Gage Option
+  final _gameCatResFetcher = PublishSubject<GameOptionResModel>();
+
+  Stream<GameOptionResModel> get gameCatRes => _gameCatResFetcher.stream;
+
+  fetchGameOptionRes(String xApiKey) async {
+    GameOptionResModel model = await _repository.fetchGameOptApi(xApiKey);
+    _gameCatResFetcher.sink.add(model);
+  }
+
 
   //Leaderboard
   final _leaderboardResFetcher = PublishSubject<LeaderboardResModel>();
@@ -88,14 +84,14 @@ class ApiBloc {
   }
 
   dispose() {
-    //Close the weather fetcher
-    _weatherFetcher.close();
+    //Close the api fetcher
     _loginResFetcher.close();
     _leaderboardResFetcher.close();
     _statisticsResFetcher.close();
     _friendsResFetcher.close();
     _cardsResFetcher.close();
     _profileResFetcher.close();
+    _gameCatResFetcher.close();
   }
 }
 

@@ -119,6 +119,7 @@ class _LogInState extends State<LogIn> {
                               'assets/icons/png/ic_google_play_games.png'),
                           onPressed: () {
                             Navigator.of(context).push(new PageRouteWithAnimation());
+
                           },
                         ),
 
@@ -147,15 +148,21 @@ class _LogInState extends State<LogIn> {
                       ),
                     ),
 
-                    Text(
-                      "Play As Guest",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontSize: 22.0,
-                          fontStyle: FontStyle.normal,
-                          fontFamily: 'neuropol_x_rg',
-                          fontWeight: FontWeight.bold,
-                          color: Colors.grey[700]),
+                    GestureDetector(
+                      child: Text(
+                        "Play As Guest",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontSize: 22.0,
+                            fontStyle: FontStyle.normal,
+                            fontFamily: 'neuropol_x_rg',
+                            fontWeight: FontWeight.bold,
+                            color: Colors.grey[700]),
+                      ),
+
+                      onTap: (){
+                        Navigator.of(context).push(new PageRouteWithAnimation());
+                      },
                     ),
                   ],
                 ),
@@ -279,7 +286,7 @@ class _LogInState extends State<LogIn> {
             LoginResModel res = snapshot.data;
             if(res.message == "login successfully"){
               SharedPreferenceHelper().saveLogInUserData(res.responce.xApiKey, res.responce.memberid);
-              Navigator.of(context).pushReplacement(new PageRouteWithAnimation());
+              Navigator.of(context).push(new PageRouteWithAnimation());
             }
           } else if (snapshot.hasError) {
             return Text(snapshot.error.toString());
@@ -287,7 +294,6 @@ class _LogInState extends State<LogIn> {
           return Center(child: CircularProgressIndicator());
         });
   }
-
 }
 
 class PageRouteWithAnimation extends CupertinoPageRoute {

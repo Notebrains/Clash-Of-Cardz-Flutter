@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:trump_card_game/bloc/api_bloc.dart';
 import 'package:trump_card_game/model/responses/profile_res_model.dart';
+import 'package:trump_card_game/ui/widgets/custom/frosted_glass.dart';
 import 'package:trump_card_game/ui/widgets/include_screens/include_profile.dart';
 
 class Profile extends StatelessWidget {
@@ -23,14 +24,12 @@ class Profile extends StatelessWidget {
             stream: apiBloc.profileRes,
             builder: (context, AsyncSnapshot<ProfileResModel> snapshot) {
               if (snapshot.hasData && snapshot.data.response.length>0) {
-                return buildProfileScreen(snapshot.data);
-              } else if (snapshot.hasError) {
-                return Text(snapshot.data.message);
-              }
-              return Center(
-                child: CircularProgressIndicator(
-                  strokeWidth: 5,
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.deepOrangeAccent),
+                return IncludeProfile(snapshot.data);
+              }  else if (!snapshot.hasData) {
+                return frostedGlassWithProgressBarWidget(context);
+              } else return Center(
+                child: Text("No Data Found",
+                    style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 30)
                 ),
               );
             },

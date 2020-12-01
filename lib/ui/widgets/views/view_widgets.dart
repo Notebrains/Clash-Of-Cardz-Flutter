@@ -40,7 +40,8 @@ class Views{
         BoxShadow(
           color: Colors.grey,
           offset: Offset(4, 4),
-          blurRadius: 3,
+            spreadRadius : 2,
+            blurRadius : 3
         ),
       ],
     );

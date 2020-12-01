@@ -5,9 +5,6 @@ import 'package:trump_card_game/ui/widgets/custom/frosted_glass.dart';
 import 'package:trump_card_game/ui/widgets/include_screens/include_statistics_screen.dart';
 
 class Statistics extends StatelessWidget {
-  // This widget is the root of your application.
-  final List<String> entries = <String>['A', 'B', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C'];
-  final List<int> colorCodes = <int>[600, 500, 100];
 
   @override
   Widget build(BuildContext context) {
@@ -26,14 +23,15 @@ class Statistics extends StatelessWidget {
           child: StreamBuilder(
             stream: apiBloc.statisticsRes,
             builder: (context, AsyncSnapshot<StatisticsResModel> snapshot) {
-              if (snapshot.hasData && snapshot.data.response.length>0) {
+              if (snapshot.hasData && snapshot.data.response.length > 0) {
                 return buildStatisticsScreen(snapshot.data);
               } else if (!snapshot.hasData) {
-                return Text("No Data Found",
-                    style: TextStyle(color: Colors.white24)
-                );
-              }
-              return frostedGlassWithProgressBarWidget(context);
+                return frostedGlassWithProgressBarWidget(context);
+              } else return Center(
+                child: Text("No Data Found",
+                    style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 30)
+                ),
+              );
             },
           ),
         ),

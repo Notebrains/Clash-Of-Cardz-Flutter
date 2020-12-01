@@ -1,81 +1,52 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:trump_card_game/bloc/api_bloc.dart';
 import 'package:trump_card_game/model/responses/friends_res_model.dart';
-import 'package:trump_card_game/ui/screens/setting.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:trump_card_game/model/responses/game_option_res_model.dart';
+import 'package:trump_card_game/model/responses/leaderboard_res_model.dart';
 import 'package:trump_card_game/ui/widgets/include_screens/friends_drawer.dart';
 import 'package:trump_card_game/ui/widgets/libraries/colorize.dart';
-import 'package:trump_card_game/ui/widgets/libraries/semi_circle_listview/dart/circle_wheel_scroll_view.dart';
 import 'package:trump_card_game/ui/widgets/views/view_widgets.dart';
-import 'leaderboard.dart';
 
-class GameMoreOption extends StatelessWidget {
+import 'login.dart';
+
+class GameMoreOption extends StatefulWidget {
+
+  @override
+  _GameMoreOptionState createState() => _GameMoreOptionState();
+}
+
+class _GameMoreOptionState extends State<GameMoreOption> {
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
+  List<Subcategory_details> subcategoryDetails = List();
+  List<String> cardsToBePlayed = List<String>();
 
-  Widget _buildCircleItems(int i) {
-    return Container(
-        margin: EdgeInsets.only(left: 80),
-        child: Row(
-          children: [
-            Container(
-              width: 40,
-              padding: EdgeInsets.all(5),
-              //color: Colors.white,
-              child: Center(
-                child: Text(i.toString(),
-                    style: TextStyle(
-                        color: Colors.black87, fontWeight: FontWeight.w900)),
-              ),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(80),
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                      color: Colors.orange, spreadRadius: 2, blurRadius: 3),
-                ],
-              ),
-            ),
-            Listener(
-              onPointerDown: (e) {
-                print('onPointerDown');
-              },
-              child: InkWell(
-                onTap: () {
-                  print('-----');
-                },
-                onDoubleTap: () {
-                  print('-----');
-                },
-                onLongPress: () {
-                  print('-----');
-                },
-                splashColor: Colors.yellow,
-                highlightColor: Colors.blue.withOpacity(0.5),
-                child: Container(
-                  width: 120,
-                  padding: EdgeInsets.all(5),
-                  child: Center(
-                    child: Text('Cricket'),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ));
+  void incrementCounter() {
+    setState(() {
+      cardsToBePlayed.clear();
+      cardsToBePlayed.addAll(subcategoryDetails[0].cardsToBePlayed);
+      buildSecondList(cardsToBePlayed);
+      //print("---- subcategoryDetails.length " + subcategoryDetails.length.toString());
+      //print("---- cardsToBePlayed.length 2 " + cardsToBePlayed.length.toString());
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    subcategoryDetails = ModalRoute
+        .of(context)
+        .settings
+        .arguments;
+
     return Scaffold(
       key: _drawerKey, // assign key to Scaffold
       drawer: Drawer(
         child: new ListView(
           children: <Widget>[
-
             Container(
-              height: 120,
+              height: 115,
               child: DrawerHeader(
+                margin: EdgeInsets.all(0),
                 child: Column(
                   children: [
                     Text(
@@ -88,7 +59,6 @@ class GameMoreOption extends StatelessWidget {
                         fontFamily: 'neuropol_x_rg',
                       ),
                     ),
-
                     Container(
                       margin: EdgeInsets.only(top: 8),
                       padding: const EdgeInsets.symmetric(vertical: 1, horizontal: 12),
@@ -109,9 +79,7 @@ class GameMoreOption extends StatelessWidget {
                                 ),
                                 border: InputBorder.none,
                               ),
-                              onChanged: (String keyword) {
-
-                              },
+                              onChanged: (String keyword) {},
                             ),
                           ),
                           Icon(
@@ -129,25 +97,15 @@ class GameMoreOption extends StatelessWidget {
               ),
             ),
 
-            StreamBuilder(
-              stream: apiBloc.friendsRes,
-              builder: (context, AsyncSnapshot<FriendsResModel> snapshot) {
-                if (snapshot.hasData) {
-                  return _buildFriendsScreen(context, snapshot.data);
-                } else if (snapshot.hasError) {
-                  return Text(snapshot.error.toString());
-                }
-                return Center(child: CircularProgressIndicator());
-              },
-            ),
-
+            //building friend list ui in drawer
+            friendList(context),
           ],
         ),
       ),
       body: Container(
         decoration: new BoxDecoration(
           image: new DecorationImage(
-            image: new AssetImage("assets/images/bg_img3.png"),
+            image: new AssetImage("assets/images/bg_img13.png"),
             fit: BoxFit.cover,
           ),
         ),
@@ -155,7 +113,6 @@ class GameMoreOption extends StatelessWidget {
           children: [
             Container(
               alignment: Alignment.center,
-              height: 150,
               child: ColorizeAnimatedTextKit(
                 onTap: () {
                   //print("Tap Event");
@@ -167,9 +124,9 @@ class GameMoreOption extends StatelessWidget {
                   fontFamily: 'Rapier',
                 ),
                 colors: [
-                  Colors.grey[400],
-                  Colors.deepOrange[400],
-                  Colors.grey[400],
+                  Colors.grey[500],
+                  Colors.grey[600],
+                  Colors.grey[500],
                 ],
                 textAlign: TextAlign.center,
                 alignment: AlignmentDirectional.center,
@@ -185,38 +142,13 @@ class GameMoreOption extends StatelessWidget {
                 children: [
                   Expanded(
                     flex: 3,
-                    child: Container(
-                      //height: 260,
-                      width: 250,
-                      child: CircleListScrollView(
-                        physics: CircleFixedExtentScrollPhysics(),
-                        axis: Axis.vertical,
-                        itemExtent: 40,
-                        children: List.generate(15, _buildCircleItems),
-                        radius: MediaQuery.of(context).size.width * 0.22,
-                        renderChildrenOutsideViewport: false,
-                        onSelectedItemChanged: (int index) =>
-                            print('Current index: $index'),
-                      ),
-                    ),
+                    child: _buildFirstList(subcategoryDetails[0].noOfPlayerPlayed, 0),
                   ),
                   Expanded(
                     flex: 3,
-                    child: Container(
-                      //height: 260,
-                      width: 250,
-                      child: CircleListScrollView(
-                        physics: CircleFixedExtentScrollPhysics(),
-                        axis: Axis.vertical,
-                        itemExtent: 40,
-                        children: List.generate(15, _buildCircleItems),
-                        radius: MediaQuery.of(context).size.width * 0.22,
-                        renderChildrenOutsideViewport: false,
-                        onSelectedItemChanged: (int index) =>
-                            print('Current index: $index'),
-                      ),
-                    ),
+                    child: buildSecondList(cardsToBePlayed),
                   ),
+
                   Expanded(
                     flex: 1,
                     child: Container(
@@ -226,30 +158,24 @@ class GameMoreOption extends StatelessWidget {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
+
                             Container(
                               width: 40,
                               height: 40,
                               margin: EdgeInsets.all(5),
                               child: IconButton(
-                                icon: Image.asset(
-                                    'assets/icons/png/ic_refresh.png'),
+                                icon: SvgPicture.asset(
+                                  'assets/icons/svg/friends.svg',
+                                  color: Colors.white,
+                                ),
                                 onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (BuildContext context) =>
-                                              Leaderboard()));
+                                  apiBloc.fetchLeaderboardRes('ZGHrDz4prqsu4BcApPaQYaGgq');
+                                  _drawerKey.currentState.openDrawer(); // open drawer
                                 },
                               ),
-                              decoration:
-                                  Views.boxDecorationWidgetForIconWithBgColor(
-                                      Colors.teal[400],
-                                      4.0,
-                                      Colors.grey,
-                                      5.0,
-                                      5.0,
-                                      3.0),
+                              decoration: Views.boxDecorationWidgetForIconWithBgColor(Colors.teal[400], 4.0, Colors.grey, 5.0, 5.0, 3.0),
                             ),
+
                             Container(
                               width: 40,
                               height: 40,
@@ -263,15 +189,9 @@ class GameMoreOption extends StatelessWidget {
                                   Navigator.pop(context);
                                 },
                               ),
-                              decoration:
-                                  Views.boxDecorationWidgetForIconWithBgColor(
-                                      Colors.blue,
-                                      4.0,
-                                      Colors.grey,
-                                      5.0,
-                                      5.0,
-                                      3.0),
+                              decoration: Views.boxDecorationWidgetForIconWithBgColor(Colors.grey[800], 4.0, Colors.grey, 5.0, 5.0, 3.0),
                             ),
+
                             Container(
                               width: 40,
                               height: 40,
@@ -282,44 +202,10 @@ class GameMoreOption extends StatelessWidget {
                                   color: Colors.white,
                                 ),
                                 onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (BuildContext context) =>
-                                              Setting()));
+                                  Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => LogIn()));
                                 },
                               ),
-                              decoration:
-                                  Views.boxDecorationWidgetForIconWithBgColor(
-                                      Colors.redAccent,
-                                      4.0,
-                                      Colors.grey,
-                                      5.0,
-                                      5.0,
-                                      3.0),
-                            ),
-                            Container(
-                              width: 40,
-                              height: 40,
-                              margin: EdgeInsets.all(5),
-                              child: IconButton(
-                                icon: SvgPicture.asset(
-                                  'assets/icons/svg/logout.svg',
-                                  color: Colors.white,
-                                ),
-                                onPressed: () {
-                                  _drawerKey.currentState
-                                      .openDrawer(); // open drawer
-                                },
-                              ),
-                              decoration:
-                                  Views.boxDecorationWidgetForIconWithBgColor(
-                                      Colors.purple,
-                                      4.0,
-                                      Colors.grey,
-                                      5.0,
-                                      5.0,
-                                      3.0),
+                              decoration: Views.boxDecorationWidgetForIconWithBgColor(Colors.red[600], 4.0, Colors.grey, 5.0, 5.0, 3.0),
                             ),
                           ],
                         ),
@@ -335,25 +221,136 @@ class GameMoreOption extends StatelessWidget {
     );
   }
 
-  Container _buildFriendsScreen(BuildContext context, FriendsResModel data) {
-    return Container(
-      height: MediaQuery.of(context).size.height,
-      width: MediaQuery.of(context).size.width,
-      child: Stack(
-        children: <Widget>[
-          Container(
-            color: Colors.grey[700],
-            padding: EdgeInsets.only(top: 8),
-            height: MediaQuery.of(context).size.height,
-            width: double.infinity,
-            child: ListView.builder(
-                itemCount: 30,
-                itemBuilder: (BuildContext context, int index) {
-                  return userList(context, index);
-                }),
+  Widget _buildFirstList(String noOfPlayerPlaying, int index) {
+    final List<String> vsList = <String>[];
+
+    try {
+      switch(noOfPlayerPlaying){
+            case "2":
+              vsList.add("1 vs 1");
+              break;
+            case "3":
+              vsList.add("1 vs 1");
+              vsList.add("1 vs 2");
+              break;
+            case "4":
+              vsList.add("1 vs 1");
+              vsList.add("1 vs 2");
+              vsList.add("1 vs 3");
+              break;
+          }
+    } catch (e) {
+      print(e);
+    }
+
+    return ListView.builder(
+      physics: const AlwaysScrollableScrollPhysics(),
+      padding: EdgeInsets.fromLTRB(50.0, 12.0, 16.0, 5.0),
+      itemCount: vsList.length,
+      shrinkWrap: true,
+      itemBuilder: (context, index) {
+        return Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(36)),
           ),
-        ],
-      ),
+          width: double.infinity,
+          margin: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                width: 50,
+                height: 50,
+                decoration: BoxDecoration(
+                  color: Colors.transparent,
+                  border: Border.all(
+                    color: Colors.grey[350],
+                    width: 5,
+                  ),
+                  borderRadius: BorderRadius.all(Radius.circular(35)),
+                ),
+                child: CircleAvatar(
+                  child: SvgPicture.asset('assets/icons/svg/cricket.svg'),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(8, 12, 0, 2),
+                child: GestureDetector(
+                  child: Text(
+                    vsList[index],
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontFamily: 'neuropol_x_rg',
+                    ),
+                  ),
+                  onTap: () {
+                    buildSecondList(cardsToBePlayed);
+                    incrementCounter();
+                    //print('subcategory.length----' + data.response[index].subcategory.length.toString());
+                  },
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
+  }
+
+  Widget buildSecondList(List<String> cardsToBePlayed) {
+    //print('----cardsToBePlayed.length 3 ' + cardsToBePlayed.length.toString());
+    if (cardsToBePlayed.length > 0) {
+      return ListView.builder(
+        physics: const AlwaysScrollableScrollPhysics(),
+        padding: EdgeInsets.fromLTRB(5.0, 33.0, 16.0, 5.0),
+        itemCount: cardsToBePlayed.length,
+        shrinkWrap: true,
+        itemBuilder: (context, index) {
+          return Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(36)),
+            ),
+            width: double.infinity,
+            margin: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                  width: 50,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    color: Colors.transparent,
+                    border: Border.all(
+                      color: Colors.grey[350],
+                      width: 5,
+                    ),
+                    borderRadius: BorderRadius.all(Radius.circular(35)),
+                  ),
+                  child: CircleAvatar(
+                    child: SvgPicture.asset('assets/icons/svg/cricket.svg'),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 12, 0, 2),
+                  child: GestureDetector(
+                    child: Text(
+                      cardsToBePlayed[index],
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontFamily: 'neuropol_x_rg',
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      );
+    } else {
+      return SizedBox();
+    }
   }
 }

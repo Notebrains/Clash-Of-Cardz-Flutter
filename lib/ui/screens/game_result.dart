@@ -1,11 +1,25 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:trump_card_game/helper/constantvalues/constants.dart';
 import 'package:trump_card_game/helper/exten_fun/base_application_fun.dart';
-import 'package:trump_card_game/ui/screens/game_option_with_circle_list.dart';
 import 'package:trump_card_game/ui/screens/home.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+
+import 'game_option.dart';
 
 class GameResult extends StatelessWidget {
-  // This widget is the root of your application.
+  GameResult({this.winnerName, this.winnerId, this.winnerImage, this.playedCards, this.clashType, this.winnerPoints,
+    this.winnerCoins, this.cardType});
+  final String winnerName;
+  final String winnerId;
+  final String winnerImage;
+  final String playedCards;
+  final String clashType;
+  final String winnerPoints;
+  final String winnerCoins;
+  final String cardType;
+
+
   @override
   Widget build(BuildContext context) {
     setScreenOrientationToLandscape();
@@ -24,9 +38,8 @@ class GameResult extends StatelessWidget {
             alignment: AlignmentDirectional.center,
             children: [
               Container(
-                margin: EdgeInsets.fromLTRB(0, 10, 0, 20),
-                  child: Image.asset('assets/images/bg_victory.png',
-                      fit: BoxFit.contain)),
+                  margin: EdgeInsets.fromLTRB(0, 10, 0, 20),
+                  child: Image.asset('assets/images/bg_victory.png', fit: BoxFit.contain)),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -35,30 +48,26 @@ class GameResult extends StatelessWidget {
                     margin: EdgeInsets.only(top: 100),
                     child: CircleAvatar(
                       radius: 30,
-                      backgroundImage:
-                          AssetImage('assets/images/img_person_demo.jpg'),
+                      backgroundImage: NetworkImage(winnerImage),
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text("Elena Denrik",
-                        style: TextStyle(
-                            color: Colors.orangeAccent,
-                            fontWeight: FontWeight.w900,
-                            fontSize: 18)),
+                    child: Text("Eliando Denrik",
+                        style: TextStyle(color: Colors.orangeAccent, fontWeight: FontWeight.w900, fontSize: 18)),
                   ),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       IconButton(
-                        icon: Image.asset('assets/icons/png/ic_points.png'),
+                        icon: SvgPicture.asset('assets/icons/svg/card_count.svg'),
                         onPressed: null,
                       ),
                       Padding(
                         padding: const EdgeInsets.only(right: 8.0),
                         child: Text(
-                          "16",
+                          playedCards,
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               fontSize: 16,
@@ -69,13 +78,13 @@ class GameResult extends StatelessWidget {
                         ),
                       ),
                       IconButton(
-                        icon: Image.asset('assets/icons/png/ic_points.png'),
+                        icon: SvgPicture.asset('assets/icons/svg/clash_type.svg'),
                         onPressed: null,
                       ),
                       Padding(
                         padding: const EdgeInsets.only(right: 8.0),
                         child: Text(
-                          "16",
+                          clashType,
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               fontSize: 16,
@@ -90,7 +99,7 @@ class GameResult extends StatelessWidget {
                         onPressed: null,
                       ),
                       Text(
-                        "16",
+                        winnerCoins,
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             fontSize: 16,
@@ -112,10 +121,9 @@ class GameResult extends StatelessWidget {
                           width: 140,
                           height: 45,
                           decoration: BoxDecoration(
-                            image: DecorationImage(
-                                image: AssetImage(
-                                    'assets/icons/png/bg_button.png'),
-                                fit: BoxFit.fill),
+                            image:
+                                DecorationImage(image: AssetImage('assets/icons/png/bg_button.png'),
+                                    fit: BoxFit.fill),
                           ),
                           child: Container(
                             alignment: Alignment.center,
@@ -134,11 +142,7 @@ class GameResult extends StatelessWidget {
                         ),
                         // ),
                         onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (BuildContext context) =>
-                                      HomeScreen()));
+                          Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => HomeScreen()));
                         },
                       ),
                       MaterialButton(
@@ -148,10 +152,8 @@ class GameResult extends StatelessWidget {
                           width: 140,
                           height: 45,
                           decoration: BoxDecoration(
-                            image: DecorationImage(
-                                image: AssetImage(
-                                    'assets/icons/png/bg_button.png'),
-                                fit: BoxFit.fill),
+                            image:
+                                DecorationImage(image: AssetImage('assets/icons/png/bg_button.png'), fit: BoxFit.fill),
                           ),
                           child: Container(
                             alignment: Alignment.center,
@@ -171,10 +173,7 @@ class GameResult extends StatelessWidget {
                         // ),
                         onPressed: () {
                           Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (BuildContext context) =>
-                                      GameOptionCircleList()));
+                              context, MaterialPageRoute(builder: (BuildContext context) => GameOption()));
                         },
                       ),
                     ],

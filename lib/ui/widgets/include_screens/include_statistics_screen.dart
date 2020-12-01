@@ -23,9 +23,8 @@ Column buildStatisticsScreen(StatisticsResModel model ) {
         child: ListView.builder(
           physics: const AlwaysScrollableScrollPhysics(),
           padding: EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 8.0),
-          itemCount: 20,
+          itemCount: model.response.length,
           itemBuilder: (context, index) {
-            final count = index + 1;
             return Container(
               margin: EdgeInsets.all(5),
               decoration: new BoxDecoration(
@@ -57,8 +56,11 @@ Column buildStatisticsScreen(StatisticsResModel model ) {
                                         width: 22,
                                         height: 22),
                                   ),
-                                  Text("Victory",
-                                      style: TextStyle(color: Colors.red, fontSize: 20, fontStyle: FontStyle.normal, fontFamily: 'Rapier')),
+                                  Text (isMatchWon(model.response[index].matchData[0].win) ? 'Victory' : 'Lost',
+                                      style: TextStyle(color: isMatchWon(model.response[index].matchData[0].win) ? Colors.lightBlue : Colors.red,
+                                          fontSize: 20,
+                                          fontStyle: FontStyle.normal,
+                                          fontFamily: 'Rapier')),
                                 ],
                               ),
                             ],
@@ -72,7 +74,7 @@ Column buildStatisticsScreen(StatisticsResModel model ) {
                           padding: EdgeInsets.only(right: 8),
                           alignment: AlignmentDirectional.centerEnd,
                           child: Container(
-                            child: new Text(model.response[index].noCard, style: TextStyle(color: Colors.black54, fontSize: 20, fontStyle: FontStyle.normal, fontFamily: 'Rapier')),
+                            child: new Text( model.response[index].gameCat + ' - ' +  model.response[index].noCard + ' cards', style: TextStyle(color: Colors.black54, fontSize: 20, fontStyle: FontStyle.normal, fontFamily: 'Rapier')),
                           ),
                         ),
                       ),
@@ -105,14 +107,17 @@ Column buildStatisticsScreen(StatisticsResModel model ) {
                                     alignment: Alignment.center,
                                     width: 110,
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment: MainAxisAlignment.start,
                                       children: [
-                                        Text(model.response[index].matchData[0].fullname,
-                                            style: TextStyle(color: Colors.black87, fontSize: 14, fontWeight: FontWeight.w900)),
+                                        Padding(
+                                          padding: const EdgeInsets.fromLTRB(16, 1, 3, 1),
+                                          child: Text(model.response[index].matchData[0].fullname,
+                                              style: TextStyle(color: Colors.black87, fontSize: 14, fontWeight: FontWeight.w900)),
+                                        ),
                                         Container(
                                           height: 26,
-                                          padding: const EdgeInsets.fromLTRB(16, 5, 3, 2),
+                                          padding: const EdgeInsets.fromLTRB(16, 1, 3, 1),
                                           child: Row(
                                             children: [
                                               SvgPicture.asset(
@@ -157,14 +162,19 @@ Column buildStatisticsScreen(StatisticsResModel model ) {
                                     alignment: Alignment.center,
                                     width: 110,
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.end,
+                                      mainAxisAlignment: MainAxisAlignment.end,
                                       children: [
-                                        Text(model.response[index].matchData[1].fullname, style: TextStyle(color: Colors.black87, fontSize: 14, fontWeight: FontWeight.w900)),
+                                        Padding(
+                                          padding: const EdgeInsets.fromLTRB(16, 1, 13, 1),
+                                          child: Text(model.response[index].matchData[1].fullname, style: TextStyle(color: Colors.black87, fontSize: 14, fontWeight: FontWeight.w900)),
+                                        ),
                                         Container(
                                           height: 26,
-                                          padding: const EdgeInsets.fromLTRB(16, 5, 3, 2),
+                                          padding: const EdgeInsets.fromLTRB(16, 5, 13, 5),
                                           child: Row(
+                                            crossAxisAlignment: CrossAxisAlignment.end,
+                                            mainAxisAlignment: MainAxisAlignment.end,
                                             children: [
                                               SvgPicture.asset(
                                                 'assets/icons/svg/coin.svg',
@@ -202,4 +212,12 @@ Column buildStatisticsScreen(StatisticsResModel model ) {
       ),
     ],
   );
+}
+
+bool isMatchWon(String win) {
+  if(win == '1'){
+    return true;
+  }else{
+    return false;
+  }
 }

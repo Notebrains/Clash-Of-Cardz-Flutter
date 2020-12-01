@@ -130,7 +130,7 @@ class Leaderboard extends StatelessWidget {
                           ),
                           child: topPlayerCards(
                               'assets/icons/svg/madel_first.svg',
-                              '43,55,678',
+                              listData[0].points,
                               listData[0].fullname),
                         ),
                       ),
@@ -139,7 +139,7 @@ class Leaderboard extends StatelessWidget {
                   ),
                   ClipRRect(
                     child: CircleAvatar(
-                      backgroundImage: NetworkImage(Constants.imgUrlTest),
+                      backgroundImage: NetworkImage(listData[0].photo),
                     ),
                   ),
                 ],
@@ -164,8 +164,9 @@ class Leaderboard extends StatelessWidget {
                               ),
                               child: topPlayerCards(
                                   'assets/icons/svg/leaf_second.svg',
-                                  '43,55,678',
-                                  listData[1].fullname),
+                                  listData[1].points,
+                                  listData[1].fullname
+                              ),
                             ),
                           ),
                           borderRadius: new BorderRadius.circular(8.0),
@@ -173,7 +174,7 @@ class Leaderboard extends StatelessWidget {
                       ),
                       ClipRRect(
                         child: CircleAvatar(
-                          backgroundImage: NetworkImage(Constants.imgUrlTest),
+                          backgroundImage: NetworkImage(listData[1].photo),
                         ),
                       ),
                     ],
@@ -193,7 +194,7 @@ class Leaderboard extends StatelessWidget {
                                   BoxDecoration(color: Colors.indigo[900]),
                               child: topPlayerCards(
                                   'assets/icons/svg/leaf_third.svg',
-                                  '43,55,678',
+                                  listData[2].points,
                                   listData[2].fullname),
                             ),
                           ),
@@ -202,7 +203,7 @@ class Leaderboard extends StatelessWidget {
                       ),
                       ClipRRect(
                         child: CircleAvatar(
-                          backgroundImage: NetworkImage(Constants.imgUrlTest),
+                          backgroundImage: NetworkImage(listData[2].photo),
                         ),
                       )
                     ],
@@ -327,7 +328,7 @@ class Leaderboard extends StatelessWidget {
                     child: Padding(
                       padding: EdgeInsets.fromLTRB(18.0, 5.0, 5.0, 5.0),
                       child: Text(
-                        '4,44,000\n' + listData[index].fullname,
+                        listData[index].points + '\n' + listData[index].fullname,
                         textAlign: TextAlign.start,
                         style: TextStyle(
                           fontSize: 16.0,
@@ -344,7 +345,7 @@ class Leaderboard extends StatelessWidget {
                       width: 40,
                       height: 40,
                       child: CircleAvatar(
-                        backgroundImage: NetworkImage(Constants.imgUrlTest),
+                        backgroundImage: NetworkImage(listData[index].photo),
                       ),
                     ),
                   ),
