@@ -1,12 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:trump_card_game/bloc/api_bloc.dart';
-import 'package:trump_card_game/helper/constantvalues/constants.dart';
 import 'package:trump_card_game/helper/exten_fun/base_application_fun.dart';
 import 'package:trump_card_game/model/responses/profile_res_model.dart';
+import 'package:trump_card_game/ui/screens/about.dart';
 import 'package:trump_card_game/ui/screens/game_more_option.dart';
-import 'package:trump_card_game/ui/screens/game_result.dart';
+import 'package:trump_card_game/ui/screens/game_rules.dart';
 import 'package:trump_card_game/ui/screens/gameplay.dart';
 import 'package:trump_card_game/ui/screens/leaderboard.dart';
 import 'package:trump_card_game/ui/screens/login.dart';
@@ -15,6 +16,7 @@ import 'package:trump_card_game/ui/screens/setting.dart';
 import 'package:trump_card_game/ui/screens/statistics.dart';
 import 'package:trump_card_game/ui/widgets/custom/carousel_auto_slider.dart';
 import 'package:trump_card_game/ui/widgets/include_screens/include_home_screen.dart';
+import 'package:trump_card_game/ui/widgets/libraries/giffy_dialog/giffy_dialog.dart';
 import 'package:trump_card_game/ui/widgets/views/view_widgets.dart';
 
 import 'game_option.dart';
@@ -36,7 +38,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   @override
   Widget build(BuildContext context) {
     apiBloc.fetchProfileRes('ZGHrDz4prqsu4BcApPaQYaGgq', "MEM000001");
@@ -82,7 +83,8 @@ class _MyHomePageState extends State<MyHomePage> {
                             Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Profile()));
                           },
                         ),
-                        decoration: Views.boxDecorationWidgetForIconWithBgColor(Colors.lightBlue, 4.0, Colors.grey, 5.0, 5.0, 3.0),
+                        decoration:
+                            Views.boxDecorationWidgetForIconWithBgColor(Colors.lightBlue, 4.0, Colors.grey, 5.0, 5.0, 3.0),
                       ),
                       Container(
                           width: 40,
@@ -95,7 +97,8 @@ class _MyHomePageState extends State<MyHomePage> {
                               Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => LogIn()));
                             },
                           ),
-                          decoration: Views.boxDecorationWidgetForIconWithBgColor(Colors.redAccent, 4.0, Colors.grey, 5.0, 5.0, 3.0)),
+                          decoration:
+                              Views.boxDecorationWidgetForIconWithBgColor(Colors.redAccent, 4.0, Colors.grey, 5.0, 5.0, 3.0)),
                     ],
                   ),
                 ),
@@ -119,12 +122,18 @@ class _MyHomePageState extends State<MyHomePage> {
                             child: Text(
                               "PLAY",
                               textAlign: TextAlign.center,
-                              style: TextStyle(fontSize: 16, fontStyle: FontStyle.normal, fontFamily: 'neuropol_x_rg', fontWeight: FontWeight.bold, color: Colors.black87),
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  fontStyle: FontStyle.normal,
+                                  fontFamily: 'neuropol_x_rg',
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black87),
                             ),
                           ),
                         ),
                         onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => GameOption()));
+                          //Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => GameOption()));
+                          Navigator.push(context, CupertinoPageRoute(builder: (BuildContext context) => GameOption()));
                         },
                       ),
                       MaterialButton(
@@ -142,13 +151,19 @@ class _MyHomePageState extends State<MyHomePage> {
                             child: Text(
                               "CARDS",
                               textAlign: TextAlign.center,
-                              style: TextStyle(fontSize: 16, fontStyle: FontStyle.normal, fontFamily: 'neuropol_x_rg', fontWeight: FontWeight.bold, color: Colors.black87),
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  fontStyle: FontStyle.normal,
+                                  fontFamily: 'neuropol_x_rg',
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black87),
                             ),
                           ),
                         ),
                         // ),
                         onPressed: () {
-                          Navigator.push(context, CupertinoPageRoute(builder: (BuildContext context) => Gameplay(name: '', memberId: '')));
+                          Navigator.push(
+                              context, CupertinoPageRoute(builder: (BuildContext context) => Gameplay(name: '', memberId: '')));
                         },
                       ),
                       MaterialButton(
@@ -166,15 +181,18 @@ class _MyHomePageState extends State<MyHomePage> {
                             child: Text(
                               "GAME RULES",
                               textAlign: TextAlign.center,
-                              style: TextStyle(fontSize: 16, fontStyle: FontStyle.normal, fontFamily: 'neuropol_x_rg', fontWeight: FontWeight.bold, color: Colors.black87),
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  fontStyle: FontStyle.normal,
+                                  fontFamily: 'neuropol_x_rg',
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black87),
                             ),
                           ),
                         ),
                         // ),
                         onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => GameResult(winnerName: 'Rex Scout',
-                              winnerId:'MEM00003', winnerImage: Constants.imgUrlTest, winnerCoins: '200', winnerPoints: '12', cardType: 'Cricket',
-                              clashType: '1 vs 1', playedCards: '16')));
+                          Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => GameRule()));
                         },
                       ),
                       MaterialButton(
@@ -192,13 +210,17 @@ class _MyHomePageState extends State<MyHomePage> {
                             child: Text(
                               "ABOUT",
                               textAlign: TextAlign.center,
-                              style: TextStyle(fontSize: 16, fontStyle: FontStyle.normal, fontFamily: 'neuropol_x_rg', fontWeight: FontWeight.bold, color: Colors.black87),
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  fontStyle: FontStyle.normal,
+                                  fontFamily: 'neuropol_x_rg',
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black87),
                             ),
                           ),
                         ),
-                        // ),
                         onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => GameMoreOption()));
+                          Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => AboutScreen()));
                         },
                       ),
                       MaterialButton(
@@ -216,13 +238,18 @@ class _MyHomePageState extends State<MyHomePage> {
                             child: Text(
                               "QUIT",
                               textAlign: TextAlign.center,
-                              style: TextStyle(fontSize: 16, fontStyle: FontStyle.normal, fontFamily: 'neuropol_x_rg', fontWeight: FontWeight.bold, color: Colors.black87),
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  fontStyle: FontStyle.normal,
+                                  fontFamily: 'neuropol_x_rg',
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black87),
                             ),
                           ),
                         ),
                         // ),
                         onPressed: () {
-                          //Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => HomeScreen()));
+                          showExitDialog();
                         },
                       ),
                     ],
@@ -250,7 +277,8 @@ class _MyHomePageState extends State<MyHomePage> {
                             Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Leaderboard()));
                           },
                         ),
-                        decoration: Views.boxDecorationWidgetForIconWithBgColor(Colors.greenAccent, 4.0, Colors.grey, 5.0, 5.0, 3.0),
+                        decoration:
+                            Views.boxDecorationWidgetForIconWithBgColor(Colors.greenAccent, 4.0, Colors.grey, 5.0, 5.0, 3.0),
                       ),
                       Container(
                         width: 40,
@@ -262,7 +290,8 @@ class _MyHomePageState extends State<MyHomePage> {
                             Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Statistics()));
                           },
                         ),
-                        decoration: Views.boxDecorationWidgetForIconWithBgColor(Colors.indigoAccent, 4.0, Colors.grey, 5.0, 5.0, 3.0),
+                        decoration:
+                            Views.boxDecorationWidgetForIconWithBgColor(Colors.indigoAccent, 4.0, Colors.grey, 5.0, 5.0, 3.0),
                       ),
                       Container(
                         width: 40,
@@ -283,6 +312,32 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  void showExitDialog() {
+    showDialog(
+      context: context,
+      builder: (_) => AssetGiffyDialog(
+        image: Image.asset('assets/animations/gifs/exit.gif'),
+        title: Text(
+          'Clash Of Cardz',
+          style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.w600),
+        ),
+        description: Text(
+          'Do you really want to exit the App?',
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w600),
+        ),
+        entryAnimation: EntryAnimation.RIGHT,
+        buttonOkText: Text('QUIT', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+        buttonOkColor: Colors.red,
+        buttonCancelColor: Colors.greenAccent,
+        buttonCancelText: Text('PLAY', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+        onOkButtonPressed: () {
+          SystemChannels.platform.invokeMethod<void>('SystemNavigator.pop');
+        },
       ),
     );
   }

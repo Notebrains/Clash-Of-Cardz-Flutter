@@ -33,7 +33,28 @@ class CarouselAutoSliderState extends State<CarouselAutoSlider> {
   @override
   Widget build(BuildContext context) {
     return CarouselSlider(
-      height: 300.0,
+        options: CarouselOptions(
+          height: 300.0,
+          aspectRatio: 16/9,
+          viewportFraction: 0.8,
+          initialPage: 0,
+          enableInfiniteScroll: true,
+          reverse: false,
+          autoPlay: true,
+          autoPlayInterval: Duration(seconds: 6),
+          autoPlayAnimationDuration: Duration(milliseconds: 5000),
+          pauseAutoPlayOnTouch: true,
+          autoPlayCurve: Curves.fastOutSlowIn,
+          enlargeCenterPage: true,
+          onPageChanged: (index, reason) {
+            setState(() {
+              _current = index;
+            });
+          },
+          scrollDirection: Axis.horizontal,
+        ),
+
+      /*height: 300.0,
       initialPage: 0,
       enlargeCenterPage: true,
       autoPlay: true,
@@ -47,7 +68,7 @@ class CarouselAutoSliderState extends State<CarouselAutoSlider> {
         setState(() {
           _current = index;
         });
-      },
+      },*/
       items: imgList.map((imgUrl) {
         return Builder(
           builder: (BuildContext context) {

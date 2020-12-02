@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:trump_card_game/helper/exten_fun/base_application_fun.dart';
 
+import 'login.dart';
+
 class Setting extends StatefulWidget {
   @override
   _SettingState createState() => _SettingState();
@@ -155,7 +157,7 @@ class _SettingState extends State<Setting> {
                     ),
                     // ),
                     onPressed: () {
-                      //Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => HomeScreen()));
+                      Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => LogIn()));
                     },
                   ),
 
