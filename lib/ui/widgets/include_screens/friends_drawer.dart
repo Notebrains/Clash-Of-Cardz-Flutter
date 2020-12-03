@@ -1,15 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:trump_card_game/bloc/api_bloc.dart';
-import 'package:trump_card_game/model/responses/leaderboard_res_model.dart';
+import 'package:trump_card_game/model/responses/friends_res_model.dart';
 import 'package:trump_card_game/ui/screens/gameplay.dart';
 
 Widget friendList(BuildContext context) {
-
   return  StreamBuilder(
-    //stream: apiBloc.friendsRes,
-    stream: apiBloc.leaderboardRes,
-    builder: (context, AsyncSnapshot<LeaderboardResModel> snapshot) {
+    stream: apiBloc.friendsRes,
+    builder: (context, AsyncSnapshot<FriendsResModel> snapshot) {
       if (snapshot.hasData) {
         return buildList(context, snapshot.data);
       } else if (snapshot.hasError) {
@@ -25,7 +23,7 @@ Widget friendList(BuildContext context) {
   );
 }
 
-Widget buildList(BuildContext context, LeaderboardResModel data) {
+Widget buildList(BuildContext context, FriendsResModel data) {
   return Container(
     child: Stack(
       children: <Widget>[
@@ -71,7 +69,11 @@ Widget buildList(BuildContext context, LeaderboardResModel data) {
                               ),
                               Padding(
                                 padding: const EdgeInsets.only(left: 8),
-                                child: Text(data.response[index].points, style: TextStyle(color: Colors.white70, fontSize: 13, letterSpacing: .3)),
+                                child: Text('Match played: ' + data.response[index].matchPlayed,
+                                    style: TextStyle(
+                                        color: Colors.white70,
+                                        fontSize: 13,
+                                        letterSpacing: .3)),
                               ),
                             ],
                           ),
@@ -82,7 +84,9 @@ Widget buildList(BuildContext context, LeaderboardResModel data) {
                   onTap: (){
                     Navigator.push(context,
                       CupertinoPageRoute(
-                        builder: (context) => new Gameplay(name: data.response[index].fullname, memberId: data.response[index].memberid,),
+                        builder: (context) => new Gameplay(
+                          name: data.response[index].fullname,
+                          friendId: data.response[index].freindId,),
                       ),
                     );
                   },

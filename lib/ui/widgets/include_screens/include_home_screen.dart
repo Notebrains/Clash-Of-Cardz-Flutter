@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:trump_card_game/helper/shared_preference_data.dart';
 import 'package:trump_card_game/model/responses/profile_res_model.dart';
 
 Stack buildHomeScreenPlayerInfo(ProfileResModel model){
+  savePlayerInfoIntoPref(model);
+
   return Stack(
     children: <Widget>[
       Align(
@@ -88,5 +91,19 @@ Stack buildHomeScreenPlayerInfo(ProfileResModel model){
         ),
       )
     ],
+  );
+}
+
+void savePlayerInfoIntoPref(ProfileResModel model) {
+  SharedPreferenceHelper().saveUserProfileData(
+      model.response[0].memberid,
+      model.response[0].fullname,
+      model.response[0].photo,
+      model.response[0].points,
+      model.response[0].coins,
+      model.response[0].win,
+      model.response[0].loss,
+      model.response[0].matchPlayed,
+      model.response[0].rank.toString()
   );
 }

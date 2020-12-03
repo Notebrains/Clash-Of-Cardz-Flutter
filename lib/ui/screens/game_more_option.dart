@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:trump_card_game/bloc/api_bloc.dart';
-import 'package:trump_card_game/model/responses/friends_res_model.dart';
 import 'package:trump_card_game/model/responses/game_option_res_model.dart';
-import 'package:trump_card_game/model/responses/leaderboard_res_model.dart';
 import 'package:trump_card_game/ui/widgets/include_screens/friends_drawer.dart';
 import 'package:trump_card_game/ui/widgets/libraries/colorize.dart';
 import 'package:trump_card_game/ui/widgets/views/view_widgets.dart';
@@ -21,7 +19,7 @@ class _GameMoreOptionState extends State<GameMoreOption> {
   List<Subcategory_details> subcategoryDetails = List();
   List<String> cardsToBePlayed = List<String>();
 
-  void incrementCounter() {
+  void gameMoreOptState() {
     setState(() {
       cardsToBePlayed.clear();
       cardsToBePlayed.addAll(subcategoryDetails[0].cardsToBePlayed);
@@ -169,7 +167,7 @@ class _GameMoreOptionState extends State<GameMoreOption> {
                                   color: Colors.white,
                                 ),
                                 onPressed: () {
-                                  apiBloc.fetchLeaderboardRes('ZGHrDz4prqsu4BcApPaQYaGgq');
+                                  apiBloc.fetchFriendsRes('ZGHrDz4prqsu4BcApPaQYaGgq', 'MEM000001');
                                   _drawerKey.currentState.openDrawer(); // open drawer
                                 },
                               ),
@@ -286,7 +284,7 @@ class _GameMoreOptionState extends State<GameMoreOption> {
                   ),
                   onTap: () {
                     buildSecondList(cardsToBePlayed);
-                    incrementCounter();
+                    gameMoreOptState();
                     //print('subcategory.length----' + data.response[index].subcategory.length.toString());
                   },
                 ),

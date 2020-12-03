@@ -108,14 +108,20 @@ class ApiProvider {
     }
   }
 
-  Future<FriendsResModel> friendsApi(String xApiKey) async {
-    final http.Response response = await http.post(
+  Future<FriendsResModel> friendsApi(String xApiKey, String playerId) async {
+    Map<String, String> headers = {
+      "Content-Type": 'application/x-www-form-urlencoded',
+      'x-api-key': xApiKey};
+
+    var requestBody = {
+      'player_id': playerId,
+    };
+
+    http.Response response = await http.post(
       UrlConstants.game_friends,
-      headers: <String, String>{
-        "Content-Type": 'application/x-www-form-urlencoded',
-        'x-api-key': xApiKey,
-      },
-    ); // Make the network call asynchronously to fetch the data.
+      headers: headers,
+      body: requestBody,
+    );
 
     print(response.body.toString());
 

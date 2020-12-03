@@ -1,8 +1,6 @@
-
 import 'package:shared_preferences/shared_preferences.dart';
 
-class SharedPreferenceHelper{
-
+class SharedPreferenceHelper {
   void readLogInUserData() async {
     final prefs = await SharedPreferences.getInstance();
     final xApiKey = prefs.getInt('x_api_key') ?? 0;
@@ -10,10 +8,32 @@ class SharedPreferenceHelper{
     print('----read: $memberId');
   }
 
-  void saveLogInUserData(String xApiKey, String memberId) async {
+  void saveUserProfileData(
+    String memberId,
+    String fullname,
+    String photo,
+    String points,
+    String coins,
+    String win,
+    String loss,
+    String matchPlayed,
+    String rank,
+  ) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString('memberId', memberId);
+    prefs.setString('fullName', fullname);
+    prefs.setString('photo', photo);
+    prefs.setString('points', points);
+    prefs.setString('coins', coins);
+    prefs.setString('win', win);
+    prefs.setString('loss', loss);
+    prefs.setString('matchPlayed', matchPlayed);
+    prefs.setString('rank', rank);
+  }
+
+  void saveUserApiKey(String xApiKey) async {
     final prefs = await SharedPreferences.getInstance();
     prefs.setString('x_api_key', xApiKey);
-    prefs.setString('memberId', memberId);
     print('----saved $xApiKey');
   }
 
@@ -26,5 +46,4 @@ class SharedPreferenceHelper{
     final prefs = await SharedPreferences.getInstance();
     return prefs.getInt('memberId') ?? 0;
   }
-
 }

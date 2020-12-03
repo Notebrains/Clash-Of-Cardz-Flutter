@@ -24,8 +24,8 @@ class Repository {
   Future<StatisticsResModel> fetchStatisticsApi(String xApiKey, String memberId) =>
       appApiProvider.statisticsApi(xApiKey, memberId);
 
-  Future<FriendsResModel> fetchFriends(String xApiKey) =>
-      appApiProvider.friendsApi(xApiKey);
+  Future<FriendsResModel> fetchFriends(String xApiKey, String playerId) =>
+      appApiProvider.friendsApi(xApiKey, playerId);
 
   Future<CardsResModel> fetchCardsApi(String xApiKey) =>
       appApiProvider.cardsApi(xApiKey);

@@ -59,8 +59,8 @@ class ApiBloc {
   final _friendsResFetcher = PublishSubject<FriendsResModel>();
   Stream<FriendsResModel> get friendsRes => _friendsResFetcher.stream;
 
-  fetchFriendsRes(String xApiKey) async {
-    FriendsResModel friendsResModel = await _repository.fetchFriends(xApiKey);
+  fetchFriendsRes(String xApiKey, String playerId) async {
+    FriendsResModel friendsResModel = await _repository.fetchFriends(xApiKey, playerId);
     _friendsResFetcher.sink.add(friendsResModel);
   }
 

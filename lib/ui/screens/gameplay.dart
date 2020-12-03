@@ -9,9 +9,9 @@ import 'login.dart';
 
 class Gameplay extends StatelessWidget {
 
-  Gameplay({this.name, this.memberId});
+  Gameplay({this.name, this.friendId});
   final String name;
-  final String memberId;
+  final String friendId;
 
   // This widget is the root of your application.
   @override

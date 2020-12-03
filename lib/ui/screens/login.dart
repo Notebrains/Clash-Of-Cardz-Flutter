@@ -285,7 +285,7 @@ class _LogInState extends State<LogIn> {
           if (snapshot.hasData) {
             LoginResModel res = snapshot.data;
             if(res.message == "login successfully"){
-              SharedPreferenceHelper().saveLogInUserData(res.responce.xApiKey, res.responce.memberid);
+              SharedPreferenceHelper().saveUserApiKey(res.responce.xApiKey);
               Navigator.of(context).push(new PageRouteWithAnimation());
             }
           } else if (snapshot.hasError) {
