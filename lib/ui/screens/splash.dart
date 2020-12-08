@@ -26,6 +26,8 @@ class _SplashScreenState extends State<SplashScreen> {
     setScreenOrientationToLandscape();
     //playUrlAudio("https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3");
     _loadWidget();
+    //playUrlAudio('https://youtu.be/fnliFs-XU6w?list=TLPQMDQxMjIwMjDtI_trUlJTbw');
+    //playAssetAudio('video_game_music.mp3');
   }
 
   _loadWidget() async {

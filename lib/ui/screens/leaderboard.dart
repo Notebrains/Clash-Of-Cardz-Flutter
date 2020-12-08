@@ -4,9 +4,10 @@ import 'package:trump_card_game/bloc/api_bloc.dart';
 import 'package:trump_card_game/helper/constantvalues/constants.dart';
 import 'package:trump_card_game/helper/exten_fun/base_application_fun.dart';
 import 'package:trump_card_game/model/responses/leaderboard_res_model.dart';
+import 'package:trump_card_game/ui/widgets/custom/frosted_glass.dart';
 
 class Leaderboard extends StatelessWidget {
-  List<Response> listData;
+   List<Response> listData;
 
   @override
   Widget build(BuildContext context) {
@@ -27,9 +28,13 @@ class Leaderboard extends StatelessWidget {
             builder: (context, AsyncSnapshot<LeaderboardResModel> snapshot) {
               if (snapshot.hasData) {
                 return _buildLeaderboardScreen(snapshot.data);
-              } else if (snapshot.hasError) {
-                return Text(snapshot.error.toString());
-              }
+              } else if (!snapshot.hasData) {
+                return frostedGlassWithProgressBarWidget(context);
+              } else return Center(
+                child: Text("No Data Found",
+                    style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 30)
+                ),
+              );
               return Center(
                 child: CircularProgressIndicator(
                   valueColor: AlwaysStoppedAnimation<Color>(Colors.deepOrangeAccent),
@@ -290,7 +295,7 @@ class Leaderboard extends StatelessWidget {
   Container buildList() {
     return Container(
       child: ListView.builder(
-        physics: const AlwaysScrollableScrollPhysics(),
+        physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
         padding: EdgeInsets.fromLTRB(25.0, 2.0, 16.0, 8.0),
         itemCount: listData.length,
         itemBuilder: (context, index) {

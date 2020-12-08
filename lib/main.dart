@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:trump_card_game/ui/screens/player_card.dart';
 import 'package:trump_card_game/ui/screens/splash.dart';
 
 void main() => runApp(MyRootApp());
@@ -9,7 +10,7 @@ class MyRootApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return  MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: SplashScreen(),
+      home: PlayerCard(),
     );
   }
 }

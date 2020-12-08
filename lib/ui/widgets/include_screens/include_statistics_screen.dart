@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:trump_card_game/model/responses/statistics_res_model.dart';
 
-Column buildStatisticsScreen(StatisticsResModel model ) {
+Column buildStatisticsScreen(StatisticsResModel model) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
@@ -21,14 +21,18 @@ Column buildStatisticsScreen(StatisticsResModel model ) {
       ),
       Expanded(
         child: ListView.builder(
-          physics: const AlwaysScrollableScrollPhysics(),
+          physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
           padding: EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 8.0),
           itemCount: model.response.length,
           itemBuilder: (context, index) {
             return Container(
               margin: EdgeInsets.all(5),
               decoration: new BoxDecoration(
-                gradient: LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, stops: [0.1, 0.3, 1], colors: [Colors.grey[300], Colors.grey[50], Colors.grey[300]]),
+                gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    stops: [0.1, 0.3, 1],
+                    colors: [Colors.grey[300], Colors.grey[50], Colors.grey[300]]),
                 borderRadius: BorderRadius.all(Radius.circular(5)),
                 boxShadow: <BoxShadow>[
                   BoxShadow(
@@ -52,12 +56,12 @@ Column buildStatisticsScreen(StatisticsResModel model ) {
                                 children: [
                                   Padding(
                                     padding: const EdgeInsets.fromLTRB(12.0, 5, 12, 5),
-                                    child: SvgPicture.asset('assets/icons/svg/victory.svg',
-                                        width: 22,
-                                        height: 22),
+                                    child: SvgPicture.asset('assets/icons/svg/victory.svg', width: 22, height: 22),
                                   ),
-                                  Text (isMatchWon(model.response[index].matchData[0].win) ? 'Victory' : 'Lost',
-                                      style: TextStyle(color: isMatchWon(model.response[index].matchData[0].win) ? Colors.lightBlue : Colors.red,
+                                  Text(isMatchWon(model.response[index].matchData[0].win) ? 'Victory' : 'Lost',
+                                      style: TextStyle(
+                                          color:
+                                              isMatchWon(model.response[index].matchData[0].win) ? Colors.lightBlue : Colors.red,
                                           fontSize: 20,
                                           fontStyle: FontStyle.normal,
                                           fontFamily: 'Rapier')),
@@ -74,7 +78,11 @@ Column buildStatisticsScreen(StatisticsResModel model ) {
                           padding: EdgeInsets.only(right: 8),
                           alignment: AlignmentDirectional.centerEnd,
                           child: Container(
-                            child: new Text( model.response[index].gameCat + ' - ' +  model.response[index].noCard + ' cards', style: TextStyle(color: Colors.black54, fontSize: 20, fontStyle: FontStyle.normal, fontFamily: 'Rapier')),
+                            child: Text(
+                              '${model.response[index].gameCat} - ${model.response[index].noCard} cards',
+                              style: TextStyle(
+                                  color: Colors.black54, fontSize: 20, fontStyle: FontStyle.normal, fontFamily: 'Rapier'),
+                            ),
                           ),
                         ),
                       ),
@@ -127,7 +135,8 @@ Column buildStatisticsScreen(StatisticsResModel model ) {
                                               ),
                                               Padding(
                                                 padding: const EdgeInsets.only(left: 5),
-                                                child: Text(model.response[index].matchData[0].coins, style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w700)),
+                                                child: Text(model.response[index].matchData[0].coins,
+                                                    style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w700)),
                                               ),
                                             ],
                                           ),
@@ -141,7 +150,7 @@ Column buildStatisticsScreen(StatisticsResModel model ) {
                           ),
                         ),
                       ),
-                      Image.asset (
+                      Image.asset(
                         'assets/icons/png/img_vs.png',
                         width: 45,
                         height: 45,
@@ -167,7 +176,8 @@ Column buildStatisticsScreen(StatisticsResModel model ) {
                                       children: [
                                         Padding(
                                           padding: const EdgeInsets.fromLTRB(16, 1, 13, 1),
-                                          child: Text(model.response[index].matchData[1].fullname, style: TextStyle(color: Colors.black87, fontSize: 14, fontWeight: FontWeight.w900)),
+                                          child: Text(model.response[index].matchData[1].fullname,
+                                              style: TextStyle(color: Colors.black87, fontSize: 14, fontWeight: FontWeight.w900)),
                                         ),
                                         Container(
                                           height: 26,
@@ -183,7 +193,8 @@ Column buildStatisticsScreen(StatisticsResModel model ) {
                                               ),
                                               Padding(
                                                 padding: const EdgeInsets.only(left: 5),
-                                                child: Text(model.response[index].matchData[1].coins, style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w700)),
+                                                child: Text(model.response[index].matchData[1].coins,
+                                                    style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w700)),
                                               ),
                                             ],
                                           ),
@@ -191,7 +202,6 @@ Column buildStatisticsScreen(StatisticsResModel model ) {
                                       ],
                                     ),
                                   ),
-
                                   CircleAvatar(
                                     radius: 20,
                                     backgroundImage: NetworkImage(model.response[index].matchData[1].photo),
@@ -215,9 +225,9 @@ Column buildStatisticsScreen(StatisticsResModel model ) {
 }
 
 bool isMatchWon(String win) {
-  if(win == '1'){
+  if (win == '1') {
     return true;
-  }else{
+  } else {
     return false;
   }
 }

@@ -3,6 +3,7 @@ import 'package:trump_card_game/model/responses/cards_res_model.dart';
 import 'package:trump_card_game/model/responses/friends_res_model.dart';
 import 'package:trump_card_game/model/responses/game_option_res_model.dart';
 import 'package:trump_card_game/model/responses/login_res_model.dart';
+import 'package:trump_card_game/model/responses/match_making_res_model.dart';
 import 'package:trump_card_game/model/responses/profile_res_model.dart';
 import 'package:trump_card_game/model/responses/statistics_res_model.dart';
 import 'package:trump_card_game/webservices/repository/repository.dart';
@@ -69,8 +70,8 @@ class ApiBloc {
   final _cardsResFetcher = PublishSubject<CardsResModel>();
   Stream<CardsResModel> get cardsRes => _cardsResFetcher.stream;
 
-  fetchCardsRes(String xApiKey) async {
-    CardsResModel cardsResModel = await _repository.fetchCardsApi(xApiKey);
+  fetchCardsRes(String xApiKey, String subCatagory, String catagory, String playerCount, String cardCount) async {
+    CardsResModel cardsResModel = await _repository.fetchCardsToPlayApi(xApiKey, subCatagory, catagory, playerCount, cardCount);
     _cardsResFetcher.sink.add(cardsResModel);
   }
 
@@ -83,6 +84,16 @@ class ApiBloc {
     _profileResFetcher.sink.add(profileResModel);
   }
 
+  //match making
+  final _matchMakingResFetcher = PublishSubject<MatchMakingResModel>();
+
+  Stream<MatchMakingResModel> get matchMakingRes => _matchMakingResFetcher.stream;
+
+  fetchMatchMakingRes(String xApiKey) async {
+    MatchMakingResModel model = await _repository.fetchMatchMakingApi(xApiKey);
+    _matchMakingResFetcher.sink.add(model);
+  }
+
   dispose() {
     //Close the api fetcher
     _loginResFetcher.close();
@@ -92,6 +103,7 @@ class ApiBloc {
     _cardsResFetcher.close();
     _profileResFetcher.close();
     _gameCatResFetcher.close();
+    _matchMakingResFetcher.close();
   }
 }
 

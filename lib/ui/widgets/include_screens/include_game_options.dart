@@ -18,8 +18,6 @@ class _IncludeGameOptionState extends State<IncludeGameOption> {
 
   void _incrementCounter() {
     setState(() {
-      print('000');
-
       buildSecondList(subcategory);
       buildThirdList(subcategoryDetails);
     });
@@ -30,6 +28,13 @@ class _IncludeGameOptionState extends State<IncludeGameOption> {
     apiBloc.fetchGameOptionRes('ZGHrDz4prqsu4BcApPaQYaGgq');
     return Row(
       children: [
+        Container(
+          height: MediaQuery.of(context).size.height,
+          width: 1.5,
+          color: Colors.indigo,
+          margin: const EdgeInsets.only(left: 16, top: 50.0, bottom: 50.0),
+        ),
+
         Expanded(
           flex: 3,
           child: StreamBuilder(
@@ -47,10 +52,26 @@ class _IncludeGameOptionState extends State<IncludeGameOption> {
             },
           ),
         ),
+
+        Container(
+          height: subcategory.length* 80.0,
+          width: 1.5,
+          color: Colors.indigo,
+          margin: const EdgeInsets.only(left: 16, top: 20.0, bottom: 0.0),
+        ),
+
         Expanded(
           flex: 3,
           child: buildSecondList(subcategory),
         ),
+
+        Container(
+          height: subcategoryDetails.length* 80.0,
+          width: 1.5,
+          color: Colors.indigo,
+          margin: const EdgeInsets.only(left: 16, top: 44.0, bottom: 44.0),
+        ),
+
         Expanded(
           flex: 5,
           child: buildThirdList(subcategoryDetails),
@@ -60,9 +81,9 @@ class _IncludeGameOptionState extends State<IncludeGameOption> {
   }
 
   Widget _buildFirstList(GameOptionResModel data) {
-    final List<String> listData1 = <String>['Sports', 'Superheroes', 'Cartoons', 'Cars', 'Technology'];
+    //final List<String> listData1 = <String>['Sports', 'Superheroes', 'Cartoons', 'Cars', 'Technology'];
     return ListView.builder(
-      physics: const AlwaysScrollableScrollPhysics(),
+      physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
       padding: EdgeInsets.fromLTRB(5.0, 12.0, 16.0, 5.0),
       itemCount: data.response.length,
       shrinkWrap: true,
@@ -89,6 +110,7 @@ class _IncludeGameOptionState extends State<IncludeGameOption> {
                 ),
                 child: CircleAvatar(
                   child: SvgPicture.asset('assets/icons/svg/cricket.svg'),
+                  //backgroundColor: Colors.black38,
                 ),
               ),
               Padding(
@@ -97,13 +119,15 @@ class _IncludeGameOptionState extends State<IncludeGameOption> {
                   child: Text(
                     data.response[index].categoryName,
                     style: TextStyle(
-                      color: Colors.white,
+                      color: Colors.black54,
                       fontSize: 16,
                       fontFamily: 'neuropol_x_rg',
+                      fontWeight: FontWeight.bold
                     ),
                   ),
                   onTap: () {
-                    print('Clicked on first screen');
+                    //print('Clicked on first screen');
+                    subcategoryDetails.clear();
                     buildSecondList(data.response[index].subcategory);
                     print('subcategory.length----' + data.response[index].subcategory.length.toString());
                     _incrementCounter();
@@ -123,7 +147,7 @@ class _IncludeGameOptionState extends State<IncludeGameOption> {
 
     if (subcategory.length > 0) {
       return ListView.builder(
-        physics: const AlwaysScrollableScrollPhysics(),
+        physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
         padding: EdgeInsets.fromLTRB(5.0, 33.0, 16.0, 5.0),
         itemCount: subcategory.length,
         shrinkWrap: true,
@@ -150,6 +174,7 @@ class _IncludeGameOptionState extends State<IncludeGameOption> {
                   ),
                   child: CircleAvatar(
                     child: SvgPicture.asset('assets/icons/svg/cricket.svg'),
+                    //backgroundColor: Colors.black38,
                   ),
                 ),
                 Padding(
@@ -158,13 +183,14 @@ class _IncludeGameOptionState extends State<IncludeGameOption> {
                     child: Text(
                       subcategory[index].subcategoryName,
                       style: TextStyle(
-                        color: Colors.white,
+                        color: Colors.black54,
                         fontSize: 16,
                         fontFamily: 'neuropol_x_rg',
+                          fontWeight: FontWeight.bold
                       ),
                     ),
                     onTap: () {
-                      print('Clicked on 2nd screen');
+                      //print('Clicked on 2nd screen');
                       buildThirdList(subcategory[index].subcategoryDetails);
                       _incrementCounter();
                     },
@@ -187,7 +213,7 @@ class _IncludeGameOptionState extends State<IncludeGameOption> {
 
     if (subcategory.length > 0) {
       return ListView.builder(
-        physics: const AlwaysScrollableScrollPhysics(),
+        physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
         padding: EdgeInsets.fromLTRB(5.0, 33.0, 16.0, 5.0),
         itemCount: subcategoryDetails.length,
         shrinkWrap: true,
@@ -214,6 +240,7 @@ class _IncludeGameOptionState extends State<IncludeGameOption> {
                   ),
                   child: CircleAvatar(
                     child: SvgPicture.asset('assets/icons/svg/cricket.svg'),
+                    //backgroundColor: Colors.black38,
                   ),
                 ),
                 Padding(
@@ -222,9 +249,10 @@ class _IncludeGameOptionState extends State<IncludeGameOption> {
                     child: Text(
                       subcategoryDetails[index].gametypeName,
                       style: TextStyle(
-                        color: Colors.white,
+                        color: Colors.black54,
                         fontSize: 16,
                         fontFamily: 'neuropol_x_rg',
+                          fontWeight: FontWeight.bold
                       ),
                     ),
                     onTap: () {

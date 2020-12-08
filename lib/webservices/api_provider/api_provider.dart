@@ -7,6 +7,7 @@ import 'package:trump_card_game/model/responses/cards_res_model.dart';
 import 'package:trump_card_game/model/responses/friends_res_model.dart';
 import 'package:trump_card_game/model/responses/game_option_res_model.dart';
 import 'package:trump_card_game/model/responses/login_res_model.dart';
+import 'package:trump_card_game/model/responses/match_making_res_model.dart';
 import 'package:trump_card_game/model/responses/profile_res_model.dart';
 import 'package:trump_card_game/model/responses/statistics_res_model.dart';
 import 'package:trump_card_game/model/responses/leaderboard_res_model.dart';
@@ -168,6 +169,55 @@ class ApiProvider {
 
     if (response.statusCode == 200) {
       return ProfileResModel.fromJson(json.decode(response.body)); //Return decoded response
+    } else {
+      throw Exception('Failed to load player profile response');
+    }
+  }
+
+  Future<CardsResModel> fetchCardsToPlayApi(String xApiKey, String subCatagory, String catagory, String playerCount, String cardCount) async {
+    Map<String, String> headers = {
+      "Content-Type": 'application/x-www-form-urlencoded',
+      'x-api-key': xApiKey};
+
+    var requestBody = {
+      'sub_catagory': subCatagory,
+      'catagory': catagory,
+      'player_count': playerCount,
+      'cardcount': cardCount,
+    };
+
+    http.Response response = await http.post(
+      UrlConstants.cardsToPlay,
+      headers: headers,
+      body: requestBody,
+    );
+    print(response.body.toString());
+
+    if (response.statusCode == 200) {
+      return CardsResModel.fromJson(json.decode(response.body)); //Return decoded response
+    } else {
+      throw Exception('Failed to load player profile response');
+    }
+  }
+
+Future<MatchMakingResModel> fetchMatchMakingApi(String xApiKey) async {
+    Map<String, String> headers = {
+      "Content-Type": 'application/x-www-form-urlencoded',
+      'x-api-key': xApiKey};
+
+    var requestBody = {
+      '': '',
+    };
+
+    http.Response response = await http.post(
+      UrlConstants.matchMaking,
+      headers: headers,
+      body: requestBody,
+    );
+    print(response.body.toString());
+
+    if (response.statusCode == 200) {
+      return MatchMakingResModel.fromJson(json.decode(response.body)); //Return decoded response
     } else {
       throw Exception('Failed to load player profile response');
     }

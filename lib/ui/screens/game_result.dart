@@ -1,15 +1,23 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:trump_card_game/helper/constantvalues/constants.dart';
 import 'package:trump_card_game/helper/exten_fun/base_application_fun.dart';
 import 'package:trump_card_game/ui/screens/home.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:lottie/lottie.dart';
 
 import 'game_option.dart';
 
 class GameResult extends StatelessWidget {
-  GameResult({this.winnerName, this.winnerId, this.winnerImage, this.playedCards, this.clashType, this.winnerPoints,
-    this.winnerCoins, this.cardType});
+  GameResult(
+      {this.winnerName,
+      this.winnerId,
+      this.winnerImage,
+      this.playedCards,
+      this.clashType,
+      this.winnerPoints,
+      this.winnerCoins,
+      this.cardType});
+
   final String winnerName;
   final String winnerId;
   final String winnerImage;
@@ -18,7 +26,6 @@ class GameResult extends StatelessWidget {
   final String winnerPoints;
   final String winnerCoins;
   final String cardType;
-
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +47,15 @@ class GameResult extends StatelessWidget {
               Container(
                   margin: EdgeInsets.fromLTRB(0, 10, 0, 20),
                   child: Image.asset('assets/images/bg_victory.png', fit: BoxFit.contain)),
+
+              Lottie.asset(
+                'assets/animations/lottiefiles/confetti-on-transparent-background.json',
+                width: double.infinity,
+                height: double.infinity,
+                repeat: true,
+                fit: BoxFit.contain
+              ),
+
               Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -61,7 +77,8 @@ class GameResult extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       IconButton(
-                        icon: SvgPicture.asset('assets/icons/svg/card_count.svg'),
+                        icon: SvgPicture.asset('assets/icons/svg/card_count.svg',
+                        color: Colors.yellow,),
                         onPressed: null,
                       ),
                       Padding(
@@ -78,7 +95,8 @@ class GameResult extends StatelessWidget {
                         ),
                       ),
                       IconButton(
-                        icon: SvgPicture.asset('assets/icons/svg/clash_type.svg'),
+                        iconSize: 45,
+                        icon: SvgPicture.asset('assets/icons/svg/competition.svg'),
                         onPressed: null,
                       ),
                       Padding(
@@ -121,9 +139,7 @@ class GameResult extends StatelessWidget {
                           width: 140,
                           height: 45,
                           decoration: BoxDecoration(
-                            image:
-                                DecorationImage(image: AssetImage('assets/icons/png/bg_button.png'),
-                                    fit: BoxFit.fill),
+                            image: DecorationImage(image: AssetImage('assets/icons/png/bg_button.png'), fit: BoxFit.fill),
                           ),
                           child: Container(
                             alignment: Alignment.center,
@@ -152,8 +168,7 @@ class GameResult extends StatelessWidget {
                           width: 140,
                           height: 45,
                           decoration: BoxDecoration(
-                            image:
-                                DecorationImage(image: AssetImage('assets/icons/png/bg_button.png'), fit: BoxFit.fill),
+                            image: DecorationImage(image: AssetImage('assets/icons/png/bg_button.png'), fit: BoxFit.fill),
                           ),
                           child: Container(
                             alignment: Alignment.center,
@@ -172,8 +187,7 @@ class GameResult extends StatelessWidget {
                         ),
                         // ),
                         onPressed: () {
-                          Navigator.push(
-                              context, MaterialPageRoute(builder: (BuildContext context) => GameOption()));
+                          Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => GameOption()));
                         },
                       ),
                     ],

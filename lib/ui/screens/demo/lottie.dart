@@ -34,24 +34,20 @@ class _AppState extends State<MyLottePage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      color: Colors.lightBlue,
       home: Scaffold(
-        backgroundColor: Colors.lightBlue,
-        appBar: AppBar(
-          title: Text('Show lottie animation: $_showAnimation'),
-        ),
+        backgroundColor: Colors.grey,
         body: SingleChildScrollView(
           child: Center(
             child: Column(
               children: [
                 if (_showAnimation)
                   Lottie.asset(
-                    'assets/lottiefiles/LottieLogo1.json',
+                    'assets/animations/lottiefiles/page-searching.json',
                     //fetch from web :
                     //Lottie.network('https://raw.githubusercontent.com/xvrh/lottie-flutter/master/example/assets/Mobilo/A.json'),
 
                     controller: _animationController,
-                    width: 200,
+                    width: 500,
                     onLoaded: (composition) {
                       _animationController
                         ..duration = composition.duration

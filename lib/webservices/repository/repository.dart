@@ -2,6 +2,7 @@ import 'package:trump_card_game/model/responses/cards_res_model.dart';
 import 'package:trump_card_game/model/responses/friends_res_model.dart';
 import 'package:trump_card_game/model/responses/game_option_res_model.dart';
 import 'package:trump_card_game/model/responses/login_res_model.dart';
+import 'package:trump_card_game/model/responses/match_making_res_model.dart';
 import 'package:trump_card_game/model/responses/statistics_res_model.dart';
 import 'package:trump_card_game/model/responses/leaderboard_res_model.dart';
 import 'package:trump_card_game/model/responses/profile_res_model.dart';
@@ -27,9 +28,13 @@ class Repository {
   Future<FriendsResModel> fetchFriends(String xApiKey, String playerId) =>
       appApiProvider.friendsApi(xApiKey, playerId);
 
-  Future<CardsResModel> fetchCardsApi(String xApiKey) =>
-      appApiProvider.cardsApi(xApiKey);
 
   Future<ProfileResModel> fetchProfileApi(String xApiKey, String memberId) =>
       appApiProvider.profileApi(xApiKey, memberId);
+
+  Future<CardsResModel> fetchCardsToPlayApi(String xApiKey, String subCatagory, String catagory, String playerCount, String cardCount) =>
+      appApiProvider.fetchCardsToPlayApi(xApiKey, subCatagory, catagory, playerCount, cardCount);
+
+  Future<MatchMakingResModel> fetchMatchMakingApi(String xApiKey) =>
+      appApiProvider.fetchMatchMakingApi(xApiKey);
 }

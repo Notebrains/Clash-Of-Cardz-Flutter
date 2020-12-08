@@ -1,8 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:trump_card_game/bloc/api_bloc.dart';
 import 'package:trump_card_game/model/responses/game_option_res_model.dart';
 import 'package:trump_card_game/ui/widgets/include_screens/friends_drawer.dart';
+import 'package:trump_card_game/ui/widgets/include_screens/include_searching_players.dart';
 import 'package:trump_card_game/ui/widgets/libraries/colorize.dart';
 import 'package:trump_card_game/ui/widgets/views/view_widgets.dart';
 
@@ -42,7 +44,7 @@ class _GameMoreOptionState extends State<GameMoreOption> {
         child: new ListView(
           children: <Widget>[
             Container(
-              height: 115,
+              height: 55,
               child: DrawerHeader(
                 margin: EdgeInsets.all(0),
                 child: Column(
@@ -55,36 +57,6 @@ class _GameMoreOptionState extends State<GameMoreOption> {
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
                         fontFamily: 'neuropol_x_rg',
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(top: 8),
-                      padding: const EdgeInsets.symmetric(vertical: 1, horizontal: 12),
-                      decoration: BoxDecoration(
-                        color: Colors.white.withAlpha(30),
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(10),
-                        ),
-                      ),
-                      child: Row(
-                        children: <Widget>[
-                          Expanded(
-                            child: TextField(
-                              decoration: InputDecoration(
-                                hintText: "Friend ID or Name",
-                                hintStyle: TextStyle(
-                                  color: Colors.white.withAlpha(120),
-                                ),
-                                border: InputBorder.none,
-                              ),
-                              onChanged: (String keyword) {},
-                            ),
-                          ),
-                          Icon(
-                            Icons.search,
-                            color: Colors.white.withAlpha(120),
-                          )
-                        ],
                       ),
                     ),
                   ],
@@ -122,9 +94,9 @@ class _GameMoreOptionState extends State<GameMoreOption> {
                   fontFamily: 'Rapier',
                 ),
                 colors: [
+                  Colors.grey[400],
                   Colors.grey[500],
-                  Colors.grey[600],
-                  Colors.grey[500],
+                  Colors.grey[400],
                 ],
                 textAlign: TextAlign.center,
                 alignment: AlignmentDirectional.center,
@@ -138,9 +110,23 @@ class _GameMoreOptionState extends State<GameMoreOption> {
               padding: const EdgeInsets.only(bottom: 16),
               child: Row(
                 children: [
+                  Container(
+                    height: MediaQuery.of(context).size.height,
+                    width: 1.5,
+                    color: Colors.indigo,
+                    margin: const EdgeInsets.only(left: 40, top: 50.0, bottom: 50.0),
+                  ),
+
                   Expanded(
                     flex: 3,
                     child: _buildFirstList(subcategoryDetails[0].noOfPlayerPlayed, 0),
+                  ),
+
+                  Container(
+                    height: cardsToBePlayed.length* 80.0,
+                    width: 1.5,
+                    color: Colors.indigo,
+                    margin: const EdgeInsets.only(top: 0.0, bottom: 0.0),
                   ),
                   Expanded(
                     flex: 3,
@@ -242,8 +228,8 @@ class _GameMoreOptionState extends State<GameMoreOption> {
     }
 
     return ListView.builder(
-      physics: const AlwaysScrollableScrollPhysics(),
-      padding: EdgeInsets.fromLTRB(50.0, 12.0, 16.0, 5.0),
+      physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+      padding: EdgeInsets.fromLTRB(10.0, 12.0, 16.0, 5.0),
       itemCount: vsList.length,
       shrinkWrap: true,
       itemBuilder: (context, index) {
@@ -277,9 +263,10 @@ class _GameMoreOptionState extends State<GameMoreOption> {
                   child: Text(
                     vsList[index],
                     style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontFamily: 'neuropol_x_rg',
+                        color: Colors.black54,
+                        fontSize: 18,
+                        fontFamily: 'neuropol_x_rg',
+                        fontWeight: FontWeight.bold
                     ),
                   ),
                   onTap: () {
@@ -297,10 +284,9 @@ class _GameMoreOptionState extends State<GameMoreOption> {
   }
 
   Widget buildSecondList(List<String> cardsToBePlayed) {
-    //print('----cardsToBePlayed.length 3 ' + cardsToBePlayed.length.toString());
     if (cardsToBePlayed.length > 0) {
       return ListView.builder(
-        physics: const AlwaysScrollableScrollPhysics(),
+        physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
         padding: EdgeInsets.fromLTRB(5.0, 33.0, 16.0, 5.0),
         itemCount: cardsToBePlayed.length,
         shrinkWrap: true,
@@ -335,11 +321,18 @@ class _GameMoreOptionState extends State<GameMoreOption> {
                     child: Text(
                       cardsToBePlayed[index],
                       style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontFamily: 'neuropol_x_rg',
+                          color: Colors.black54,
+                          fontSize: 18,
+                          fontFamily: 'neuropol_x_rg',
+                          fontWeight: FontWeight.bold
                       ),
                     ),
+                    onTap: (){
+                      showDialog(
+                        context: context,
+                        builder: (_) => IncludeSearchingForPlayer(),
+                      );
+                    },
                   ),
                 ),
               ],

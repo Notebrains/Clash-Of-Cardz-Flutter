@@ -91,6 +91,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _listView() {
     return new Flexible(
       child: new ListView.builder(
+          physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
           itemCount: _socialListItems.length,
           itemBuilder: (BuildContext context, int index) {
             return new Card(
@@ -120,6 +121,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _searchAddList() {
     return new Flexible(
       child: new ListView.builder(
+          physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
           itemCount: _searchListItems.length,
           itemBuilder: (BuildContext context, int index) {
             return new Card(

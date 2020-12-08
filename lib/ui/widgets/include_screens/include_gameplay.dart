@@ -162,6 +162,7 @@ Widget buildPlayer3Scoreboard() {
               //padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
               height: 40,
               child: ListView.builder(
+                  physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
                   scrollDirection: Axis.horizontal,
                   itemCount: numbers.length,
                   itemBuilder: (context, index) {
@@ -171,9 +172,11 @@ Widget buildPlayer3Scoreboard() {
                         width: 25,
                       ),
                     );
-                  }),
+                  },
+              ),
             ),
           ),
+
           Row(
             children: [
               Container(

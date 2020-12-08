@@ -27,154 +27,157 @@ class _LogInState extends State<LogIn> {
   Widget build(BuildContext context) {
     Firebase.initializeApp();
     this.context = context;
-    return Scaffold(
-      body: Container(
-        decoration: new BoxDecoration(
-          image: new DecorationImage(
-            image: new AssetImage("assets/images/bg_img3.png"),
-            fit: BoxFit.cover,
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        body: Container(
+          decoration: new BoxDecoration(
+            image: new DecorationImage(
+              image: new AssetImage("assets/images/bg_img3.png"),
+              fit: BoxFit.cover,
+            ),
           ),
-        ),
-        child: Center(
-          child: Row(
-            children: <Widget>[
-              Expanded(
-                flex: 1,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ColorizeAnimatedTextKit(
-                      onTap: () {
-                        //print("Tap Event");
-                      },
-                      text: [
-                        "CLASH OF CARDZ"
-                      ],
-                      textStyle: TextStyle(
-                        fontSize: 55.0,
-                        fontStyle: FontStyle.normal,
-                        fontFamily: 'Rapier'
-                      ),
-                      colors: [
-                        Colors.grey[700],
-                        Colors.deepOrange,
-                        Colors.grey[700],
-                      ],
-                      textAlign: TextAlign.center,
-                      alignment: AlignmentDirectional.center,
-                      // or Alignment.topLeft
-                      isRepeatingAnimation: true,
-                      repeatForever: true,
-                      speed: Duration(milliseconds: 1000),
-                    ),
-
-                    //login button
-                    MaterialButton(
-                      padding: EdgeInsets.fromLTRB(8.0, 16.0, 8.0, 8.0),
-                      textColor: Colors.white70,
-                      splashColor: Colors.yellow,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image: AssetImage(
-                                  'assets/icons/png/bg_button.png'),
-                              fit: BoxFit.cover),
+          child: Center(
+            child: Row(
+              children: <Widget>[
+                Expanded(
+                  flex: 1,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ColorizeAnimatedTextKit(
+                        onTap: () {
+                          //print("Tap Event");
+                        },
+                        text: [
+                          "CLASH OF CARDZ"
+                        ],
+                        textStyle: TextStyle(
+                          fontSize: 55.0,
+                          fontStyle: FontStyle.normal,
+                          fontFamily: 'Rapier'
                         ),
+                        colors: [
+                          Colors.grey[700],
+                          Colors.deepOrange,
+                          Colors.grey[700],
+                        ],
+                        textAlign: TextAlign.center,
+                        alignment: AlignmentDirectional.center,
+                        // or Alignment.topLeft
+                        isRepeatingAnimation: true,
+                        repeatForever: true,
+                        speed: Duration(milliseconds: 1000),
+                      ),
+
+                      //login button
+                      MaterialButton(
+                        padding: EdgeInsets.fromLTRB(8.0, 16.0, 8.0, 8.0),
+                        textColor: Colors.white70,
+                        splashColor: Colors.grey,
                         child: Container(
-                          width: 220,
-                          height: 45,
-                          padding: EdgeInsets.fromLTRB(24.0, 5.0, 24.0, 16.0),
-                          child: Text(
-                            "LOGIN USING",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontSize: 18.0,
-                                fontStyle: FontStyle.normal,
-                                fontFamily: 'neuropol_x_rg',
-                                color: Colors.black87),
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                                image: AssetImage(
+                                    'assets/icons/png/bg_button.png'),
+                                fit: BoxFit.cover),
+                          ),
+                          child: Container(
+                            width: 220,
+                            height: 45,
+                            padding: EdgeInsets.fromLTRB(24.0, 5.0, 24.0, 16.0),
+                            child: Text(
+                              "LOGIN USING",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 18.0,
+                                  fontStyle: FontStyle.normal,
+                                  fontFamily: 'neuropol_x_rg',
+                                  color: Colors.black87),
+                            ),
                           ),
                         ),
-                      ),
-                      // ),
-                      onPressed: () {
-                        //Navigator.of(context).push(new PageRouteWithAnimation());
-                      //onPressed: () {Navigator.push(context, _pageRouteBuilder());
-                      },
-                    ),
-
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        IconButton(
-                          highlightColor: Colors.orange[200],
-                          icon: SvgPicture.asset(
-                              'assets/icons/svg/google.svg'),
-                          onPressed: () {
-                            initiateSignIn("G");
-                          },
-                        ),
-                        IconButton(
-                          highlightColor: Colors.green[200],
-                          icon: Image.asset(
-                              'assets/icons/png/ic_google_play_games.png'),
-                          onPressed: () {
-                            Navigator.of(context).push(new PageRouteWithAnimation());
-
-                          },
-                        ),
-
-                        IconButton(
-                          highlightColor: Colors.blue[200],
-                          icon: SvgPicture.asset(
-                              'assets/icons/svg/facebook.svg'),
-                          onPressed: () {
-                            initiateSignIn("FB");
-                          },
-                        ),
-                      ],
-                    ),
-
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        "Or",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontSize: 16.0,
-                            fontStyle: FontStyle.normal,
-                            fontFamily: 'neuropol_x_rg',
-                            fontWeight: FontWeight.bold,
-                            color: Colors.grey[700]),
-                      ),
-                    ),
-
-                    GestureDetector(
-                      child: Text(
-                        "Play As Guest",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontSize: 22.0,
-                            fontStyle: FontStyle.normal,
-                            fontFamily: 'neuropol_x_rg',
-                            fontWeight: FontWeight.bold,
-                            color: Colors.grey[700]),
+                        // ),
+                        onPressed: () {
+                          //Navigator.of(context).push(new PageRouteWithAnimation());
+                        //onPressed: () {Navigator.push(context, _pageRouteBuilder());
+                        },
                       ),
 
-                      onTap: (){
-                        Navigator.of(context).push(new PageRouteWithAnimation());
-                      },
-                    ),
-                  ],
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          IconButton(
+                            highlightColor: Colors.grey,
+                            icon: SvgPicture.asset(
+                                'assets/icons/svg/google.svg'),
+                            onPressed: () {
+                              initiateSignIn("G");
+                            },
+                          ),
+                          IconButton(
+                            highlightColor: Colors.green[200],
+                            icon: Image.asset(
+                                'assets/icons/png/ic_google_play_games.png'),
+                            onPressed: () {
+                              Navigator.of(context).push(new PageRouteWithAnimation());
+
+                            },
+                          ),
+
+                          IconButton(
+                            highlightColor: Colors.blue[200],
+                            icon: SvgPicture.asset(
+                                'assets/icons/svg/facebook.svg'),
+                            onPressed: () {
+                              initiateSignIn("FB");
+                            },
+                          ),
+                        ],
+                      ),
+
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "Or",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontSize: 16.0,
+                              fontStyle: FontStyle.normal,
+                              fontFamily: 'neuropol_x_rg',
+                              fontWeight: FontWeight.bold,
+                              color: Colors.grey[700]),
+                        ),
+                      ),
+
+                      GestureDetector(
+                        child: Text(
+                          "Play As Guest",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontSize: 22.0,
+                              fontStyle: FontStyle.normal,
+                              fontFamily: 'neuropol_x_rg',
+                              fontWeight: FontWeight.bold,
+                              color: Colors.grey[700]),
+                        ),
+
+                        onTap: (){
+                          Navigator.of(context).push(new PageRouteWithAnimation());
+                        },
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              Expanded(
-                flex: 1,
-                child: Container(
-                  margin: EdgeInsets.fromLTRB(80, 0, 80, 0),
-                  child: CarouselAutoSlider(),
+                Expanded(
+                  flex: 1,
+                  child: Container(
+                    margin: EdgeInsets.fromLTRB(80, 0, 80, 0),
+                    child: CarouselAutoSlider(),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

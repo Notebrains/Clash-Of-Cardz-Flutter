@@ -16,5 +16,7 @@ class UrlConstants{
   static const String game_friends= "${_baseUrl}fetch_details/fetch_friend_list";
   static const String cards= "${_baseUrl}fetch_details/fetch_cards";
   static const String profile = "${_baseUrl}fetch_details/fetch_profile";
+  static const String cardsToPlay = "${_baseUrl}fetch_details/fetch_cards";
+  static const String matchMaking = "${_baseUrl}match_making/play";
 
 }
