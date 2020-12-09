@@ -6,6 +6,7 @@ import 'package:trump_card_game/bloc/api_bloc.dart';
 import 'package:trump_card_game/helper/exten_fun/base_application_fun.dart';
 import 'package:trump_card_game/model/responses/profile_res_model.dart';
 import 'package:trump_card_game/ui/screens/about.dart';
+import 'package:trump_card_game/ui/screens/computer_gameplay.dart';
 import 'package:trump_card_game/ui/screens/game_rules.dart';
 import 'package:trump_card_game/ui/screens/gameplay.dart';
 import 'package:trump_card_game/ui/screens/leaderboard.dart';
@@ -166,7 +167,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           // ),
                           onPressed: () {
                             Navigator.push(
-                                context, CupertinoPageRoute(builder: (BuildContext context) => Gameplay(name: '', friendId: '')));
+                                context, CupertinoPageRoute(builder: (BuildContext context) => ComputerGameplay(name: '', friendId: '')));
                           },
                         ),
                         MaterialButton(
