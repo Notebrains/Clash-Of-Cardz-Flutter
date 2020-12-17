@@ -1,193 +1,201 @@
-
 import 'package:flutter/material.dart';
 import 'package:trump_card_game/helper/exten_fun/base_application_fun.dart';
 import 'package:shape_of_view/shape_of_view.dart';
+import 'package:trump_card_game/model/state_managements/autoplay_states_model.dart';
 import 'package:trump_card_game/ui/widgets/libraries/flip_card.dart';
+import 'package:lottie/lottie.dart';
+import 'package:provider/provider.dart';
 
-Widget buildPlayerCard(BuildContext context) {
+
+Widget buildPlayerCard(BuildContext context, {
+  Function(String index, String attributeTitle, String attributeValue, String cardId) onClickAction,
+}) {
+
+  final List<String> matches = ['150', '250', '350', '50', '508', '113', '222', '321'];
+  final List<String> cardRatingList = ['4', '2', '3', '5', '3', '4', '2', '5'];
   GlobalKey<FlipCardState> cardKey = GlobalKey<FlipCardState>();
 
-  List<String> images = [
-    "https://uae.microless.com/cdn/no_image.jpg",
-    "https://images-na.ssl-images-amazon.com/images/I/81aF3Ob-2KL._UX679_.jpg",
-    "https://www.boostmobile.com/content/dam/boostmobile/en/products/phones/apple/iphone-7/silver/device-front.png.transform/pdpCarousel/image.jpg",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgUgs8_kmuhScsx-J01d8fA1mhlCR5-1jyvMYxqCB8h3LCqcgl9Q",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgUgs8_kmuhScsx-J01d8fA1mhlCR5-1jyvMYxqCB8h3LCqcgl9Q",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgUgs8_kmuhScsx-J01d8fA1mhlCR5-1jyvMYxqCB8h3LCqcgl9Q",
-    "https://ae01.alicdn.com/kf/HTB11tA5aiAKL1JjSZFoq6ygCFXaw/Unlocked-Samsung-GALAXY-S2-I9100-Mobile-Phone-Android-Wi-Fi-GPS-8-0MP-camera-Core-4.jpg_640x640.jpg",
-    "https://media.ed.edmunds-media.com/gmc/sierra-3500hd/2018/td/2018_gmc_sierra-3500hd_f34_td_411183_1600.jpg",
-    "https://media.ed.edmunds-media.com/gmc/sierra-3500hd/2018/td/2018_gmc_sierra-3500hd_f34_td_411183_1600.jpg",
-    "https://media.ed.edmunds-media.com/gmc/sierra-3500hd/2018/td/2018_gmc_sierra-3500hd_f34_td_411183_1600.jpg",
-    "https://hips.hearstapps.com/amv-prod-cad-assets.s3.amazonaws.com/images/16q1/665019/2016-chevrolet-silverado-2500hd-high-country-diesel-test-review-car-and-driver-photo-665520-s-original.jpg",
-    "https://www.galeanasvandykedodge.net/assets/stock/ColorMatched_01/White/640/cc_2018DOV170002_01_640/cc_2018DOV170002_01_640_PSC.jpg",
-  ];
-
-  return Container(
-    width: 250,
-    height: 350,
-    child: FlipCard(
-      flipOnTouch: false,
-      direction: FlipDirection.HORIZONTAL,
-      speed: 1000,
-      key: cardKey,
-      onFlipDone: (status) {
-        //print(status);
-      },
-      front: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(8.0)),
-          boxShadow: <BoxShadow>[
-            BoxShadow(
-              color: Color(0x40000000),
-              blurRadius: 30.0,
-              offset: Offset(0.0, 30.0),
-            ),
-          ],
-        ),
-        child: GestureDetector(
-          child: Image.asset(
-            'assets/images/bg_card_back.png',
-            width: getScreenWidth(context),
-            height: getScreenHeight(context),
-            fit: BoxFit.fill,
+  return FlipCard(
+    flipOnTouch: false,
+    direction: FlipDirection.HORIZONTAL,
+    speed: 1000,
+    key: cardKey,
+    onFlipDone: (status) {
+      //print(status);
+    },
+    front: Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(8.0)),
+        boxShadow: <BoxShadow>[
+          BoxShadow(
+            color: Color(0x40000000),
+            blurRadius: 30.0,
+            offset: Offset(0.0, 30.0),
           ),
-          onTap: (){
-            cardKey.currentState.toggleCard();
-          },
-        ),
+        ],
       ),
-      back: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(8.0)),
-          boxShadow: <BoxShadow>[
-            BoxShadow(
-              color: Color(0x60000000),
-              blurRadius: 30.0,
-              offset: Offset(0.0, 30.0),
+      child: GestureDetector(
+        child: Stack(
+          children: <Widget>[
+            Container(
+                width: getScreenWidth(context),
+                height: getScreenHeight(context),
+                child: Image.asset('assets/images/bg_card_back.png' ,fit: BoxFit.fill)
             ),
+            /*Align(
+              alignment: Alignment.center,
+              child: Lottie.asset('assets/animations/lottiefiles/sports-loading.json', width: 250, height: 250),
+            )*/
           ],
         ),
-        child: Stack(
-          children: [
-            Image.asset(
-              'assets/images/bg_card_back.png',
-              width: getScreenWidth(context),
-              height: getScreenHeight(context),
-              fit: BoxFit.fill,
-            ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: GridView(
-                shrinkWrap: true,
-                physics: BouncingScrollPhysics(),
-                // if you want IOS bouncing effect, otherwise remove this line
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 4,
+        onTap: (){
+          cardKey.currentState.toggleCard();
+        },
+      ),
+    ),
+    back: Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(8.0)),
+        boxShadow: <BoxShadow>[
+          BoxShadow(
+            color: Color(0x60000000),
+            blurRadius: 30.0,
+            offset: Offset(0.0, 30.0),
+          ),
+        ],
+      ),
+      child: Consumer<AutoPlayStatesModel>(
+        builder: (context, statesModel, child) =>  GestureDetector(
+          child: Stack(
+            children: [
+              Container(
+                color: Colors.orange,
+              ),
+
+              Align(
+                  alignment: Alignment.topRight,
+                  child: Lottie.asset('assets/animations/lottiefiles/confused_robot-bot-3d.json', height: 150, width: 150)),
+
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: GridView.count(
+                  shrinkWrap: true,
+                  crossAxisCount: 3,
                   crossAxisSpacing: 0,
                   mainAxisSpacing: 0,
-                  childAspectRatio: 3 / 2,
-                ),
-                padding: EdgeInsets.all(5),
-                //change the number as you want
-                children: images.map((url) {
-                  return Container(
-                    //margin: EdgeInsets.only(left: 5, right: 5),
-                    margin: EdgeInsets.symmetric(vertical: 1, horizontal: 2),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
+                  childAspectRatio: 5/3,
+                  physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+                  // if you want IOS bouncing effect, otherwise remove this line
+                  padding: EdgeInsets.all(4),
+                  //change the number as you want
+                  children: List.generate(8, (index) {
+                    return Container(
+                      //margin: EdgeInsets.only(left: 5, right: 5),
+                      margin: EdgeInsets.symmetric(vertical: 1, horizontal: 2),
+                      child: GestureDetector(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              "280",
-                              textAlign: TextAlign.start,
-                              style: TextStyle(
-                                  fontSize: 11,
-                                  fontStyle: FontStyle.normal,
-                                  fontFamily: 'neuropol_x_rg',
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.indigo),
-                            ),
-                            Stack(children: <Widget>[
-                              Image.asset(
-                                'assets/icons/png/stars.png',
-                                color: Colors.yellow,
-                              ),
-                              Container(
-                                margin: EdgeInsets.only(left: 7, top: 3),
-                                child: Text(
-                                  "1",
+                            Row(
+                              children: [
+                                Text(
+                                  matches[index],
                                   textAlign: TextAlign.start,
                                   style: TextStyle(
-                                      fontSize: 8,
+                                      fontSize: 9,
+                                      fontStyle: FontStyle.normal,
                                       fontFamily: 'neuropol_x_rg',
                                       fontWeight: FontWeight.bold,
-                                      color: Colors.black),
+                                      color: Colors.indigo),
                                 ),
+                                Stack(children: <Widget>[
+                                  Image.asset(
+                                    'assets/icons/png/stars.png',
+                                    color: Colors.yellow,
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.only(left: 5.5, top: 4),
+                                    child: Text(
+                                      cardRatingList[index],
+                                      textAlign: TextAlign.start,
+                                      style: TextStyle(
+                                          fontSize: 8,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black),
+                                    ),
+                                  ),
+                                ]),
+                              ],
+                            ),
+                            Text(
+                              "Match",
+                              textAlign: TextAlign.start,
+                              style: TextStyle(
+                                  fontSize: 8,
+                                  fontStyle: FontStyle.normal,
+                                  fontFamily: 'neuropol_x_rg',
+                                  fontWeight: FontWeight.normal,
+                                  color: Colors.white),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(right: 10, top: 1),
+                              child: Divider(
+                                color: Colors.white,
+                                thickness: 1,
+                                height: 1,
                               ),
-                            ]),
+                            ),
                           ],
                         ),
-                        Text(
-                          "Match",
-                          textAlign: TextAlign.start,
-                          style: TextStyle(
-                              fontSize: 9,
-                              fontStyle: FontStyle.normal,
-                              fontFamily: 'neuropol_x_rg',
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 8, top: 3),
-                          child: Divider(
-                            color: Colors.white,
-                            thickness: 1,
-                            height: 1,
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                }).toList(),
+                        onTap: (){
+                          onClickAction(index.toString(), 'Match', matches[index], '0PLY002');
+                        },
+                      ),
+                    );
+                  }).toList(),
+                ),
               ),
-            ),
-            Column(
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(left: 45, top: 8),
-                  child: RotationTransition(
-                    alignment: Alignment.topLeft,
-                    turns: new AlwaysStoppedAnimation(90 / 360),
-                    child: Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            "Hugh Jackman",
-                            style: TextStyle(fontWeight: FontWeight.w200, color: Colors.white, fontSize: 20, shadows: [
-                              Shadow(color: Colors.white, blurRadius: 1, offset: Offset(1, 1)),
-                            ]),
+
+              Column(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(left: 25, top: 5),
+                    child: RotationTransition(
+                      alignment: Alignment.topLeft,
+                      turns: new AlwaysStoppedAnimation(90 / 360),
+                      child: Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(right: 4),
+                            child: Text(
+                              "Hugh Jane",
+                              style: TextStyle(fontWeight: FontWeight.w200, color: Colors.white, fontSize: 16,),
+                            ),
                           ),
-                        ),
-                        ShapeOfView(
-                          height: 35,
-                          width: 35,
-                          shape: CircleShape(borderColor: Colors.orange, borderWidth: 1),
-                          elevation: 12,
-                          child: Image.asset(
-                            "assets/images/img_person_demo.jpg",
-                            fit: BoxFit.cover,
+                          ShapeOfView(
+                            height: 16,
+                            width: 16,
+                            shape: CircleShape(borderColor: Colors.white, borderWidth: 1),
+                            elevation: 1,
+                            child: Image.asset(
+                              "assets/icons/png/india.png",
+                              fit: BoxFit.cover,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
-          ],
+                ],
+              ),
+            ],
+          ),
+          onTap: (){
+            if(statesModel.isCardTwoTouched){
+              cardKey.currentState.toggleCard();
+            }
+          },
         ),
       ),
     ),

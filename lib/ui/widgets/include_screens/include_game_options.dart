@@ -16,7 +16,7 @@ class _IncludeGameOptionState extends State<IncludeGameOption> {
   List<Subcategory> subcategory = List<Subcategory>();
   List<Subcategory_details> subcategoryDetails = List<Subcategory_details>();
 
-  void _incrementCounter() {
+  void _includeGameOptState() {
     setState(() {
       buildSecondList(subcategory);
       buildThirdList(subcategoryDetails);
@@ -130,7 +130,7 @@ class _IncludeGameOptionState extends State<IncludeGameOption> {
                     subcategoryDetails.clear();
                     buildSecondList(data.response[index].subcategory);
                     print('subcategory.length----' + data.response[index].subcategory.length.toString());
-                    _incrementCounter();
+                    _includeGameOptState();
                   },
                 ),
               ),
@@ -192,7 +192,7 @@ class _IncludeGameOptionState extends State<IncludeGameOption> {
                     onTap: () {
                       //print('Clicked on 2nd screen');
                       buildThirdList(subcategory[index].subcategoryDetails);
-                      _incrementCounter();
+                      _includeGameOptState();
                     },
                   ),
                 ),

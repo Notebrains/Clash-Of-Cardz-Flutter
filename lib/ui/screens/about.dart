@@ -68,6 +68,7 @@ class _AboutScreenState extends State<AboutScreen>{
                child: Align(
                  alignment: AlignmentDirectional.bottomEnd,
                  child: FloatingActionButton(
+                   tooltip: 'Back to previous screen',
                    backgroundColor: Colors.grey[400],
                    child: Icon(
                      Icons.arrow_back,

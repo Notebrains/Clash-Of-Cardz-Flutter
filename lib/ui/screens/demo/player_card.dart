@@ -24,8 +24,8 @@ class PlayerCard extends StatelessWidget {
       home: Scaffold(
         body: Center(
           child: Container(
-            width: 180,
-            height: 300,
+            width: 170,
+            height: 250,
             child: FlipCard(
               flipOnTouch: false,
               direction: FlipDirection.HORIZONTAL,
@@ -70,11 +70,8 @@ class PlayerCard extends StatelessWidget {
                 ),
                 child: Stack(
                   children: [
-                    Image.asset(
-                      'assets/images/bg_card_back.png',
-                      width: getScreenWidth(context),
-                      height: getScreenHeight(context),
-                      fit: BoxFit.fill,
+                    Container(
+                      color: Colors.orange,
                     ),
                     Align(
                       alignment: Alignment.bottomCenter,
@@ -86,9 +83,9 @@ class PlayerCard extends StatelessWidget {
                           crossAxisCount: 3,
                           crossAxisSpacing: 0,
                           mainAxisSpacing: 0,
-                          childAspectRatio: 3 / 2,
+                          childAspectRatio: 5/3,
                         ),
-                        padding: EdgeInsets.all(5),
+                        padding: EdgeInsets.all(4),
                         //change the number as you want
                         children: images.map((url) {
                           return Container(
@@ -104,7 +101,7 @@ class PlayerCard extends StatelessWidget {
                                       "280",
                                       textAlign: TextAlign.start,
                                       style: TextStyle(
-                                          fontSize: 11,
+                                          fontSize: 9,
                                           fontStyle: FontStyle.normal,
                                           fontFamily: 'neuropol_x_rg',
                                           fontWeight: FontWeight.bold,
@@ -134,14 +131,14 @@ class PlayerCard extends StatelessWidget {
                                   "Match",
                                   textAlign: TextAlign.start,
                                   style: TextStyle(
-                                      fontSize: 9,
+                                      fontSize: 8,
                                       fontStyle: FontStyle.normal,
                                       fontFamily: 'neuropol_x_rg',
-                                      fontWeight: FontWeight.bold,
+                                      fontWeight: FontWeight.normal,
                                       color: Colors.white),
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.only(right: 8, top: 3),
+                                  padding: const EdgeInsets.only(right: 10, top: 1),
                                   child: Divider(
                                     color: Colors.white,
                                     thickness: 1,
@@ -157,7 +154,7 @@ class PlayerCard extends StatelessWidget {
                     Column(
                       children: [
                         Padding(
-                          padding: EdgeInsets.only(left: 30, top: 5),
+                          padding: EdgeInsets.only(left: 25, top: 5),
                           child: RotationTransition(
                             alignment: Alignment.topLeft,
                             turns: new AlwaysStoppedAnimation(90 / 360),
@@ -167,9 +164,7 @@ class PlayerCard extends StatelessWidget {
                                   padding: const EdgeInsets.only(right: 4),
                                   child: Text(
                                     "Hugh Jackman",
-                                    style: TextStyle(fontWeight: FontWeight.w200, color: Colors.white, fontSize: 18, shadows: [
-                                      Shadow(color: Colors.white, blurRadius: 1, offset: Offset(1, 1)),
-                                    ]),
+                                    style: TextStyle(fontWeight: FontWeight.w200, color: Colors.white, fontSize: 16,),
                                   ),
                                 ),
                                 ShapeOfView(

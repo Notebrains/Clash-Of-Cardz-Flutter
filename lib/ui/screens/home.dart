@@ -6,7 +6,7 @@ import 'package:trump_card_game/bloc/api_bloc.dart';
 import 'package:trump_card_game/helper/exten_fun/base_application_fun.dart';
 import 'package:trump_card_game/model/responses/profile_res_model.dart';
 import 'package:trump_card_game/ui/screens/about.dart';
-import 'package:trump_card_game/ui/screens/computer_gameplay.dart';
+import 'package:trump_card_game/ui/screens/autoplay.dart';
 import 'package:trump_card_game/ui/screens/game_rules.dart';
 import 'package:trump_card_game/ui/screens/gameplay.dart';
 import 'package:trump_card_game/ui/screens/leaderboard.dart';
@@ -20,6 +20,7 @@ import 'package:trump_card_game/ui/widgets/include_screens/include_searching_pla
 import 'package:trump_card_game/ui/widgets/libraries/giffy_dialog/giffy_dialog.dart';
 import 'package:trump_card_game/ui/widgets/views/view_widgets.dart';
 import 'package:trump_card_game/ui/widgets/include_screens/include_searching_players.dart';
+import 'package:flutter_animator/flutter_animator.dart';
 
 import 'game_option.dart';
 
@@ -112,149 +113,173 @@ class _MyHomePageState extends State<MyHomePage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         //login button
-                        MaterialButton(
-                          splashColor: Colors.grey,
-                          child: Container(
-                            width: 220,
-                            height: 50,
-                            decoration: BoxDecoration(
-                              image: DecorationImage(image: AssetImage('assets/icons/png/bg_button.png'), fit: BoxFit.fill),
-                            ),
+                        ZoomIn(
+                          child: MaterialButton(
+                            splashColor: Colors.grey,
                             child: Container(
-                              alignment: Alignment.center,
-                              padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 12.0),
-                              child: Text(
-                                "PLAY",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    fontStyle: FontStyle.normal,
-                                    fontFamily: 'neuropol_x_rg',
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black87),
+                              width: 220,
+                              height: 50,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(image: AssetImage('assets/icons/png/bg_button.png'), fit: BoxFit.fill),
+                              ),
+                              child: Container(
+                                alignment: Alignment.center,
+                                padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 12.0),
+                                child: Text(
+                                  "PLAY",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontStyle: FontStyle.normal,
+                                      fontFamily: 'neuropol_x_rg',
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black87),
+                                ),
                               ),
                             ),
+                            onPressed: () {
+                              //Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => GameOption()));
+                              Navigator.push(context, CupertinoPageRoute(builder: (BuildContext context) => GameOption()));
+                            },
                           ),
-                          onPressed: () {
-                            //Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => GameOption()));
-                            Navigator.push(context, CupertinoPageRoute(builder: (BuildContext context) => GameOption()));
-                          },
+                          preferences:
+                              AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
                         ),
-                        MaterialButton(
-                          padding: EdgeInsets.fromLTRB(0.0, 2.0, 0.0, 0.0),
-                          splashColor: Colors.grey,
-                          child: Container(
-                            width: 220,
-                            height: 50,
-                            decoration: BoxDecoration(
-                              image: DecorationImage(image: AssetImage('assets/icons/png/bg_button.png'), fit: BoxFit.fill),
-                            ),
+
+                        ZoomIn(
+                          child: MaterialButton(
+                            padding: EdgeInsets.fromLTRB(0.0, 2.0, 0.0, 0.0),
+                            splashColor: Colors.grey,
                             child: Container(
-                              alignment: Alignment.center,
-                              padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 12.0),
-                              child: Text(
-                                "CARDS",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    fontStyle: FontStyle.normal,
-                                    fontFamily: 'neuropol_x_rg',
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black87),
+                              width: 220,
+                              height: 50,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(image: AssetImage('assets/icons/png/bg_button.png'), fit: BoxFit.fill),
+                              ),
+                              child: Container(
+                                alignment: Alignment.center,
+                                padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 12.0),
+                                child: Text(
+                                  "CARDS",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontStyle: FontStyle.normal,
+                                      fontFamily: 'neuropol_x_rg',
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black87),
+                                ),
                               ),
                             ),
+                            // ),
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  CupertinoPageRoute(
+                                      builder: (BuildContext context) => AutoPlay(name: '', friendId: '')));
+                            },
                           ),
-                          // ),
-                          onPressed: () {
-                            Navigator.push(
-                                context, CupertinoPageRoute(builder: (BuildContext context) => ComputerGameplay(name: '', friendId: '')));
-                          },
+                          preferences:
+                              AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
                         ),
-                        MaterialButton(
-                          padding: EdgeInsets.fromLTRB(0.0, 2.0, 0.0, 0.0),
-                          splashColor: Colors.grey,
-                          child: Container(
-                            width: 220,
-                            height: 50,
-                            decoration: BoxDecoration(
-                              image: DecorationImage(image: AssetImage('assets/icons/png/bg_button.png'), fit: BoxFit.fill),
-                            ),
+
+                        ZoomIn(
+                          child: MaterialButton(
+                            padding: EdgeInsets.fromLTRB(0.0, 2.0, 0.0, 0.0),
+                            splashColor: Colors.grey,
                             child: Container(
-                              alignment: Alignment.center,
-                              padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 12.0),
-                              child: Text(
-                                "GAME RULES",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    fontStyle: FontStyle.normal,
-                                    fontFamily: 'neuropol_x_rg',
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black87),
+                              width: 220,
+                              height: 50,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(image: AssetImage('assets/icons/png/bg_button.png'), fit: BoxFit.fill),
+                              ),
+                              child: Container(
+                                alignment: Alignment.center,
+                                padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 12.0),
+                                child: Text(
+                                  "GAME RULES",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontStyle: FontStyle.normal,
+                                      fontFamily: 'neuropol_x_rg',
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black87),
+                                ),
                               ),
                             ),
+                            // ),
+                            onPressed: () {
+                              Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => GameRule()));
+                            },
                           ),
-                          // ),
-                          onPressed: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => GameRule()));
-                          },
+                          preferences:
+                              AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
                         ),
-                        MaterialButton(
-                          padding: EdgeInsets.fromLTRB(0.0, 2.0, 0.0, 0.0),
-                          splashColor: Colors.grey,
-                          child: Container(
-                            width: 220,
-                            height: 50,
-                            decoration: BoxDecoration(
-                              image: DecorationImage(image: AssetImage('assets/icons/png/bg_button.png'), fit: BoxFit.fill),
-                            ),
+                        ZoomIn(
+                          child: MaterialButton(
+                            padding: EdgeInsets.fromLTRB(0.0, 2.0, 0.0, 0.0),
+                            splashColor: Colors.grey,
                             child: Container(
-                              alignment: Alignment.center,
-                              padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 12.0),
-                              child: Text(
-                                "ABOUT",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    fontStyle: FontStyle.normal,
-                                    fontFamily: 'neuropol_x_rg',
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black87),
+                              width: 220,
+                              height: 50,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(image: AssetImage('assets/icons/png/bg_button.png'), fit: BoxFit.fill),
+                              ),
+                              child: Container(
+                                alignment: Alignment.center,
+                                padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 12.0),
+                                child: Text(
+                                  "ABOUT",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontStyle: FontStyle.normal,
+                                      fontFamily: 'neuropol_x_rg',
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black87),
+                                ),
                               ),
                             ),
+                            onPressed: () {
+                              Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => AboutScreen()));
+                            },
                           ),
-                          onPressed: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => AboutScreen()));
-                          },
+                          preferences:
+                              AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
                         ),
-                        MaterialButton(
-                          padding: EdgeInsets.fromLTRB(0.0, 2.0, 0.0, 0.0),
-                          splashColor: Colors.grey,
-                          child: Container(
-                            width: 220,
-                            height: 50,
-                            decoration: BoxDecoration(
-                              image: DecorationImage(image: AssetImage('assets/icons/png/bg_button.png'), fit: BoxFit.fill),
-                            ),
+                        ZoomIn(
+                          child: MaterialButton(
+                            padding: EdgeInsets.fromLTRB(0.0, 2.0, 0.0, 0.0),
+                            splashColor: Colors.grey,
                             child: Container(
-                              alignment: Alignment.center,
-                              padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 12.0),
-                              child: Text(
-                                "QUIT",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    fontStyle: FontStyle.normal,
-                                    fontFamily: 'neuropol_x_rg',
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black87),
+                              width: 220,
+                              height: 50,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(image: AssetImage('assets/icons/png/bg_button.png'), fit: BoxFit.fill),
+                              ),
+                              child: Container(
+                                alignment: Alignment.center,
+                                padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 12.0),
+                                child: Text(
+                                  "QUIT",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontStyle: FontStyle.normal,
+                                      fontFamily: 'neuropol_x_rg',
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black87),
+                                ),
                               ),
                             ),
+                            // ),
+                            onPressed: () {
+                              showExitDialog();
+                            },
                           ),
-                          // ),
-                          onPressed: () {
-                            showExitDialog();
-                          },
+                          preferences:
+                              AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
                         ),
                       ],
                     ),
@@ -307,7 +332,8 @@ class _MyHomePageState extends State<MyHomePage> {
                               Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Setting()));
                             },
                           ),
-                          decoration: Views.boxDecorationWidgetForIconWithBgColor(Colors.black87, 4.0, Colors.grey, 5.0, 5.0, 3.0),
+                          decoration:
+                              Views.boxDecorationWidgetForIconWithBgColor(Colors.black87, 4.0, Colors.grey, 5.0, 5.0, 3.0),
                         ),
                       ],
                     ),
@@ -336,10 +362,16 @@ class _MyHomePageState extends State<MyHomePage> {
           style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w600),
         ),
         entryAnimation: EntryAnimation.RIGHT,
-        buttonOkText: Text('QUIT', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+        buttonOkText: Text(
+          'QUIT',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
         buttonOkColor: Colors.red,
         buttonCancelColor: Colors.greenAccent,
-        buttonCancelText: Text('PLAY', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+        buttonCancelText: Text(
+          'PLAY',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
         onOkButtonPressed: () {
           SystemChannels.platform.invokeMethod<void>('SystemNavigator.pop');
         },

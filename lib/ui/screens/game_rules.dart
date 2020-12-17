@@ -136,6 +136,7 @@ class _GameRuleState extends State<GameRule> {
                   alignment: Alignment.center,
                   child: new SizedBox(
                     child: FloatingActionButton(
+                      tooltip: 'Back to previous screen',
                       backgroundColor: Colors.grey[300],
                       child: Icon(
                         Icons.arrow_back,
@@ -155,6 +156,7 @@ class _GameRuleState extends State<GameRule> {
                         alignment: Alignment.center,
                         child: new SizedBox(
                             child: FloatingActionButton(
+                              tooltip: 'Next',
                           backgroundColor: Colors.grey[300],
                           child: Text(
                             "${pageIndex + 1}",
@@ -177,6 +179,7 @@ class _GameRuleState extends State<GameRule> {
                   alignment: Alignment.center,
                   child: new SizedBox(
                     child: FloatingActionButton(
+                      tooltip: 'Previous',
                       backgroundColor: Colors.grey[300],
                       child: Icon(
                         Icons.arrow_forward,
