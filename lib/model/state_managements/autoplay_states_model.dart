@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-/// [ChangeNotifier] is a class in `flutter:foundation`. [Counter] does
+/// [ChangeNotifier] is a class in `flutter:foundation`. [AutoPlayStatesModel] does
 /// _not_ depend on Provider.
 
 class AutoPlayStatesModel with ChangeNotifier {
@@ -21,6 +21,8 @@ class AutoPlayStatesModel with ChangeNotifier {
   bool isCardOneTouched = true;
   bool isCardTwoTouched = false;
   String attributeValue = '';
+  String player1TotalPoints = '66';
+  String player2TotalPoints = '22';
 
 
   void updateAutoPlayStates(String index, String attributeTitle, String attributeValue, String cardId, bool isCardOneTouched, bool isCardTwoTouched) {

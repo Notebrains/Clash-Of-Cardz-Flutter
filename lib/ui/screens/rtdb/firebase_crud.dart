@@ -7,58 +7,15 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 
-Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  final FirebaseApp app = await Firebase.initializeApp(
-    name: 'db2',
-    /*options: Platform.isIOS || Platform.isMacOS
-        ? FirebaseOptions(
-      appId: '1:297855924061:ios:c6de2b69b03a5be8',
-      apiKey: 'AIzaSyD_shO5mfO9lhy2TVWhfo1VUmARKlG4suk',
-      projectId: 'flutter-firebase-plugins',
-      messagingSenderId: '297855924061',
-      databaseURL: 'https://flutterfire-cd2f7.firebaseio.com',
-    )
-        : FirebaseOptions(
-      appId: '1:297855924061:android:669871c998cc21bd',
-      apiKey: 'AIzaSyD_shO5mfO9lhy2TVWhfo1VUmARKlG4suk',
-      messagingSenderId: '297855924061',
-      projectId: 'flutter-firebase-plugins',
-      databaseURL: 'https://flutterfire-cd2f7.firebaseio.com',
-    ),*/
-
-    options: Platform.isIOS || Platform.isMacOS
-        ? FirebaseOptions(
-      appId: '1:297855924061:android:669871c998cc21bd',
-      apiKey: 'AIzaSyD6zszZnzOapjcJhFKtiRsiXdgIZXHwN9U',
-      messagingSenderId: '679219523500',
-      projectId: 'trump-card-43a2b',
-      databaseURL: 'https://trump-card-43a2b.firebaseio.com/',
-    )
-        : FirebaseOptions(
-      appId: '1:297855924061:android:669871c998cc21bd',
-      apiKey: 'AIzaSyD6zszZnzOapjcJhFKtiRsiXdgIZXHwN9U',
-      messagingSenderId: '679219523500',
-      projectId: 'trump-card-43a2b',
-      databaseURL: 'https://trump-card-43a2b.firebaseio.com/',
-    ),
-  );
-  runApp(MaterialApp(
-    debugShowCheckedModeBanner: false,
-    title: 'Firebase Realtime Database',
-    home: MyHomePage(app: app),
-  ));
-}
-
-class MyHomePage extends StatefulWidget {
-  MyHomePage({this.app});
+class FirebaseCrud extends StatefulWidget {
+  FirebaseCrud({this.app});
   final FirebaseApp app;
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<FirebaseCrud> {
   int _counter;
   DatabaseReference _counterRef;
   DatabaseReference _messagesRef;
@@ -140,11 +97,11 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Column(
         children: <Widget>[
           Flexible(
+            flex: 1,
             child: Center(
               child: _error == null
                   ? Text(
-                'Button tapped $_counter time${_counter == 1 ? '' : 's'}.\n\n'
-                    'This includes all devices, ever.',
+                'Button tapped $_counter time${_counter == 1 ? '' : 's'}. This includes all devices, ever.',
               )
                   : Text(
                 'Error retrieving button tap count:\n${_error.message}',
@@ -163,6 +120,7 @@ class _MyHomePageState extends State<MyHomePage> {
             title: const Text('Anchor to bottom'),
           ),
           Flexible(
+            flex: 5,
             child: FirebaseAnimatedList(
               key: ValueKey<bool>(_anchorToBottom),
               query: _messagesRef,

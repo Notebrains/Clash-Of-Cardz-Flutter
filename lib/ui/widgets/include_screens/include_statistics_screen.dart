@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:trump_card_game/model/responses/statistics_res_model.dart';
+import 'package:trump_card_game/ui/widgets/libraries/animated_text_kit/animated_text_kit.dart';
 
 Column buildStatisticsScreen(StatisticsResModel model) {
   return Column(
@@ -8,15 +9,29 @@ Column buildStatisticsScreen(StatisticsResModel model) {
     children: [
       Padding(
         padding: const EdgeInsets.fromLTRB(16.0, 8.0, 8.0, 4.0),
-        child: Text(
-          'Statistics',
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 35.0,
-            fontStyle: FontStyle.normal,
-            fontFamily: 'Rapier',
-            color: Colors.grey[700],
+        child: ColorizeAnimatedTextKit(
+          onTap: () {
+            //print("Tap Event");
+          },
+          text: [
+            "Statistics"
+          ],
+          textStyle: TextStyle(
+              fontSize: 35.0,
+              fontStyle: FontStyle.normal,
+              fontFamily: 'Rapier'
           ),
+          colors: [
+            Colors.grey[700],
+            Colors.deepOrange,
+            Colors.grey[700],
+          ],
+          textAlign: TextAlign.center,
+          alignment: AlignmentDirectional.center,
+          // or Alignment.topLeft
+          isRepeatingAnimation: true,
+          repeatForever: true,
+          speed: Duration(milliseconds: 1000),
         ),
       ),
       Expanded(

@@ -113,7 +113,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         //login button
-                        ZoomIn(
+                        FadeInDown(
                           child: MaterialButton(
                             splashColor: Colors.grey,
                             child: Container(
@@ -143,10 +143,10 @@ class _MyHomePageState extends State<MyHomePage> {
                             },
                           ),
                           preferences:
-                              AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
+                              AnimationPreferences(duration: const Duration(milliseconds: 1000), autoPlay: AnimationPlayStates.Forward),
                         ),
 
-                        ZoomIn(
+                        FadeInLeft(
                           child: MaterialButton(
                             padding: EdgeInsets.fromLTRB(0.0, 2.0, 0.0, 0.0),
                             splashColor: Colors.grey,
@@ -180,10 +180,10 @@ class _MyHomePageState extends State<MyHomePage> {
                             },
                           ),
                           preferences:
-                              AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
+                              AnimationPreferences(duration: const Duration(milliseconds: 1000), autoPlay: AnimationPlayStates.Forward),
                         ),
 
-                        ZoomIn(
+                        FadeInRight(
                           child: MaterialButton(
                             padding: EdgeInsets.fromLTRB(0.0, 2.0, 0.0, 0.0),
                             splashColor: Colors.grey,
@@ -214,9 +214,9 @@ class _MyHomePageState extends State<MyHomePage> {
                             },
                           ),
                           preferences:
-                              AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
+                              AnimationPreferences(duration: const Duration(milliseconds: 1000), autoPlay: AnimationPlayStates.Forward),
                         ),
-                        ZoomIn(
+                        FadeInUp(
                           child: MaterialButton(
                             padding: EdgeInsets.fromLTRB(0.0, 2.0, 0.0, 0.0),
                             splashColor: Colors.grey,
@@ -246,9 +246,9 @@ class _MyHomePageState extends State<MyHomePage> {
                             },
                           ),
                           preferences:
-                              AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
+                              AnimationPreferences(duration: const Duration(milliseconds: 1000), autoPlay: AnimationPlayStates.Forward),
                         ),
-                        ZoomIn(
+                        FadeInUpBig(
                           child: MaterialButton(
                             padding: EdgeInsets.fromLTRB(0.0, 2.0, 0.0, 0.0),
                             splashColor: Colors.grey,
@@ -279,7 +279,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             },
                           ),
                           preferences:
-                              AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
+                              AnimationPreferences(duration: const Duration(milliseconds: 1000), autoPlay: AnimationPlayStates.Forward),
                         ),
                       ],
                     ),

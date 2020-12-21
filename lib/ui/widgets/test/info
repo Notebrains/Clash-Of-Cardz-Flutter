@@ -1,0 +1,48 @@
+Player cards API res:
+{
+    "status": 1,
+    "message": "Data fetched succesfully",
+    "response": {
+        "catagory": "sports",
+        "subcatagory": "cricket",
+        "card_count": "14",
+        "cards": [
+            {
+                "card_name": "Pat Cummins",
+                "card_img": "16000712291.jpg",
+                "attribute": [
+                    {
+                        "name": "Economy  Rate",
+                        "value": "5.00",
+                        "win_basis": "Lowest Value",
+                        "win_points": "25.75"
+                    },
+                    {
+                        "name": "Bowling Average",
+                        "value": "6.00",
+                        "win_basis": "Lowest Value",
+                        "win_points": "50.00"
+                    }
+                ]
+            },
+            {
+                "card_name": "Jasprit Bumrah",
+                "card_img": "1600436330.jpg",
+                "attribute": [
+                    {
+                        "name": "Economy  Rate",
+                        "value": "2.55",
+                        "win_basis": "Lowest Value",
+                        "win_points": "25.75"
+                    },
+                    {
+                        "name": "Bowling Average",
+                        "value": "24.50",
+                        "win_basis": "Lowest Value",
+                        "win_points": "50.00"
+                    }
+                ]
+            }
+        ]
+    }
+}

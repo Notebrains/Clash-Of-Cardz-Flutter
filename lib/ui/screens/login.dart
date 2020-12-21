@@ -11,6 +11,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:flutter_animator/flutter_animator.dart';
 
 class LogIn extends StatefulWidget {
   const LogIn({Key key}) : super(key: key);
@@ -70,69 +71,92 @@ class _LogInState extends State<LogIn> {
                         speed: Duration(milliseconds: 1000),
                       ),
 
-                      //login button
-                      MaterialButton(
-                        padding: EdgeInsets.fromLTRB(8.0, 16.0, 8.0, 8.0),
-                        textColor: Colors.white70,
-                        splashColor: Colors.grey,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                                image: AssetImage(
-                                    'assets/icons/png/bg_button.png'),
-                                fit: BoxFit.cover),
-                          ),
+                      ZoomIn(
+                        child: MaterialButton(
+                          padding: EdgeInsets.fromLTRB(8.0, 16.0, 8.0, 8.0),
+                          textColor: Colors.white70,
+                          splashColor: Colors.grey,
                           child: Container(
-                            width: 220,
-                            height: 45,
-                            padding: EdgeInsets.fromLTRB(24.0, 5.0, 24.0, 16.0),
-                            child: Text(
-                              "LOGIN USING",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: 18.0,
-                                  fontStyle: FontStyle.normal,
-                                  fontFamily: 'neuropol_x_rg',
-                                  color: Colors.black87),
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                  image: AssetImage(
+                                      'assets/icons/png/bg_button.png'),
+                                  fit: BoxFit.cover),
+                            ),
+                            child: Container(
+                              width: 220,
+                              height: 45,
+                              padding: EdgeInsets.fromLTRB(24.0, 5.0, 24.0, 16.0),
+                              child: Text(
+                                "LOGIN USING",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: 18.0,
+                                    fontStyle: FontStyle.normal,
+                                    fontFamily: 'neuropol_x_rg',
+                                    color: Colors.black87),
+                              ),
                             ),
                           ),
+                          // ),
+                          onPressed: () {
+                            //Navigator.of(context).push(new PageRouteWithAnimation());
+                            //onPressed: () {Navigator.push(context, _pageRouteBuilder());
+                          },
                         ),
-                        // ),
-                        onPressed: () {
-                          //Navigator.of(context).push(new PageRouteWithAnimation());
-                        //onPressed: () {Navigator.push(context, _pageRouteBuilder());
-                        },
+                        preferences:
+                        AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
                       ),
+
+                      //login button
+
 
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          IconButton(
-                            highlightColor: Colors.grey,
-                            icon: SvgPicture.asset(
-                                'assets/icons/svg/google.svg'),
-                            onPressed: () {
-                              initiateSignIn("G");
-                            },
-                          ),
-                          IconButton(
-                            highlightColor: Colors.green[200],
-                            icon: Image.asset(
-                                'assets/icons/png/ic_google_play_games.png'),
-                            onPressed: () {
-                              Navigator.of(context).push(new PageRouteWithAnimation());
-
-                            },
+                          BounceInLeft(
+                            child: IconButton(
+                              highlightColor: Colors.grey,
+                              icon: SvgPicture.asset(
+                                  'assets/icons/svg/google.svg'),
+                              onPressed: () {
+                                initiateSignIn("G");
+                              },
+                            ),
+                            preferences:
+                            AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
                           ),
 
-                          IconButton(
-                            highlightColor: Colors.blue[200],
-                            icon: SvgPicture.asset(
-                                'assets/icons/svg/facebook.svg'),
-                            onPressed: () {
-                              initiateSignIn("FB");
-                            },
+                          BounceInDown(
+                            child: IconButton(
+                              highlightColor: Colors.green[200],
+                              icon: Image.asset(
+                                  'assets/icons/png/ic_google_play_games.png'),
+                              onPressed: () {
+                                Navigator.of(context).push(new PageRouteWithAnimation());
+
+                              },
+                            ),
+                            preferences:
+                            AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
                           ),
+
+
+
+                          BounceInRight(
+                            child: IconButton(
+                              highlightColor: Colors.blue[200],
+                              icon: SvgPicture.asset(
+                                  'assets/icons/svg/facebook.svg'),
+                              onPressed: () {
+                                initiateSignIn("FB");
+                              },
+                            ),
+                            preferences:
+                            AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
+                          ),
+
+
                         ],
                       ),
 
@@ -150,22 +174,27 @@ class _LogInState extends State<LogIn> {
                         ),
                       ),
 
-                      GestureDetector(
-                        child: Text(
-                          "Play As Guest",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontSize: 22.0,
-                              fontStyle: FontStyle.normal,
-                              fontFamily: 'neuropol_x_rg',
-                              fontWeight: FontWeight.bold,
-                              color: Colors.grey[700]),
-                        ),
+                      BounceInUp(
+                        child: GestureDetector(
+                          child: Text(
+                            "Play As Guest",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: 22.0,
+                                fontStyle: FontStyle.normal,
+                                fontFamily: 'neuropol_x_rg',
+                                fontWeight: FontWeight.bold,
+                                color: Colors.grey[700]),
+                          ),
 
-                        onTap: (){
-                          Navigator.of(context).push(new PageRouteWithAnimation());
-                        },
+                          onTap: (){
+                            Navigator.of(context).push(new PageRouteWithAnimation());
+                          },
+                        ),
+                        preferences:
+                        AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
                       ),
+
                     ],
                   ),
                 ),

@@ -5,6 +5,7 @@ import 'package:lottie/lottie.dart';
 import 'package:trump_card_game/bloc/api_bloc.dart';
 import 'package:trump_card_game/helper/exten_fun/base_application_fun.dart';
 import 'package:trump_card_game/model/responses/cards_res_model.dart';
+import 'package:trump_card_game/ui/screens/autoplay.dart';
 import 'package:trump_card_game/ui/screens/gameplay.dart';
 import 'package:trump_card_game/ui/widgets/custom/frosted_glass.dart';
 
@@ -33,7 +34,7 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForPlayer> wi
 
   @override
   Widget build(BuildContext context) {
-    apiBloc.fetchCardsRes('ZGHrDz4prqsu4BcApPaQYaGgq', 'cricket', 'sports', '2', '2');
+    apiBloc.fetchCardsRes('ZGHrDz4prqsu4BcApPaQYaGgq', 'cricket', 'sports', '2', '14');
     return Center(
       child: Material(
         color: Colors.transparent,
@@ -58,7 +59,11 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForPlayer> wi
                           decoration: ShapeDecoration(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0))),
                           child: Column(
                             children: <Widget>[
-                              Lottie.asset('assets/animations/lottiefiles/page-searching.json', width: getScreenWidth(context), height: getScreenHeight(context) * 0.8,),
+                              Lottie.asset(
+                                'assets/animations/lottiefiles/page-searching.json',
+                                width: getScreenWidth(context),
+                                height: getScreenHeight(context) * 0.8,
+                              ),
                               Expanded(
                                 child: Padding(
                                   padding: const EdgeInsets.only(top: 8.0),
@@ -72,7 +77,6 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForPlayer> wi
                                   ),
                                 ),
                               ),
-
                               StreamBuilder(
                                 stream: apiBloc.cardsRes,
                                 builder: (context, AsyncSnapshot<CardsResModel> snapshot) {
@@ -97,7 +101,7 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForPlayer> wi
                                       ),
                                     );
                                   }
-                                  return SizedBox();
+                                  return Container();
                                 },
                               ),
                             ],
@@ -119,9 +123,9 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForPlayer> wi
 class PageRouteWithAnimation extends CupertinoPageRoute {
   PageRouteWithAnimation()
       : super(
-            builder: (BuildContext context) => new Gameplay(
-                  name: '',
-                  friendId: '',
+            builder: (BuildContext context) => AutoPlay(
+                  name: 'Jack Demon',
+                  friendId: 'F006754',
                 ));
 
   // OPTIONAL IF YOU WISH TO HAVE SOME EXTRA ANIMATION WHILE ROUTING
@@ -131,9 +135,9 @@ class PageRouteWithAnimation extends CupertinoPageRoute {
       scale: animation,
       child: new FadeTransition(
         opacity: animation,
-        child: new Gameplay(
-          name: 'Jack',
-          friendId: '',
+        child: AutoPlay(
+          name: 'Jack Demon',
+          friendId: 'F006754',
         ),
       ),
     );

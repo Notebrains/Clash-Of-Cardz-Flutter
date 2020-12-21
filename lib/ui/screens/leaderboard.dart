@@ -5,6 +5,8 @@ import 'package:trump_card_game/helper/constantvalues/constants.dart';
 import 'package:trump_card_game/helper/exten_fun/base_application_fun.dart';
 import 'package:trump_card_game/model/responses/leaderboard_res_model.dart';
 import 'package:trump_card_game/ui/widgets/custom/frosted_glass.dart';
+import 'package:flutter_animator/flutter_animator.dart';
+import 'package:trump_card_game/ui/widgets/libraries/animated_text_kit/animated_text_kit.dart';
 
 class Leaderboard extends StatelessWidget {
    List<Response> listData;
@@ -101,118 +103,153 @@ class Leaderboard extends StatelessWidget {
             children: [
               Container(
                 margin: EdgeInsets.fromLTRB(0, 20, 0, 20),
-                child: Text(
-                  'LEADERBOARD',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 35.0,
-                    fontStyle: FontStyle.normal,
-                    fontFamily: 'Rapier',
-                    color: Colors.grey[700],
+                child: ColorizeAnimatedTextKit(
+                  onTap: () {
+                    //print("Tap Event");
+                  },
+                  text: [
+                    "LEADERBOARD"
+                  ],
+                  textStyle: TextStyle(
+                      fontSize: 35.0,
+                      fontStyle: FontStyle.normal,
+                      fontFamily: 'Rapier'
                   ),
+                  colors: [
+                    Colors.grey[700],
+                    Colors.deepOrange,
+                    Colors.grey[700],
+                  ],
+                  textAlign: TextAlign.center,
+                  alignment: AlignmentDirectional.center,
+                  // or Alignment.topLeft
+                  isRepeatingAnimation: true,
+                  repeatForever: true,
+                  speed: Duration(milliseconds: 1000),
                 ),
               ),
-              Stack(
-                alignment: Alignment.topCenter,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(top: 20.0),
-                    child: ClipRRect(
-                      child: SizedBox(
-                        width: 115,
-                        height: 120,
-                        child: DecoratedBox(
-                          decoration: BoxDecoration(
-                            color: Colors.greenAccent[700],
-                            borderRadius: BorderRadius.all(Radius.circular(5)),
-                            boxShadow: <BoxShadow>[
-                              BoxShadow(
-                                color: Colors.blueGrey,
-                                offset: Offset(5, 5),
-                                blurRadius: 5,
-                              ),
-                            ],
+
+              ZoomIn(
+                child: Stack(
+                  alignment: Alignment.topCenter,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(top: 20.0),
+                      child: ClipRRect(
+                        child: SizedBox(
+                          width: 115,
+                          height: 120,
+                          child: DecoratedBox(
+                            decoration: BoxDecoration(
+                              color: Colors.greenAccent[700],
+                              borderRadius: BorderRadius.all(Radius.circular(5)),
+                              boxShadow: <BoxShadow>[
+                                BoxShadow(
+                                  color: Colors.blueGrey,
+                                  offset: Offset(5, 5),
+                                  blurRadius: 5,
+                                ),
+                              ],
+                            ),
+                            child: FadeInLeft(
+                              child: topPlayerCards(
+                                  'assets/icons/svg/madel_first.svg',
+                                  listData[0].points,
+                                  listData[0].fullname),
+                              preferences:
+                              AnimationPreferences(duration: const Duration(milliseconds: 1000), autoPlay: AnimationPlayStates.Forward),
+                            ),
                           ),
-                          child: topPlayerCards(
-                              'assets/icons/svg/madel_first.svg',
-                              listData[0].points,
-                              listData[0].fullname),
                         ),
+                        borderRadius: new BorderRadius.circular(8.0),
                       ),
-                      borderRadius: new BorderRadius.circular(8.0),
                     ),
-                  ),
-                  ClipRRect(
-                    child: CircleAvatar(
-                      backgroundImage: NetworkImage(listData[0].photo),
+                    ClipRRect(
+                      child: CircleAvatar(
+                        backgroundImage: NetworkImage(listData[0].photo),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
+                preferences:
+                AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
               ),
+
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Stack(
-                    alignment: Alignment.topCenter,
-                    children: <Widget>[
-                      Padding(
-                        padding:
-                            const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
-                        child: ClipRRect(
-                          child: SizedBox(
-                            width: 115,
-                            height: 120,
-                            child: DecoratedBox(
-                              decoration: BoxDecoration(
-                                color: Colors.cyan[600],
-                              ),
-                              child: topPlayerCards(
-                                  'assets/icons/svg/leaf_second.svg',
-                                  listData[1].points,
-                                  listData[1].fullname
+                  ZoomInLeft(
+                    child: Stack(
+                      alignment: Alignment.topCenter,
+                      children: <Widget>[
+                        Padding(
+                          padding:
+                          const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
+                          child: ClipRRect(
+                            child: SizedBox(
+                              width: 115,
+                              height: 120,
+                              child: DecoratedBox(
+                                decoration: BoxDecoration(
+                                  color: Colors.cyan[600],
+                                ),
+                                child: topPlayerCards(
+                                    'assets/icons/svg/leaf_second.svg',
+                                    listData[1].points,
+                                    listData[1].fullname
+                                ),
                               ),
                             ),
+                            borderRadius: new BorderRadius.circular(8.0),
                           ),
-                          borderRadius: new BorderRadius.circular(8.0),
                         ),
-                      ),
-                      ClipRRect(
-                        child: CircleAvatar(
-                          backgroundImage: NetworkImage(listData[1].photo),
+                        ClipRRect(
+                          child: CircleAvatar(
+                            backgroundImage: NetworkImage(listData[1].photo),
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
+                    preferences:
+                    AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
                   ),
-                  Stack(
-                    alignment: Alignment.topCenter,
-                    children: <Widget>[
-                      Padding(
-                        padding:
-                            const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
-                        child: ClipRRect(
-                          child: SizedBox(
-                            width: 115,
-                            height: 120,
-                            child: DecoratedBox(
-                              decoration:
-                                  BoxDecoration(color: Colors.indigo[900]),
-                              child: topPlayerCards(
-                                  'assets/icons/svg/leaf_third.svg',
-                                  listData[2].points,
-                                  listData[2].fullname),
+
+                  ZoomInRight(
+                    child: Stack(
+                      alignment: Alignment.topCenter,
+                      children: <Widget>[
+                        Padding(
+                          padding:
+                          const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
+                          child: ClipRRect(
+                            child: SizedBox(
+                              width: 115,
+                              height: 120,
+                              child: DecoratedBox(
+                                decoration:
+                                BoxDecoration(color: Colors.indigo[900]),
+                                child: topPlayerCards(
+                                    'assets/icons/svg/leaf_third.svg',
+                                    listData[2].points,
+                                    listData[2].fullname),
+                              ),
                             ),
+                            borderRadius: new BorderRadius.circular(8.0),
                           ),
-                          borderRadius: new BorderRadius.circular(8.0),
                         ),
-                      ),
-                      ClipRRect(
-                        child: CircleAvatar(
-                          backgroundImage: NetworkImage(listData[2].photo),
-                        ),
-                      )
-                    ],
-                  )
+                        ClipRRect(
+                          child: CircleAvatar(
+                            backgroundImage: NetworkImage(listData[2].photo),
+                          ),
+                        )
+                      ],
+                    ),
+                    preferences:
+                    AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
+                  ),
+
                 ],
               ),
             ],

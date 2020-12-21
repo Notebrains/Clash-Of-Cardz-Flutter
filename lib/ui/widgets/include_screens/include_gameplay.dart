@@ -27,8 +27,8 @@ class BuildPlayerOneScreen extends StatelessWidget{
                     Align(
                       alignment: Alignment.topLeft,
                       child: Container(
-                        width: 150,
-                        height: 95,
+                        width: 131,
+                        height: 87,
                         alignment: AlignmentDirectional.topStart,
                         decoration: BoxDecoration(
                           color: Colors.grey[800],
@@ -51,7 +51,7 @@ class BuildPlayerOneScreen extends StatelessWidget{
                                 'Player 1',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                    fontSize: 16,
+                                    fontSize: 14,
                                     fontStyle: FontStyle.normal,
                                     fontWeight: FontWeight.bold,
                                     color: Colors.white),
@@ -61,10 +61,11 @@ class BuildPlayerOneScreen extends StatelessWidget{
                             Row(
                               children: [
                                 Container(
-                                  width: 45,
+                                  width: 40,
                                   color: Colors.black,
                                   padding: EdgeInsets.all(8),
-                                  child: Text(statesModel.playerOneLeft,
+                                  child: Text(
+                                    statesModel.playerOneLeft,
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                         fontSize: 18,
@@ -75,7 +76,7 @@ class BuildPlayerOneScreen extends StatelessWidget{
                                 ),
 
                                 Container(
-                                  width: 50,
+                                  width: 40,
                                   color: Colors.black,
                                   padding: EdgeInsets.all(8),
                                   margin:
@@ -84,21 +85,21 @@ class BuildPlayerOneScreen extends StatelessWidget{
                                     statesModel.playerOnePoint,
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
-                                        fontSize: 18,
+                                        fontSize: 16,
                                         fontStyle: FontStyle.normal,
                                         fontWeight: FontWeight.bold,
                                         color: Colors.white),
                                   ),
                                 ),
                                 Container(
-                                  width: 45,
+                                  width: 40,
                                   color: Colors.black,
                                   padding: EdgeInsets.all(8),
                                   child: Text(
                                     statesModel.playerOneTrump,
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
-                                        fontSize: 18,
+                                        fontSize: 16,
                                         fontStyle: FontStyle.normal,
                                         fontWeight: FontWeight.bold,
                                         color: Colors.white),
@@ -114,7 +115,7 @@ class BuildPlayerOneScreen extends StatelessWidget{
                                     "LEFT",
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
-                                        fontSize: 14,
+                                        fontSize: 12,
                                         fontStyle: FontStyle.normal,
                                         color: Colors.white),
                                   ),
@@ -123,7 +124,7 @@ class BuildPlayerOneScreen extends StatelessWidget{
                                   "POINTS",
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
-                                      fontSize: 14,
+                                      fontSize: 12,
                                       fontStyle: FontStyle.normal,
                                       color: Colors.white),
                                 ),
@@ -133,7 +134,7 @@ class BuildPlayerOneScreen extends StatelessWidget{
                                     "TRUMP",
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
-                                        fontSize: 14,
+                                        fontSize: 12,
                                         fontStyle: FontStyle.normal,
                                         color: Colors.white),
                                   ),
@@ -165,8 +166,8 @@ class BuildPlayerTwoScreen extends StatelessWidget {
             Align(
               alignment: Alignment.topRight,
               child: Container(
-                width: 150,
-                height: 95,
+                width: 131,
+                height: 87,
                 alignment: AlignmentDirectional.topEnd,
                 decoration: BoxDecoration(
                   color: Colors.grey[800],
@@ -188,7 +189,7 @@ class BuildPlayerTwoScreen extends StatelessWidget {
                         "Player 2",
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                            fontSize: 16,
+                            fontSize: 14,
                             fontStyle: FontStyle.normal,
                             fontWeight: FontWeight.bold,
                             color: Colors.white),
@@ -197,21 +198,21 @@ class BuildPlayerTwoScreen extends StatelessWidget {
                     Row(
                       children: [
                         Container(
-                          width: 45,
+                          width: 40,
                           color: Colors.black,
                           padding: EdgeInsets.all(8),
                           child: Text(
                             statesModel.playerTwoLeft,
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                                fontSize: 18,
+                                fontSize: 16,
                                 fontStyle: FontStyle.normal,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white),
                           ),
                         ),
                         Container(
-                          width: 50,
+                          width: 40,
                           color: Colors.black,
                           padding: EdgeInsets.all(8),
                           margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
@@ -219,21 +220,21 @@ class BuildPlayerTwoScreen extends StatelessWidget {
                             statesModel.playerTwoPoint,
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                                fontSize: 18,
+                                fontSize: 16,
                                 fontStyle: FontStyle.normal,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white),
                           ),
                         ),
                         Container(
-                          width: 45,
+                          width: 40,
                           color: Colors.black,
                           padding: EdgeInsets.all(8),
                           child: Text(
                             statesModel.playerTwoTrump,
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                                fontSize: 18,
+                                fontSize: 16,
                                 fontStyle: FontStyle.normal,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white),
@@ -249,7 +250,7 @@ class BuildPlayerTwoScreen extends StatelessWidget {
                             "LEFT",
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                                fontSize: 14,
+                                fontSize: 12,
                                 fontStyle: FontStyle.normal,
                                 color: Colors.white),
                           ),
@@ -258,7 +259,7 @@ class BuildPlayerTwoScreen extends StatelessWidget {
                           "POINTS",
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                              fontSize: 14,
+                              fontSize: 12,
                               fontStyle: FontStyle.normal,
                               color: Colors.white),
                         ),
@@ -268,7 +269,7 @@ class BuildPlayerTwoScreen extends StatelessWidget {
                             "TRUMP",
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                                fontSize: 14,
+                                fontSize: 12,
                                 fontStyle: FontStyle.normal,
                                 color: Colors.white),
                           ),
@@ -357,8 +358,8 @@ class BuildPlayerTwoScreen extends StatelessWidget {
                     Align(
                       alignment: Alignment.bottomRight,
                       child: Container(
-                        width: 150,
-                        height: 95,
+                        width: 131,
+                        height: 87,
                         alignment: AlignmentDirectional.bottomStart,
                         decoration: BoxDecoration(
                           color: Colors.grey[800],
@@ -381,7 +382,7 @@ class BuildPlayerTwoScreen extends StatelessWidget {
                                 "Player 4",
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                    fontSize: 16,
+                                    fontSize: 14,
                                     fontStyle: FontStyle.normal,
                                     fontWeight: FontWeight.bold,
                                     color: Colors.white),
@@ -390,21 +391,21 @@ class BuildPlayerTwoScreen extends StatelessWidget {
                             Row(
                               children: [
                                 Container(
-                                  width: 45,
+                                  width: 40,
                                   color: Colors.black,
                                   padding: EdgeInsets.all(8),
                                   child: Text(
                                     "10",
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
-                                        fontSize: 18,
+                                        fontSize: 16,
                                         fontStyle: FontStyle.normal,
                                         fontWeight: FontWeight.bold,
                                         color: Colors.white),
                                   ),
                                 ),
                                 Container(
-                                  width: 50,
+                                  width: 40,
                                   color: Colors.black,
                                   padding: EdgeInsets.all(8),
                                   margin:
@@ -413,21 +414,21 @@ class BuildPlayerTwoScreen extends StatelessWidget {
                                     "05",
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
-                                        fontSize: 18,
+                                        fontSize: 16,
                                         fontStyle: FontStyle.normal,
                                         fontWeight: FontWeight.bold,
                                         color: Colors.white),
                                   ),
                                 ),
                                 Container(
-                                  width: 45,
+                                  width: 40,
                                   color: Colors.black,
                                   padding: EdgeInsets.all(8),
                                   child: Text(
                                     "00",
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
-                                        fontSize: 18,
+                                        fontSize: 16,
                                         fontStyle: FontStyle.normal,
                                         fontWeight: FontWeight.bold,
                                         color: Colors.white),
@@ -443,7 +444,7 @@ class BuildPlayerTwoScreen extends StatelessWidget {
                                     "LEFT",
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
-                                        fontSize: 14,
+                                        fontSize: 12,
                                         fontStyle: FontStyle.normal,
                                         color: Colors.white),
                                   ),
@@ -452,7 +453,7 @@ class BuildPlayerTwoScreen extends StatelessWidget {
                                   "POINTS",
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
-                                      fontSize: 14,
+                                      fontSize: 12,
                                       fontStyle: FontStyle.normal,
                                       color: Colors.white),
                                 ),
@@ -462,7 +463,7 @@ class BuildPlayerTwoScreen extends StatelessWidget {
                                     "TRUMP",
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
-                                        fontSize: 14,
+                                        fontSize: 12,
                                         fontStyle: FontStyle.normal,
                                         color: Colors.white),
                                   ),
@@ -488,15 +489,15 @@ class BuildPlayerTwoScreen extends StatelessWidget {
 class BuildPlayerThreeScreen extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
-    final List<int> numbers = [1, 2, 3, 5, 8, 13];
+    final List<int> numbers = [1, 2, 3, 5, 8];
     return Consumer<AutoPlayStatesModel>(
         builder: (context, statesModel, child) => '1' == '1'? Align(
-        alignment: Alignment.topLeft,
+          alignment: AlignmentDirectional.bottomStart,
         child: Column(
           children: [
             Expanded(
               child: Container(
-                //padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
+                padding: EdgeInsets.symmetric(horizontal: 2.0, vertical: 2.0),
                 height: 40,
                 child: ListView.builder(
                   physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
@@ -517,8 +518,8 @@ class BuildPlayerThreeScreen extends StatelessWidget{
             Row(
               children: [
                 Container(
-                  width: 150,
-                  height: 95,
+                  width: 131,
+                  height: 87,
                   alignment: AlignmentDirectional.bottomStart,
                   decoration: BoxDecoration(
                     color: Colors.grey[800],
@@ -541,7 +542,7 @@ class BuildPlayerThreeScreen extends StatelessWidget{
                           'Player 3',
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                              fontSize: 16,
+                              fontSize: 14,
                               fontStyle: FontStyle.normal,
                               fontWeight: FontWeight.bold,
                               color: Colors.white),
@@ -550,21 +551,21 @@ class BuildPlayerThreeScreen extends StatelessWidget{
                       Row(
                         children: [
                           Container(
-                            width: 45,
+                            width: 40,
                             color: Colors.black,
                             padding: EdgeInsets.all(8),
                             child: Text(
                               statesModel.playerTwoLeft,
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                  fontSize: 18,
+                                  fontSize: 16,
                                   fontStyle: FontStyle.normal,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white),
                             ),
                           ),
                           Container(
-                            width: 50,
+                            width: 40,
                             color: Colors.black,
                             padding: EdgeInsets.all(8),
                             margin:
@@ -573,21 +574,21 @@ class BuildPlayerThreeScreen extends StatelessWidget{
                               statesModel.playerTwoPoint,
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                  fontSize: 18,
+                                  fontSize: 16,
                                   fontStyle: FontStyle.normal,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white),
                             ),
                           ),
                           Container(
-                            width: 45,
+                            width: 40,
                             color: Colors.black,
                             padding: EdgeInsets.all(8),
                             child: Text(
                               statesModel.playerTwoTrump,
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                  fontSize: 18,
+                                  fontSize: 16,
                                   fontStyle: FontStyle.normal,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white),
@@ -603,7 +604,7 @@ class BuildPlayerThreeScreen extends StatelessWidget{
                               "LEFT",
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                  fontSize: 14,
+                                  fontSize: 12,
                                   fontStyle: FontStyle.normal,
                                   color: Colors.white),
                             ),
@@ -612,7 +613,7 @@ class BuildPlayerThreeScreen extends StatelessWidget{
                             "POINTS",
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                                fontSize: 14,
+                                fontSize: 12,
                                 fontStyle: FontStyle.normal,
                                 color: Colors.white),
                           ),
@@ -622,7 +623,7 @@ class BuildPlayerThreeScreen extends StatelessWidget{
                               "TRUMP",
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                  fontSize: 14,
+                                  fontSize: 12,
                                   fontStyle: FontStyle.normal,
                                   color: Colors.white),
                             ),
