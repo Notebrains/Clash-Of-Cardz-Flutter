@@ -4,10 +4,11 @@ import 'package:flutter/material.dart';
 /// _not_ depend on Provider.
 
 class AutoPlayStatesModel with ChangeNotifier {
-  int value = 0;
+  int cardCountOnDeck = -5;
   String name = '';
+  bool isShowPlayerMatchStatus = false;
 
-  String index = '0';
+  int indexOfP1Card = 0;
 
   String playerOneLeft = '08';
   String playerTwoLeft = '08';
@@ -18,18 +19,26 @@ class AutoPlayStatesModel with ChangeNotifier {
   String playerOneTrump = '00';
   String playerTwoTrump = '00';
 
-  bool isCardOneTouched = true;
+  bool isCardOneTouched = false;
   bool isCardTwoTouched = false;
+
   String attributeValue = '';
   String player1TotalPoints = '66';
   String player2TotalPoints = '22';
 
 
-  void updateAutoPlayStates(String index, String attributeTitle, String attributeValue, String cardId, bool isCardOneTouched, bool isCardTwoTouched) {
-    value += 1;
+  void updateAutoPlayStates(
+      int indexOfP1Card,
+      String attributeTitle,
+      String attributeValue,
+      String cardId,
+      bool isCardOneTouched,
+      bool isCardTwoTouched
+      ) {
+
     name = 'Kiron';
 
-    this.index = index;
+    this.indexOfP1Card = indexOfP1Card;
 
     this.playerOneLeft = '10';
     this.playerTwoLeft = '11';
@@ -43,6 +52,19 @@ class AutoPlayStatesModel with ChangeNotifier {
     this.isCardOneTouched = isCardOneTouched;
     this.isCardTwoTouched = isCardTwoTouched;
     this.attributeValue = attributeValue;
+
+    notifyListeners();
+  }
+
+  void showPlayerMatchStatus(bool isShowPlayerMathStatus) {
+    this.isShowPlayerMatchStatus = isShowPlayerMathStatus;
+
+    notifyListeners();
+  }
+
+
+  void updateCardCountOnDeck(int cardCountOnDeck) {
+    this.cardCountOnDeck = cardCountOnDeck;
 
     notifyListeners();
   }

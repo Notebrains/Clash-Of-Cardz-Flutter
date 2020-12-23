@@ -71,7 +71,8 @@ class _LogInState extends State<LogIn> {
                         speed: Duration(milliseconds: 1000),
                       ),
 
-                      ZoomIn(
+                      //login button
+                      ZoomInDown(
                         child: MaterialButton(
                           padding: EdgeInsets.fromLTRB(8.0, 16.0, 8.0, 8.0),
                           textColor: Colors.white70,
@@ -105,11 +106,8 @@ class _LogInState extends State<LogIn> {
                           },
                         ),
                         preferences:
-                        AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
+                        AnimationPreferences(duration: const Duration(milliseconds: 1000), autoPlay: AnimationPlayStates.Forward),
                       ),
-
-                      //login button
-
 
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,

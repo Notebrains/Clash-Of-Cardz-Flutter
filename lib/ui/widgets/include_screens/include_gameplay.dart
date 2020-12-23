@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:trump_card_game/helper/constantvalues/constants.dart';
 import 'package:trump_card_game/helper/shared_preference_data.dart';
+import 'package:trump_card_game/model/responses/cards_res_model.dart';
 import 'package:trump_card_game/model/responses/game_option_res_model.dart';
 import 'package:trump_card_game/model/state_managements/autoplay_states_model.dart';
 import 'package:trump_card_game/ui/screens/game_result.dart';
@@ -11,13 +12,19 @@ import 'package:trump_card_game/ui/widgets/views/view_widgets.dart';
 import 'package:provider/provider.dart';
 
 class BuildPlayerOneScreen extends StatelessWidget{
+  int listLength = 0;
+
+  BuildPlayerOneScreen(int length){
+    this.listLength = length;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<AutoPlayStatesModel>(
       builder: (context, statesModel, child) =>  Container(
         child: Stack(
           children: <Widget>[
-            BuildPlayerThreeScreen(),
+            BuildPlayerThreeScreen(listLength),
 
             Align(
               alignment: Alignment.bottomLeft,
@@ -483,35 +490,25 @@ class BuildPlayerTwoScreen extends StatelessWidget {
       ),
     );
   }
-
 }
 
 class BuildPlayerThreeScreen extends StatelessWidget{
+  int listLength = 0;
+
+  BuildPlayerThreeScreen(int length){
+    this.listLength = (length/2).round();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final List<int> numbers = [1, 2, 3, 5, 8];
     return Consumer<AutoPlayStatesModel>(
         builder: (context, statesModel, child) => '1' == '1'? Align(
           alignment: AlignmentDirectional.bottomStart,
         child: Column(
           children: [
             Expanded(
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 2.0, vertical: 2.0),
-                height: 40,
-                child: ListView.builder(
-                  physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-                  scrollDirection: Axis.horizontal,
-                  itemCount: numbers.length,
-                  itemBuilder: (context, index) {
-                    return ClipRRect(
-                      child: Image.asset(
-                        'assets/images/img_card_demo.png',
-                        width: 25,
-                      ),
-                    );
-                  },
-                ),
+              child: Center(
+                child:  buildGridView(context, statesModel),
               ),
             ),
 
@@ -639,7 +636,11 @@ class BuildPlayerThreeScreen extends StatelessWidget{
                   child: IconButton(
                     icon: Image.asset(
                         'assets/icons/png/ic_right.png'),
-                    onPressed: () {},
+                    onPressed: () {
+                      if(statesModel.isShowPlayerMatchStatus){
+                        context.read<AutoPlayStatesModel>().showPlayerMatchStatus(false);
+                      } else context.read<AutoPlayStatesModel>().showPlayerMatchStatus(true);
+                    },
                   ),
                 ),
               ],
@@ -650,6 +651,62 @@ class BuildPlayerThreeScreen extends StatelessWidget{
     );
 
 
+  }
+
+  Widget buildGridView(BuildContext context, AutoPlayStatesModel statesModel) {
+    int gridListSize = 0;
+
+    //inserting data  and updating statesModel.cardCountOnDeck for the first time
+    if(statesModel.cardCountOnDeck == -5){
+      gridListSize = listLength;
+      statesModel.cardCountOnDeck = listLength;
+    } else {
+      //getting data from provider and updating count in grid view
+      gridListSize = statesModel.cardCountOnDeck;
+    }
+
+    //print('---- card Count 11 ${statesModel.cardCountOnDeck}');
+
+    return Container(
+      padding: EdgeInsets.only(top: 20, left: 4, right: 50),
+      height: 120,
+      width: 200,
+      child:  GridView(
+        physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+        // if you want IOS bouncing effect, otherwise remove this line
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 4,
+          crossAxisSpacing: 5,
+          mainAxisSpacing: 2,
+          childAspectRatio: 0.7,
+        ),
+        //change the number as you want
+        children:  List.generate(gridListSize, (index) {
+
+          return GestureDetector(
+            child: Card(
+              elevation: 5,
+              shadowColor: Colors.grey,
+              color: Colors.orange,
+              child: ClipRRect(
+                borderRadius: BorderRadius.all(Radius.circular(8.00)),
+                child: Image.asset(
+                  'assets/images/img_card_demo.png',
+                  width: 55,
+                ),
+              ),
+            ),
+
+            onTap: (){
+              print('---- card Count 22 $gridListSize');
+              if(gridListSize > 0){
+                context.read<AutoPlayStatesModel>().updateCardCountOnDeck(statesModel.cardCountOnDeck - 1);
+              }
+            },
+          );
+        }),
+      ),
+    );
   }
 
 }

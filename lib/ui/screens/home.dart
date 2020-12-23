@@ -75,36 +75,40 @@ class _MyHomePageState extends State<MyHomePage> {
                 children: <Widget>[
                   Expanded(
                     flex: 2,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          width: 40,
-                          height: 40,
-                          margin: EdgeInsets.all(5),
-                          child: IconButton(
-                            icon: Image.asset('assets/icons/png/ic_profile_whites.png'),
-                            onPressed: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Profile()));
-                            },
-                          ),
-                          decoration:
-                              Views.boxDecorationWidgetForIconWithBgColor(Colors.lightBlue, 4.0, Colors.grey, 5.0, 5.0, 3.0),
-                        ),
-                        Container(
+                    child: SlideInLeft(
+                      child:  Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
                             width: 40,
                             height: 40,
                             margin: EdgeInsets.all(5),
                             child: IconButton(
-                              splashColor: Colors.white,
-                              icon: SvgPicture.asset('assets/icons/svg/logout.svg'),
+                              icon: Image.asset('assets/icons/png/ic_profile_whites.png'),
                               onPressed: () {
-                                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => LogIn()));
+                                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Profile()));
                               },
                             ),
                             decoration:
-                                Views.boxDecorationWidgetForIconWithBgColor(Colors.redAccent, 4.0, Colors.grey, 5.0, 5.0, 3.0)),
-                      ],
+                            Views.boxDecorationWidgetForIconWithBgColor(Colors.lightBlue, 4.0, Colors.grey, 5.0, 5.0, 3.0),
+                          ),
+                          Container(
+                              width: 40,
+                              height: 40,
+                              margin: EdgeInsets.all(5),
+                              child: IconButton(
+                                splashColor: Colors.white,
+                                icon: SvgPicture.asset('assets/icons/svg/logout.svg'),
+                                onPressed: () {
+                                  Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => LogIn()));
+                                },
+                              ),
+                              decoration:
+                              Views.boxDecorationWidgetForIconWithBgColor(Colors.redAccent, 4.0, Colors.grey, 5.0, 5.0, 3.0)),
+                        ],
+                      ),
+                      preferences:
+                      AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
                     ),
                   ),
                   Expanded(
@@ -293,49 +297,53 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   Expanded(
                     flex: 2,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          width: 40,
-                          height: 40,
-                          margin: EdgeInsets.all(5),
-                          child: IconButton(
-                            icon: Image.asset('assets/icons/png/ic_statistic_white.png'),
-                            onPressed: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Leaderboard()));
-                            },
+                    child: SlideInRight(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: 40,
+                            height: 40,
+                            margin: EdgeInsets.all(5),
+                            child: IconButton(
+                              icon: Image.asset('assets/icons/png/ic_statistic_white.png'),
+                              onPressed: () {
+                                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Leaderboard()));
+                              },
+                            ),
+                            decoration:
+                            Views.boxDecorationWidgetForIconWithBgColor(Colors.greenAccent, 4.0, Colors.grey, 5.0, 5.0, 3.0),
                           ),
-                          decoration:
-                              Views.boxDecorationWidgetForIconWithBgColor(Colors.greenAccent, 4.0, Colors.grey, 5.0, 5.0, 3.0),
-                        ),
-                        Container(
-                          width: 40,
-                          height: 40,
-                          margin: EdgeInsets.all(5),
-                          child: IconButton(
-                            icon: Image.asset('assets/icons/png/ic_statistic_whites.png'),
-                            onPressed: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Statistics()));
-                            },
+                          Container(
+                            width: 40,
+                            height: 40,
+                            margin: EdgeInsets.all(5),
+                            child: IconButton(
+                              icon: Image.asset('assets/icons/png/ic_statistic_whites.png'),
+                              onPressed: () {
+                                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Statistics()));
+                              },
+                            ),
+                            decoration:
+                            Views.boxDecorationWidgetForIconWithBgColor(Colors.indigoAccent, 4.0, Colors.grey, 5.0, 5.0, 3.0),
                           ),
-                          decoration:
-                              Views.boxDecorationWidgetForIconWithBgColor(Colors.indigoAccent, 4.0, Colors.grey, 5.0, 5.0, 3.0),
-                        ),
-                        Container(
-                          width: 40,
-                          height: 40,
-                          margin: EdgeInsets.all(5),
-                          child: IconButton(
-                            icon: Image.asset('assets/icons/png/ic_setting.png'),
-                            onPressed: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Setting()));
-                            },
+                          Container(
+                            width: 40,
+                            height: 40,
+                            margin: EdgeInsets.all(5),
+                            child: IconButton(
+                              icon: Image.asset('assets/icons/png/ic_setting.png'),
+                              onPressed: () {
+                                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Setting()));
+                              },
+                            ),
+                            decoration:
+                            Views.boxDecorationWidgetForIconWithBgColor(Colors.black87, 4.0, Colors.grey, 5.0, 5.0, 3.0),
                           ),
-                          decoration:
-                              Views.boxDecorationWidgetForIconWithBgColor(Colors.black87, 4.0, Colors.grey, 5.0, 5.0, 3.0),
-                        ),
-                      ],
+                        ],
+                      ),
+                      preferences:
+                      AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
                     ),
                   ),
                 ],

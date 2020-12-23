@@ -46,4 +46,16 @@ class SharedPreferenceHelper {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getInt('memberId') ?? 0;
   }
+
+
+  Future<String> getUserName() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('fullName') ?? 0;
+  }
+
+
+  Future<String> getUserImage() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('photo') ?? 0;
+  }
 }

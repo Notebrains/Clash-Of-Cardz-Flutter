@@ -1,6 +1,6 @@
 /// status : 1
 /// message : "Data fetched succesfully"
-/// response : {"catagory":"sports","subcatagory":"cricket","card_count":"14","cards":[{"card_name":"Pat Cummins","card_img":"16000712291.jpg","attribute":[{"name":"Economy  Rate","value":"5.00","win_basis":"Lowest Value","win_points":"25.75"},{"name":"Bowling Average","value":"6.00","win_basis":"Lowest Value","win_points":"50.00"}]},{"card_name":"Jasprit Bumrah","card_img":"1600436330.jpg","attribute":[{"name":"Economy  Rate","value":"2.55","win_basis":"Lowest Value","win_points":"25.75"},{"name":"Bowling Average","value":"24.50","win_basis":"Lowest Value","win_points":"50.00"}]}]}
+/// response : {"catagory":"sports","subcatagory":"cricket","card_count":"14","cards":[{"card_name":"MS Dhoni","card_img":"https://predictfox.com/trumpcard/assets/uploads/carddetails/1608629874.jpeg","nationality":"indian","flag_image":"https://predictfox.com/trumpcard/assets/uploads/carddetails/1608629874.png","attribute":[{"name":"MATCHES","value":"500","win_basis":"Highest Value","win_points":"10"},{"name":"WICKETS","value":"1000","win_basis":"Highest Value","win_points":"15"},{"name":"RUNS","value":"25000","win_basis":"Highest Value","win_points":"25"},{"name":"CATCHES","value":"200","win_basis":"Highest Value","win_points":"5"},{"name":"SEASONS","value":"12","win_basis":"Highest Value","win_points":"20"}]}]}
 
 class CardsResModel {
   int _status;
@@ -41,7 +41,7 @@ class CardsResModel {
 /// catagory : "sports"
 /// subcatagory : "cricket"
 /// card_count : "14"
-/// cards : [{"card_name":"Pat Cummins","card_img":"16000712291.jpg","attribute":[{"name":"Economy  Rate","value":"5.00","win_basis":"Lowest Value","win_points":"25.75"},{"name":"Bowling Average","value":"6.00","win_basis":"Lowest Value","win_points":"50.00"}]},{"card_name":"Jasprit Bumrah","card_img":"1600436330.jpg","attribute":[{"name":"Economy  Rate","value":"2.55","win_basis":"Lowest Value","win_points":"25.75"},{"name":"Bowling Average","value":"24.50","win_basis":"Lowest Value","win_points":"50.00"}]}]
+/// cards : [{"card_name":"MS Dhoni","card_img":"https://predictfox.com/trumpcard/assets/uploads/carddetails/1608629874.jpeg","nationality":"indian","flag_image":"https://predictfox.com/trumpcard/assets/uploads/carddetails/1608629874.png","attribute":[{"name":"MATCHES","value":"500","win_basis":"Highest Value","win_points":"10"},{"name":"WICKETS","value":"1000","win_basis":"Highest Value","win_points":"15"},{"name":"RUNS","value":"25000","win_basis":"Highest Value","win_points":"25"},{"name":"CATCHES","value":"200","win_basis":"Highest Value","win_points":"5"},{"name":"SEASONS","value":"12","win_basis":"Highest Value","win_points":"20"}]}]
 
 class Response {
   String _catagory;
@@ -90,31 +90,43 @@ class Response {
 
 }
 
-/// card_name : "Pat Cummins"
-/// card_img : "16000712291.jpg"
-/// attribute : [{"name":"Economy  Rate","value":"5.00","win_basis":"Lowest Value","win_points":"25.75"},{"name":"Bowling Average","value":"6.00","win_basis":"Lowest Value","win_points":"50.00"}]
+/// card_name : "MS Dhoni"
+/// card_img : "https://predictfox.com/trumpcard/assets/uploads/carddetails/1608629874.jpeg"
+/// nationality : "indian"
+/// flag_image : "https://predictfox.com/trumpcard/assets/uploads/carddetails/1608629874.png"
+/// attribute : [{"name":"MATCHES","value":"500","win_basis":"Highest Value","win_points":"10"},{"name":"WICKETS","value":"1000","win_basis":"Highest Value","win_points":"15"},{"name":"RUNS","value":"25000","win_basis":"Highest Value","win_points":"25"},{"name":"CATCHES","value":"200","win_basis":"Highest Value","win_points":"5"},{"name":"SEASONS","value":"12","win_basis":"Highest Value","win_points":"20"}]
 
 class Cards {
   String _cardName;
   String _cardImg;
+  String _nationality;
+  String _flagImage;
   List<Attribute> _attribute;
 
   String get cardName => _cardName;
   String get cardImg => _cardImg;
+  String get nationality => _nationality;
+  String get flagImage => _flagImage;
   List<Attribute> get attribute => _attribute;
 
   Cards({
       String cardName, 
       String cardImg, 
+      String nationality, 
+      String flagImage, 
       List<Attribute> attribute}){
     _cardName = cardName;
     _cardImg = cardImg;
+    _nationality = nationality;
+    _flagImage = flagImage;
     _attribute = attribute;
 }
 
   Cards.fromJson(dynamic json) {
     _cardName = json["card_name"];
     _cardImg = json["card_img"];
+    _nationality = json["nationality"];
+    _flagImage = json["flag_image"];
     if (json["attribute"] != null) {
       _attribute = [];
       json["attribute"].forEach((v) {
@@ -127,6 +139,8 @@ class Cards {
     var map = <String, dynamic>{};
     map["card_name"] = _cardName;
     map["card_img"] = _cardImg;
+    map["nationality"] = _nationality;
+    map["flag_image"] = _flagImage;
     if (_attribute != null) {
       map["attribute"] = _attribute.map((v) => v.toJson()).toList();
     }
@@ -135,10 +149,10 @@ class Cards {
 
 }
 
-/// name : "Economy  Rate"
-/// value : "5.00"
-/// win_basis : "Lowest Value"
-/// win_points : "25.75"
+/// name : "MATCHES"
+/// value : "500"
+/// win_basis : "Highest Value"
+/// win_points : "10"
 
 class Attribute {
   String _name;

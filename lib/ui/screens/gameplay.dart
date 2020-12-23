@@ -48,7 +48,7 @@ class _GameplayState extends State<MyGameplay> {
             children: [
               Expanded(
                 flex: 3,
-                child: BuildPlayerOneScreen(),
+                child: BuildPlayerThreeScreen(14),
               ),
               Expanded(
                 flex: 7,
