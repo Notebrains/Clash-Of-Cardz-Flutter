@@ -3,23 +3,36 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:trump_card_game/bloc/api_bloc.dart';
 import 'package:trump_card_game/model/responses/game_option_res_model.dart';
+import 'package:trump_card_game/ui/screens/autoplay.dart';
 import 'package:trump_card_game/ui/widgets/include_screens/friends_drawer.dart';
 import 'package:trump_card_game/ui/widgets/include_screens/include_searching_players.dart';
 import 'package:trump_card_game/ui/widgets/libraries/colorize.dart';
 import 'package:trump_card_game/ui/widgets/views/view_widgets.dart';
+import 'package:flutter_animator/flutter_animator.dart';
 
 import 'login.dart';
 
 class GameMoreOption extends StatefulWidget {
 
+  GameMoreOption({this.gameType});
+
+  final String gameType;
+
+
   @override
-  _GameMoreOptionState createState() => _GameMoreOptionState();
+  _GameMoreOptionState createState() => _GameMoreOptionState(gameType);
 }
 
 class _GameMoreOptionState extends State<GameMoreOption> {
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
   List<Subcategory_details> subcategoryDetails = List();
   List<String> cardsToBePlayed = List<String>();
+
+  String gameType;
+
+  _GameMoreOptionState(String gameType){
+    this.gameType = gameType;
+  }
 
   void gameMoreOptState() {
     setState(() {
@@ -142,54 +155,68 @@ class _GameMoreOptionState extends State<GameMoreOption> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-
-                            Container(
-                              width: 40,
-                              height: 40,
-                              margin: EdgeInsets.all(5),
-                              child: IconButton(
-                                icon: SvgPicture.asset(
-                                  'assets/icons/svg/friends.svg',
-                                  color: Colors.white,
+                            SlideInDown(
+                              child: Container(
+                                width: 40,
+                                height: 40,
+                                margin: EdgeInsets.all(5),
+                                child: IconButton(
+                                  icon: SvgPicture.asset(
+                                    'assets/icons/svg/friends.svg',
+                                    color: Colors.white,
+                                  ),
+                                  onPressed: () {
+                                    apiBloc.fetchFriendsRes('ZGHrDz4prqsu4BcApPaQYaGgq', 'MEM000001');
+                                    _drawerKey.currentState.openDrawer(); // open drawer
+                                  },
                                 ),
-                                onPressed: () {
-                                  apiBloc.fetchFriendsRes('ZGHrDz4prqsu4BcApPaQYaGgq', 'MEM000001');
-                                  _drawerKey.currentState.openDrawer(); // open drawer
-                                },
+                                decoration: Views.boxDecorationWidgetForIconWithBgColor(Colors.teal[400], 4.0, Colors.grey, 5.0, 5.0, 3.0),
                               ),
-                              decoration: Views.boxDecorationWidgetForIconWithBgColor(Colors.teal[400], 4.0, Colors.grey, 5.0, 5.0, 3.0),
+                              preferences: AnimationPreferences(
+                                  duration: const Duration(milliseconds: 1500),
+                                  autoPlay: AnimationPlayStates.Forward),
                             ),
 
-                            Container(
-                              width: 40,
-                              height: 40,
-                              margin: EdgeInsets.all(5),
-                              child: IconButton(
-                                icon: SvgPicture.asset(
-                                  'assets/icons/svg/back_black.svg',
-                                  color: Colors.white,
+                            SlideInRight(
+                              child: Container(
+                                width: 40,
+                                height: 40,
+                                margin: EdgeInsets.all(5),
+                                child: IconButton(
+                                  icon: SvgPicture.asset(
+                                    'assets/icons/svg/back_black.svg',
+                                    color: Colors.white,
+                                  ),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
                                 ),
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
+                                decoration: Views.boxDecorationWidgetForIconWithBgColor(Colors.grey[800], 4.0, Colors.grey, 5.0, 5.0, 3.0),
                               ),
-                              decoration: Views.boxDecorationWidgetForIconWithBgColor(Colors.grey[800], 4.0, Colors.grey, 5.0, 5.0, 3.0),
+                              preferences: AnimationPreferences(
+                                  duration: const Duration(milliseconds: 1500),
+                                  autoPlay: AnimationPlayStates.Forward),
                             ),
 
-                            Container(
-                              width: 40,
-                              height: 40,
-                              margin: EdgeInsets.all(5),
-                              child: IconButton(
-                                icon: SvgPicture.asset(
-                                  'assets/icons/svg/logout.svg',
-                                  color: Colors.white,
+                            SlideInUp(
+                              child: Container(
+                                width: 40,
+                                height: 40,
+                                margin: EdgeInsets.all(5),
+                                child: IconButton(
+                                  icon: SvgPicture.asset(
+                                    'assets/icons/svg/logout.svg',
+                                    color: Colors.white,
+                                  ),
+                                  onPressed: () {
+                                    Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => LogIn()));
+                                  },
                                 ),
-                                onPressed: () {
-                                  Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => LogIn()));
-                                },
+                                decoration: Views.boxDecorationWidgetForIconWithBgColor(Colors.red[600], 4.0, Colors.grey, 5.0, 5.0, 3.0),
                               ),
-                              decoration: Views.boxDecorationWidgetForIconWithBgColor(Colors.red[600], 4.0, Colors.grey, 5.0, 5.0, 3.0),
+                              preferences: AnimationPreferences(
+                                  duration: const Duration(milliseconds: 1500),
+                                  autoPlay: AnimationPlayStates.Forward),
                             ),
                           ],
                         ),
@@ -233,65 +260,8 @@ class _GameMoreOptionState extends State<GameMoreOption> {
       itemCount: vsList.length,
       shrinkWrap: true,
       itemBuilder: (context, index) {
-        return Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(36)),
-          ),
-          width: double.infinity,
-          margin: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Container(
-                width: 50,
-                height: 50,
-                decoration: BoxDecoration(
-                  color: Colors.transparent,
-                  border: Border.all(
-                    color: Colors.grey[350],
-                    width: 5,
-                  ),
-                  borderRadius: BorderRadius.all(Radius.circular(35)),
-                ),
-                child: CircleAvatar(
-                  child: SvgPicture.asset('assets/icons/svg/cricket.svg'),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(8, 12, 0, 2),
-                child: GestureDetector(
-                  child: Text(
-                    vsList[index],
-                    style: TextStyle(
-                        color: Colors.black54,
-                        fontSize: 18,
-                        fontFamily: 'neuropol_x_rg',
-                        fontWeight: FontWeight.bold
-                    ),
-                  ),
-                  onTap: () {
-                    buildSecondList(cardsToBePlayed);
-                    gameMoreOptState();
-                    //print('subcategory.length----' + data.response[index].subcategory.length.toString());
-                  },
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-  Widget buildSecondList(List<String> cardsToBePlayed) {
-    if (cardsToBePlayed.length > 0) {
-      return ListView.builder(
-        physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-        padding: EdgeInsets.fromLTRB(5.0, 33.0, 16.0, 5.0),
-        itemCount: cardsToBePlayed.length,
-        shrinkWrap: true,
-        itemBuilder: (context, index) {
-          return Container(
+        return  BounceInLeft(
+          child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(36)),
             ),
@@ -319,7 +289,7 @@ class _GameMoreOptionState extends State<GameMoreOption> {
                   padding: const EdgeInsets.fromLTRB(8, 12, 0, 2),
                   child: GestureDetector(
                     child: Text(
-                      cardsToBePlayed[index],
+                      vsList[index],
                       style: TextStyle(
                           color: Colors.black54,
                           fontSize: 18,
@@ -327,16 +297,87 @@ class _GameMoreOptionState extends State<GameMoreOption> {
                           fontWeight: FontWeight.bold
                       ),
                     ),
-                    onTap: (){
-                      showDialog(
-                        context: context,
-                        builder: (_) => IncludeSearchingForPlayer(),
-                      );
+                    onTap: () {
+                      buildSecondList(cardsToBePlayed);
+                      gameMoreOptState();
+                      //print('subcategory.length----' + data.response[index].subcategory.length.toString());
                     },
                   ),
                 ),
               ],
             ),
+          ),
+          preferences: AnimationPreferences(
+              duration: const Duration(milliseconds: 3000),
+              autoPlay: AnimationPlayStates.Forward),
+        );
+      },
+    );
+  }
+
+  Widget buildSecondList(List<String> cardsToBePlayed) {
+    if (cardsToBePlayed.length > 0) {
+      return ListView.builder(
+        physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+        padding: EdgeInsets.fromLTRB(5.0, 33.0, 16.0, 5.0),
+        itemCount: cardsToBePlayed.length,
+        shrinkWrap: true,
+        itemBuilder: (context, index) {
+          return SlideInLeft(
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(36)),
+              ),
+              width: double.infinity,
+              margin: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Container(
+                    width: 50,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      color: Colors.transparent,
+                      border: Border.all(
+                        color: Colors.grey[350],
+                        width: 5,
+                      ),
+                      borderRadius: BorderRadius.all(Radius.circular(35)),
+                    ),
+                    child: CircleAvatar(
+                      child: SvgPicture.asset('assets/icons/svg/cricket.svg'),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(8, 12, 0, 2),
+                    child: GestureDetector(
+                      child: Text(
+                        cardsToBePlayed[index],
+                        style: TextStyle(
+                            color: Colors.black54,
+                            fontSize: 18,
+                            fontFamily: 'neuropol_x_rg',
+                            fontWeight: FontWeight.bold
+                        ),
+                      ),
+                      onTap: (){
+                        if(gameType == 'Player vs Computer'){
+                          Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => AutoPlay()));
+                        }else{
+                          showDialog(
+                            context: context,
+                            builder: (_) => IncludeSearchingForPlayer(),
+                          );
+                        }
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            preferences: AnimationPreferences(
+                duration: const Duration(milliseconds: 1200),
+                autoPlay: AnimationPlayStates.Forward),
           );
         },
       );

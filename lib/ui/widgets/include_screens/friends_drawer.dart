@@ -6,6 +6,7 @@ import 'package:trump_card_game/bloc/api_bloc.dart';
 import 'package:trump_card_game/helper/constantvalues/constants.dart';
 import 'package:trump_card_game/model/responses/friends_res_model.dart';
 import 'package:trump_card_game/ui/screens/gameplay.dart';
+import 'package:flutter_animator/flutter_animator.dart';
 
 import 'include_searching_players.dart';
 
@@ -55,50 +56,56 @@ Widget searchableUsersWidget(BuildContext context, FriendsResModel data) {
                       itemBuilder: (context, index) {
                         //final item = searching ? filtered.value[index] : dataList[index].fullname;
                         return GestureDetector(
-                          child: Container(
-                            margin: EdgeInsets.fromLTRB(18, 5, 5, 5),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Container(
-                                  width: 50,
-                                  height: 50,
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                      color: Colors.grey,
-                                      width: 3,
+                          child: SlideInLeft(
+                            child: Container(
+                              margin: EdgeInsets.fromLTRB(18, 5, 5, 5),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Container(
+                                    width: 50,
+                                    height: 50,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color: Colors.grey,
+                                        width: 3,
+                                      ),
+                                      borderRadius: BorderRadius.all(Radius.circular(35)),
                                     ),
-                                    borderRadius: BorderRadius.all(Radius.circular(35)),
+                                    child: CircleAvatar(
+                                      radius: 35,
+                                      backgroundImage: NetworkImage(dataList[index].photo),
+                                    ),
                                   ),
-                                  child: CircleAvatar(
-                                    radius: 35,
-                                    backgroundImage: NetworkImage(dataList[index].photo),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[
-                                      Padding(
-                                        padding: const EdgeInsets.fromLTRB(8, 6, 0, 3),
-                                        child: Text(
-                                          dataList[index].fullname,
-                                          style: TextStyle(color: Colors.white, fontSize: 15),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        Padding(
+                                          padding: const EdgeInsets.fromLTRB(8, 6, 0, 3),
+                                          child: Text(
+                                            dataList[index].fullname,
+                                            style: TextStyle(color: Colors.white, fontSize: 15),
+                                          ),
                                         ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(left: 8),
-                                        child: dataList[index].liveStatus == 1? Text('Online',
-                                          style: TextStyle(color: Colors.greenAccent[400], fontSize: 13, letterSpacing: .3))
-                                            : Text('Offline', style: TextStyle(color: Colors.white60, fontSize: 13, letterSpacing: .3)),
-                                      ),
-                                    ],
+                                        Padding(
+                                          padding: const EdgeInsets.only(left: 8),
+                                          child: dataList[index].liveStatus == 1? Text('Online',
+                                              style: TextStyle(color: Colors.greenAccent[400], fontSize: 13, letterSpacing: .3))
+                                              : Text('Offline', style: TextStyle(color: Colors.white60, fontSize: 13, letterSpacing: .3)),
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
+                            preferences: AnimationPreferences(
+                                duration: const Duration(milliseconds: 1300),
+                                autoPlay: AnimationPlayStates.Forward),
                           ),
+
                           onTap: () {
                             showDialog(
                               context: context,

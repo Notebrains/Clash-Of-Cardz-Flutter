@@ -123,7 +123,7 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForPlayer> wi
 class PageRouteWithAnimation extends CupertinoPageRoute {
   PageRouteWithAnimation()
       : super(
-            builder: (BuildContext context) => AutoPlay(
+            builder: (BuildContext context) => Gameplay(
                   name: 'Jack Demon',
                   friendId: 'F006754',
                 ));
@@ -135,7 +135,7 @@ class PageRouteWithAnimation extends CupertinoPageRoute {
       scale: animation,
       child: new FadeTransition(
         opacity: animation,
-        child: AutoPlay(
+        child: Gameplay(
           name: 'Jack Demon',
           friendId: 'F006754',
         ),

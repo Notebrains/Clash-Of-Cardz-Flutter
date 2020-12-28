@@ -3,15 +3,12 @@ import 'package:flutter/material.dart';
 /// [ChangeNotifier] is a class in `flutter:foundation`. [AutoPlayStatesModel] does
 /// _not_ depend on Provider.
 
-class AutoPlayStatesModel with ChangeNotifier {
+class GamePlayStatesModel with ChangeNotifier {
   int cardCountOnDeck = -5;
   String name = '';
   bool isShowPlayerMatchStatus = false;
 
   int indexOfP1Card = 0;
-
-  int playerOneLeft = 8;
-  int playerTwoLeft = 8;
 
   int playerOnePoint = 0;
   int playerTwoPoint = 0;
@@ -36,7 +33,6 @@ class AutoPlayStatesModel with ChangeNotifier {
       int indexOfP1Card,
       String attributeTitle,
       String attributeValue,
-      String cardId,
       bool isCardOneTouched,
       bool isCardTwoTouched
       ) {
@@ -64,7 +60,7 @@ class AutoPlayStatesModel with ChangeNotifier {
       ) {
 
     this.player1TotalPoints = player1TotalPoints;
-    this.player1TotalPoints = player1TotalPoints;
+    this.player2TotalPoints = player2TotalPoints;
 
     this.playerOneTrump = playerOneTrump;
     this.playerTwoTrump = playerTwoTrump;

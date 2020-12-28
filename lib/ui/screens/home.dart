@@ -180,7 +180,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               Navigator.push(
                                   context,
                                   CupertinoPageRoute(
-                                      builder: (BuildContext context) => AutoPlay(name: '', friendId: '')));
+                                      builder: (BuildContext context) => Gameplay(name: '', friendId: '')));
                             },
                           ),
                           preferences:

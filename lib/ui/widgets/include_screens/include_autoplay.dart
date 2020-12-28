@@ -21,14 +21,97 @@ class BuildPlayer1Screen extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return Consumer<AutoPlayStatesModel>(
-        builder: (context, statesModel, child) => '1' == '1'? Align(
-          alignment: AlignmentDirectional.topStart,
-        child: Column(
+        builder: (context, statesModel, child) => Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Expanded(
-              child: Center(
-                child:  buildGridView(context, statesModel),
+            Container(
+              width: 95,
+              height: 70,
+              margin: EdgeInsets.all(8.0),
+              alignment: AlignmentDirectional.topStart,
+              decoration: BoxDecoration(
+                color: Colors.grey[800],
+                borderRadius:
+                BorderRadius.all(Radius.circular(5)),
+                boxShadow: <BoxShadow>[
+                  BoxShadow(
+                    color: Colors.grey,
+                    offset: Offset(3, 3),
+                    blurRadius: 3,
+                  ),
+                ],
               ),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: Text(
+                      'CARDS',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontSize: 14,
+                          fontStyle: FontStyle.normal,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      Container(
+                        width: 40,
+                        color: Colors.black,
+                        margin: EdgeInsets.only(left: 5),
+                        padding: EdgeInsets.all(8),
+                        child: Text(
+                          statesModel.cardCountOnDeck == -5 ? listLength.toString() : statesModel.cardCountOnDeck.toString(),
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontSize: 16,
+                              fontStyle: FontStyle.normal,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
+                        ),
+                      ),
+
+                      Container(
+                        width: 5,
+                        color: Colors.black,
+                        padding: EdgeInsets.only(top: 8, bottom: 8),
+                        child: Text(
+                          '/',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontSize: 16,
+                              fontStyle: FontStyle.normal,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
+                        ),
+                      ),
+
+                      Container(
+                        width: 40,
+                        color: Colors.black,
+                        padding: EdgeInsets.all(8),
+                        margin: EdgeInsets.only(right: 5),
+                        child: Text(
+                          listLength.toString(),
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontSize: 16,
+                              fontStyle: FontStyle.normal,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+
+            Expanded(
+              child: buildGridView(context, statesModel),
             ),
 
             Row(
@@ -71,7 +154,7 @@ class BuildPlayer1Screen extends StatelessWidget{
                             color: Colors.black,
                             padding: EdgeInsets.all(8),
                             child: Text(
-                              statesModel.playerTwoLeft,
+                              statesModel.cardCountOnDeck.toString(),
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontSize: 16,
@@ -87,7 +170,7 @@ class BuildPlayer1Screen extends StatelessWidget{
                             margin:
                             EdgeInsets.fromLTRB(5, 0, 5, 0),
                             child: Text(
-                              statesModel.playerTwoPoint,
+                              statesModel.player1TotalPoints.toString(),
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontSize: 16,
@@ -101,7 +184,7 @@ class BuildPlayer1Screen extends StatelessWidget{
                             color: Colors.black,
                             padding: EdgeInsets.all(8),
                             child: Text(
-                              statesModel.playerTwoTrump,
+                              statesModel.playerOneTrump.toString(),
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontSize: 16,
@@ -166,10 +249,7 @@ class BuildPlayer1Screen extends StatelessWidget{
             ),
           ],
         ),
-      ) : Container(),
     );
-
-
   }
 
   Widget buildGridView(BuildContext context, AutoPlayStatesModel statesModel) {
@@ -187,14 +267,14 @@ class BuildPlayer1Screen extends StatelessWidget{
     //print('---- card Count 11 ${statesModel.cardCountOnDeck}');
 
     return Container(
-      padding: EdgeInsets.only(top: 20, left: 4, right: 50),
-      height: 120,
-      width: 200,
+      padding: EdgeInsets.only(top: 5, left: 4,),
+      height: 110,
+      width: 100,
       child:  GridView(
         physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
         // if you want IOS bouncing effect, otherwise remove this line
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 4,
+          crossAxisCount: 3,
           crossAxisSpacing: 5,
           mainAxisSpacing: 2,
           childAspectRatio: 0.7,
@@ -208,7 +288,7 @@ class BuildPlayer1Screen extends StatelessWidget{
               shadowColor: Colors.grey,
               color: Colors.orange,
               child: ClipRRect(
-                borderRadius: BorderRadius.all(Radius.circular(8.00)),
+                borderRadius: BorderRadius.all(Radius.circular(5.0)),
                 child: Image.asset(
                   'assets/images/img_card_demo.png',
                   width: 55,
@@ -219,7 +299,8 @@ class BuildPlayer1Screen extends StatelessWidget{
             onTap: (){
               print('---- card Count 22 $gridListSize');
               if(gridListSize > 0){
-                context.read<AutoPlayStatesModel>().updateCardCountOnDeck(statesModel.cardCountOnDeck - 1);
+                //context.read<AutoPlayStatesModel>().updateCardCountOnDeck(statesModel.cardCountOnDeck - 1);
+                //context.read<AutoPlayStatesModel>().updateRebuildDeck(true);
               }
             },
           );
@@ -231,12 +312,105 @@ class BuildPlayer1Screen extends StatelessWidget{
 }
 
 class BuildPlayerTwoScreen extends StatelessWidget {
+  int listLength = 0;
+
+  BuildPlayerTwoScreen(int length){
+    this.listLength = (length/2).round();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<AutoPlayStatesModel>(
       builder: (context, statesModel, child) =>  Container(
         child: Stack(
           children: <Widget>[
+            Align(
+              alignment: Alignment.topRight,
+              child: Container(
+                width: 95,
+                height: 70,
+                margin: EdgeInsets.all(8.0),
+                alignment: AlignmentDirectional.topEnd,
+                decoration: BoxDecoration(
+                  color: Colors.grey[800],
+                  borderRadius:
+                  BorderRadius.all(Radius.circular(5)),
+                  boxShadow: <BoxShadow>[
+                    BoxShadow(
+                      color: Colors.grey,
+                      offset: Offset(3, 3),
+                      blurRadius: 3,
+                    ),
+                  ],
+                ),
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: Text(
+                        'CARDS',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontSize: 14,
+                            fontStyle: FontStyle.normal,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        Container(
+                          width: 40,
+                          color: Colors.black,
+                          margin: EdgeInsets.only(left: 5),
+                          padding: EdgeInsets.all(8),
+                          child: Text(
+                            statesModel.cardCountOnDeck.toString(),
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: 16,
+                                fontStyle: FontStyle.normal,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
+                          ),
+                        ),
+
+                        Container(
+                          width: 5,
+                          color: Colors.black,
+                          padding: EdgeInsets.only(top: 8, bottom: 8),
+                          child: Text(
+                            '/',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: 16,
+                                fontStyle: FontStyle.normal,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
+                          ),
+                        ),
+
+                        Container(
+                          width: 40,
+                          color: Colors.black,
+                          padding: EdgeInsets.all(8),
+                          margin: EdgeInsets.only(right: 5),
+                          child: Text(
+                            listLength.toString(),
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: 16,
+                                fontStyle: FontStyle.normal,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
 
             Align(
               alignment: Alignment.centerRight,
@@ -352,7 +526,7 @@ class BuildPlayerTwoScreen extends StatelessWidget {
                                   color: Colors.black,
                                   padding: EdgeInsets.all(8),
                                   child: Text(
-                                    "10",
+                                      statesModel.cardCountOnDeck.toString(),
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                         fontSize: 16,
@@ -368,7 +542,7 @@ class BuildPlayerTwoScreen extends StatelessWidget {
                                   margin:
                                   EdgeInsets.fromLTRB(5, 0, 5, 0),
                                   child: Text(
-                                    "05",
+                                      statesModel.player1TotalPoints.toString(),
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                         fontSize: 16,
@@ -382,7 +556,7 @@ class BuildPlayerTwoScreen extends StatelessWidget {
                                   color: Colors.black,
                                   padding: EdgeInsets.all(8),
                                   child: Text(
-                                    "00",
+                                      statesModel.playerTwoTrump.toString(),
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                         fontSize: 16,

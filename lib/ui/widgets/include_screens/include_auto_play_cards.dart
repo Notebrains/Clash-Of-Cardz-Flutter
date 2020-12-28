@@ -14,8 +14,8 @@ Widget buildPlayerOneCard(
   List<Cards> cardsList, {
   Function(int indexOfP1Card, String attributeTitle, String attributeValue, String cardId) onClickAction,
 }) {
-  final List<String> matches = ['150', '250', '350', '50', '508', '113', '222', '321'];
-  final List<String> cardRatingList = ['4', '2', '3', '5', '3', '4', '2', '5'];
+  //final List<String> matches = ['150', '250', '350', '50', '508', '113', '222', '321'];
+  //final List<String> cardRatingList = ['4', '2', '3', '5', '3', '4', '2', '5'];
   GlobalKey<FlipCardState> cardKeyOfPlayerOne = GlobalKey<FlipCardState>();
   List<List<Attribute>> cardsAttributeListP1 = [];
 
@@ -54,11 +54,14 @@ Widget buildPlayerOneCard(
             Container(
                 width: getScreenWidth(context),
                 height: getScreenHeight(context),
-                child: Image.asset('assets/images/bg_card_back.png', fit: BoxFit.fill)),
+                child: Image.asset('assets/images/bg_card_back.png', fit: BoxFit.fill),
+            ),
+
             /*Align(
               alignment: Alignment.center,
               child: Lottie.asset('assets/animations/lottiefiles/sports-loading.json', width: 250, height: 250),
             )*/
+
           ],
         ),
         onTap: () {
@@ -91,8 +94,7 @@ Widget buildPlayerOneCard(
                   padding: const EdgeInsets.all(8.0),
                   child: FadeInImage.assetNetwork(
                       fit: BoxFit.cover,
-                      //placeholder: '',
-                      placeholder: 'assets/animations/gifs/loading_line.gif',
+                      placeholder: 'assets/animations/gifs/loading.gif',
                       image: cardsList[0].cardImg,
                       height: 150,
                       width: 150),
@@ -205,6 +207,7 @@ Widget buildPlayerOneCard(
                               ),
                             ),
                           ),
+
                           ShapeOfView(
                             height: 16,
                             width: 16,
@@ -226,9 +229,9 @@ Widget buildPlayerOneCard(
             ],
           ),
           onTap: () {
-            if (statesModel.isCardTwoTouched) {
+            /*if (statesModel.isCardTwoTouched) {
               cardKeyOfPlayerOne.currentState.toggleCard();
-            }
+            }*/
           },
         ),
       ),
@@ -240,16 +243,17 @@ Widget buildPlayerTwoCard(
   BuildContext context,
   int indexOfP1Card,
   List<Cards> cardsList, {
-  Function(int index, bool isWon) onClickActionP2,
+  Function(int index, bool isWon, int winPoint) onClickActionP2,
 }) {
-  //final List<String> matches = ['150', '250', '350', '50', '508', '113', '222', '321'];
-  //final List<String> cardRatingList = ['4', '2', '3', '5', '3', '4', '2', '5'];
 
   GlobalKey<FlipCardState> cardKeyOfPlayerTwo = GlobalKey<FlipCardState>();
   List<List<Attribute>> cardsAttributeListOfP2 = [];
   List<List<Attribute>> cardsAttributeListP1 = [];
   int indexOfP2Card = 0;
-  bool isPlayer2Won = false;
+  bool isPlayer1Won = false;
+  int p1SelectedAttributeValue = 0;
+  int p2SelectedAttributeValue = 0;
+  int winPoint = 0;
 
   try {
     //print('----card list2 length ' + (cardsList.length/2).round().toString());
@@ -271,18 +275,46 @@ Widget buildPlayerTwoCard(
     speed: 1000,
     key: cardKeyOfPlayerTwo,
     onFlipDone: (status) {
-      //p1 and p2 card will be touched in same position. This calculation to get p2 card click pos
-      indexOfP2Card = cardsAttributeListOfP2.length + indexOfP1Card;
+      //p1 and p2 card will be touched in same position. So both index will be same.
+      print('----indexOfP1Card ' + indexOfP1Card.toString());
+      print('----P1 attr value ' + cardsAttributeListP1[0][indexOfP1Card].value);
+      print('----P2 attr value ' + cardsAttributeListOfP2[0][indexOfP1Card].value);
 
-      if( int.parse(cardsAttributeListP1[0][indexOfP1Card].value) < int.parse(cardsAttributeListOfP2[0][indexOfP2Card].value)){
-          isPlayer2Won = true;
-      } else {
-        isPlayer2Won = false;
+      p1SelectedAttributeValue = int.parse(cardsAttributeListP1[0][indexOfP1Card].value);
+      p2SelectedAttributeValue = int.parse(cardsAttributeListOfP2[0][indexOfP1Card].value);
+
+
+      if(cardsAttributeListP1[0][indexOfP1Card].winBasis == 'Highest Value'){
+
+        if(p1SelectedAttributeValue > p2SelectedAttributeValue){
+          isPlayer1Won = true;
+          winPoint = int.parse(cardsAttributeListP1[0][indexOfP1Card].winPoints);
+        } else {
+          isPlayer1Won = false;
+          winPoint = int.parse(cardsAttributeListOfP2[0][indexOfP1Card].winPoints);
+        }
+
+      } else if (cardsAttributeListP1[0][indexOfP1Card].winBasis == 'Lowest Value'){
+        if(p1SelectedAttributeValue < p2SelectedAttributeValue){
+          isPlayer1Won = true;
+          winPoint = int.parse(cardsAttributeListP1[0][indexOfP1Card].winPoints);
+        } else {
+          isPlayer1Won = false;
+          winPoint = int.parse(cardsAttributeListOfP2[0][indexOfP1Card].winPoints);
+        }
+      }
+
+      if(p1SelectedAttributeValue > p2SelectedAttributeValue && cardsAttributeListP1[0][indexOfP1Card].winBasis == 'Highest Value'){
+        isPlayer1Won = true;
+
+      } else if (p1SelectedAttributeValue < p2SelectedAttributeValue && cardsAttributeListP1[0][indexOfP1Card].winBasis == 'Lowest Value'){
+        isPlayer1Won = true;
       }
 
       onClickActionP2(
           indexOfP1Card,
-          isPlayer2Won
+          isPlayer1Won,
+          winPoint
       );
     },
 
@@ -337,7 +369,7 @@ Widget buildPlayerTwoCard(
               child: FadeInImage.assetNetwork(
                   fit: BoxFit.cover,
                   placeholder: 'assets/animations/gifs/loading.gif',
-                  image: cardsList[0].cardImg,
+                  image: cardsList[7 + 0].cardImg,
                   height: 150,
                   width: 150),
             ),
@@ -428,7 +460,7 @@ Widget buildPlayerTwoCard(
                       Padding(
                         padding: const EdgeInsets.only(right: 4),
                         child: Text(
-                          cardsList[0].cardName,
+                          cardsList[7 + 0].cardName,
                           style: TextStyle(
                             fontWeight: FontWeight.w200,
                             color: Colors.white,
@@ -436,16 +468,13 @@ Widget buildPlayerTwoCard(
                           ),
                         ),
                       ),
-                      ShapeOfView(
+
+                      Container(
                         height: 16,
                         width: 16,
-                        shape: CircleShape(borderColor: Colors.white, borderWidth: 1),
-                        elevation: 1,
-                        child: FadeInImage.assetNetwork(
-                          fit: BoxFit.cover,
-                          placeholder: '',
-                          //placeholder: 'assets/animations/gifs/loading.gif',
-                          image: cardsList[0].flagImage,
+                        child: CircleAvatar(
+                          radius: 30,
+                          backgroundImage: NetworkImage(cardsList[7 + 0].flagImage),
                         ),
                       ),
                     ],
@@ -463,8 +492,9 @@ Widget buildPlayerTwoCard(
 
 Widget doFlip(GlobalKey<FlipCardState> cardKeyOfPlayerTwo) {
   return Consumer<AutoPlayStatesModel>(builder: (context, statesModel, _) {
-    Timer(Duration(milliseconds: 800), () {
+    Timer(Duration(milliseconds: 999), () {
       if (statesModel.isCardOneTouched) {
+        //print('----- ${statesModel.isCardTwoTouched}');
         cardKeyOfPlayerTwo.currentState.toggleCard();
       }
     });

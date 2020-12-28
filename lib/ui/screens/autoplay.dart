@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -62,7 +64,7 @@ class AutoPlay extends StatelessWidget {
                         Expanded(
                           flex: 7,
                           child: Consumer<AutoPlayStatesModel>(
-                            builder: (context, statesModel, child) => Container(
+                            builder: (context, statesModel, child) => statesModel.isCardDeckClickedToBuildNewCard ? Container(
                               //width: getScreenWidth(context) - 400,
                               child: Column(
                                 children: [
@@ -128,11 +130,13 @@ class AutoPlay extends StatelessWidget {
                                                 onClickAction: (int indexOfP1Card, String attributeTitle,
                                                     String attributeValue, String cardId) =>
                                                 {
-                                                  //print('----p1c clicked'),
+                                                  print('----p1c clicked'),
                                                   this.indexOfP1Card = indexOfP1Card,
                                                   context.read<AutoPlayStatesModel>().updateAutoPlayStates(
                                                       indexOfP1Card, attributeTitle, attributeValue, cardId, true, false),
                                                 },
+
+                                                  // context.read<AutoPlayStatesModel>().updateCardCountOnDeck(statesModel.cardCountOnDeck - 1 , false);
                                               ),
                                               preferences: AnimationPreferences(
                                                   duration: const Duration(milliseconds: 1500),
@@ -150,27 +154,50 @@ class AutoPlay extends StatelessWidget {
                                                 context,
                                                 indexOfP1Card,
                                                 snapshot.data.response.cards,
-                                                onClickActionP2: (int indexOfP2Card, bool isWon) => {
-                                                  // print('---- p2c data $index $isWon'),
-                                                  context.read<AutoPlayStatesModel>().updateAutoPlayStates(
-                                                      indexOfP2Card, 'attributeTitle', 'attributeValue', 'cardId', false, true),
+                                                onClickActionP2: (int indexOfP2Card, bool isWon, int winPoint) => {
+                                                  print('---- p2c data called ${statesModel.isCardOneTouched}'),
 
-                                                  //adding data in match result status list
+                                                  //context.read<AutoPlayStatesModel>().updateAutoPlayStates(
+                                                  //indexOfP2Card, 'attributeTitle', 'attributeValue', 'cardId', false, true),
+
+                                                  //adding data in match result status list and
+                                                  //updating card index and scoreboard values
+
+                                                  context.read<AutoPlayStatesModel>().updateRebuildDeck(false),
+
                                                   if (isWon){
-                                                      playerResultStatusList.add("won"),
+                                                    playerResultStatusList.add("won"),
 
-                                                      //showing lottie anim dependong on win or loose
-                                                      showWinDialog(context, isWon, 'win-result.json', 'You Won'),
-                                                    } else {
-                                                      playerResultStatusList.add("sad"),
+                                                    statesModel.playerOneTrump = statesModel.playerOneTrump + 1,
+                                                    statesModel.player1TotalPoints = statesModel.player1TotalPoints + winPoint,
 
-                                                      //showing lottie anim dependong on win or loose
-                                                      showWinDialog(context, isWon, 'confused_robot-bot-3d.json', 'You Loose'),
-                                                    }
+                                                    //showing lottie anim depending on win or loose
+                                                    /*SharedPreferenceHelper().getUserImage().then((photoUrl) =>
+                                                        showWinDialog(context, isWon, 'win-result.json', 'You Won', photoUrl),
+                                                    ),*/
 
-                                                  //update card index and scoreboard values
-                                                  //cardIndex = +1
+                                                  } else {
+                                                    playerResultStatusList.add("sad"),
+                                                    statesModel.playerTwoTrump = statesModel.playerOneTrump + 1,
+                                                    statesModel.player2TotalPoints = statesModel.player2TotalPoints + winPoint,
+                                                    //showing lottie anim depending on win or loose
+                                                    // showWinDialog(context, isWon, 'sad-star.json', '\n\n\n\nYou Loose', ''),
+                                                  },
 
+                                                  statesModel.playerOneLeft = statesModel.playerOneLeft - 1,
+                                                  statesModel.playerTwoLeft = statesModel.playerTwoLeft - 1,
+                                                  statesModel.cardsDeckIndex = statesModel.cardsDeckIndex + 1,
+                                                  statesModel.cardsDeckSize = (snapshot.data.response.cards.length/2).round(),
+
+                                                  context.read<AutoPlayStatesModel>().updatePlayerScoreboards(
+                                                      statesModel.playerOneTrump,
+                                                      statesModel.playerTwoTrump,
+                                                      statesModel.player1TotalPoints,
+                                                      statesModel.player2TotalPoints,
+                                                      statesModel.cardsDeckIndex,
+                                                      false,
+                                                      true
+                                                  ),
 
                                                 },
                                               ),
@@ -189,7 +216,6 @@ class AutoPlay extends StatelessWidget {
                                       child: Visibility(
                                           visible: statesModel.isShowPlayerMatchStatus,
                                           child: Container(
-                                            //margin: EdgeInsets.only(top: 50, bottom: 30),
                                             child: RotateInUpLeft(
                                               child: Container(
                                                 padding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 8.0),
@@ -221,16 +247,30 @@ class AutoPlay extends StatelessWidget {
                                   ),
                                 ],
                               ),
+                            ) : GestureDetector(
+                              child: Container(
+                                color: Colors.transparent,
+                                child: Center(
+                                  child: Lottie.asset(
+                                      'assets/animations/lottiefiles/flip-card-orange.json', height: 500, width:400,
+                                      repeat: true,
+                                      animate: true
+                                  ),
+                                ),
+                              ),
+
+                              onTap: (){
+                                context.read<AutoPlayStatesModel>().updateRebuildDeck(true);
+                              },
                             ),
                           ),
                         ),
                         Expanded(
                           flex: 3,
-                          child: BuildPlayerTwoScreen(),
+                          child: BuildPlayerTwoScreen(snapshot.data.response.cards.length),
                         ),
                       ],
                     ),
-                    //updateCardCountDeck(context, snapshot.data.response.cards.length),
                   ],
                 ),
               );
@@ -252,50 +292,81 @@ class AutoPlay extends StatelessWidget {
         : SvgPicture.asset('assets/icons/svg/${playerResultStatusList[index]}.svg', height: 25, width: 25);
   }
 
-  void showWinDialog(BuildContext context, bool isWon, String lottieFileName, String message) {
-    String userPhoto = '';
-    SharedPreferenceHelper().getUserImage().then((value) => userPhoto = value);
+  void showWinDialog(BuildContext context, bool isWon, String lottieFileName, String message, String photoUrl) {
+    BuildContext dialogContext;
     showDialog(
       context: context,
-      builder: (_) => Stack(children: <Widget>[
-        Center(
-          child: Lottie.asset(
-            'assets/animations/lottiefiles/$lottieFileName', height: 290, width: 290,
-            repeat: false,
-            animate: true
-          ),
-        ),
-        Center(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ClipOval(
-                child: Image.network(
-                  userPhoto,
-                  fit: BoxFit.fill,
-                  width: 65,
-                  height: 65,
-                ),
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        dialogContext = context;
+        return Dialog(
+          backgroundColor: Colors.transparent,
+          child: Stack(children: <Widget>[
+            GestureDetector(
+              child: Center(
+                child: Lottie.asset('assets/animations/lottiefiles/$lottieFileName',
+                    height: 290, width: 290, repeat: false, animate: true),
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  message,
-                  textAlign: TextAlign.start,
-                  style: TextStyle(
-                      fontSize: 13,
-                      fontStyle: FontStyle.normal,
-                      fontFamily: 'neuropol_x_rg',
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ]),
-    );
-  }
 
+              onTap: (){
+
+              },
+            ),
+            Center(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ClipOval(
+                    child: Image.network(
+                      photoUrl,
+                      fit: BoxFit.fill,
+                      width: 65,
+                      height: 65,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      message,
+                      textAlign: TextAlign.start,
+                      style: TextStyle(
+                          fontSize: 13,
+                          fontStyle: FontStyle.normal,
+                          fontFamily: 'neuropol_x_rg',
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ]),
+        );
+      },
+    );
+    Timer(Duration(milliseconds: 30000), () {
+      Navigator.pop(dialogContext);
+    });
+  }
 }
+
+/*
+Consumer<AutoPlayStatesModel>(
+                            builder: (context, statesModel, child) => statesModel.isCardDeckClickedToBuildNewCard ?  : GestureDetector(
+                              child: Container(
+                                color: Colors.transparent,
+                                child: Center(
+                                  child: Lottie.asset(
+                                      'assets/animations/lottiefiles/flip-card-orange.json',
+                                      repeat: true,
+                                      animate: true
+                                  ),
+                                ),
+                              ),
+
+                              onTap: (){
+                                context.read<AutoPlayStatesModel>().updateCardCountOnDeck(statesModel.cardCountOnDeck, true);
+                              },
+                            ),
+* */
