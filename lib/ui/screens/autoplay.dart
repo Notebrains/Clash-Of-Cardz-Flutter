@@ -130,7 +130,7 @@ class AutoPlay extends StatelessWidget {
                                                 onClickAction: (int indexOfP1Card, String attributeTitle,
                                                     String attributeValue, String cardId) =>
                                                 {
-                                                  print('----p1c clicked'),
+                                                  //print('----p1c clicked'),
                                                   this.indexOfP1Card = indexOfP1Card,
                                                   context.read<AutoPlayStatesModel>().updateAutoPlayStates(
                                                       indexOfP1Card, attributeTitle, attributeValue, cardId, true, false),
@@ -155,7 +155,7 @@ class AutoPlay extends StatelessWidget {
                                                 indexOfP1Card,
                                                 snapshot.data.response.cards,
                                                 onClickActionP2: (int indexOfP2Card, bool isWon, int winPoint) => {
-                                                  print('---- p2c data called ${statesModel.isCardOneTouched}'),
+                                                  //print('---- p2c data called ${statesModel.isCardOneTouched}'),
 
                                                   //context.read<AutoPlayStatesModel>().updateAutoPlayStates(
                                                   //indexOfP2Card, 'attributeTitle', 'attributeValue', 'cardId', false, true),

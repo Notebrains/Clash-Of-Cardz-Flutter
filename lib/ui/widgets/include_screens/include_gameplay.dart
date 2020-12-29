@@ -26,7 +26,7 @@ class BuildPlayer1Screen extends StatelessWidget{
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            width: 95,
+            width: 110,
             height: 70,
             margin: EdgeInsets.all(8.0),
             alignment: AlignmentDirectional.topStart,
@@ -45,9 +45,9 @@ class BuildPlayer1Screen extends StatelessWidget{
             child: Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.all(5.0),
+                  padding: const EdgeInsets.all(6.0),
                   child: Text(
-                    'CARDS',
+                    'P-1 CARDS',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                         fontSize: 14,
@@ -59,9 +59,9 @@ class BuildPlayer1Screen extends StatelessWidget{
                 Row(
                   children: [
                     Container(
-                      width: 40,
+                      width: 45,
                       color: Colors.black,
-                      margin: EdgeInsets.only(left: 5),
+                      margin: EdgeInsets.only(left: 7),
                       padding: EdgeInsets.all(8),
                       child: Text(
                         statesModel.cardCountOnDeck == -5 ? listLength.toString() : statesModel.cardCountOnDeck.toString(),
@@ -75,7 +75,7 @@ class BuildPlayer1Screen extends StatelessWidget{
                     ),
 
                     Container(
-                      width: 5,
+                      width: 6,
                       color: Colors.black,
                       padding: EdgeInsets.only(top: 8, bottom: 8),
                       child: Text(
@@ -90,10 +90,10 @@ class BuildPlayer1Screen extends StatelessWidget{
                     ),
 
                     Container(
-                      width: 40,
+                      width: 45,
                       color: Colors.black,
                       padding: EdgeInsets.all(8),
-                      margin: EdgeInsets.only(right: 5),
+                      margin: EdgeInsets.only(right: 7),
                       child: Text(
                         listLength.toString(),
                         textAlign: TextAlign.center,
@@ -297,7 +297,7 @@ class BuildPlayer1Screen extends StatelessWidget{
             ),
 
             onTap: (){
-              print('---- card Count 22 $gridListSize');
+              //print('---- card Count 22 $gridListSize');
               if(gridListSize > 0){
                 context.read<GamePlayStatesModel>().updateCardCountOnDeck(statesModel.cardCountOnDeck - 1);
                 //context.read<GamePlayStatesModel>().updateRebuildDeck(true);
@@ -327,7 +327,7 @@ class BuildPlayerTwoScreen extends StatelessWidget {
             Align(
               alignment: Alignment.topRight,
               child: Container(
-                width: 95,
+                width: 110,
                 height: 70,
                 margin: EdgeInsets.all(8.0),
                 alignment: AlignmentDirectional.topEnd,
@@ -346,9 +346,9 @@ class BuildPlayerTwoScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.all(5.0),
+                      padding: const EdgeInsets.all(6.0),
                       child: Text(
-                        'CARDS',
+                        'P-2 CARDS',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             fontSize: 14,
@@ -360,9 +360,9 @@ class BuildPlayerTwoScreen extends StatelessWidget {
                     Row(
                       children: [
                         Container(
-                          width: 40,
+                          width: 45,
                           color: Colors.black,
-                          margin: EdgeInsets.only(left: 5),
+                          margin: EdgeInsets.only(left: 7),
                           padding: EdgeInsets.all(8),
                           child: Text(
                             statesModel.cardCountOnDeck.toString(),
@@ -391,10 +391,10 @@ class BuildPlayerTwoScreen extends StatelessWidget {
                         ),
 
                         Container(
-                          width: 40,
+                          width: 45,
                           color: Colors.black,
                           padding: EdgeInsets.all(8),
-                          margin: EdgeInsets.only(right: 5),
+                          margin: EdgeInsets.only(right: 7),
                           child: Text(
                             listLength.toString(),
                             textAlign: TextAlign.center,

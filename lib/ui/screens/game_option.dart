@@ -42,7 +42,26 @@ class GameOption extends StatelessWidget {
               ),
             ),
 
-            IncludeGameOption()
+            IncludeGameOption(),
+
+            Container(
+              margin: EdgeInsets.fromLTRB(0, 0, 16, 16),
+              child: Align(
+                alignment: AlignmentDirectional.bottomEnd,
+                child: FloatingActionButton(
+                  mini: true,
+                  tooltip: 'Back to previous screen',
+                  backgroundColor: Colors.grey[400],
+                  child: Icon(
+                    Icons.arrow_back,
+                    color: Colors.black,
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+              ),
+            ),
           ],
         ),
       ),

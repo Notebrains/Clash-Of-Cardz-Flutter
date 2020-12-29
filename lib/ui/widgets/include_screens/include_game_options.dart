@@ -132,7 +132,7 @@ class _IncludeGameOptionState extends State<IncludeGameOption> {
                       //print('Clicked on first screen');
                       subcategoryDetails.clear();
                       buildSecondList(data.response[index].subcategory);
-                      print('subcategory.length----' + data.response[index].subcategory.length.toString());
+                      //print('subcategory.length----' + data.response[index].subcategory.length.toString());
                       _includeGameOptState();
                     },
                   ),
@@ -221,7 +221,7 @@ class _IncludeGameOptionState extends State<IncludeGameOption> {
   Widget buildThirdList(List<Subcategory_details> subcategoryDetailsList) {
     //final List<String> listData1 = <String>['Player vs Player', 'Play With Friend', 'Play With Random', 'Tournament', 'Play With Computer'];
     subcategoryDetails = List.from(subcategoryDetailsList);
-    print('subcategoryDetails.length----' + subcategoryDetails.length.toString());
+    //print('subcategoryDetails.length----' + subcategoryDetails.length.toString());
 
     if (subcategory.length > 0) {
       return ListView.builder(

@@ -128,7 +128,7 @@ class Gameplay extends StatelessWidget {
                                                 snapshot.data.response.cards,
                                                 indexOfCardDeck,
                                                 onClickActionOnP1GameplayCard: (int indexOfP1Card, String attributeTitle, String attributeValue) => {
-                                                  print('----p1c clicked'),
+                                                  //print('----p1c clicked'),
                                                   this.indexOfP1Card = indexOfP1Card,
                                                 },
                                               ),
@@ -159,7 +159,7 @@ class Gameplay extends StatelessWidget {
                                                       SharedPreferenceHelper().getUserImage().then(
                                                             (photoUrl) => showWinDialog(context, statesModel, isWon,
                                                                 'win-result.json', 'You Won', photoUrl, 4000, winPoint),
-                                                          ),
+                                                      ),
                                                     }
                                                   else
                                                     {
@@ -320,6 +320,8 @@ class Gameplay extends StatelessWidget {
 
       context.read<GamePlayStatesModel>().updatePlayerScoreboards(statesModel.playerOneTrump, statesModel.playerTwoTrump,
           statesModel.player1TotalPoints, statesModel.player2TotalPoints, statesModel.cardsDeckIndex, false, false);
+
+      context.read<GamePlayStatesModel>().updateCardCountOnDeck(statesModel.cardCountOnDeck - 1);
     });
   }
 }

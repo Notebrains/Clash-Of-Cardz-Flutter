@@ -140,7 +140,6 @@ class _LogInState extends State<LogIn> {
                           ),
 
 
-
                           BounceInRight(
                             child: IconButton(
                               highlightColor: Colors.blue[200],
@@ -159,9 +158,9 @@ class _LogInState extends State<LogIn> {
                       ),
 
                       Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.all(0.0),
                         child: Text(
-                          "Or",
+                          "",
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               fontSize: 16.0,
@@ -175,10 +174,10 @@ class _LogInState extends State<LogIn> {
                       BounceInUp(
                         child: GestureDetector(
                           child: Text(
-                            "Play As Guest",
+                            "PLAY NOW",
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                                fontSize: 22.0,
+                                fontSize: 26.0,
                                 fontStyle: FontStyle.normal,
                                 fontFamily: 'neuropol_x_rg',
                                 fontWeight: FontWeight.bold,

@@ -20,7 +20,7 @@ Widget buildPlayerOneCard(
   List<List<Attribute>> cardsAttributeListP1 = [];
 
   try {
-    print('----card list1 length ' + (cardsList.length).toString());
+    //print('----card list1 length ' + (cardsList.length).toString());
 
     for (int i = 0; i < (cardsList.length/2).round(); i++) {
       cardsAttributeListP1.add(cardsList[i].attribute);

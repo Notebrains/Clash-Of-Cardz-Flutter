@@ -5,7 +5,7 @@ class SharedPreferenceHelper {
     final prefs = await SharedPreferences.getInstance();
     final xApiKey = prefs.getInt('x_api_key') ?? 0;
     final memberId = prefs.getInt('memberId') ?? 0;
-    print('----read: $memberId');
+    //print('----read: $memberId');
   }
 
   void saveUserProfileData(
@@ -34,7 +34,7 @@ class SharedPreferenceHelper {
   void saveUserApiKey(String xApiKey) async {
     final prefs = await SharedPreferences.getInstance();
     prefs.setString('x_api_key', xApiKey);
-    print('----saved $xApiKey');
+    //print('----saved $xApiKey');
   }
 
   Future<int> getUserApiKey() async {

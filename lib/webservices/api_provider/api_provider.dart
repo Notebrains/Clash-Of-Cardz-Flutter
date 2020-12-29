@@ -79,8 +79,8 @@ class ApiProvider {
   }
 
   Future<StatisticsResModel> statisticsApi(String xApiKey, String memberId) async {
-    print("----" + xApiKey);
-    print("----" + memberId);
+    //print("----" + xApiKey);
+    //print("----" + memberId);
 
     Map<String, String> headers = {
       "Content-Type": 'application/x-www-form-urlencoded',
@@ -96,7 +96,7 @@ class ApiProvider {
       body: requestBody,
     );
 
-    print("Statistics Res: ---- " + response.body);
+    //print("Statistics Res: ---- " + response.body);
 
     if (response.statusCode == 200) {
       // If the server did return a 201 CREATED response,

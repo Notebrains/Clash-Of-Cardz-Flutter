@@ -14,7 +14,7 @@ Widget buildPlayerOneCard(
     List<Cards> cardsList,
     int indexOfCardDeck,
     {
-      Function(int indexOfP1Card, String attributeTitle, String attributeValue) onClickActionOnP1GameplayCard,
+      Function(int p1SelectedIndexOfAttributeList, String attributeTitle, String attributeValue) onClickActionOnP1GameplayCard,
     }) {
   //final List<String> matches = ['150', '250', '350', '50', '508', '113', '222', '321'];
   //final List<String> cardRatingList = ['4', '2', '3', '5', '3', '4', '2', '5'];
@@ -22,7 +22,7 @@ Widget buildPlayerOneCard(
   List<List<Attribute>> cardsAttributeListP1 = [];
 
   try {
-    print('----card list1 length ' + (cardsList.length).toString());
+    //print('----card list1 length ' + (cardsList.length).toString());
 
     for (int i = 0; i < (cardsList.length/2).round(); i++) {
       cardsAttributeListP1.add(cardsList[i].attribute);
@@ -213,11 +213,9 @@ Widget buildPlayerOneCard(
                         width: 16,
                         shape: CircleShape(borderColor: Colors.white, borderWidth: 1),
                         elevation: 1,
-                        child: FadeInImage.assetNetwork(
-                          fit: BoxFit.cover,
-                          //placeholder: '',
-                          placeholder: 'assets/animations/gifs/loading.gif',
-                          image: cardsList[indexOfCardDeck].flagImage,
+                        child: CircleAvatar(
+                          radius: 30,
+                          backgroundImage: NetworkImage(cardsList[indexOfCardDeck].flagImage),
                         ),
                       ),
                     ],
@@ -234,7 +232,7 @@ Widget buildPlayerOneCard(
 
 Widget buildPlayerTwoCard(
     BuildContext context,
-    int indexOfP1Card,
+    int p1SelectedIndexOfAttributeList,
     int indexOfCardDeck,
     List<Cards> cardsList, {
       Function(bool isWon, int winPoint) onClickActionOnP2GameplayCard,
@@ -249,12 +247,14 @@ Widget buildPlayerTwoCard(
   int p2SelectedAttributeValue = 0;
   int winPoint = 0;
   int cardListSizeForP2 = (cardsList.length / 2).round();
+  //int indexOfCardDeckForP2 = cardListSizeForP2 + indexOfCardDeck;
 
   try {
-    print('----cardListSizeForP2 ' + cardListSizeForP2.toString());
+    //print('----cardListSizeForP2 ' + cardListSizeForP2.toString());
 
     for (int i = 0; i < cardListSizeForP2; i++) {
       cardsAttributeListP1.add(cardsList[i].attribute);
+
     }
 
     for (int i = cardListSizeForP2; i < cardsList.length; i++) {
@@ -347,7 +347,7 @@ Widget buildPlayerTwoCard(
               // if you want IOS bouncing effect, otherwise remove this line
               padding: EdgeInsets.all(4),
               //change the number as you want
-              children: List.generate(cardsAttributeListOfP2[0].length, (index) {
+              children: List.generate(cardsAttributeListOfP2[indexOfCardDeck].length, (index) {
                 return Container(
                   //margin: EdgeInsets.only(left: 5, right: 5),
                   margin: EdgeInsets.symmetric(vertical: 0, horizontal: 1),
@@ -359,7 +359,7 @@ Widget buildPlayerTwoCard(
                         Row(
                           children: [
                             Text(
-                              cardsAttributeListOfP2[0][index].value,
+                              cardsAttributeListOfP2[indexOfCardDeck][index].value,
                               textAlign: TextAlign.start,
                               style: TextStyle(
                                   fontSize: 9,
@@ -374,7 +374,7 @@ Widget buildPlayerTwoCard(
                                 color: Colors.yellow,
                               ),
                               Text(
-                                cardsAttributeListOfP2[0][index].winPoints,
+                                cardsAttributeListOfP2[indexOfCardDeck][index].winPoints,
                                 textAlign: TextAlign.right,
                                 style: TextStyle(fontSize: 7, fontWeight: FontWeight.bold, color: Colors.black),
                               ),
@@ -383,7 +383,7 @@ Widget buildPlayerTwoCard(
                         ),
 
                         Text(
-                          cardsAttributeListOfP2[0][index].name,
+                          cardsAttributeListOfP2[indexOfCardDeck][index].name,
                           textAlign: TextAlign.start,
                           style: TextStyle(
                               fontSize: 8,
@@ -411,33 +411,36 @@ Widget buildPlayerTwoCard(
                       p2SelectedAttributeValue = 0;
                       winPoint = 0;
 
-                      p1SelectedAttributeValue = int.parse(cardsAttributeListP1[indexOfCardDeck][indexOfP1Card].value);
-                      p2SelectedAttributeValue = int.parse(cardsAttributeListOfP2[indexOfCardDeck][indexOfP1Card].value);
+                      p1SelectedAttributeValue = int.parse(cardsAttributeListP1[indexOfCardDeck][index].value);
+                      p2SelectedAttributeValue = int.parse(cardsAttributeListOfP2[indexOfCardDeck][index].value);
 
-
-                      if(cardsAttributeListP1[indexOfCardDeck][indexOfP1Card].winBasis == 'Highest Value'){
+                      if(cardsAttributeListP1[indexOfCardDeck][index].winBasis == 'Highest Value'){
                         if(p1SelectedAttributeValue > p2SelectedAttributeValue){
                           isPlayer1Won = true;
-                          winPoint = int.parse(cardsAttributeListP1[indexOfCardDeck][indexOfP1Card].winPoints);
+                          winPoint = int.parse(cardsAttributeListP1[indexOfCardDeck][index].winPoints);
                         } else {
                           isPlayer1Won = false;
-                          winPoint = int.parse(cardsAttributeListOfP2[indexOfCardDeck][indexOfP1Card].winPoints);
+                          winPoint = int.parse(cardsAttributeListOfP2[indexOfCardDeck][index].winPoints);
                         }
 
-                      } else if (cardsAttributeListP1[indexOfCardDeck][indexOfP1Card].winBasis == 'Lowest Value'){
+                      } else if (cardsAttributeListP1[indexOfCardDeck][index].winBasis == 'Lowest Value'){
                         if(p1SelectedAttributeValue < p2SelectedAttributeValue){
                           isPlayer1Won = true;
-                          winPoint = int.parse(cardsAttributeListP1[indexOfCardDeck][indexOfP1Card].winPoints);
+                          winPoint = int.parse(cardsAttributeListP1[indexOfCardDeck][index].winPoints);
                         } else {
                           isPlayer1Won = false;
-                          winPoint = int.parse(cardsAttributeListOfP2[indexOfCardDeck][indexOfP1Card].winPoints);
+                          winPoint = int.parse(cardsAttributeListOfP2[indexOfCardDeck][index].winPoints);
                         }
                       }
 
 
-                      print('----indexOfP1Card ' + indexOfP1Card.toString());
-                      print('----P1 attr value ' + cardsAttributeListP1[indexOfCardDeck][indexOfP1Card].value);
-                      print('----P2 attr value ' + cardsAttributeListOfP2[indexOfCardDeck][indexOfP1Card].value);
+                      print('----indexOfCardDeck ' + indexOfCardDeck.toString());
+                      print('----p1SelectedIndexOfAttributeList ' + p1SelectedIndexOfAttributeList.toString());
+                      print('----p2SelectedIndexOfAttributeList ' + index.toString());
+                      print('----P1 attr name ' + cardsAttributeListP1[indexOfCardDeck][index].name);
+                      print('----P1 attr value ' + cardsAttributeListP1[indexOfCardDeck][index].value);
+                      print('----P2 attr name ' + cardsAttributeListOfP2[indexOfCardDeck][index].name);
+                      print('----P2 attr value ' + cardsAttributeListOfP2[indexOfCardDeck][index].value);
                       print('----win Point ' + winPoint.toString());
 
                       onClickActionOnP2GameplayCard(
