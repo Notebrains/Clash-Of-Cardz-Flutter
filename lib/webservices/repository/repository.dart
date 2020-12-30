@@ -7,6 +7,7 @@ import 'package:trump_card_game/model/responses/statistics_res_model.dart';
 import 'package:trump_card_game/model/responses/leaderboard_res_model.dart';
 import 'package:trump_card_game/model/responses/profile_res_model.dart';
 import 'package:trump_card_game/webservices/api_provider/api_provider.dart';
+import 'package:trump_card_game/model/responses/save_game_result_res_model.dart';
 
 
 class Repository {
@@ -37,4 +38,7 @@ class Repository {
 
   Future<MatchMakingResModel> fetchMatchMakingApi(String xApiKey) =>
       appApiProvider.fetchMatchMakingApi(xApiKey);
+
+  Future<SaveGameResultResModel> fetchSaveGameResultApi(String xApiKey, Map<String, Object> requestBody) =>
+      appApiProvider.fetchSaveGameResultApi(xApiKey, requestBody);
 }

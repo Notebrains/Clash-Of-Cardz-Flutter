@@ -46,29 +46,33 @@ class _LogInState extends State<LogIn> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      ColorizeAnimatedTextKit(
-                        onTap: () {
-                          //print("Tap Event");
-                        },
-                        text: [
-                          "CLASH OF CARDZ"
-                        ],
-                        textStyle: TextStyle(
-                          fontSize: 55.0,
-                          fontStyle: FontStyle.normal,
-                          fontFamily: 'Rapier'
+                      FadeInDownBig(
+                        child: ColorizeAnimatedTextKit(
+                          onTap: () {
+                            //print("Tap Event");
+                          },
+                          text: [
+                            "CLASH OF CARDZ"
+                          ],
+                          textStyle: TextStyle(
+                              fontSize: 55.0,
+                              fontStyle: FontStyle.normal,
+                              fontFamily: 'Rapier'
+                          ),
+                          colors: [
+                            Colors.grey[700],
+                            Colors.deepOrange,
+                            Colors.grey[700],
+                          ],
+                          textAlign: TextAlign.center,
+                          alignment: AlignmentDirectional.center,
+                          // or Alignment.topLeft
+                          isRepeatingAnimation: true,
+                          repeatForever: true,
+                          speed: Duration(milliseconds: 1000),
                         ),
-                        colors: [
-                          Colors.grey[700],
-                          Colors.deepOrange,
-                          Colors.grey[700],
-                        ],
-                        textAlign: TextAlign.center,
-                        alignment: AlignmentDirectional.center,
-                        // or Alignment.topLeft
-                        isRepeatingAnimation: true,
-                        repeatForever: true,
-                        speed: Duration(milliseconds: 1000),
+                        preferences:
+                        AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
                       ),
 
                       //login button
@@ -197,9 +201,13 @@ class _LogInState extends State<LogIn> {
                 ),
                 Expanded(
                   flex: 1,
-                  child: Container(
-                    margin: EdgeInsets.fromLTRB(80, 0, 80, 0),
-                    child: CarouselAutoSlider(),
+                  child: FadeInRightBig(
+                    child: Container(
+                      margin: EdgeInsets.fromLTRB(80, 0, 80, 0),
+                      child: CarouselAutoSlider(),
+                    ),
+                    preferences:
+                    AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
                   ),
                 ),
               ],
@@ -233,20 +241,21 @@ class _LogInState extends State<LogIn> {
           final user = await FirebaseAuth.instance.signInWithCredential(facebookAuthCred);
           //var user = (await firebaseAuth.signInWithCredential(facebookAuthCred)).user;
           try {
-            print("----G User : " + user.displayName);
-            print("----G uid : " + user.uid);
-            print("----G email : " + user.email);
-            print("----G phoneNumber : " + user.phoneNumber);
-            print("----G photoUrl : " + user.photoUrl);
-            print("----G providerId : " + user.providerId);
+            print("----F User : " + user.displayName);
+            print("----F uid : " + user.uid);
+            print("----F email : " + user.email);
+            print("----F phoneNumber : " + user.phoneNumber);
+            print("----F photoUrl : " + user.photoUrl);
+            print("----F providerId : " + user.providerId);
 
             //loginByServer(user.displayName, user.email, user.uid, user.photoUrl, "deviceToken", "memberId");
-            loginByServer("soijioejfoief", "dijdidoiascswidii@gijg.se", "8565635353", "ddw.jpg", "fsefsefsf", "MEM000019");
+            loginByServer(user.displayName, user.email, user.uid, "ddw.jpg", "fsefsefsf", "MEM000019");
           } catch (e) {
             print(e);
           }
           return 1;
         } else
+          print("--------");
           return 0;
         break;
       case "G":
@@ -259,22 +268,23 @@ class _LogInState extends State<LogIn> {
           final user = await FirebaseAuth.instance.signInWithCredential(googleAuthCred);
 
           try {
-            print("----F User : " + user.displayName);
-            print("----F uid : " + user.uid);
-            print("----F email : " + user.email);
+            print("----G User : " + user.displayName);
+            print("----G uid : " + user.uid);
+            print("----G email : " + user.email);
             //print("----F phoneNumber : " + user.phoneNumber);
-            print("----F photoUrl : " + user.photoUrl);
-            print("----F providerId : " + user.providerId);
+            print("----G photoUrl : " + user.photoUrl);
+            print("----G providerId : " + user.providerId);
 
-
-            loginByServer("soijioejfoief", "dijdidoiascswidii@gijg.se", "8565635353", "ddw.jpg", "fsefsefsf", "MEM000019");
-
+            loginByServer(user.displayName, user.email, user.uid, "ddw.jpg", "fsefsefsf", "MEM000019");
           } catch (e) {
             print(e);
+            print('e-----------------');
           }
 
           return 1;
         } catch (error) {
+
+          print('e---s--------------');
           return 0;
         }
     }
@@ -307,21 +317,27 @@ class _LogInState extends State<LogIn> {
   }
 
   void loginByServer(String name, String email, String socialId, String image, String deviceToken, String memberId) {
-    apiBloc.fetchLoginRes(name, email, socialId, image, deviceToken, memberId);
+    //change here
+
+    SharedPreferenceHelper().saveUserApiKey('d09VJNkHEQq4mgjnpwOE3LBNO');
+    Navigator.of(context).push( PageRouteWithAnimation());
+
+
+    /*apiBloc.fetchLoginRes(name, email, socialId, image, deviceToken, memberId);
      StreamBuilder(
         stream: apiBloc.loginRes,
         builder: (context, AsyncSnapshot<LoginResModel> snapshot) {
+          print('1111--------------');
           if (snapshot.hasData) {
-            LoginResModel res = snapshot.data;
-            if(res.message == "login successfully"){
-              SharedPreferenceHelper().saveUserApiKey(res.responce.xApiKey);
-              Navigator.of(context).push(new PageRouteWithAnimation());
+            if(snapshot.data.status == 1){
+              SharedPreferenceHelper().saveUserApiKey(snapshot.data.responce.xApiKey);
+              Navigator.of(context).push( PageRouteWithAnimation());
             }
           } else if (snapshot.hasError) {
-            return Text(snapshot.error.toString());
+            return Text('');
           }
           return Center(child: CircularProgressIndicator());
-        });
+        });*/
   }
 }
 

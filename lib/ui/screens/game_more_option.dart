@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:trump_card_game/bloc/api_bloc.dart';
+import 'package:trump_card_game/helper/exten_fun/base_application_fun.dart';
 import 'package:trump_card_game/model/responses/game_option_res_model.dart';
 import 'package:trump_card_game/ui/screens/autoplay.dart';
 import 'package:trump_card_game/ui/widgets/include_screens/friends_drawer.dart';
@@ -9,7 +12,9 @@ import 'package:trump_card_game/ui/widgets/include_screens/include_searching_pla
 import 'package:trump_card_game/ui/widgets/libraries/colorize.dart';
 import 'package:trump_card_game/ui/widgets/views/view_widgets.dart';
 import 'package:flutter_animator/flutter_animator.dart';
+import 'package:lottie/lottie.dart';
 
+import 'gameplay.dart';
 import 'login.dart';
 
 class GameMoreOption extends StatefulWidget {
@@ -361,13 +366,15 @@ class _GameMoreOptionState extends State<GameMoreOption> {
                         ),
                       ),
                       onTap: (){
-                        if(gameType == 'Player vs Computer'){
+                        //change here
+                        /*if(gameType == 'Player vs Computer'){
                           Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => AutoPlay()));
-                        }else{
-                          showDialog(
+                        }else*/{
+                          /*showDialog(
                             context: context,
                             builder: (_) => IncludeSearchingForPlayer(),
-                          );
+                          );*/
+                          showTimesUpDialog(context);
                         }
                       },
                     ),
@@ -384,5 +391,56 @@ class _GameMoreOptionState extends State<GameMoreOption> {
     } else {
       return SizedBox();
     }
+  }
+
+  void showTimesUpDialog(BuildContext context) {
+    BuildContext dialogContext;
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      useSafeArea: true,
+      builder: (BuildContext context) {
+        dialogContext = context;
+        return Dialog(
+          backgroundColor: Colors.transparent,
+          child: FadeInUp(
+            child: Column(
+              children: [
+                Center(
+                  child: Lottie.asset('assets/animations/lottiefiles/page-searching.json',
+                      width: getScreenWidth(context),
+                      height: getScreenHeight(context) * 0.7,
+                      repeat: true,
+                      animate: true),
+                ),
+
+                Expanded(
+                  child: Text(
+                    "Searching for player",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 24,
+                        fontFamily: 'neuropol_x_rg',
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ],
+            ),
+            preferences: AnimationPreferences(duration: const Duration(milliseconds: 300), autoPlay: AnimationPlayStates.Forward),
+          ),
+        );
+      },
+    );
+
+
+    Timer(Duration(seconds: 5), () {
+      Navigator.pop(dialogContext);
+      Navigator.push(
+        context,
+        CupertinoPageRoute(
+          builder: (context) => Gameplay(name: 'Jack Demon', friendId: 'F006754'),
+        ),
+      );
+    });
   }
 }

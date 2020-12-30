@@ -5,6 +5,7 @@ import 'package:trump_card_game/helper/exten_fun/base_application_fun.dart';
 import 'package:shape_of_view/shape_of_view.dart';
 import 'package:trump_card_game/model/responses/cards_res_model.dart';
 import 'package:trump_card_game/model/state_managements/gameplay_states_model.dart';
+import 'package:trump_card_game/ui/widgets/include_screens/include_game_play_dialogs.dart';
 import 'package:trump_card_game/ui/widgets/libraries/flip_card.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
@@ -250,7 +251,7 @@ Widget buildPlayerTwoCard(
   //int indexOfCardDeckForP2 = cardListSizeForP2 + indexOfCardDeck;
 
   try {
-    //print('----cardListSizeForP2 ' + cardListSizeForP2.toString());
+    print('-----flagImage ' + cardsList[cardListSizeForP2 + indexOfCardDeck].flagImage);
 
     for (int i = 0; i < cardListSizeForP2; i++) {
       cardsAttributeListP1.add(cardsList[i].attribute);
@@ -407,46 +408,51 @@ Widget buildPlayerTwoCard(
                     onTap: (){
                       //p1 and p2 card will be touched in same position. So both index will be same.
 
-                      p1SelectedAttributeValue = 0;
-                      p2SelectedAttributeValue = 0;
-                      winPoint = 0;
+                      if(cardsAttributeListP1[indexOfCardDeck][index].name == cardsAttributeListOfP2[indexOfCardDeck][index].name){
+                        p1SelectedAttributeValue = 0;
+                        p2SelectedAttributeValue = 0;
+                        winPoint = 0;
 
-                      p1SelectedAttributeValue = int.parse(cardsAttributeListP1[indexOfCardDeck][index].value);
-                      p2SelectedAttributeValue = int.parse(cardsAttributeListOfP2[indexOfCardDeck][index].value);
+                        p1SelectedAttributeValue = int.parse(cardsAttributeListP1[indexOfCardDeck][index].value);
+                        p2SelectedAttributeValue = int.parse(cardsAttributeListOfP2[indexOfCardDeck][index].value);
 
-                      if(cardsAttributeListP1[indexOfCardDeck][index].winBasis == 'Highest Value'){
-                        if(p1SelectedAttributeValue > p2SelectedAttributeValue){
-                          isPlayer1Won = true;
-                          winPoint = int.parse(cardsAttributeListP1[indexOfCardDeck][index].winPoints);
-                        } else {
-                          isPlayer1Won = false;
-                          winPoint = int.parse(cardsAttributeListOfP2[indexOfCardDeck][index].winPoints);
+                        if(cardsAttributeListP1[indexOfCardDeck][index].winBasis == 'Highest Value'){
+                          if(p1SelectedAttributeValue > p2SelectedAttributeValue){
+                            isPlayer1Won = true;
+                            winPoint = int.parse(cardsAttributeListP1[indexOfCardDeck][index].winPoints);
+                          } else {
+                            isPlayer1Won = false;
+                            winPoint = int.parse(cardsAttributeListOfP2[indexOfCardDeck][index].winPoints);
+                          }
+
+                        } else if (cardsAttributeListP1[indexOfCardDeck][index].winBasis == 'Lowest Value'){
+                          if(p1SelectedAttributeValue < p2SelectedAttributeValue){
+                            isPlayer1Won = true;
+                            winPoint = int.parse(cardsAttributeListP1[indexOfCardDeck][index].winPoints);
+                          } else {
+                            isPlayer1Won = false;
+                            winPoint = int.parse(cardsAttributeListOfP2[indexOfCardDeck][index].winPoints);
+                          }
                         }
 
-                      } else if (cardsAttributeListP1[indexOfCardDeck][index].winBasis == 'Lowest Value'){
-                        if(p1SelectedAttributeValue < p2SelectedAttributeValue){
-                          isPlayer1Won = true;
-                          winPoint = int.parse(cardsAttributeListP1[indexOfCardDeck][index].winPoints);
-                        } else {
-                          isPlayer1Won = false;
-                          winPoint = int.parse(cardsAttributeListOfP2[indexOfCardDeck][index].winPoints);
-                        }
+
+                        print('----indexOfCardDeck ' + indexOfCardDeck.toString());
+                        print('----p1SelectedIndexOfAttributeList ' + p1SelectedIndexOfAttributeList.toString());
+                        print('----p2SelectedIndexOfAttributeList ' + index.toString());
+                        print('----P1 attr name ' + cardsAttributeListP1[indexOfCardDeck][index].name);
+                        print('----P1 attr value ' + cardsAttributeListP1[indexOfCardDeck][index].value);
+                        print('----P2 attr name ' + cardsAttributeListOfP2[indexOfCardDeck][index].name);
+                        print('----P2 attr value ' + cardsAttributeListOfP2[indexOfCardDeck][index].value);
+                        print('----win Point ' + winPoint.toString());
+
+                        onClickActionOnP2GameplayCard(
+                            isPlayer1Won,
+                            winPoint
+                        );
                       }
-
-
-                      print('----indexOfCardDeck ' + indexOfCardDeck.toString());
-                      print('----p1SelectedIndexOfAttributeList ' + p1SelectedIndexOfAttributeList.toString());
-                      print('----p2SelectedIndexOfAttributeList ' + index.toString());
-                      print('----P1 attr name ' + cardsAttributeListP1[indexOfCardDeck][index].name);
-                      print('----P1 attr value ' + cardsAttributeListP1[indexOfCardDeck][index].value);
-                      print('----P2 attr name ' + cardsAttributeListOfP2[indexOfCardDeck][index].name);
-                      print('----P2 attr value ' + cardsAttributeListOfP2[indexOfCardDeck][index].value);
-                      print('----win Point ' + winPoint.toString());
-
-                      onClickActionOnP2GameplayCard(
-                          isPlayer1Won,
-                          winPoint
-                      );
+                      else {
+                        showWrongSelectionDialog(context, cardsAttributeListP1[indexOfCardDeck][index].name);
+                      }
                     },
                   ),
                 );

@@ -436,7 +436,7 @@ class BuildPlayerTwoScreen extends StatelessWidget {
                             Navigator.push(context,
                               CupertinoPageRoute(
                                 builder: (context) => new GameResult(winnerName: 'Rex Scout', winnerId:'MEM00003', winnerImage: Constants.imgUrlTest, winnerCoins: '200',
-                                    winnerPoints: '12', cardType: 'Cricket', clashType: '1 vs 1', playedCards: '16'),
+                                    winnerPoints: '12', cardType: 'Cricket', clashType: '1 vs 1', playedCards: '16', isP1Won: true,),
                               ),
                             );
                           },

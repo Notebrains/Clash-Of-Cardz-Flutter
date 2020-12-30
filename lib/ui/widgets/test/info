@@ -46,3 +46,19 @@ Player cards API res:
         ]
     }
 }
+
+/////////////////////////////
+
+Save game result body Res
+
+          [{
+              "member_id": "MEM000004",
+              "win": "1",
+              "loss": "0",
+              "points": "550"
+          },
+          {   "member_id": "MEM000002",
+              "win": "0",
+              "loss": "1",
+              "points": "0"
+        }]

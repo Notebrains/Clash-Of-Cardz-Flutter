@@ -8,6 +8,7 @@ import 'package:trump_card_game/model/responses/profile_res_model.dart';
 import 'package:trump_card_game/model/responses/statistics_res_model.dart';
 import 'package:trump_card_game/webservices/repository/repository.dart';
 import 'package:trump_card_game/model/responses/leaderboard_res_model.dart';
+import 'package:trump_card_game/model/responses/save_game_result_res_model.dart';
 
 
 class ApiBloc {
@@ -23,7 +24,7 @@ class ApiBloc {
     _loginResFetcher.sink.add(loginResponse);
   }
 
-  //Gage Option
+  //Game Option
   final _gameCatResFetcher = PublishSubject<GameOptionResModel>();
 
   Stream<GameOptionResModel> get gameCatRes => _gameCatResFetcher.stream;
@@ -94,6 +95,17 @@ class ApiBloc {
     _matchMakingResFetcher.sink.add(model);
   }
 
+
+  //save game result
+  final _saveGameResultResFetcher = PublishSubject<SaveGameResultResModel>();
+
+  Stream<SaveGameResultResModel> get saveGameResultRes => _saveGameResultResFetcher.stream;
+
+  fetchSaveGameResultRes(String xApiKey, Map<String, Object> requestBody) async {
+    SaveGameResultResModel model = await _repository.fetchSaveGameResultApi(xApiKey, requestBody);
+    _saveGameResultResFetcher.sink.add(model);
+  }
+
   dispose() {
     //Close the api fetcher
     _loginResFetcher.close();
@@ -104,6 +116,7 @@ class ApiBloc {
     _profileResFetcher.close();
     _gameCatResFetcher.close();
     _matchMakingResFetcher.close();
+    _saveGameResultResFetcher.close();
   }
 }
 

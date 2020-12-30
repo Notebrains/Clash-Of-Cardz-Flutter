@@ -11,29 +11,34 @@ import 'package:trump_card_game/model/responses/match_making_res_model.dart';
 import 'package:trump_card_game/model/responses/profile_res_model.dart';
 import 'package:trump_card_game/model/responses/statistics_res_model.dart';
 import 'package:trump_card_game/model/responses/leaderboard_res_model.dart';
+import 'package:trump_card_game/model/responses/save_game_result_res_model.dart';
 
 
 class ApiProvider {
   Client client = Client();
 
   Future<LoginResModel> loginApi(String name, String email, String socialId, String image, String deviceToken, String memberId) async {
-    final response = await client.post(
-      UrlConstants.login,
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        'x-api-key': '56005600',
-      },
-      body: jsonEncode(<String, String>{
-        'name': name,
-        'social_id': socialId,
-        'email': email,
-        'image': image,
-        'device_token': deviceToken,
-        'memberid': memberId,
-      }),
-    ); // Make the network call asynchronously to fetch data.
 
-    print(response.body.toString());
+    Map<String, String> headers = {
+      "Content-Type": 'application/x-www-form-urlencoded',
+      'x-api-key': '56005600'};
+
+    var requestBody = {
+      'name': name,
+      'social_id': socialId,
+      'email': email,
+      'image': image,
+      'device_token': deviceToken,
+      'memberid': memberId
+    };
+
+    http.Response response = await http.post(
+      UrlConstants.login,
+      headers: headers,
+      body: requestBody,
+    );
+
+    print( '---- ${response.body.toString()}');
 
     if (response.statusCode == 200) {
       return LoginResModel.fromJson(json.decode(response.body)); //Return decoded response
@@ -220,6 +225,26 @@ Future<MatchMakingResModel> fetchMatchMakingApi(String xApiKey) async {
       return MatchMakingResModel.fromJson(json.decode(response.body)); //Return decoded response
     } else {
       throw Exception('Failed to load player profile response');
+    }
+  }
+
+Future<SaveGameResultResModel> fetchSaveGameResultApi(String xApiKey, Map<String, Object> requestBody) async {
+    Map<String, String> headers = {
+      "Content-Type": 'application/x-www-form-urlencoded',
+      'x-api-key': xApiKey};
+
+    http.Response response = await http.post(
+      UrlConstants.saveMatch,
+      headers: headers,
+      body: requestBody,
+    );
+
+    print('Save Game Result Res: ${response.body.toString()}' );
+
+    if (response.statusCode == 200) {
+      return SaveGameResultResModel.fromJson(json.decode(response.body)); //Return decoded response
+    } else {
+      throw Exception('Failed to load Save Game Result response');
     }
   }
 }

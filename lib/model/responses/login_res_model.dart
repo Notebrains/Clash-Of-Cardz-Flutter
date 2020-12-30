@@ -1,6 +1,6 @@
 /// status : 1
-/// message : "login successfully"
-/// responce : {"x_api_key":"o8rCYx2wFuX88F0vQ6BkUOUpf","memberid":"MEM000004"}
+/// message : "signup successfully"
+/// responce : {"x_api_key":"1ZPEYrnQTEQH69joUPR9SkpK8","memberid":"MEM000027"}
 
 class LoginResModel {
   int _status;
@@ -38,8 +38,8 @@ class LoginResModel {
 
 }
 
-/// x_api_key : "o8rCYx2wFuX88F0vQ6BkUOUpf"
-/// memberid : "MEM000004"
+/// x_api_key : "1ZPEYrnQTEQH69joUPR9SkpK8"
+/// memberid : "MEM000027"
 
 class Responce {
   String _xApiKey;

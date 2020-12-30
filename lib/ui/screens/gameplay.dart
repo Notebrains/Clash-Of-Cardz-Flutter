@@ -7,12 +7,12 @@ import 'package:trump_card_game/bloc/api_bloc.dart';
 import 'package:trump_card_game/helper/constantvalues/constants.dart';
 import 'package:trump_card_game/helper/exten_fun/base_application_fun.dart';
 import 'package:trump_card_game/helper/shared_preference_data.dart';
+import 'package:lottie/lottie.dart';
+import 'package:flutter_animator/flutter_animator.dart';
 import 'package:trump_card_game/model/state_managements/gameplay_states_model.dart';
 import 'package:trump_card_game/ui/widgets/custom/frosted_glass.dart';
-import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:trump_card_game/model/responses/cards_res_model.dart';
-import 'package:flutter_animator/flutter_animator.dart';
 import 'package:trump_card_game/ui/widgets/include_screens/include_game_play_cards.dart';
 import 'package:trump_card_game/ui/widgets/include_screens/include_gameplay.dart';
 
@@ -64,157 +64,177 @@ class Gameplay extends StatelessWidget {
                         Expanded(
                           flex: 7,
                           child: Consumer<GamePlayStatesModel>(
-                            builder: (context, statesModel, child) => Container(
-                              //width: getScreenWidth(context) - 400,
-                              child: Column(
-                                children: [
-                                  Container(
-                                    height: getScreenHeight(context) / 6.0,
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: [
-                                        Lottie.asset('assets/animations/lottiefiles/timer-moving.json', height: 50, width: 50),
-                                        Padding(
-                                          padding: const EdgeInsets.only(left: 8.0, top: 6),
-                                          child: TweenAnimationBuilder<Duration>(
-                                              duration: Duration(minutes: 3),
-                                              tween: Tween(begin: Duration(minutes: 3), end: Duration.zero),
-                                              onEnd: () {
-                                                print('Timer Ended');
-                                                /*Navigator.push(context,
-                                                  CupertinoPageRoute(
-                                                    builder: (context) => new GameResult(winnerName: 'Rex Scout', winnerId:'MEM00003', winnerImage: Constants.imgUrlTest, winnerCoins: '200',
-                                                        winnerPoints: '12', cardType: 'Cricket', clashType: '1 vs 1', playedCards: '16'),
-                                                  ),
-                                                );*/
-                                              },
-                                              builder: (BuildContext context, Duration value, Widget child) {
-                                                final minutes = value.inMinutes;
-                                                final seconds = value.inSeconds % 60;
-                                                return Padding(
-                                                  padding: const EdgeInsets.symmetric(vertical: 5),
-                                                  child: Text(
-                                                    '$minutes:$seconds min',
-                                                    textAlign: TextAlign.center,
-                                                    style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontWeight: FontWeight.bold,
-                                                      fontSize: 26,
-                                                      shadows: [
-                                                        Shadow(color: Colors.white),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                );
-                                              }),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Container(
-                                    height: getScreenHeight(context) / 1.5,
-                                    child: Center(
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                        children: [
-                                          Container(
-                                            width: 200,
-                                            height: 250,
-                                            child: BounceInLeft(
-                                              child: buildPlayerOneCard(
-                                                context,
-                                                snapshot.data.response.cards,
-                                                indexOfCardDeck,
-                                                onClickActionOnP1GameplayCard: (int indexOfP1Card, String attributeTitle, String attributeValue) => {
-                                                  //print('----p1c clicked'),
-                                                  this.indexOfP1Card = indexOfP1Card,
-                                                },
-                                              ),
-                                              preferences: AnimationPreferences(
-                                                  duration: const Duration(milliseconds: 1500),
-                                                  autoPlay: AnimationPlayStates.Forward),
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            width: 30,
-                                          ),
-                                          Container(
-                                            width: 200,
-                                            height: 250,
-                                            child: BounceInRight(
-                                              child: buildPlayerTwoCard(
-                                                context,
-                                                indexOfP1Card,
-                                                indexOfCardDeck,
-                                                snapshot.data.response.cards,
-                                                onClickActionOnP2GameplayCard: (bool isWon, int winPoint) => {
-                                                  print('---- p2c data called ${statesModel.isCardOneTouched}, $isWon, $winPoint'),
-                                                  if (isWon)
-                                                    {
-                                                      playerResultStatusList.add("won"), // "won" is lottie file name
-
-                                                      //showing lottie anim depending on win or loose
-                                                      SharedPreferenceHelper().getUserImage().then(
-                                                            (photoUrl) => showWinDialog(context, statesModel, isWon,
-                                                                'win-result.json', 'You Won', photoUrl, 4000, winPoint),
-                                                      ),
+                            builder: (context, statesModel, child) =>
+                                Container(
+                                  //width: getScreenWidth(context) - 400,
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        height: getScreenHeight(context) / 6.0,
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: [
+                                            Lottie.asset(
+                                                'assets/animations/lottiefiles/timer-moving.json', height: 50, width: 50),
+                                            Padding(
+                                              padding: const EdgeInsets.only(left: 8.0, top: 6),
+                                              child: TweenAnimationBuilder<Duration>(
+                                                  duration: Duration(minutes: 5),
+                                                  tween: Tween(begin: Duration(minutes: 5), end: Duration.zero),
+                                                  onEnd: () {
+                                                    print('Timer Ended');
+                                                    if (statesModel.player1TotalPoints > statesModel.player2TotalPoints) {
+                                                      showTimesUpDialog(context, true, statesModel);
+                                                    } else {
+                                                      showTimesUpDialog(context, false, statesModel);
                                                     }
-                                                  else
-                                                    {
-                                                      playerResultStatusList.add("sad"), // "sad" is lottie file name
-                                                      //showing lottie anim depending on win or loose
-                                                      showWinDialog(context, statesModel, isWon, 'sad-star.json',
-                                                          '\n\n\n\nYou Loose', '', 3500, winPoint),
-                                                    },
-                                                },
-                                              ),
-                                              preferences: AnimationPreferences(
-                                                  duration: const Duration(milliseconds: 1500),
-                                                  autoPlay: AnimationPlayStates.Forward),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: Container(
-                                      //height: getScreenHeight(context) / 6.5,
-                                      child: Visibility(
-                                          visible: statesModel.isShowPlayerMatchStatus,
-                                          child: Container(
-                                            child: RotateInUpLeft(
-                                              child: Container(
-                                                padding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 8.0),
-                                                height: 30,
-                                                child: ListView.builder(
-                                                  physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-                                                  scrollDirection: Axis.horizontal,
-                                                  itemCount: playerResultStatusList.length,
-                                                  itemBuilder: (context, index) {
-                                                    return Card(
-                                                      elevation: 5,
-                                                      shadowColor: Colors.lightBlueAccent,
-                                                      color: Colors.white60,
-                                                      child: ClipOval(
-                                                        child: setResultStatus(index),
+                                                  },
+                                                  builder: (BuildContext context, Duration value, Widget child) {
+                                                    final minutes = value.inMinutes;
+                                                    final seconds = value.inSeconds % 60;
+                                                    return Padding(
+                                                      padding: const EdgeInsets.symmetric(vertical: 5),
+                                                      child: Text(
+                                                        '$minutes:$seconds min',
+                                                        textAlign: TextAlign.center,
+                                                        style: TextStyle(
+                                                          color: Colors.black,
+                                                          fontWeight: FontWeight.bold,
+                                                          fontSize: 26,
+                                                          shadows: [
+                                                            Shadow(color: Colors.white),
+                                                          ],
+                                                        ),
                                                       ),
                                                     );
-                                                  },
+                                                  }),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Container(
+                                        height: getScreenHeight(context) / 1.5,
+                                        child: Center(
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            children: [
+                                              Container(
+                                                width: 200,
+                                                height: 250,
+                                                child: BounceInLeft(
+                                                  child: buildPlayerOneCard(
+                                                    context,
+                                                    snapshot.data.response.cards,
+                                                    indexOfCardDeck,
+                                                    onClickActionOnP1GameplayCard:
+                                                        (int indexOfP1Card, String attributeTitle, String attributeValue) =>
+                                                    {
+                                                      //print('----p1c clicked'),
+                                                      this.indexOfP1Card = indexOfP1Card,
+                                                    },
+                                                  ),
+                                                  preferences: AnimationPreferences(
+                                                      duration: const Duration(milliseconds: 1500),
+                                                      autoPlay: AnimationPlayStates.Forward),
                                                 ),
                                               ),
-                                              preferences: AnimationPreferences(
-                                                  duration: const Duration(milliseconds: 400),
-                                                  autoPlay: AnimationPlayStates.Forward),
-                                            ),
-                                          )),
-                                    ),
+                                              SizedBox(
+                                                width: 30,
+                                              ),
+                                              Container(
+                                                width: 200,
+                                                height: 250,
+                                                child: BounceInRight(
+                                                  child: buildPlayerTwoCard(
+                                                    context,
+                                                    indexOfP1Card,
+                                                    indexOfCardDeck,
+                                                    snapshot.data.response.cards,
+                                                    onClickActionOnP2GameplayCard: (bool isWon, int winPoint) =>
+                                                    {
+                                                      print('---- p2c data called ${statesModel.isCardOneTouched}, $isWon, $winPoint'),
+                                                      if (isWon)
+                                                        {
+                                                          playerResultStatusList.add("won"), // "won" is lottie file name
+
+                                                          //showing lottie anim depending on win or loose
+                                                          SharedPreferenceHelper().getUserImage().then(
+                                                                (photoUrl) =>
+                                                                showWinDialog(
+                                                                    context,
+                                                                    statesModel,
+                                                                    isWon,
+                                                                    'win-result.json',
+                                                                    'You Won',
+                                                                    photoUrl,
+                                                                    4000,
+                                                                    winPoint),
+                                                          ),
+                                                        }
+                                                      else
+                                                        {
+                                                          playerResultStatusList.add("sad"), // "sad" is lottie file name
+                                                          //showing lottie anim depending on win or loose
+                                                          showWinDialog(
+                                                              context,
+                                                              statesModel,
+                                                              isWon,
+                                                              'sad-star.json',
+                                                              '\n\n\n\nYou Loose',
+                                                              '',
+                                                              3500,
+                                                              winPoint),
+                                                        },
+                                                    },
+                                                  ),
+                                                  preferences: AnimationPreferences(
+                                                      duration: const Duration(milliseconds: 1500),
+                                                      autoPlay: AnimationPlayStates.Forward),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Container(
+                                          //height: getScreenHeight(context) / 6.5,
+                                          child: Visibility(
+                                              visible: statesModel.isShowPlayerMatchStatus,
+                                              child: Container(
+                                                child: RotateInUpLeft(
+                                                  child: Container(
+                                                    padding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 8.0),
+                                                    height: 30,
+                                                    child: ListView.builder(
+                                                      physics: const BouncingScrollPhysics(
+                                                          parent: AlwaysScrollableScrollPhysics()),
+                                                      scrollDirection: Axis.horizontal,
+                                                      itemCount: playerResultStatusList.length,
+                                                      itemBuilder: (context, index) {
+                                                        return Card(
+                                                          elevation: 5,
+                                                          shadowColor: Colors.lightBlueAccent,
+                                                          color: Colors.white60,
+                                                          child: ClipOval(
+                                                            child: setResultStatus(index),
+                                                          ),
+                                                        );
+                                                      },
+                                                    ),
+                                                  ),
+                                                  preferences: AnimationPreferences(
+                                                      duration: const Duration(milliseconds: 400),
+                                                      autoPlay: AnimationPlayStates.Forward),
+                                                ),
+                                              )),
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ],
-                              ),
-                            ),
+                                ),
                           ),
                         ),
                         Expanded(
@@ -256,44 +276,101 @@ class Gameplay extends StatelessWidget {
         return Dialog(
           backgroundColor: Colors.transparent,
           child: FadeInUp(
-            child: Stack(children: <Widget>[
-              GestureDetector(
-                child: Center(
+            child: Stack(
+              children: <Widget>[
+                Center(
                   child: Lottie.asset('assets/animations/lottiefiles/$lottieFileName',
                       height: 290, width: 290, repeat: false, animate: true),
                 ),
-                onTap: () {},
-              ),
-              Center(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ClipOval(
-                      child: Image.network(
-                        photoUrl,
-                        fit: BoxFit.fill,
-                        width: 65,
-                        height: 65,
+                Center(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ClipOval(
+                        child: Image.network(
+                          photoUrl,
+                          fit: BoxFit.fill,
+                          width: 65,
+                          height: 65,
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        message,
-                        textAlign: TextAlign.start,
-                        style: TextStyle(
-                            fontSize: 13,
-                            fontStyle: FontStyle.normal,
-                            fontFamily: 'neuropol_x_rg',
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          message,
+                          textAlign: TextAlign.start,
+                          style: TextStyle(
+                              fontSize: 13,
+                              fontStyle: FontStyle.normal,
+                              fontFamily: 'neuropol_x_rg',
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
+            preferences: AnimationPreferences(duration: const Duration(milliseconds: 800), autoPlay: AnimationPlayStates.Forward),
+          ),
+        );
+      },
+    );
+    try {
+      //adding data in match result status list and
+      //updating card index and scoreboard values
+      indexOfCardDeck = indexOfCardDeck + 1;
+
+      if (isWon) {
+        statesModel.playerOneTrump = statesModel.playerOneTrump + 1;
+        statesModel.player1TotalPoints = statesModel.player1TotalPoints + winPoint;
+      } else {
+        statesModel.playerTwoTrump = statesModel.playerOneTrump + 1;
+        statesModel.player2TotalPoints = statesModel.player2TotalPoints + winPoint;
+      }
+
+      statesModel.cardsDeckIndex = statesModel.cardsDeckIndex + 1;
+
+      Timer(Duration(milliseconds: animHideTime), () {
+        Navigator.pop(dialogContext);
+
+        context.read<GamePlayStatesModel>().updatePlayerScoreboards(
+            statesModel.playerOneTrump,
+            statesModel.playerTwoTrump,
+            statesModel.player1TotalPoints,
+            statesModel.player2TotalPoints,
+            statesModel.cardsDeckIndex,
+            false,
+            false);
+
+        context.read<GamePlayStatesModel>().updateCardCountOnDeck(statesModel.cardCountOnDeck - 1);
+
+        print('------statesModel.cardCountOnDeck: ${statesModel.cardCountOnDeck}');
+        if (statesModel.cardCountOnDeck == 0) {
+          gotoResultScreen(context, true, statesModel);
+        }
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  void showTimesUpDialog(BuildContext context, bool isP1Won, GamePlayStatesModel statesModel) {
+    BuildContext dialogContext;
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      useSafeArea: true,
+      builder: (BuildContext context) {
+        dialogContext = context;
+        return Dialog(
+          backgroundColor: Colors.transparent,
+          child: FadeInUp(
+            child: Center(
+              child: Lottie.asset('assets/animations/lottiefiles/times-up.json',
+                  height: 290, width: 290, repeat: false, animate: true),
             ),
             preferences: AnimationPreferences(duration: const Duration(milliseconds: 800), autoPlay: AnimationPlayStates.Forward),
           ),
@@ -301,27 +378,58 @@ class Gameplay extends StatelessWidget {
       },
     );
 
-    //adding data in match result status list and
-    //updating card index and scoreboard values
-    indexOfCardDeck = indexOfCardDeck + 1;
+    String winnerUrl = "";
 
-    if (isWon) {
-      statesModel.playerOneTrump = statesModel.playerOneTrump + 1;
-      statesModel.player1TotalPoints = statesModel.player1TotalPoints + winPoint;
-    } else {
-      statesModel.playerTwoTrump = statesModel.playerOneTrump + 1;
-      statesModel.player2TotalPoints = statesModel.player2TotalPoints + winPoint;
-    }
+    Timer(Duration(milliseconds: 3000), () {
+      SharedPreferenceHelper().getUserImage().then(
+            (photoUrl) => winnerUrl = photoUrl,
+      );
 
-    statesModel.cardsDeckIndex = statesModel.cardsDeckIndex + 1;
-
-    Timer(Duration(milliseconds: animHideTime), () {
       Navigator.pop(dialogContext);
-
-      context.read<GamePlayStatesModel>().updatePlayerScoreboards(statesModel.playerOneTrump, statesModel.playerTwoTrump,
-          statesModel.player1TotalPoints, statesModel.player2TotalPoints, statesModel.cardsDeckIndex, false, false);
-
-      context.read<GamePlayStatesModel>().updateCardCountOnDeck(statesModel.cardCountOnDeck - 1);
+      gotoResultScreen(context, isP1Won, statesModel);
     });
+  }
+
+  void gotoResultScreen(BuildContext context, bool isP1Won, GamePlayStatesModel statesModel) {
+    String winnerUrl = "";
+
+    SharedPreferenceHelper().getUserImage().then(
+          (photoUrl) => winnerUrl = photoUrl,
+    );
+
+    isP1Won ? Navigator.push(
+      context,
+      CupertinoPageRoute(
+        builder: (context) =>
+            GameResult(
+              winnerName: 'Ram Rakshman',
+              winnerId: 'MEM000004',
+              winnerImage: winnerUrl,
+              winnerCoins: "0",
+              winnerPoints: statesModel.player1TotalPoints.toString(),
+              cardType: 'Cricket',
+              clashType: '1 vs 1',
+              playedCards: '14',
+              isP1Won: true,
+            ),
+      ),
+    ) :
+    Navigator.push(
+      context,
+      CupertinoPageRoute(
+        builder: (context) =>
+            GameResult(
+              winnerName: 'Raj Malhotra',
+              winnerId: 'MEM000004',
+              winnerImage: Constants.imgUrlTest,
+              winnerCoins: "0",
+              winnerPoints: statesModel.player2TotalPoints.toString(),
+              cardType: 'Cricket',
+              clashType: '1 vs 1',
+              playedCards: '14',
+              isP1Won: false,
+            ),
+      ),
+    );
   }
 }

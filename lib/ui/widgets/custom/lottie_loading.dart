@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
 class LottieLoading extends StatefulWidget {
+  LottieLoading();
+
   @override
   State<StatefulWidget> createState() => IncludeSearchingForPlayerState();
 }

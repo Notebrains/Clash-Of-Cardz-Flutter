@@ -180,7 +180,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               Navigator.push(
                                   context,
                                   CupertinoPageRoute(
-                                      builder: (BuildContext context) => Gameplay(name: '', friendId: '')));
+                                      builder: (BuildContext context) => Gameplay()));
                             },
                           ),
                           preferences:
@@ -290,9 +290,13 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   Expanded(
                     flex: 10,
-                    child: Container(
-                      margin: EdgeInsets.fromLTRB(40, 0, 40, 0),
-                      child: CarouselAutoSlider(),
+                    child: ZoomIn(
+                      child: Container(
+                        margin: EdgeInsets.fromLTRB(40, 0, 40, 0),
+                        child: CarouselAutoSlider(),
+                      ),
+                      preferences:
+                      AnimationPreferences(duration: const Duration(milliseconds: 2000), autoPlay: AnimationPlayStates.Forward),
                     ),
                   ),
                   Expanded(

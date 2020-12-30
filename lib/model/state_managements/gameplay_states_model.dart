@@ -25,7 +25,6 @@ class GamePlayStatesModel with ChangeNotifier {
 
   String attributeValue = '';
 
-  int cardsDeckSize = 0;
   int cardsDeckIndex = 1;
 
 
