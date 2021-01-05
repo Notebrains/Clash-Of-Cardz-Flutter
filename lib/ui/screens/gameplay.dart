@@ -75,13 +75,11 @@ class Gameplay extends StatelessWidget {
                                           mainAxisAlignment: MainAxisAlignment.center,
                                           crossAxisAlignment: CrossAxisAlignment.center,
                                           children: [
-                                            Lottie.asset(
-                                                'assets/animations/lottiefiles/timer-moving.json', height: 50, width: 50),
                                             Padding(
-                                              padding: const EdgeInsets.only(left: 8.0, top: 6),
+                                              padding: const EdgeInsets.only(left: 0.0, top: 0),
                                               child: TweenAnimationBuilder<Duration>(
-                                                  duration: Duration(minutes: 5),
-                                                  tween: Tween(begin: Duration(minutes: 5), end: Duration.zero),
+                                                  duration: Duration(minutes: 45),
+                                                  tween: Tween(begin: Duration(minutes: 45), end: Duration.zero),
                                                   onEnd: () {
                                                     print('Timer Ended');
                                                     if (statesModel.player1TotalPoints > statesModel.player2TotalPoints) {
@@ -91,22 +89,102 @@ class Gameplay extends StatelessWidget {
                                                     }
                                                   },
                                                   builder: (BuildContext context, Duration value, Widget child) {
-                                                    final minutes = value.inMinutes;
-                                                    final seconds = value.inSeconds % 60;
-                                                    return Padding(
-                                                      padding: const EdgeInsets.symmetric(vertical: 5),
-                                                      child: Text(
-                                                        '$minutes:$seconds min',
-                                                        textAlign: TextAlign.center,
-                                                        style: TextStyle(
-                                                          color: Colors.black,
-                                                          fontWeight: FontWeight.bold,
-                                                          fontSize: 26,
-                                                          shadows: [
-                                                            Shadow(color: Colors.white),
-                                                          ],
+
+                                                    //adding 0 at first if min or sec show in single digit
+                                                    final minutes = (value.inMinutes).toString().padLeft(2, "0");
+                                                    final seconds = (value.inSeconds % 60).toString().padLeft(2, "0");
+                                                    return Row(
+                                                      children: [
+                                                        Padding(
+                                                          padding: const EdgeInsets.all(5),
+                                                          child: Container(
+                                                            width: 60,
+                                                            height: 50,
+                                                            decoration: BoxDecoration(
+                                                              color: Colors.grey[400],
+                                                              border: Border.all(
+                                                                color: Colors.grey[350],
+                                                                width: 5,
+                                                              ),
+                                                              borderRadius: BorderRadius.all(Radius.circular(6)),
+                                                              boxShadow: <BoxShadow>[
+                                                                BoxShadow(
+                                                                  color: Colors.grey[500],
+                                                                  blurRadius: 8.0,
+                                                                  offset: Offset(0.0, 8.0),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                            child: Center(
+                                                              child: Text(
+                                                                '$minutes',
+                                                                textAlign: TextAlign.center,
+                                                                style: TextStyle(
+                                                                  color: Colors.deepOrangeAccent[700],
+                                                                  fontWeight: FontWeight.bold,
+                                                                  fontSize: 26,
+                                                                  shadows: [
+                                                                    Shadow(color: Colors.white),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
                                                         ),
-                                                      ),
+
+                                                        Padding(
+                                                          padding: const EdgeInsets.only(bottom:8.0),
+                                                          child: Text(
+                                                            ':',
+                                                            textAlign: TextAlign.center,
+                                                            style: TextStyle(
+                                                              color: Colors.deepOrangeAccent[700],
+                                                              fontWeight: FontWeight.bold,
+                                                              fontSize: 46,
+                                                              shadows: [
+                                                                Shadow(color: Colors.white),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ),
+
+                                                        Padding(
+                                                          padding: const EdgeInsets.all(5),
+                                                          child: Container(
+                                                            width: 60,
+                                                            height: 50,
+                                                            decoration: BoxDecoration(
+                                                              color: Colors.grey[400],
+                                                              border: Border.all(
+                                                                color: Colors.grey[350],
+                                                                width: 5,
+                                                              ),
+                                                              borderRadius: BorderRadius.all(Radius.circular(8)),
+                                                              boxShadow: <BoxShadow>[
+                                                                BoxShadow(
+                                                                  color: Colors.grey[500],
+                                                                  blurRadius: 8.0,
+                                                                  offset: Offset(0.0, 8.0),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                            child: Center(
+                                                              child: Text(
+                                                                '$seconds',
+                                                                textAlign: TextAlign.center,
+                                                                style: TextStyle(
+                                                                  color: Colors.deepOrangeAccent[700],
+                                                                  fontWeight: FontWeight.bold,
+                                                                  fontSize: 26,
+                                                                  shadows: [
+                                                                    Shadow(color: Colors.white),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        )
+                                                      ],
                                                     );
                                                   }),
                                             ),

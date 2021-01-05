@@ -100,15 +100,20 @@ Widget buildHomeScreenPlayerInfo(ProfileResModel model){
 }
 
 void savePlayerInfoIntoPref(ProfileResModel model) {
-  SharedPreferenceHelper().saveUserProfileData(
-      model.response[0].memberid,
-      model.response[0].fullname,
-      model.response[0].photo,
-      model.response[0].points,
-      model.response[0].coins,
-      model.response[0].win,
-      model.response[0].loss,
-      model.response[0].matchPlayed,
-      model.response[0].rank.toString()
+  SharedPreferenceHelper().getUserApiKey().then(
+        (xApiKey) =>
+            SharedPreferenceHelper().saveUserProfileData(
+                xApiKey.toString(),
+                model.response[0].memberid,
+                model.response[0].fullname,
+                model.response[0].photo,
+                model.response[0].points,
+                model.response[0].coins,
+                model.response[0].win,
+                model.response[0].loss,
+                model.response[0].matchPlayed,
+                model.response[0].redeem,
+                model.response[0].rank.toString()
+            ),
   );
 }

@@ -16,35 +16,53 @@ class FirebaseCrud extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<FirebaseCrud> {
-  int _counter;
-  DatabaseReference _counterRef;
-  DatabaseReference _messagesRef;
+  int joinedPlayerCount;
+  int joinedPlayerSize = 0;
+  DatabaseReference _joinedPlayerCountRef;
+  DatabaseReference _playerDetailsRef;
   StreamSubscription<Event> _counterSubscription;
   StreamSubscription<Event> _messagesSubscription;
   bool _anchorToBottom = false;
 
-  String _kTestKey = 'Hello';
-  String _kTestValue = 'world!';
+  String _kTestKey = 'playerName';
   DatabaseError _error;
 
   @override
   void initState() {
     super.initState();
     // Demonstrates configuring to the database using a file
-    _counterRef = FirebaseDatabase.instance.reference().child('counter');
+    _joinedPlayerCountRef = FirebaseDatabase.instance.reference().child('joinedPlayerCount');
     // Demonstrates configuring the database directly
     final FirebaseDatabase database = FirebaseDatabase(app: widget.app);
-    _messagesRef = database.reference().child('messages');
-    database.reference().child('counter').once().then((DataSnapshot snapshot) {
+    _playerDetailsRef = database.reference().child('playerDetails');
+
+    database.reference().child('joinedPlayerCount').once().then((DataSnapshot snapshot) {
       print('Connected to second database and read ${snapshot.value}');
     });
+
+    //get child items present in fb db.
+    FirebaseDatabase.instance
+        .reference()
+        .child('playerDetails')
+        .once()
+        .then((onValue) {
+      Map data = onValue.value;
+      joinedPlayerSize = data.length;
+
+
+      print('----joinedPlayerSize: $joinedPlayerSize');
+    });
+
+
+
     database.setPersistenceEnabled(true);
     database.setPersistenceCacheSizeBytes(10000000);
-    _counterRef.keepSynced(true);
-    _counterSubscription = _counterRef.onValue.listen((Event event) {
+    _joinedPlayerCountRef.keepSynced(true);
+    _counterSubscription = _joinedPlayerCountRef.onValue.listen((Event event) {
       setState(() {
         _error = null;
-        _counter = event.snapshot.value ?? 0;
+        //joinedPlayerCount = event.snapshot.value ?? 0;
+        joinedPlayerCount =  joinedPlayerSize?? 0;
       });
     }, onError: (Object o) {
       final DatabaseError error = o;
@@ -53,7 +71,7 @@ class _MyHomePageState extends State<FirebaseCrud> {
       });
     });
     _messagesSubscription =
-        _messagesRef.limitToLast(10).onChildAdded.listen((Event event) {
+        _playerDetailsRef.limitToLast(10).onChildAdded.listen((Event event) {
           print('Child added: ${event.snapshot.value}');
         }, onError: (Object o) {
           final DatabaseError error = o;
@@ -68,17 +86,20 @@ class _MyHomePageState extends State<FirebaseCrud> {
     _counterSubscription.cancel();
   }
 
-  Future<void> _increment() async {
+  Future<void> playerStateUpdate() async {
     // Increment counter in transaction.
     final TransactionResult transactionResult =
-    await _counterRef.runTransaction((MutableData mutableData) async {
+    await _joinedPlayerCountRef.runTransaction((MutableData mutableData) async {
       mutableData.value = (mutableData.value ?? 0) + 1;
       return mutableData;
     });
 
     if (transactionResult.committed) {
-      _messagesRef.push().set(<String, String>{
-        _kTestKey: '$_kTestValue ${transactionResult.dataSnapshot.value}'
+      _playerDetailsRef.push().set(<String, String>{
+        _kTestKey: '${transactionResult.dataSnapshot.value}',
+        'image': 'https://www.google.com',
+        'userId': 'MEM00055',
+        'joinedUserType': joinedPlayerSize == 0 ? 'host': 'joined',
       });
     } else {
       print('Transaction not committed.');
@@ -91,9 +112,6 @@ class _MyHomePageState extends State<FirebaseCrud> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Flutter Realtime Database'),
-      ),
       body: Column(
         children: <Widget>[
           Flexible(
@@ -101,7 +119,7 @@ class _MyHomePageState extends State<FirebaseCrud> {
             child: Center(
               child: _error == null
                   ? Text(
-                'Button tapped $_counter time${_counter == 1 ? '' : 's'}. This includes all devices, ever.',
+                'Button tapped $joinedPlayerCount time${joinedPlayerCount == 1 ? '' : 's'}. This includes all devices, ever.',
               )
                   : Text(
                 'Error retrieving button tap count:\n${_error.message}',
@@ -123,7 +141,7 @@ class _MyHomePageState extends State<FirebaseCrud> {
             flex: 5,
             child: FirebaseAnimatedList(
               key: ValueKey<bool>(_anchorToBottom),
-              query: _messagesRef,
+              query: _playerDetailsRef,
               reverse: _anchorToBottom,
               sort: _anchorToBottom
                   ? (DataSnapshot a, DataSnapshot b) => b.key.compareTo(a.key)
@@ -135,7 +153,8 @@ class _MyHomePageState extends State<FirebaseCrud> {
                   child: ListTile(
                     trailing: IconButton(
                       onPressed: () =>
-                          _messagesRef.child(snapshot.key).remove(),
+                          _playerDetailsRef.child(snapshot.key).remove(),
+
                       icon: Icon(Icons.delete),
                     ),
                     title: Text(
@@ -149,7 +168,7 @@ class _MyHomePageState extends State<FirebaseCrud> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _increment,
+        onPressed: playerStateUpdate,
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ),

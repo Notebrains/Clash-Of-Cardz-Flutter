@@ -19,30 +19,32 @@ import 'login.dart';
 
 class GameMoreOption extends StatefulWidget {
 
-  GameMoreOption({this.gameType});
-
-  final String gameType;
-
+  final String categoryName;
+  final String subcategoryName;
+  const GameMoreOption ({ Key key, this.categoryName, this.subcategoryName}): super(key: key);
 
   @override
-  _GameMoreOptionState createState() => _GameMoreOptionState(gameType);
+  _GameMoreOptionState createState() => _GameMoreOptionState(categoryName, subcategoryName);
 }
 
 class _GameMoreOptionState extends State<GameMoreOption> {
+
+  _GameMoreOptionState(String categoryName, String subcategoryName);
+  String categoryName = '';
+  String subcategoryName = '';
+
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
-  List<Subcategory_details> subcategoryDetails = List();
-  List<String> cardsToBePlayed = List<String>();
+  List<Subcategory_details> subcategoryDetails = [];
+  List<String> cardsToBePlayed = [];
 
-  String gameType;
+  String gameType = '';
+  String cardsToPlay = '';
 
-  _GameMoreOptionState(String gameType){
-    this.gameType = gameType;
-  }
 
-  void gameMoreOptState() {
+  void gameMoreOptState(List<String> cardsToBePlayed) {
     setState(() {
-      cardsToBePlayed.clear();
-      cardsToBePlayed.addAll(subcategoryDetails[0].cardsToBePlayed);
+      this.cardsToBePlayed.clear();
+      this.cardsToBePlayed.addAll(cardsToBePlayed);
       buildSecondList(cardsToBePlayed);
       //print("---- subcategoryDetails.length " + subcategoryDetails.length.toString());
       //print("---- cardsToBePlayed.length 2 " + cardsToBePlayed.length.toString());
@@ -128,16 +130,10 @@ class _GameMoreOptionState extends State<GameMoreOption> {
               padding: const EdgeInsets.only(bottom: 16),
               child: Row(
                 children: [
-                  Container(
-                    height: MediaQuery.of(context).size.height,
-                    width: 1.5,
-                    color: Colors.indigo,
-                    margin: const EdgeInsets.only(left: 40, top: 50.0, bottom: 50.0),
-                  ),
 
                   Expanded(
-                    flex: 3,
-                    child: _buildFirstList(subcategoryDetails[0].noOfPlayerPlayed, 0),
+                    flex: 7,
+                    child: buildFirstList(),
                   ),
 
                   Container(
@@ -147,7 +143,7 @@ class _GameMoreOptionState extends State<GameMoreOption> {
                     margin: const EdgeInsets.only(top: 0.0, bottom: 0.0),
                   ),
                   Expanded(
-                    flex: 3,
+                    flex: 4,
                     child: buildSecondList(cardsToBePlayed),
                   ),
 
@@ -237,87 +233,82 @@ class _GameMoreOptionState extends State<GameMoreOption> {
     );
   }
 
-  Widget _buildFirstList(String noOfPlayerPlaying, int index) {
-    final List<String> vsList = <String>[];
 
-    try {
-      switch(noOfPlayerPlaying){
-            case "2":
-              vsList.add("1 vs 1");
-              break;
-            case "3":
-              vsList.add("1 vs 1");
-              vsList.add("1 vs 2");
-              break;
-            case "4":
-              vsList.add("1 vs 1");
-              vsList.add("1 vs 2");
-              vsList.add("1 vs 3");
-              break;
-          }
-    } catch (e) {
-      print(e);
-    }
+  Widget buildFirstList() {
+    //final List<String> listData1 = <String>['Player vs Player', 'Play With Friend', 'Play With Random', 'Tournament', 'Play With Computer'];
+    //print('subcategoryDetails.length----' + subcategoryDetails.length.toString());
 
-    return ListView.builder(
-      physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-      padding: EdgeInsets.fromLTRB(10.0, 12.0, 16.0, 5.0),
-      itemCount: vsList.length,
-      shrinkWrap: true,
-      itemBuilder: (context, index) {
-        return  BounceInLeft(
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(36)),
-            ),
-            width: double.infinity,
-            margin: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Container(
-                  width: 50,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    color: Colors.transparent,
-                    border: Border.all(
-                      color: Colors.grey[350],
-                      width: 5,
-                    ),
-                    borderRadius: BorderRadius.all(Radius.circular(35)),
-                  ),
-                  child: CircleAvatar(
-                    child: SvgPicture.asset('assets/icons/svg/cricket.svg'),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(8, 12, 0, 2),
-                  child: GestureDetector(
-                    child: Text(
-                      vsList[index],
-                      style: TextStyle(
-                          color: Colors.black54,
-                          fontSize: 18,
-                          fontFamily: 'neuropol_x_rg',
-                          fontWeight: FontWeight.bold
+    if(subcategoryDetails.length >0){
+      return ListView.builder(
+        physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+        padding: EdgeInsets.fromLTRB(5.0, 33.0, 16.0, 5.0),
+        itemCount: subcategoryDetails.length,
+        shrinkWrap: true,
+        itemBuilder: (context, index) {
+          return BounceInRight(
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(36)),
+              ),
+              width: double.infinity,
+              margin: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+              child: GestureDetector(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Container(
+                      width: 60,
+                      height: 60,
+                      decoration: BoxDecoration(
+                        color: Colors.transparent,
+                        border: Border.all(
+                          color: Colors.grey[350],
+                          width: 5,
+                        ),
+                        borderRadius: BorderRadius.all(Radius.circular(35)),
+                        boxShadow: <BoxShadow>[
+                          BoxShadow(
+                            color: Color(0x60000000),
+                            blurRadius: 12.0,
+                            offset: Offset(0.0, 12.0),
+                          ),
+                        ],
+                      ),
+                      child: CircleAvatar(
+                        child: Image.asset('assets/icons/png/img_sports.png'),
+                        //backgroundColor: Colors.black38,
                       ),
                     ),
-                    onTap: () {
-                      buildSecondList(cardsToBePlayed);
-                      gameMoreOptState();
-                      //print('subcategory.length----' + data.response[index].subcategory.length.toString());
-                    },
-                  ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(8, 16, 0, 2),
+                      child: Text(
+                        subcategoryDetails[index].gametypeName,
+                        style: TextStyle(
+                            color: Colors.black54,
+                            fontSize: 22,
+                            fontFamily: 'neuropol_x_rg',
+                            fontWeight: FontWeight.bold
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
+
+                onTap: () {
+                  gameType = subcategoryDetails[index].gametypeName;
+                  buildSecondList(subcategoryDetails[index].cardsToBePlayed);
+                  gameMoreOptState(subcategoryDetails[index].cardsToBePlayed);
+
+                },
+              ),
             ),
-          ),
-          preferences: AnimationPreferences(
-              duration: const Duration(milliseconds: 3000),
-              autoPlay: AnimationPlayStates.Forward),
-        );
-      },
-    );
+            preferences: AnimationPreferences(
+                duration: const Duration(milliseconds: 1000),
+                autoPlay: AnimationPlayStates.Forward),
+          );
+        },
+      );
+    } else return Container();
   }
 
   Widget buildSecondList(List<String> cardsToBePlayed) {
@@ -339,8 +330,8 @@ class _GameMoreOptionState extends State<GameMoreOption> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Container(
-                    width: 50,
-                    height: 50,
+                    width: 60,
+                    height: 60,
                     decoration: BoxDecoration(
                       color: Colors.transparent,
                       border: Border.all(
@@ -348,19 +339,26 @@ class _GameMoreOptionState extends State<GameMoreOption> {
                         width: 5,
                       ),
                       borderRadius: BorderRadius.all(Radius.circular(35)),
+                      boxShadow: <BoxShadow>[
+                        BoxShadow(
+                          color: Color(0x60000000),
+                          blurRadius: 12.0,
+                          offset: Offset(0.0, 12.0),
+                        ),
+                      ],
                     ),
                     child: CircleAvatar(
-                      child: SvgPicture.asset('assets/icons/svg/cricket.svg'),
+                      child: Image.asset('assets/icons/png/img_sports.png'),
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(8, 12, 0, 2),
                     child: GestureDetector(
                       child: Text(
-                        cardsToBePlayed[index],
+                        '${cardsToBePlayed[index]} cards',
                         style: TextStyle(
                             color: Colors.black54,
-                            fontSize: 18,
+                            fontSize: 22,
                             fontFamily: 'neuropol_x_rg',
                             fontWeight: FontWeight.bold
                         ),
@@ -369,13 +367,15 @@ class _GameMoreOptionState extends State<GameMoreOption> {
                         //change here
                         /*if(gameType == 'Player vs Computer'){
                           Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => AutoPlay()));
-                        }else*/{
-                          /*showDialog(
+                        }else*/
+
+
+
+                          showDialog(
                             context: context,
-                            builder: (_) => IncludeSearchingForPlayer(),
-                          );*/
-                          showTimesUpDialog(context);
-                        }
+                            builder: (_) => IncludeSearchingForPlayer(categoryName: widget.categoryName, subcategoryName: widget.subcategoryName, gameType: gameType, cardsToPlay: cardsToBePlayed[index]),
+                          );
+
                       },
                     ),
                   ),
@@ -393,7 +393,7 @@ class _GameMoreOptionState extends State<GameMoreOption> {
     }
   }
 
-  void showTimesUpDialog(BuildContext context) {
+  void showPlayerSearchingDialog(BuildContext context) {
     BuildContext dialogContext;
     showDialog(
       context: context,
@@ -407,7 +407,7 @@ class _GameMoreOptionState extends State<GameMoreOption> {
             child: Column(
               children: [
                 Center(
-                  child: Lottie.asset('assets/animations/lottiefiles/page-searching.json',
+                  child: Lottie.asset('assets/animations/lottiefiles/sports-loading.json',
                       width: getScreenWidth(context),
                       height: getScreenHeight(context) * 0.7,
                       repeat: true,

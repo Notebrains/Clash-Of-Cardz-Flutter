@@ -5,13 +5,16 @@ import 'package:flutter/material.dart';
 import 'package:trump_card_game/ui/screens/splash.dart';
 
 import 'ui/screens/rtdb/firebase_crud.dart';
+
 /*
+
 // This is for firebase crud fun screen
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final FirebaseApp app = await Firebase.initializeApp(
-    name: 'db2',
-    *//*options: Platform.isIOS || Platform.isMacOS
+    name: 'clash_of_cardz_db',
+    */
+/*options: Platform.isIOS || Platform.isMacOS
         ? FirebaseOptions(
       appId: '1:297855924061:ios:c6de2b69b03a5be8',
       apiKey: 'AIzaSyD_shO5mfO9lhy2TVWhfo1VUmARKlG4suk',
@@ -26,6 +29,7 @@ Future<void> main() async {
       projectId: 'flutter-firebase-plugins',
       databaseURL: 'https://flutterfire-cd2f7.firebaseio.com',
     ),*//*
+
 
     options: Platform.isIOS || Platform.isMacOS
         ? FirebaseOptions(
@@ -48,7 +52,8 @@ Future<void> main() async {
     title: 'Firebase Realtime Database',
     home: FirebaseCrud(app: app),
   ));
-}*/
+}
+*/
 
 void main() => runApp(MyRootApp());
 
@@ -62,3 +67,4 @@ class MyRootApp extends StatelessWidget {
     );
   }
 }
+

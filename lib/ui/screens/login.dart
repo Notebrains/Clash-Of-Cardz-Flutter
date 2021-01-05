@@ -5,6 +5,7 @@ import 'package:trump_card_game/bloc/api_bloc.dart';
 import 'package:trump_card_game/helper/shared_preference_data.dart';
 import 'package:trump_card_game/model/responses/login_res_model.dart';
 import 'package:trump_card_game/ui/screens/home.dart';
+import 'package:trump_card_game/ui/widgets/animations/spring_button.dart';
 import 'package:trump_card_game/ui/widgets/custom/carousel_auto_slider.dart';
 import 'package:trump_card_game/ui/widgets/libraries/animated_text_kit/animated_text_kit.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -12,7 +13,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_animator/flutter_animator.dart';
-
 class LogIn extends StatefulWidget {
   const LogIn({Key key}) : super(key: key);
 
@@ -75,7 +75,7 @@ class _LogInState extends State<LogIn> {
                         AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
                       ),
 
-                      //login button
+                     /* //login button
                       ZoomInDown(
                         child: MaterialButton(
                           padding: EdgeInsets.fromLTRB(8.0, 16.0, 8.0, 8.0),
@@ -93,10 +93,10 @@ class _LogInState extends State<LogIn> {
                               height: 45,
                               padding: EdgeInsets.fromLTRB(24.0, 5.0, 24.0, 16.0),
                               child: Text(
-                                "LOGIN USING",
+                                "LOGIN USING G+",
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                    fontSize: 18.0,
+                                    fontSize: 14.0,
                                     fontStyle: FontStyle.normal,
                                     fontFamily: 'neuropol_x_rg',
                                     color: Colors.black87),
@@ -112,32 +112,139 @@ class _LogInState extends State<LogIn> {
                         preferences:
                         AnimationPreferences(duration: const Duration(milliseconds: 1000), autoPlay: AnimationPlayStates.Forward),
                       ),
+                     */
 
-                      Row(
+                      Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
+
+
                           BounceInLeft(
-                            child: IconButton(
-                              highlightColor: Colors.grey,
-                              icon: SvgPicture.asset(
-                                  'assets/icons/svg/google.svg'),
-                              onPressed: () {
-                                initiateSignIn("G");
-                              },
+                            child:  Container(
+                              margin: EdgeInsets.only(top: 26),
+                              child: SpringButton(
+                                SpringButtonType.WithOpacity,
+                                Material(
+                                  borderRadius: BorderRadius.circular(25.0),
+                                  elevation: 16,
+                                  shadowColor: Colors.deepOrange,
+                                  child: InkWell(
+                                    child: Container(
+                                      width: 180,
+                                      height: 40,
+                                      decoration: BoxDecoration(
+                                        gradient: LinearGradient(
+                                          colors: [
+                                            Colors.red,
+                                            Colors.red,
+                                            Colors.red,
+                                          ],
+                                          begin: Alignment.centerLeft,
+                                          end: Alignment.centerRight,
+                                        ),
+                                        borderRadius: const BorderRadius.all(
+                                          Radius.circular(5.0),
+                                        ),
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+
+                                          Padding(
+                                            padding: const EdgeInsets.only(right: 12),
+                                            child: Text(
+                                              'Google +',
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                fontSize: 13.0,
+                                                fontStyle: FontStyle.normal,
+                                                fontFamily: 'montserrat',
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold
+                                              ),
+                                            ),
+                                          ),
+
+                                          IconButton(
+                                            highlightColor: Colors.white,
+                                            icon: SvgPicture.asset('assets/icons/svg/google-plus.svg'),
+                                            onPressed: () {},
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    onTap: (){
+                                      initiateSignIn("G");
+                                    },
+                                  ),
+                                ),
+                              ),
                             ),
                             preferences:
                             AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
                           ),
 
                           BounceInDown(
-                            child: IconButton(
-                              highlightColor: Colors.green[200],
-                              icon: Image.asset(
-                                  'assets/icons/png/ic_google_play_games.png'),
-                              onPressed: () {
-                                Navigator.of(context).push(new PageRouteWithAnimation());
+                            child:  Container(
+                              margin: EdgeInsets.only(top: 16, bottom:  16),
+                              child: SpringButton(
+                                SpringButtonType.WithOpacity,
+                                Material(
+                                  borderRadius: BorderRadius.circular(25.0),
+                                  elevation: 16,
+                                  shadowColor: Colors.green,
+                                  child: GestureDetector(
+                                    child: Container(
+                                      width: 180,
+                                      height: 40,
+                                      decoration: BoxDecoration(
+                                        gradient: LinearGradient(
+                                          colors: [
+                                            Colors.green[700],
+                                            Colors.green[700],
+                                            Colors.green[700],
+                                          ],
+                                          begin: Alignment.centerLeft,
+                                          end: Alignment.centerRight,
+                                        ),
+                                        borderRadius: const BorderRadius.all(
+                                          Radius.circular(5.0),
+                                        ),
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
 
-                              },
+                                          Padding(
+                                            padding: const EdgeInsets.only(right: 6),
+                                            child: Text(
+                                              'Play Games',
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                fontSize: 13.0,
+                                                fontStyle: FontStyle.normal,
+                                                fontFamily: 'montserrat',
+                                                color: Colors.white,
+                                                  fontWeight: FontWeight.bold
+                                              ),
+                                            ),
+                                          ),
+
+                                          IconButton(
+                                            highlightColor: Colors.green[200],
+                                            icon: Image.asset(
+                                                'assets/icons/png/ic_google_play_games.png'),
+                                            onPressed: () {},
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    onTap: (){
+                                      Navigator.of(context).push(new PageRouteWithAnimation());
+                                    },
+                                  ),
+                                ),
+                              ),
                             ),
                             preferences:
                             AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
@@ -145,57 +252,72 @@ class _LogInState extends State<LogIn> {
 
 
                           BounceInRight(
-                            child: IconButton(
-                              highlightColor: Colors.blue[200],
-                              icon: SvgPicture.asset(
-                                  'assets/icons/svg/facebook.svg'),
-                              onPressed: () {
-                                initiateSignIn("FB");
-                              },
+                            child:  SpringButton(
+                              SpringButtonType.WithOpacity,
+                              InkWell(
+                                child: Material(
+                                  borderRadius: BorderRadius.circular(25.0),
+                                  elevation: 16,
+                                  shadowColor: Colors.blue,
+                                  child: Container(
+                                    width: 180,
+                                    height: 40,
+                                    decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                        colors: [
+                                          Colors.blue[700],
+                                          Colors.blue[700],
+                                          Colors.blue[700],
+                                        ],
+                                        begin: Alignment.centerLeft,
+                                        end: Alignment.centerRight,
+                                      ),
+                                      borderRadius: const BorderRadius.all(
+                                        Radius.circular(5.0),
+                                      ),
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+
+                                        Padding(
+                                          padding: const EdgeInsets.only(right: 12),
+                                          child: Text(
+                                            'Facebook',
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              fontSize: 15.0,
+                                              fontStyle: FontStyle.normal,
+                                              fontFamily: 'montserrat',
+                                              color: Colors.white,
+                                                fontWeight: FontWeight.bold
+                                            ),
+                                          ),
+                                        ),
+
+                                        IconButton(
+                                          highlightColor: Colors.blue[200],
+                                          icon: SvgPicture.asset(
+                                              'assets/icons/svg/facebook.svg'),
+                                          onPressed: () {
+
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                onTap: (){
+                                  initiateSignIn("FB");
+                                },
+                              ),
                             ),
                             preferences:
                             AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
                           ),
 
-
                         ],
                       ),
-
-                      Padding(
-                        padding: const EdgeInsets.all(0.0),
-                        child: Text(
-                          "",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontSize: 16.0,
-                              fontStyle: FontStyle.normal,
-                              fontFamily: 'neuropol_x_rg',
-                              fontWeight: FontWeight.bold,
-                              color: Colors.grey[700]),
-                        ),
-                      ),
-
-                      BounceInUp(
-                        child: GestureDetector(
-                          child: Text(
-                            "PLAY NOW",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontSize: 26.0,
-                                fontStyle: FontStyle.normal,
-                                fontFamily: 'neuropol_x_rg',
-                                fontWeight: FontWeight.bold,
-                                color: Colors.grey[700]),
-                          ),
-
-                          onTap: (){
-                            Navigator.of(context).push(new PageRouteWithAnimation());
-                          },
-                        ),
-                        preferences:
-                        AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
-                      ),
-
                     ],
                   ),
                 ),
@@ -284,7 +406,7 @@ class _LogInState extends State<LogIn> {
           return 1;
         } catch (error) {
 
-          print('e---s--------------');
+          print('e---- ${error}');
           return 0;
         }
     }
@@ -319,7 +441,8 @@ class _LogInState extends State<LogIn> {
   void loginByServer(String name, String email, String socialId, String image, String deviceToken, String memberId) {
     //change here
 
-    SharedPreferenceHelper().saveUserApiKey('d09VJNkHEQq4mgjnpwOE3LBNO');
+    SharedPreferenceHelper().saveUserApiKey('ZGHrDz4prqsu4BcApPaQYaGgq');
+    SharedPreferenceHelper().saveUserMemberId('MEM000001');
     Navigator.of(context).push( PageRouteWithAnimation());
 
 

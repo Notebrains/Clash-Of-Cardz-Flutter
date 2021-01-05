@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:trump_card_game/bloc/api_bloc.dart';
 import 'package:trump_card_game/helper/exten_fun/base_application_fun.dart';
+import 'package:trump_card_game/helper/shared_preference_data.dart';
 import 'package:trump_card_game/model/responses/profile_res_model.dart';
 import 'package:trump_card_game/ui/screens/about.dart';
 import 'package:trump_card_game/ui/screens/autoplay.dart';
@@ -43,7 +44,17 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    apiBloc.fetchProfileRes('ZGHrDz4prqsu4BcApPaQYaGgq', "MEM000001");
+
+    String apiKey = '';
+    String memberId = '';
+
+    SharedPreferenceHelper().getUserApiKey().then((xApiKey) => {apiKey = xApiKey.toString()});
+    SharedPreferenceHelper().getUserUserMemberId().then((memberIds) => {memberId = memberIds});
+
+    print('Home-apiKey $apiKey');
+    print('Home-memberId $memberId');
+
+    apiBloc.fetchProfileRes('ZGHrDz4prqsu4BcApPaQYaGgq', 'MEM000001');
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(

@@ -1,4 +1,5 @@
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:trump_card_game/model/arguments/shared_pref_user_model.dart';
 
 class SharedPreferenceHelper {
   void readLogInUserData() async {
@@ -9,26 +10,46 @@ class SharedPreferenceHelper {
   }
 
   void saveUserProfileData(
+    String xApiKey,
     String memberId,
-    String fullname,
+    String fullName,
     String photo,
     String points,
     String coins,
     String win,
     String loss,
     String matchPlayed,
+    String redeem,
     String rank,
   ) async {
     final prefs = await SharedPreferences.getInstance();
+    prefs.setString('xApiKey', xApiKey);
     prefs.setString('memberId', memberId);
-    prefs.setString('fullName', fullname);
+    prefs.setString('fullName', fullName);
     prefs.setString('photo', photo);
     prefs.setString('points', points);
     prefs.setString('coins', coins);
     prefs.setString('win', win);
     prefs.setString('loss', loss);
     prefs.setString('matchPlayed', matchPlayed);
+    prefs.setString('redeem', redeem);
     prefs.setString('rank', rank);
+  }
+
+  Future<SharedPrefUserProfileModel> getUserSavedData() async {
+    final prefs = await SharedPreferences.getInstance();
+    SharedPrefUserProfileModel().xApiKey = prefs.getString('xApiKey') ?? '';
+    SharedPrefUserProfileModel().memberId = prefs.getString('memberId') ?? '';
+    SharedPrefUserProfileModel().win = prefs.getString('win') ?? '';
+    SharedPrefUserProfileModel().loss = prefs.getString('loss') ?? '';
+    SharedPrefUserProfileModel().points = prefs.getString('points') ?? '';
+    SharedPrefUserProfileModel().coins = prefs.getString('coins') ?? '';
+    SharedPrefUserProfileModel().redeem = prefs.getString('redeem') ?? '';
+    SharedPrefUserProfileModel().rank = prefs.getString('rank') ?? '';
+    SharedPrefUserProfileModel().photo = prefs.getString('photo') ?? '';
+    SharedPrefUserProfileModel().matchPlayed = prefs.getString('matchPlayed') ?? '';
+
+    return SharedPrefUserProfileModel();
   }
 
   void saveUserApiKey(String xApiKey) async {
@@ -37,14 +58,20 @@ class SharedPreferenceHelper {
     //print('----saved $xApiKey');
   }
 
+  void saveUserMemberId(String memberId) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString('memberId', memberId);
+    //print('----saved $xApiKey');
+  }
+
   Future<int> getUserApiKey() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getInt('x_api_key') ?? 0;
   }
 
-  Future<int> getUserUserMemberId() async {
+  Future<String> getUserUserMemberId() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getInt('memberId') ?? 0;
+    return prefs.getString('memberId') ?? '';
   }
 
 
