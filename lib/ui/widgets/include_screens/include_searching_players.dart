@@ -7,36 +7,35 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:trump_card_game/helper/exten_fun/base_application_fun.dart';
 import 'package:trump_card_game/helper/shared_preference_data.dart';
+import 'package:trump_card_game/model/arguments/firebase_player_details_model.dart';
 import 'package:trump_card_game/ui/screens/autoplay.dart';
 import 'package:trump_card_game/ui/screens/gameplay.dart';
 import 'package:trump_card_game/ui/widgets/custom/frosted_glass.dart';
-import 'dart:io'show Platform;
-
+import 'dart:io' show Platform;
 
 class IncludeSearchingForPlayer extends StatefulWidget {
-
   final String categoryName;
   final String subcategoryName;
   final String gameType;
   final String cardsToPlay;
-  const IncludeSearchingForPlayer ({ Key key, this.categoryName, this.subcategoryName, this.gameType, this.cardsToPlay }): super(key: key);
 
+  const IncludeSearchingForPlayer({Key key, this.categoryName, this.subcategoryName, this.gameType, this.cardsToPlay}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => IncludeSearchingForPlayerState();
 }
 
 class IncludeSearchingForPlayerState extends State<IncludeSearchingForPlayer> with SingleTickerProviderStateMixin {
-
   AnimationController controller;
   Animation<double> scaleAnimation;
+  List <FirebasePlayerDetailsModel> fbJoinedPlayerList = [];
 
   int joinedPlayerCount;
   int joinedPlayerSize = 0;
   DatabaseReference _joinedPlayerCountRef;
   DatabaseReference _playerDetailsRef;
-  StreamSubscription<Event> _counterSubscription;
-  StreamSubscription<Event> _messagesSubscription;
+  StreamSubscription<Event> _joinedPlayerSubscription;
+  StreamSubscription<Event> playerDetailsSubscription;
   bool _anchorToBottom = false;
   DatabaseError _error;
 
@@ -47,7 +46,6 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForPlayer> wi
   var memberId = '';
   var points = '';
   var photo = '';
-
 
   @override
   void initState() {
@@ -60,20 +58,26 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForPlayer> wi
       setState(() {});
     });
 
+    SharedPreferenceHelper().getUserSavedData().then((sharedPrefUserProfileModel) => {
+          xApiKey = sharedPrefUserProfileModel.xApiKey ?? 'NA',
+          fullName = sharedPrefUserProfileModel.fullName ?? 'NA',
+          memberId = sharedPrefUserProfileModel.memberId ?? 'NA',
+          photo = sharedPrefUserProfileModel.photo ?? 'NA',
+          points = sharedPrefUserProfileModel.points ?? 'NA',
+        });
+
     controller.forward();
 
     initFirebaseCredentials();
 
     retrieveFirebaseData();
 
-    updateFirebaseJoinedPlayerDetails();
+    listeningToFirebaseDataUpdate();
+  }
 
-    SharedPreferenceHelper().getUserSavedData().then((sharedPrefUserProfileModel) => {
-      xApiKey = sharedPrefUserProfileModel.xApiKey?? 'NA',
-      fullName = sharedPrefUserProfileModel.fullName?? 'NA',
-      memberId = sharedPrefUserProfileModel.memberId?? 'NA',
-      photo = sharedPrefUserProfileModel.photo?? 'NA',
-      points = sharedPrefUserProfileModel.points?? 'NA',
+  void updateState() {
+    setState(() {
+      retrieveFirebaseData();
     });
   }
 
@@ -114,18 +118,14 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForPlayer> wi
                                   child: Text(
                                     "Searching for player",
                                     style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 24,
-                                        fontFamily: 'neuropol_x_rg',
-                                        fontWeight: FontWeight.bold),
+                                        color: Colors.white, fontSize: 24, fontFamily: 'neuropol_x_rg', fontWeight: FontWeight.bold),
                                   ),
                                 ),
                               ),
 
                               //Navigator.of(context).push(new PageRouteWithAnimation());
 
-
-                               /* Center(
+                              /* Center(
                                   child: Container(
                                     //padding: const EdgeInsets.only(top: 12.0),
                                     child: Text(
@@ -138,7 +138,6 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForPlayer> wi
                                     ),
                                   ),
                                 );*/
-
                             ],
                           ),
                         ),
@@ -154,15 +153,15 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForPlayer> wi
     );
   }
 
-
   Future<void> initFirebaseCredentials() async {
-
-
     WidgetsFlutterBinding.ensureInitialized();
+    await Firebase.initializeApp();
+
+    /*WidgetsFlutterBinding.ensureInitialized();
     firebaseApp = await Firebase.initializeApp(
       name: 'clash_of_cardz_db',
 
-      /*options: Platform.isIOS || Platform.isMacOS
+      */ /*options: Platform.isIOS || Platform.isMacOS
         ? FirebaseOptions(
       appId: '1:297855924061:ios:c6de2b69b03a5be8',
       apiKey: 'AIzaSyD_shO5mfO9lhy2TVWhfo1VUmARKlG4suk',
@@ -176,7 +175,7 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForPlayer> wi
       messagingSenderId: '297855924061',
       projectId: 'flutter-firebase-plugins',
       databaseURL: 'https://flutterfire-cd2f7.firebaseio.com',
-    ),*/
+    ),*/ /*
 
 
       options: Platform.isIOS || Platform.isMacOS
@@ -194,10 +193,9 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForPlayer> wi
         projectId: 'trump-card-43a2b',
         databaseURL: 'https://trump-card-43a2b.firebaseio.com/',
       ),
-    );
+    );*/
   }
-  
-  
+
   void retrieveFirebaseData() {
     // Demonstrates configuring to the database using a file
     _joinedPlayerCountRef = FirebaseDatabase.instance.reference().child('joinedPlayerCount');
@@ -210,11 +208,8 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForPlayer> wi
     });
 
     //get child items present in fb db.
-    FirebaseDatabase.instance
-        .reference()
-        .child('playerDetails')
-        .once()
-        .then((onValue) {
+    fbJoinedPlayerList = [];
+    _playerDetailsRef.once().then((onValue) {
       Map playerDetailsList = onValue.value;
       joinedPlayerSize = playerDetailsList.length;
 
@@ -225,32 +220,108 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForPlayer> wi
         print('Player Details List: { key: $playerDetailsKey, value: $playerDetailsValue}');
 
         Map playerDataInPlayerDetailsList = playerDetailsValue;
+
+        if (playerDataInPlayerDetailsList.containsValue(widget.categoryName) &&
+            playerDataInPlayerDetailsList.containsValue(widget.subcategoryName) &&
+            playerDataInPlayerDetailsList.containsValue(widget.gameType) &&
+            playerDataInPlayerDetailsList.containsValue(widget.cardsToPlay)) {
+          print('---- Fb data filter list: ${widget.categoryName}, ${widget.subcategoryName}, ${widget.gameType}, ${widget.cardsToPlay}');
+
+          FirebasePlayerDetailsModel model = FirebasePlayerDetailsModel();
+
+          _playerDetailsRef.child('playerName').once().then((DataSnapshot snapshot) {
+            model.playerName = snapshot.value;
+          });
+
+
+          _playerDetailsRef.child('userId').once().then((DataSnapshot snapshot) {
+            model.userId = snapshot.value;
+          });
+
+
+          _playerDetailsRef.child('image').once().then((DataSnapshot snapshot) {
+            model.photo = snapshot.value;
+          });
+
+          fbJoinedPlayerList.add(model);
+        }
+
         playerDataInPlayerDetailsList.forEach((playerDataKey, playerDataValue) {
           print('player Data In Player Details List: { inner key: $playerDataKey, inner value: $playerDataValue}');
         });
 
-
-        if(playerDataInPlayerDetailsList.containsValue(widget.categoryName)
-            && playerDataInPlayerDetailsList.containsValue(widget.subcategoryName)
-            && playerDataInPlayerDetailsList.containsValue(widget.gameType)
-            && playerDataInPlayerDetailsList.containsValue(widget.cardsToPlay)){
-
-            print('---- Fb data filter list: ${widget.categoryName}, ${widget.subcategoryName}, ${widget.gameType}, ${widget.cardsToPlay}');
-        }
       });
-
     });
 
+    // After getting player list from fb, updating fb and start playing
+    updateFirebaseJoinedPlayerDetails();
+  }
 
+  @override
+  void dispose() {
+    super.dispose();
+    playerDetailsSubscription.cancel();
+    _joinedPlayerSubscription.cancel();
+  }
+
+  Future<void> updateFirebaseJoinedPlayerDetails() async {
+    //if player is already looking for player then take 1 player and remove that player else join as host
+    if (joinedPlayerSize < 1) {
+      // Increment counter in transaction.
+      final TransactionResult transactionResult = await _joinedPlayerCountRef.runTransaction((MutableData mutableData) async {
+        mutableData.value = (mutableData.value ?? 0) + 1;
+        return mutableData;
+      });
+
+      if (transactionResult.committed) {
+        _playerDetailsRef.push().set(<String, String>{
+          //count: ${transactionResult.dataSnapshot.value}
+          'playerName': fullName,
+          'image': photo,
+          'userId': memberId,
+          'joinedUserType': 'host',
+          'category': widget.categoryName,
+          'subCategory': widget.subcategoryName,
+          'gameType': widget.gameType,
+          'cardCount': widget.cardsToPlay,
+        });
+
+      } else {
+        print('Transaction not committed.');
+        if (transactionResult.error != null) {
+          print(transactionResult.error.message);
+        }
+      }
+    } else {
+
+      if (fbJoinedPlayerList.length > 0) {
+        _playerDetailsRef.equalTo(fbJoinedPlayerList[0].playerName).once().then((DataSnapshot snapshot) {
+          Map<dynamic, dynamic> children = snapshot.value;
+          children.forEach((key, value) {
+            _playerDetailsRef.child(key).remove();
+          });
+        });
+
+        //start the game
+        openGamePlayPage(fbJoinedPlayerList[0].playerName ,fbJoinedPlayerList[0].userId ,fbJoinedPlayerList[0].photo);
+      }
+    }
+  }
+
+  void listeningToFirebaseDataUpdate() {
+
+    //getting joinedPlayerCount when it changed
+
+    final FirebaseDatabase database = FirebaseDatabase(app: firebaseApp);
 
     database.setPersistenceEnabled(true);
     database.setPersistenceCacheSizeBytes(10000000);
     _joinedPlayerCountRef.keepSynced(true);
-    _counterSubscription = _joinedPlayerCountRef.onValue.listen((Event event) {
+    _joinedPlayerSubscription = _joinedPlayerCountRef.onValue.listen((Event event) {
       setState(() {
         _error = null;
         //joinedPlayerCount = event.snapshot.value ?? 0;
-        joinedPlayerCount =  joinedPlayerSize?? 0;
+        joinedPlayerCount = joinedPlayerSize ?? 0;
       });
     }, onError: (Object o) {
       final DatabaseError error = o;
@@ -258,73 +329,29 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForPlayer> wi
         _error = error;
       });
     });
-    _messagesSubscription =
-        _playerDetailsRef.limitToLast(10).onChildAdded.listen((Event event) {
-          print('Child added: ${event.snapshot.value}');
-        }, onError: (Object o) {
-          final DatabaseError error = o;
-          print('Error: ${error.code} ${error.message}');
-        });
 
-  }
+    playerDetailsSubscription = _playerDetailsRef.limitToFirst(1).onChildAdded.listen((Event event) {
+      print('Child added: ${event.snapshot.value}');
 
+      //getting updated firebase list when new player added.
+      updateState();
 
-  @override
-  void dispose() {
-    super.dispose();
-    _messagesSubscription.cancel();
-    _counterSubscription.cancel();
-  }
-
-  Future<void> updateFirebaseJoinedPlayerDetails() async {
-    // Increment counter in transaction.
-    final TransactionResult transactionResult =
-    await _joinedPlayerCountRef.runTransaction((MutableData mutableData) async {
-      mutableData.value = (mutableData.value ?? 0) + 1;
-      return mutableData;
+    }, onError: (Object o) {
+      final DatabaseError error = o;
+      print('Error: ${error.code} ${error.message}');
     });
-
-    if (transactionResult.committed) {
-      _playerDetailsRef.push().set(<String, String>{
-        //count: ${transactionResult.dataSnapshot.value}
-        'playerName': fullName,
-        'image': photo,
-        'userId': memberId,
-        'joinedUserType': joinedPlayerSize == 0 ? 'host': 'joined',
-        'category': widget.categoryName,
-        'subCategory': widget.subcategoryName,
-        'gameType': widget.gameType,
-        'cardCount': widget.cardsToPlay,
-      });
-    } else {
-      print('Transaction not committed.');
-      if (transactionResult.error != null) {
-        print(transactionResult.error.message);
-      }
-    }
   }
 
-}
-
-class PageRouteWithAnimation extends CupertinoPageRoute {
-  PageRouteWithAnimation()
-      : super(
-            builder: (BuildContext context) => Gameplay(
-                  name: 'Jack Demon',
-                  friendId: 'F006754',
-                ));
-
-  // OPTIONAL IF YOU WISH TO HAVE SOME EXTRA ANIMATION WHILE ROUTING
-  @override
-  Widget buildPage(BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) {
-    return new ScaleTransition(
-      scale: animation,
-      child: new FadeTransition(
-        opacity: animation,
-        child: Gameplay(
-          name: 'Jack Demon',
-          friendId: 'F006754',
-        ),
+  void openGamePlayPage(String playerName, playerId, playerImage) {
+    Navigator.push(
+      context,
+      CupertinoPageRoute(
+        builder: (context) =>
+            Gameplay(
+              joinedPlayerName: playerName,
+              joinedPlayerId: playerId,
+              joinedPlayerImage: playerImage,
+            ),
       ),
     );
   }

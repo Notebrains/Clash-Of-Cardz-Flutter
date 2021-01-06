@@ -1,12 +1,15 @@
+import 'dart:async';
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:trump_card_game/bloc/api_bloc.dart';
 import 'package:trump_card_game/helper/constantvalues/constants.dart';
+import 'package:trump_card_game/helper/exten_fun/base_application_fun.dart';
 import 'package:trump_card_game/model/responses/friends_res_model.dart';
 import 'package:trump_card_game/ui/screens/gameplay.dart';
 import 'package:flutter_animator/flutter_animator.dart';
+import 'package:lottie/lottie.dart';
 
 import 'include_searching_players.dart';
 
@@ -196,5 +199,57 @@ Widget searchableUsersWidget(BuildContext context, FriendsResModel data) {
         );
       },
   );
+}
+
+
+void showPlayerSearchingDialog(BuildContext context) {
+  BuildContext dialogContext;
+  showDialog(
+    context: context,
+    barrierDismissible: true,
+    useSafeArea: true,
+    builder: (BuildContext context) {
+      dialogContext = context;
+      return Dialog(
+        backgroundColor: Colors.transparent,
+        child: FadeInUp(
+          child: Column(
+            children: [
+              Center(
+                child: Lottie.asset('assets/animations/lottiefiles/confused_robot-bot-3d.json',
+                    width: getScreenWidth(context),
+                    height: getScreenHeight(context) * 0.7,
+                    repeat: true,
+                    animate: true),
+              ),
+
+              Expanded(
+                child: Text(
+                  "Waiting for your friend to accept the request",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 24,
+                      fontFamily: 'neuropol_x_rg',
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
+            ],
+          ),
+          preferences: AnimationPreferences(duration: const Duration(milliseconds: 300), autoPlay: AnimationPlayStates.Forward),
+        ),
+      );
+    },
+  );
+
+
+  Timer(Duration(seconds: 3000000), () {
+    Navigator.pop(dialogContext);
+    Navigator.push(
+      context,
+      CupertinoPageRoute(
+        builder: (context) => Gameplay(joinedPlayerName: 'Jack Demon', joinedPlayerId: 'F006754', joinedPlayerImage: 'F006754'),
+      ),
+    );
+  });
 }
 

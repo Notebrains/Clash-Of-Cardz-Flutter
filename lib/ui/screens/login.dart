@@ -153,10 +153,10 @@ class _LogInState extends State<LogIn> {
                                           Padding(
                                             padding: const EdgeInsets.only(right: 12),
                                             child: Text(
-                                              'Google +',
+                                              'Google     ',
                                               textAlign: TextAlign.center,
                                               style: TextStyle(
-                                                fontSize: 13.0,
+                                                fontSize: 15.0,
                                                 fontStyle: FontStyle.normal,
                                                 fontFamily: 'montserrat',
                                                 color: Colors.white,
@@ -166,8 +166,8 @@ class _LogInState extends State<LogIn> {
                                           ),
 
                                           IconButton(
-                                            highlightColor: Colors.white,
-                                            icon: SvgPicture.asset('assets/icons/svg/google-plus.svg'),
+                                            icon: SvgPicture.asset('assets/icons/svg/google-plus.svg',
+                                              color: Colors.white),
                                             onPressed: () {},
                                           ),
                                         ],
@@ -221,7 +221,7 @@ class _LogInState extends State<LogIn> {
                                               'Play Games',
                                               textAlign: TextAlign.center,
                                               style: TextStyle(
-                                                fontSize: 13.0,
+                                                fontSize: 15.0,
                                                 fontStyle: FontStyle.normal,
                                                 fontFamily: 'montserrat',
                                                 color: Colors.white,

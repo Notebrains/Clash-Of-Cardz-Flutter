@@ -19,11 +19,12 @@ import 'package:trump_card_game/ui/widgets/include_screens/include_gameplay.dart
 import 'game_result.dart';
 
 class Gameplay extends StatelessWidget {
-  Gameplay({this.name, this.friendId});
+  Gameplay({this.joinedPlayerName, this.joinedPlayerId, this.joinedPlayerImage});
 
   final List<String> playerResultStatusList = [];
-  final String name;
-  final String friendId;
+  final String joinedPlayerName;
+  final String joinedPlayerId;
+  final String joinedPlayerImage;
   int indexOfP1Card = 0;
   int indexOfCardDeck = 0;
 

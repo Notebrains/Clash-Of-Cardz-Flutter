@@ -1,10 +1,7 @@
-import 'dart:io'show Platform;
 
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:trump_card_game/ui/screens/demo/firebasse_notification.dart';
 import 'package:trump_card_game/ui/screens/splash.dart';
-
-import 'ui/screens/rtdb/firebase_crud.dart';
 
 /*
 
@@ -55,7 +52,9 @@ Future<void> main() async {
 }
 */
 
-void main() => runApp(MyRootApp());
+
+
+void main() => runApp(MyApp());
 
 class MyRootApp extends StatelessWidget {
   // This widget is the root of your application.

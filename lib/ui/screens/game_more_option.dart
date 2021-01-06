@@ -7,7 +7,7 @@ import 'package:trump_card_game/bloc/api_bloc.dart';
 import 'package:trump_card_game/helper/exten_fun/base_application_fun.dart';
 import 'package:trump_card_game/model/responses/game_option_res_model.dart';
 import 'package:trump_card_game/ui/screens/autoplay.dart';
-import 'package:trump_card_game/ui/widgets/include_screens/friends_drawer.dart';
+import 'package:trump_card_game/ui/widgets/include_screens/include_drawer_play_with_friends.dart';
 import 'package:trump_card_game/ui/widgets/include_screens/include_searching_players.dart';
 import 'package:trump_card_game/ui/widgets/libraries/colorize.dart';
 import 'package:trump_card_game/ui/widgets/views/view_widgets.dart';
@@ -393,54 +393,4 @@ class _GameMoreOptionState extends State<GameMoreOption> {
     }
   }
 
-  void showPlayerSearchingDialog(BuildContext context) {
-    BuildContext dialogContext;
-    showDialog(
-      context: context,
-      barrierDismissible: true,
-      useSafeArea: true,
-      builder: (BuildContext context) {
-        dialogContext = context;
-        return Dialog(
-          backgroundColor: Colors.transparent,
-          child: FadeInUp(
-            child: Column(
-              children: [
-                Center(
-                  child: Lottie.asset('assets/animations/lottiefiles/sports-loading.json',
-                      width: getScreenWidth(context),
-                      height: getScreenHeight(context) * 0.7,
-                      repeat: true,
-                      animate: true),
-                ),
-
-                Expanded(
-                  child: Text(
-                    "Searching for player",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 24,
-                        fontFamily: 'neuropol_x_rg',
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ],
-            ),
-            preferences: AnimationPreferences(duration: const Duration(milliseconds: 300), autoPlay: AnimationPlayStates.Forward),
-          ),
-        );
-      },
-    );
-
-
-    Timer(Duration(seconds: 5), () {
-      Navigator.pop(dialogContext);
-      Navigator.push(
-        context,
-        CupertinoPageRoute(
-          builder: (context) => Gameplay(name: 'Jack Demon', friendId: 'F006754'),
-        ),
-      );
-    });
-  }
 }
