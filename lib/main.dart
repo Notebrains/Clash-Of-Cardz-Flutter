@@ -54,7 +54,7 @@ Future<void> main() async {
 
 
 
-void main() => runApp(MyApp());
+void main() => runApp(MyRootApp());
 
 class MyRootApp extends StatelessWidget {
   // This widget is the root of your application.

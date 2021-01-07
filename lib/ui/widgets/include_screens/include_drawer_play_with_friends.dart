@@ -4,21 +4,22 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:trump_card_game/bloc/api_bloc.dart';
-import 'package:trump_card_game/helper/constantvalues/constants.dart';
 import 'package:trump_card_game/helper/exten_fun/base_application_fun.dart';
 import 'package:trump_card_game/model/responses/friends_res_model.dart';
+import 'package:trump_card_game/model/responses/match_making_res_model.dart';
 import 'package:trump_card_game/ui/screens/gameplay.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 import 'package:lottie/lottie.dart';
+import 'package:trump_card_game/ui/widgets/include_screens/include_waiting_for_friend.dart';
 
 import 'include_searching_players.dart';
 
-Widget friendList(BuildContext context) {
+Widget friendList(BuildContext context, String categoryName, String subcategoryName, String cardsToPlay) {
   return StreamBuilder(
     stream: apiBloc.friendsRes,
     builder: (context, AsyncSnapshot<FriendsResModel> snapshot) {
       if (snapshot.hasData) {
-        return searchableUsersWidget(context, snapshot.data);
+        return searchableUsersWidget(context, snapshot.data, categoryName, subcategoryName, '14');
       } else if (snapshot.hasError) {
         return Text(snapshot.error.toString());
       }
@@ -26,15 +27,18 @@ Widget friendList(BuildContext context) {
         height: MediaQuery.of(context).size.height,
         color: Colors.grey[600],
         child: Center(
-            child: CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation<Color>(Colors.deepOrangeAccent),
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 100),
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.deepOrangeAccent),
+              ),
             )),
       );
     },
   );
 }
 
-Widget searchableUsersWidget(BuildContext context, FriendsResModel data) {
+Widget searchableUsersWidget(BuildContext context, FriendsResModel data, String categoryName, String subcategoryName, String cardsToPlay) {
   List<Response> dataList = data.response;
 
   ValueNotifier<List<Response>> filtered = ValueNotifier<List<Response>>([]);
@@ -58,8 +62,8 @@ Widget searchableUsersWidget(BuildContext context, FriendsResModel data) {
                       itemCount: searching ? filtered.value.length : dataList.length,
                       itemBuilder: (context, index) {
                         //final item = searching ? filtered.value[index] : dataList[index].fullname;
-                        return GestureDetector(
-                          child: SlideInLeft(
+                        return  SlideInLeft(
+                          child: InkWell(
                             child: Container(
                               margin: EdgeInsets.fromLTRB(18, 5, 5, 5),
                               child: Row(
@@ -104,25 +108,32 @@ Widget searchableUsersWidget(BuildContext context, FriendsResModel data) {
                                 ],
                               ),
                             ),
-                            preferences: AnimationPreferences(
-                                duration: const Duration(milliseconds: 1300),
-                                autoPlay: AnimationPlayStates.Forward),
-                          ),
 
-                          onTap: () {
-                            showDialog(
-                              context: context,
-                              builder: (_) => IncludeSearchingForPlayer(),
-                            );
+                            onTap: () {
+                              //showPlayerSearchingDialog(context);
 
-                            /*Navigator.push(context,
+                              /*Navigator.push(context,
                               CupertinoPageRoute(
                                 builder: (context) => new Gameplay(
                                   name: dataList[index].fullname,
                                   friendId: dataList[index].freindId,),
                               ),
                             );*/
-                          },
+
+                              sendNotificationToOtherPlayerByApi(
+                                context,
+                                categoryName,
+                                subcategoryName,
+                                '14',
+                                dataList[index].freindId,
+                                dataList[index].fullname,
+                                dataList[index].photo,
+                              );
+                            },
+                          ),
+                          preferences: AnimationPreferences(
+                              duration: const Duration(milliseconds: 1300),
+                              autoPlay: AnimationPlayStates.Forward),
                         );
                       }),
                 ),
@@ -201,6 +212,49 @@ Widget searchableUsersWidget(BuildContext context, FriendsResModel data) {
   );
 }
 
+void sendNotificationToOtherPlayerByApi(BuildContext context, String categoryName, String subcategoryName, String cardsToPlay, friendId, friendName, friendImage) {
+  showDialog(
+    context: context,
+    builder: (_) => IncludeWaitingForFriend(
+      categoryName: categoryName,
+      subcategoryName: subcategoryName,
+      gameType: 'play with friends',
+      cardsToPlay: cardsToPlay,
+      friendId: '',
+      friendName: '',
+      friendImage: '',
+      joinedPlayerType: 'joinedAsPlayer',
+    ),
+  );
+
+
+  /*  apiBloc.fetchMatchReqToFriendRes('ZGHrDz4prqsu4BcApPaQYaGgq');
+
+    StreamBuilder(
+        stream: apiBloc.matchReqToFriendRes,
+        builder: (context, AsyncSnapshot<MatchMakingResModel> snapshot) {
+          if (snapshot.hasData) {
+            showDialog(
+              context: context,
+              builder: (_) => IncludeWaitingForFriend(
+                  categoryName: categoryName,
+                  subcategoryName: subcategoryName,
+                  gameType: 'play with friends',
+                  cardsToPlay: cardsToPlay,
+                  friendId: '',
+                  friendName: '',
+                  friendImage: '',
+                  joinedPlayerType: 'friend',
+              ),
+            );
+          } else if (snapshot.hasError) {
+            return Text('');
+          }
+          return Center(child: CircularProgressIndicator());
+        });*/
+
+}
+
 
 void showPlayerSearchingDialog(BuildContext context) {
   BuildContext dialogContext;
@@ -243,6 +297,20 @@ void showPlayerSearchingDialog(BuildContext context) {
 
 
   Timer(Duration(seconds: 3000000), () {
+    apiBloc.fetchMatchReqToFriendRes('');
+
+    StreamBuilder(
+        stream: apiBloc.matchReqToFriendRes,
+        builder: (context, AsyncSnapshot<MatchMakingResModel> snapshot) {
+          if (snapshot.hasData) {
+
+          } else if (snapshot.hasError) {
+            return Text('');
+          }
+          return Center(child: CircularProgressIndicator());
+        });
+
+
     Navigator.pop(dialogContext);
     Navigator.push(
       context,

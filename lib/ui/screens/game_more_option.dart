@@ -9,6 +9,7 @@ import 'package:trump_card_game/model/responses/game_option_res_model.dart';
 import 'package:trump_card_game/ui/screens/autoplay.dart';
 import 'package:trump_card_game/ui/widgets/include_screens/include_drawer_play_with_friends.dart';
 import 'package:trump_card_game/ui/widgets/include_screens/include_searching_players.dart';
+import 'package:trump_card_game/ui/widgets/include_screens/include_waiting_for_friend.dart';
 import 'package:trump_card_game/ui/widgets/libraries/colorize.dart';
 import 'package:trump_card_game/ui/widgets/views/view_widgets.dart';
 import 'package:flutter_animator/flutter_animator.dart';
@@ -87,8 +88,9 @@ class _GameMoreOptionState extends State<GameMoreOption> {
               ),
             ),
 
+            //change here
             //building friend list ui in drawer
-            friendList(context),
+            friendList(context, widget.categoryName, widget.subcategoryName, '14'),
           ],
         ),
       ),
@@ -352,7 +354,7 @@ class _GameMoreOptionState extends State<GameMoreOption> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(8, 12, 0, 2),
+                    padding: const EdgeInsets.fromLTRB(8, 16, 0, 2),
                     child: GestureDetector(
                       child: Text(
                         '${cardsToBePlayed[index]} cards',
@@ -369,11 +371,19 @@ class _GameMoreOptionState extends State<GameMoreOption> {
                           Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => AutoPlay()));
                         }else*/
 
-
-
                           showDialog(
                             context: context,
-                            builder: (_) => IncludeSearchingForPlayer(categoryName: widget.categoryName, subcategoryName: widget.subcategoryName, gameType: gameType, cardsToPlay: cardsToBePlayed[index]),
+                            builder: (_) => IncludeWaitingForFriend(
+                                categoryName: widget.categoryName,
+                                subcategoryName: widget.subcategoryName,
+                                gameType: gameType,
+                                cardsToPlay: cardsToBePlayed[index],
+                                friendId: '',
+                                friendName: '',
+                                friendImage: '',
+                                joinedPlayerType: 'joinedAsPlayer',
+
+                            ),
                           );
 
                       },

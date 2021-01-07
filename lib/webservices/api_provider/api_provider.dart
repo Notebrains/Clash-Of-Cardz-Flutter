@@ -228,6 +228,29 @@ Future<MatchMakingResModel> fetchMatchMakingApi(String xApiKey) async {
     }
   }
 
+Future<MatchMakingResModel> fetchMatchReqToFriendApi(String xApiKey) async {
+    Map<String, String> headers = {
+      "Content-Type": 'application/x-www-form-urlencoded',
+      'x-api-key': xApiKey};
+
+    var requestBody = {
+      '': '',
+    };
+
+    http.Response response = await http.post(
+      UrlConstants.matchMaking,
+      headers: headers,
+      body: requestBody,
+    );
+    print(response.body.toString());
+
+    if (response.statusCode == 200) {
+      return MatchMakingResModel.fromJson(json.decode(response.body)); //Return decoded response
+    } else {
+      throw Exception('Failed to load Match Req To Friend response');
+    }
+  }
+
 Future<SaveGameResultResModel> fetchSaveGameResultApi(String xApiKey, Map<String, Object> requestBody) async {
     Map<String, String> headers = {
       "Content-Type": 'application/x-www-form-urlencoded',

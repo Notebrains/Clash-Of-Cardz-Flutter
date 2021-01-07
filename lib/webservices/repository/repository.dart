@@ -39,6 +39,9 @@ class Repository {
   Future<MatchMakingResModel> fetchMatchMakingApi(String xApiKey) =>
       appApiProvider.fetchMatchMakingApi(xApiKey);
 
+  Future<MatchMakingResModel> fetchMatchReqToFriendApi(String xApiKey) =>
+      appApiProvider.fetchMatchReqToFriendApi(xApiKey);
+
   Future<SaveGameResultResModel> fetchSaveGameResultApi(String xApiKey, Map<String, Object> requestBody) =>
       appApiProvider.fetchSaveGameResultApi(xApiKey, requestBody);
 }

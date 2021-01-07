@@ -7,12 +7,20 @@ import 'package:trump_card_game/model/responses/login_res_model.dart';
 import 'package:trump_card_game/ui/screens/home.dart';
 import 'package:trump_card_game/ui/widgets/animations/spring_button.dart';
 import 'package:trump_card_game/ui/widgets/custom/carousel_auto_slider.dart';
+import 'package:trump_card_game/ui/widgets/include_screens/include_waiting_for_friend.dart';
 import 'package:trump_card_game/ui/widgets/libraries/animated_text_kit/animated_text_kit.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_animator/flutter_animator.dart';
+import 'dart:async';
+
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
+import 'gameplay.dart';
+
 class LogIn extends StatefulWidget {
   const LogIn({Key key}) : super(key: key);
 
@@ -23,6 +31,72 @@ class LogIn extends StatefulWidget {
 class _LogInState extends State<LogIn> {
   var loggedIn = false;
   var context;
+
+
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+
+  _register() {
+    _firebaseMessaging.getToken().then((token) => print(token));
+  }
+
+  //////local notification
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+  FlutterLocalNotificationsPlugin();
+
+
+  @override
+  void initState() {
+    super.initState();
+    _register();
+    getMessage();
+
+    //local notification
+    var initializationSettingsAndroid =
+    AndroidInitializationSettings('notification_big_img');
+    var initializationSettingsIOs = IOSInitializationSettings();
+    var initSettings = InitializationSettings(
+        android: initializationSettingsAndroid, iOS: initializationSettingsIOs);
+
+    flutterLocalNotificationsPlugin.initialize(initSettings,
+        onSelectNotification: onSelectNotification);
+  }
+
+
+  void getMessage(){
+    _firebaseMessaging.configure(
+        onMessage: (Map<String, dynamic> message) async {
+          print('firebase noti: on message $message');
+          //setState(() => _message = message["notification"]["title"]);
+
+          showBigPictureNotification();
+
+        }, onResume: (Map<String, dynamic> message) async {
+      print('firebase noti: on resume $message');
+      //setState(() => _message = message["notification"]["title"]);
+    }, onLaunch: (Map<String, dynamic> message) async {
+      print('firebase noti: on launch $message');
+      //setState(() => _message = message["notification"]["title"]);
+    });
+  }
+
+  ///////local notification
+  Future onSelectNotification(String payload) async {
+    showDialog(
+      context: context,
+      builder: (_) => IncludeWaitingForFriend(
+        categoryName: 'Sports',
+        subcategoryName: 'Cricket',
+        gameType: 'play with friends',
+        cardsToPlay: '14',
+        friendId: 'MEM00001',
+        friendName: 'Rex',
+        friendImage: 'https://predictfox.com/trumpcard/assets/uploads/carddetails/16086354135.png',
+        joinedPlayerType: 'joinedAsFriend',
+      ),
+    );
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -130,7 +204,7 @@ class _LogInState extends State<LogIn> {
                                   shadowColor: Colors.deepOrange,
                                   child: InkWell(
                                     child: Container(
-                                      width: 180,
+                                      width: 150,
                                       height: 40,
                                       decoration: BoxDecoration(
                                         gradient: LinearGradient(
@@ -231,9 +305,8 @@ class _LogInState extends State<LogIn> {
                                           ),
 
                                           IconButton(
-                                            highlightColor: Colors.green[200],
-                                            icon: Image.asset(
-                                                'assets/icons/png/ic_google_play_games.png'),
+                                            icon: SvgPicture.asset('assets/icons/svg/games.svg',
+                                                color: Colors.white),
                                             onPressed: () {},
                                           ),
                                         ],
@@ -257,10 +330,10 @@ class _LogInState extends State<LogIn> {
                               InkWell(
                                 child: Material(
                                   borderRadius: BorderRadius.circular(25.0),
-                                  elevation: 16,
+                                  elevation: 22,
                                   shadowColor: Colors.blue,
                                   child: Container(
-                                    width: 180,
+                                    width: 220,
                                     height: 40,
                                     decoration: BoxDecoration(
                                       gradient: LinearGradient(
@@ -461,6 +534,31 @@ class _LogInState extends State<LogIn> {
           }
           return Center(child: CircularProgressIndicator());
         });*/
+  }
+
+
+  Future<void> showBigPictureNotification() async {
+    var bigPictureStyleInformation = BigPictureStyleInformation(
+        DrawableResourceAndroidBitmap("notification_big_img"),
+        largeIcon: DrawableResourceAndroidBitmap("notification_big_img"),
+        contentTitle: 'Clash Of Cardz',
+        htmlFormatContentTitle: true,
+        summaryText: 'Your friend request to play match. Play Now',
+        htmlFormatSummaryText: true);
+    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+        'big text channel id',
+        'big text channel name',
+        'big text channel description',
+        styleInformation: bigPictureStyleInformation);
+    var iOSPlatformChannelSpecifics = new IOSNotificationDetails();
+    var platformChannelSpecifics =
+    NotificationDetails(android: androidPlatformChannelSpecifics, iOS: iOSPlatformChannelSpecifics);
+    await flutterLocalNotificationsPlugin.show(
+        0,
+        'big text title',
+        'silent body',
+        platformChannelSpecifics,
+        payload: 'Default_Sound');
   }
 }
 

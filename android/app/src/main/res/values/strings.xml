@@ -3,4 +3,5 @@
     <string name="app_name">Clash Of Cardz</string>
     <string name="facebook_app_id">1400296626829858</string>
     <string name="fb_login_protocol_scheme">fb1400296626829858</string>
+    <string name="default_notification_channel_id">0005</string>
 </resources>

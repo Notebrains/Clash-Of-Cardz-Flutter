@@ -96,6 +96,16 @@ class ApiBloc {
   }
 
 
+  //send notification request to friend by API
+  final _matchReqToFriendFetcher = PublishSubject<MatchMakingResModel>();
+
+  Stream<MatchMakingResModel> get matchReqToFriendRes => _matchReqToFriendFetcher.stream;
+
+  fetchMatchReqToFriendRes(String xApiKey) async {
+    MatchMakingResModel model = await _repository.fetchMatchReqToFriendApi(xApiKey);
+    _matchReqToFriendFetcher.sink.add(model);
+  }
+
   //save game result
   final _saveGameResultResFetcher = PublishSubject<SaveGameResultResModel>();
 
@@ -116,6 +126,7 @@ class ApiBloc {
     _profileResFetcher.close();
     _gameCatResFetcher.close();
     _matchMakingResFetcher.close();
+    _matchReqToFriendFetcher.close();
     _saveGameResultResFetcher.close();
   }
 }

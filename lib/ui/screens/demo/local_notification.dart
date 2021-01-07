@@ -1,35 +1,20 @@
 import 'dart:async';
-
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
-class FirebaseAndLocalNotification extends StatefulWidget {
+
+class FirebaseLocalNotification extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() {
-    return _FirebaseAndLocalNotificationState();
-  }
+  _MyAppState createState() => _MyAppState();
 }
 
-class _FirebaseAndLocalNotificationState extends State<FirebaseAndLocalNotification> {
-
-  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
-
-  _register() {
-    _firebaseMessaging.getToken().then((token) => print(token));
-  }
-
-  //////local notification
+class _MyAppState extends State<FirebaseLocalNotification> {
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
   FlutterLocalNotificationsPlugin();
 
   @override
   void initState() {
     super.initState();
-    _register();
-    getMessage();
-
-    //local notification
     var initializationSettingsAndroid =
     AndroidInitializationSettings('notification_big_img');
     var initializationSettingsIOs = IOSInitializationSettings();
@@ -40,25 +25,7 @@ class _FirebaseAndLocalNotificationState extends State<FirebaseAndLocalNotificat
         onSelectNotification: onSelectNotification);
   }
 
-  void getMessage(){
-    _firebaseMessaging.configure(
-        onMessage: (Map<String, dynamic> message) async {
-          print('on message $message');
-          //setState(() => _message = message["notification"]["title"]);
-
-          showBigPictureNotification();
-
-        }, onResume: (Map<String, dynamic> message) async {
-      print('on resume $message');
-      //setState(() => _message = message["notification"]["title"]);
-    }, onLaunch: (Map<String, dynamic> message) async {
-      print('on launch $message');
-      //setState(() => _message = message["notification"]["title"]);
-    });
-  }
-
-  ///////local notification
-  Future onSelectNotification(String payload) async {
+  Future onSelectNotification(String payload) {
     Navigator.of(context).push(MaterialPageRoute(builder: (_) {
       return NewScreen(
         payload: payload,
@@ -68,20 +35,49 @@ class _FirebaseAndLocalNotificationState extends State<FirebaseAndLocalNotificat
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-
-              ],
-          ),
+    return Scaffold(
+      appBar: new AppBar(
+        backgroundColor: Colors.red,
+        title: new Text('Flutter notification demo'),
+      ),
+      body: new Center(
+        child: Column(
+          children: <Widget>[
+            RaisedButton(
+              onPressed: showNotification,
+              child: new Text(
+                'showNotification',
+              ),
+            ),
+            RaisedButton(
+              onPressed: cancelNotification,
+              child: new Text(
+                'cancelNotification',
+              ),
+            ),
+            RaisedButton(
+              onPressed: scheduleNotification,
+              child: new Text(
+                'scheduleNotification',
+              ),
+            ),
+            RaisedButton(
+              onPressed: showBigPictureNotification,
+              child: new Text(
+                'showBigPictureNotification',
+              ),
+            ),
+            RaisedButton(
+              onPressed: showNotificationMediaStyle,
+              child: new Text(
+                'showNotificationMediaStyle',
+              ),
+            ),
+          ],
         ),
       ),
     );
   }
-
 
   Future<void> showNotificationMediaStyle() async {
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
@@ -112,15 +108,11 @@ class _FirebaseAndLocalNotificationState extends State<FirebaseAndLocalNotificat
         'big text channel name',
         'big text channel description',
         styleInformation: bigPictureStyleInformation);
-    var iOSPlatformChannelSpecifics = new IOSNotificationDetails();
     var platformChannelSpecifics =
-    NotificationDetails(android: androidPlatformChannelSpecifics, iOS: iOSPlatformChannelSpecifics);
+    NotificationDetails(android: androidPlatformChannelSpecifics, iOS: null);
     await flutterLocalNotificationsPlugin.show(
-        0,
-        'big text title',
-        'silent body',
-        platformChannelSpecifics,
-        payload: 'Default_Sound');
+        0, 'big text title', 'silent body', platformChannelSpecifics,
+        payload: "big image notifications");
   }
 
   Future<void> scheduleNotification() async {
