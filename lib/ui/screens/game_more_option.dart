@@ -366,12 +366,7 @@ class _GameMoreOptionState extends State<GameMoreOption> {
                         ),
                       ),
                       onTap: (){
-                        //change here
-                        /*if(gameType == 'Player vs Computer'){
-                          Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => AutoPlay()));
-                        }else*/
-
-                          showDialog(
+                        showDialog(
                             context: context,
                             builder: (_) => IncludeWaitingForFriend(
                                 categoryName: widget.categoryName,

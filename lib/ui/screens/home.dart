@@ -25,36 +25,25 @@ import 'package:flutter_animator/flutter_animator.dart';
 
 import 'game_option.dart';
 
-class HomeScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    setScreenOrientationToLandscape();
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: MyHomePage(),
-    );
-  }
-}
+class HomeScreen extends StatefulWidget {
 
-class MyHomePage extends StatefulWidget {
+  HomeScreen({this.xApiKey, this.memberId});
+  final String xApiKey;
+  final String memberId;
+
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
 
-    String apiKey = '';
-    String memberId = '';
+    print('Home-apiKey ${widget.xApiKey}');
+    print('Home-memberId ${widget.memberId}');
 
-    SharedPreferenceHelper().getUserApiKey().then((xApiKey) => {apiKey = xApiKey.toString()});
-    SharedPreferenceHelper().getUserUserMemberId().then((memberIds) => {memberId = memberIds});
+    apiBloc.fetchProfileRes(widget.xApiKey, widget.memberId);
 
-    print('Home-apiKey $apiKey');
-    print('Home-memberId $memberId');
-
-    apiBloc.fetchProfileRes('ZGHrDz4prqsu4BcApPaQYaGgq', 'MEM000001');
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -74,9 +63,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   stream: apiBloc.profileRes,
                   builder: (context, AsyncSnapshot<ProfileResModel> snapshot) {
                     if (snapshot.hasData) {
-                      return buildHomeScreenPlayerInfo(snapshot.data);
-                    } else if (snapshot.hasError) {
-                      return Text(snapshot.error.toString());
+                      savePlayerInfoIntoPref(snapshot.data);
+                      return buildHomeScreenPlayerInfo(snapshot.data, widget.xApiKey);
                     }
                     return Center();
                   },
@@ -98,7 +86,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             child: IconButton(
                               icon: Image.asset('assets/icons/png/ic_profile_whites.png'),
                               onPressed: () {
-                                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Profile()));
+                                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Profile(xApiKey: widget.xApiKey, memberId: widget.memberId,)));
                               },
                             ),
                             decoration:
@@ -226,7 +214,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             ),
                             // ),
                             onPressed: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => GameRule()));
+                              Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => GameRule(xApiKey: widget.xApiKey, memberId: widget.memberId,)));
                             },
                           ),
                           preferences:
@@ -400,6 +388,23 @@ class _MyHomePageState extends State<MyHomePage> {
           SystemChannels.platform.invokeMethod<void>('SystemNavigator.pop');
         },
       ),
+    );
+  }
+
+  void savePlayerInfoIntoPref(ProfileResModel model) {
+    print('-----mem: ${model.response[0].memberid}');
+    SharedPreferenceHelper().saveUserProfileData(
+        widget.xApiKey,
+        model.response[0].memberid,
+        model.response[0].fullname,
+        model.response[0].photo,
+        model.response[0].points,
+        model.response[0].coins,
+        model.response[0].win,
+        model.response[0].loss,
+        model.response[0].matchPlayed,
+        model.response[0].redeem,
+        model.response[0].rank.toString()
     );
   }
 }

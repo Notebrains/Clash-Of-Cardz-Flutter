@@ -7,9 +7,13 @@ import 'package:trump_card_game/ui/widgets/include_screens/include_profile.dart'
 class Profile extends StatelessWidget {
   // This widget is the root of your application.
 
+  Profile({this.xApiKey, this.memberId});
+  final String xApiKey;
+  final String memberId;
+
   @override
   Widget build(BuildContext context) {
-    apiBloc.fetchProfileRes('ZGHrDz4prqsu4BcApPaQYaGgq', "MEM000001");
+    apiBloc.fetchProfileRes(xApiKey, memberId);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(

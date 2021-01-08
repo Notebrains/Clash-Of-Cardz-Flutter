@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:trump_card_game/helper/constantvalues/constants.dart';
 import 'package:trump_card_game/model/responses/profile_res_model.dart';
 import 'package:trump_card_game/ui/screens/statistics.dart';
 import 'package:trump_card_game/ui/widgets/views/view_widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_animator/flutter_animator.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class IncludeProfile extends StatelessWidget {
   ProfileResModel data;
@@ -52,13 +54,18 @@ class IncludeProfile extends StatelessWidget {
                       width: 70,
                       height: 70,
                       margin: EdgeInsets.all(5),
-                      decoration: Views.boxDecorationWidgetForPngImage(data.response[0].photo, 4.0, Colors.grey, 5.0, 5.0, 3.0),
+                      decoration: Views.boxDecorationWidgetForPngImage(data.response[0].photo??'', 4.0, Colors.grey, 5.0, 5.0, 3.0),
+                      child: FadeInImage.assetNetwork(
+                          placeholder: 'assets/icons/png/NoImageFound.png',
+                          image: data.response[0].photo,
+                          fit: BoxFit.cover,
+                        ),
                     ),
 
                     Padding(
                       padding: const EdgeInsets.all(5.0),
                       child: Text(
-                        data.response[0].fullname,
+                        data.response[0].fullname??'',
                         textAlign: TextAlign.center,
                         style: TextStyle(fontSize: 16.0, fontStyle: FontStyle.normal, fontFamily: 'montserrat', fontWeight: FontWeight.bold, color: Colors.black),
                       ),
@@ -170,7 +177,7 @@ class IncludeProfile extends StatelessWidget {
                               Padding(
                                 padding: const EdgeInsets.all(2.0),
                                 child: Text(
-                                  data.response[0].points,
+                                  data.response[0].points??'',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(fontSize: 16.0, fontStyle: FontStyle.normal, fontFamily: 'montserrat', fontWeight: FontWeight.bold, color: Colors.black54),
                                 ),
@@ -202,7 +209,7 @@ class IncludeProfile extends StatelessWidget {
                             Padding(
                               padding: const EdgeInsets.all(2.0),
                               child: Text(
-                                data.response[0].matchPlayed,
+                                data.response[0].matchPlayed??'',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(fontSize: 16.0, fontStyle: FontStyle.normal, fontFamily: 'montserrat', fontWeight: FontWeight.bold, color: Colors.black54),
                               ),
@@ -225,7 +232,7 @@ class IncludeProfile extends StatelessWidget {
                             Padding(
                               padding: const EdgeInsets.fromLTRB(45, 0, 45, 0),
                               child: Text(
-                                data.response[0].win,
+                                data.response[0].win??'',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(fontSize: 16.0, fontStyle: FontStyle.normal, fontFamily: 'montserrat', fontWeight: FontWeight.bold, color: Colors.black54),
                               ),
@@ -248,7 +255,7 @@ class IncludeProfile extends StatelessWidget {
                             Padding(
                               padding: const EdgeInsets.all(2.0),
                               child: Text(
-                                data.response[0].loss,
+                                data.response[0].loss??'',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(fontSize: 16.0, fontStyle: FontStyle.normal, fontFamily: 'montserrat', fontWeight: FontWeight.bold, color: Colors.black54),
                               ),

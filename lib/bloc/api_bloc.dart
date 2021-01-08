@@ -30,6 +30,7 @@ class ApiBloc {
   Stream<GameOptionResModel> get gameCatRes => _gameCatResFetcher.stream;
 
   fetchGameOptionRes(String xApiKey) async {
+    print('----GameOption xApiKey: $xApiKey');
     GameOptionResModel model = await _repository.fetchGameOptApi(xApiKey);
     _gameCatResFetcher.sink.add(model);
   }

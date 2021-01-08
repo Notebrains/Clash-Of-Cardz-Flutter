@@ -12,6 +12,8 @@ import 'package:trump_card_game/ui/screens/gameplay.dart';
 import 'package:trump_card_game/ui/screens/home.dart';
 import 'dart:io' show Platform;
 
+import 'package:trump_card_game/ui/widgets/libraries/flutter_toast.dart';
+
 class IncludeWaitingForFriend extends StatefulWidget {
   final String categoryName;
   final String subcategoryName;
@@ -35,7 +37,7 @@ class IncludeWaitingForFriendState extends State<IncludeWaitingForFriend> with S
 
   int joinedPlayerCount;
   int joinedPlayerSize = 0;
-  DatabaseReference _playerDetailsRef;
+  DatabaseReference _friendDetailsRef;
   StreamSubscription<Event> _joinedPlayerSubscription;
   StreamSubscription<Event> playerDetailsSubscription;
 
@@ -59,6 +61,8 @@ class IncludeWaitingForFriendState extends State<IncludeWaitingForFriend> with S
     });
 
     SharedPreferenceHelper().getUserSavedData().then((sharedPrefUserProfileModel) => {
+      print('----pref ${sharedPrefUserProfileModel.memberId}'),
+
       xApiKey = sharedPrefUserProfileModel.xApiKey ?? 'NA',
       fullName = sharedPrefUserProfileModel.fullName ?? 'NA',
       memberId = sharedPrefUserProfileModel.memberId ?? 'NA',
@@ -106,38 +110,75 @@ class IncludeWaitingForFriendState extends State<IncludeWaitingForFriend> with S
                           height: MediaQuery.of(context).size.height,
                           decoration: ShapeDecoration(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0))),
                           child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
                               Lottie.asset(
                                 'assets/animations/lottiefiles/sports-loading.json',
                                 width: getScreenWidth(context),
-                                height: getScreenHeight(context) * 0.7,
+                                height: getScreenHeight(context) * 0.6,
                               ),
+
+                              Container(
+                                height: getScreenHeight(context) / 6.0,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    TweenAnimationBuilder<Duration>(
+                                        duration: Duration(minutes: 1),
+                                        tween: Tween(begin: Duration(minutes: 1), end: Duration.zero),
+                                        onEnd: () {
+                                          //print('Timer Ended');
+
+                                          //remove first user from firebase if requested player has not joined.
+                                          _friendDetailsRef.equalTo(fbJoinedPlayerList[0].playerName).once().then((DataSnapshot snapshot) {
+                                            Map<dynamic, dynamic> children = snapshot.value;
+                                            children.forEach((key, value) {
+                                              _friendDetailsRef.child(key).remove();
+                                            });
+                                          });
+
+                                          Toast.show("Player has not joined the match", context, duration: Toast.lengthLong, gravity:  Toast.bottom);
+
+                                          Navigator.push(
+                                              context, CupertinoPageRoute(builder: (context) => HomeScreen(),
+                                          ),
+                                          );
+                                        },
+                                        builder: (BuildContext context, Duration value, Widget child) {
+                                          //adding 0 at first if min or sec show in single digit
+                                          final minutes = (value.inMinutes).toString().padLeft(2, "0");
+                                          final seconds = (value.inSeconds % 60).toString().padLeft(2, "0");
+                                          return Center(
+                                            child: Text(
+                                              '$minutes : $seconds',
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 36,
+                                                shadows: [
+                                                  Shadow(color: Colors.white),
+                                                ],
+                                              ),
+                                            ),
+                                          );
+                                        }),
+                                  ],
+                                ),
+                              ),
+
                               Expanded(
                                 child: Padding(
                                   padding: const EdgeInsets.only(top: 8.0),
                                   child: Text(
-                                    'Waiting for your friend\n to accept the request',
+                                    'Waiting for your friend to accept the request',
                                     style: TextStyle(
                                         color: Colors.white, fontSize: 24, fontFamily: 'neuropol_x_rg', fontWeight: FontWeight.bold),
                                   ),
                                 ),
                               ),
-
-                              //Navigator.of(context).push(new PageRouteWithAnimation());
-
-                              /* Center(
-                                  child: Container(
-                                    //padding: const EdgeInsets.only(top: 12.0),
-                                    child: Text(
-                                      "No Player Found! Please Try Again.",
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 20,
-                                          fontFamily: 'neuropol_x_rg',
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
-                                );*/
                             ],
                           ),
                         ),
@@ -156,54 +197,16 @@ class IncludeWaitingForFriendState extends State<IncludeWaitingForFriend> with S
   Future<void> initFirebaseCredentials() async {
     WidgetsFlutterBinding.ensureInitialized();
     await Firebase.initializeApp();
-
-    /*WidgetsFlutterBinding.ensureInitialized();
-    firebaseApp = await Firebase.initializeApp(
-      name: 'clash_of_cardz_db',
-
-      */ /*options: Platform.isIOS || Platform.isMacOS
-        ? FirebaseOptions(
-      appId: '1:297855924061:ios:c6de2b69b03a5be8',
-      apiKey: 'AIzaSyD_shO5mfO9lhy2TVWhfo1VUmARKlG4suk',
-      projectId: 'flutter-firebase-plugins',
-      messagingSenderId: '297855924061',
-      databaseURL: 'https://flutterfire-cd2f7.firebaseio.com',
-    )
-        : FirebaseOptions(
-      appId: '1:297855924061:android:669871c998cc21bd',
-      apiKey: 'AIzaSyD_shO5mfO9lhy2TVWhfo1VUmARKlG4suk',
-      messagingSenderId: '297855924061',
-      projectId: 'flutter-firebase-plugins',
-      databaseURL: 'https://flutterfire-cd2f7.firebaseio.com',
-    ),*/ /*
-
-
-      options: Platform.isIOS || Platform.isMacOS
-          ? FirebaseOptions(
-        appId: '1:297855924061:android:669871c998cc21bd',
-        apiKey: 'AIzaSyD6zszZnzOapjcJhFKtiRsiXdgIZXHwN9U',
-        messagingSenderId: '679219523500',
-        projectId: 'trump-card-43a2b',
-        databaseURL: 'https://trump-card-43a2b.firebaseio.com/',
-      )
-          : FirebaseOptions(
-        appId: '1:297855924061:android:669871c998cc21bd',
-        apiKey: 'AIzaSyD6zszZnzOapjcJhFKtiRsiXdgIZXHwN9U',
-        messagingSenderId: '679219523500',
-        projectId: 'trump-card-43a2b',
-        databaseURL: 'https://trump-card-43a2b.firebaseio.com/',
-      ),
-    );*/
   }
 
   void retrieveFirebaseData() {
     // Demonstrates configuring the database directly
     final FirebaseDatabase database = FirebaseDatabase(app: firebaseApp);
-    _playerDetailsRef = database.reference().child('friendDetails');
+    _friendDetailsRef = database.reference().child('friendDetails');
 
     //get child items present in fb db.
     fbJoinedPlayerList = [];
-    _playerDetailsRef.once().then((onValue) {
+    _friendDetailsRef.once().then((onValue) {
       Map playerDetailsList = onValue.value;
       joinedPlayerSize = playerDetailsList.length;
 
@@ -215,28 +218,28 @@ class IncludeWaitingForFriendState extends State<IncludeWaitingForFriend> with S
 
         Map playerDataInPlayerDetailsList = playerDetailsValue;
 
-        if (playerDataInPlayerDetailsList.containsValue('joinedAsPlayer') || playerDataInPlayerDetailsList.containsValue('joinedAsFriend')) {
+        if (playerDataInPlayerDetailsList.containsValue(memberId) || playerDataInPlayerDetailsList.containsValue(widget.friendId)) {
 
           print('---- Fb data filter list: ${widget.categoryName}, ${widget.subcategoryName}, ${widget.gameType}, ${widget.cardsToPlay}');
 
           FirebasePlayerDetailsModel model = FirebasePlayerDetailsModel();
 
-          _playerDetailsRef.child('playerName').once().then((DataSnapshot snapshot) {
+          _friendDetailsRef.child('playerName').once().then((DataSnapshot snapshot) {
             model.playerName = snapshot.value;
           });
 
 
-          _playerDetailsRef.child('userId').once().then((DataSnapshot snapshot) {
+          _friendDetailsRef.child('userId').once().then((DataSnapshot snapshot) {
             model.userId = snapshot.value;
           });
 
 
-          _playerDetailsRef.child('image').once().then((DataSnapshot snapshot) {
+          _friendDetailsRef.child('image').once().then((DataSnapshot snapshot) {
             model.photo = snapshot.value;
           });
 
           if(widget.joinedPlayerType == 'joinedAsFriend' && fbJoinedPlayerList.length == 0){
-            showSnackBar(context, 'Your friend left the match');
+            Toast.show('Your friend left the match', context, duration: Toast.lengthLong, gravity:  Toast.bottom);
           } else{
             fbJoinedPlayerList.add(model);
           }
@@ -262,10 +265,11 @@ class IncludeWaitingForFriendState extends State<IncludeWaitingForFriend> with S
   }
 
   Future<void> updateFirebaseJoinedPlayerDetails() async {
+    print('Fb ${fbJoinedPlayerList.length} join type: ${widget.joinedPlayerType}');
+
     //if player is already looking for player then take 1 player and remove that player else join as host
-    if (joinedPlayerSize < 2) {
-      widget.joinedPlayerType == 'joinedAsPlayer' ?
-      _playerDetailsRef.push().set(<String, String>{
+    if (fbJoinedPlayerList.length == 0 && widget.joinedPlayerType == 'joinedAsPlayer') {
+      _friendDetailsRef.push().set(<String, String>{
         //count: ${transactionResult.dataSnapshot.value}
         'playerName': fullName,
         'image': photo,
@@ -275,47 +279,41 @@ class IncludeWaitingForFriendState extends State<IncludeWaitingForFriend> with S
         'subCategory': widget.subcategoryName,
         'gameType': widget.gameType,
         'cardCount': widget.cardsToPlay,
-      }) :
-    _playerDetailsRef.push().set(<String, String>{
-    //count: ${transactionResult.dataSnapshot.value}
-    'playerName': widget.friendName,
-    'image': widget.friendImage,
-    'userId': widget.friendId,
-    'joinedUserType': widget.joinedPlayerType,
-    'category': widget.categoryName,
-    'subCategory': widget.subcategoryName,
-    'gameType': widget.gameType,
-    'cardCount': widget.cardsToPlay,
-    });
+      });
 
+    } else if(fbJoinedPlayerList.length == 1 && widget.joinedPlayerType == 'joinedAsFriend'){
+
+      _friendDetailsRef.push().set(<String, String>{
+        'playerName': widget.friendName,
+        'image': widget.friendImage,
+        'userId': widget.friendId,
+        'joinedUserType': widget.joinedPlayerType,
+        'category': widget.categoryName,
+        'subCategory': widget.subcategoryName,
+        'gameType': widget.gameType,
+        'cardCount': widget.cardsToPlay,
+      });
 
     } else {
       if (fbJoinedPlayerList.length == 2) {
-        _playerDetailsRef.equalTo(fbJoinedPlayerList[0].playerName).once().then((DataSnapshot snapshot) {
+        _friendDetailsRef.equalTo(fbJoinedPlayerList[0].playerName).once().then((DataSnapshot snapshot) {
           Map<dynamic, dynamic> children = snapshot.value;
           children.forEach((key, value) {
-            _playerDetailsRef.child(key).remove();
+            _friendDetailsRef.child(key).remove();
           });
         });
 
-        _playerDetailsRef.equalTo(fbJoinedPlayerList[1].playerName).once().then((DataSnapshot snapshot) {
+        _friendDetailsRef.equalTo(fbJoinedPlayerList[1].playerName).once().then((DataSnapshot snapshot) {
           Map<dynamic, dynamic> children = snapshot.value;
           children.forEach((key, value) {
-            _playerDetailsRef.child(key).remove();
+            _friendDetailsRef.child(key).remove();
           });
         });
 
         //start the game
         openGamePlayPage(fbJoinedPlayerList[1].playerName ,fbJoinedPlayerList[1].userId ,fbJoinedPlayerList[1].photo);
       } else {
-        Timer(Duration(minutes: 1), () {
-          showSnackBar(context, 'Your friend did not\n accept the invitation!');
 
-          Navigator.push(
-            context, CupertinoPageRoute(builder: (context) => HomeScreen(),
-            ),
-          );
-        });
       }
     }
   }
@@ -329,7 +327,7 @@ class IncludeWaitingForFriendState extends State<IncludeWaitingForFriend> with S
     database.setPersistenceEnabled(true);
     database.setPersistenceCacheSizeBytes(10000000);
 
-    playerDetailsSubscription = _playerDetailsRef.limitToFirst(1).onChildAdded.listen((Event event) {
+    playerDetailsSubscription = _friendDetailsRef.limitToFirst(1).onChildAdded.listen((Event event) {
       print('Child added: ${event.snapshot.value}');
 
       //getting updated firebase list when new player added.
@@ -353,15 +351,5 @@ class IncludeWaitingForFriendState extends State<IncludeWaitingForFriend> with S
             ),
       ),
     );
-  }
-
-  showSnackBar( BuildContext context, String message){
-    final snackBar = SnackBar(
-      content: Text(message),
-    );
-
-    // Find the Scaffold in the widget tree and use
-    // it to show a SnackBar.
-    Scaffold.of(context).showSnackBar(snackBar);
   }
 }

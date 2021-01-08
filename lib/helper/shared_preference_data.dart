@@ -38,7 +38,10 @@ class SharedPreferenceHelper {
 
   Future<SharedPrefUserProfileModel> getUserSavedData() async {
     final prefs = await SharedPreferences.getInstance();
-    SharedPrefUserProfileModel().xApiKey = prefs.getString('xApiKey') ?? '';
+    print('------saved ${prefs.getString('memberId')}');
+
+/*
+    SharedPrefUserProfileModel.xApiKey = prefs.getString('xApiKey') ?? '';
     SharedPrefUserProfileModel().memberId = prefs.getString('memberId') ?? '';
     SharedPrefUserProfileModel().win = prefs.getString('win') ?? '';
     SharedPrefUserProfileModel().loss = prefs.getString('loss') ?? '';
@@ -47,10 +50,25 @@ class SharedPreferenceHelper {
     SharedPrefUserProfileModel().redeem = prefs.getString('redeem') ?? '';
     SharedPrefUserProfileModel().rank = prefs.getString('rank') ?? '';
     SharedPrefUserProfileModel().photo = prefs.getString('photo') ?? '';
-    SharedPrefUserProfileModel().matchPlayed = prefs.getString('matchPlayed') ?? '';
+    SharedPrefUserProfileModel().matchPlayed = prefs.getString('matchPlayed') ?? '';*/
+
+    SharedPrefUserProfileModel(
+        prefs.getString('xApiKey'),
+        prefs.getString('memberId'),
+        prefs.getString('fullName'),
+        prefs.getString('win'),
+        prefs.getString('loss'),
+        prefs.getString('points'),
+        prefs.getString('coins'),
+        prefs.getString('redeem'),
+        prefs.getString('rank'),
+        prefs.getString('photo'),
+        prefs.getString('matchPlayed')
+    );
 
     return SharedPrefUserProfileModel();
   }
+
 
   void saveUserApiKey(String xApiKey) async {
     final prefs = await SharedPreferences.getInstance();
@@ -64,9 +82,9 @@ class SharedPreferenceHelper {
     //print('----saved $xApiKey');
   }
 
-  Future<int> getUserApiKey() async {
+  Future<String> getUserApiKey() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getInt('x_api_key') ?? 0;
+    return prefs.getString('x_api_key') ?? 0;
   }
 
   Future<String> getUserUserMemberId() async {

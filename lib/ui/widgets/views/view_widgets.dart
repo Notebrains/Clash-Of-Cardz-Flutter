@@ -30,10 +30,6 @@ class Views{
       double shadowY,
       double blurRadius){
     return BoxDecoration(
-      image: DecorationImage(
-        image: NetworkImage(assetImg),
-        fit: BoxFit.cover,
-      ),
       borderRadius:
       BorderRadius.all(Radius.circular(5.0)),
       boxShadow: <BoxShadow>[

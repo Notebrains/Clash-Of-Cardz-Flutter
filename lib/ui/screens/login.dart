@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:trump_card_game/bloc/api_bloc.dart';
 import 'package:trump_card_game/helper/shared_preference_data.dart';
@@ -7,6 +8,7 @@ import 'package:trump_card_game/model/responses/login_res_model.dart';
 import 'package:trump_card_game/ui/screens/home.dart';
 import 'package:trump_card_game/ui/widgets/animations/spring_button.dart';
 import 'package:trump_card_game/ui/widgets/custom/carousel_auto_slider.dart';
+import 'package:trump_card_game/ui/widgets/custom/frosted_glass.dart';
 import 'package:trump_card_game/ui/widgets/include_screens/include_waiting_for_friend.dart';
 import 'package:trump_card_game/ui/widgets/libraries/animated_text_kit/animated_text_kit.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -16,8 +18,10 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 import 'dart:async';
 
+import 'package:lottie/lottie.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:trump_card_game/ui/widgets/libraries/flutter_toast.dart';
 
 import 'gameplay.dart';
 
@@ -61,7 +65,6 @@ class _LogInState extends State<LogIn> {
         onSelectNotification: onSelectNotification);
   }
 
-
   void getMessage(){
     _firebaseMessaging.configure(
         onMessage: (Map<String, dynamic> message) async {
@@ -95,8 +98,6 @@ class _LogInState extends State<LogIn> {
       ),
     );
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -149,50 +150,9 @@ class _LogInState extends State<LogIn> {
                         AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
                       ),
 
-                     /* //login button
-                      ZoomInDown(
-                        child: MaterialButton(
-                          padding: EdgeInsets.fromLTRB(8.0, 16.0, 8.0, 8.0),
-                          textColor: Colors.white70,
-                          splashColor: Colors.grey,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                  image: AssetImage(
-                                      'assets/icons/png/bg_button.png'),
-                                  fit: BoxFit.cover),
-                            ),
-                            child: Container(
-                              width: 220,
-                              height: 45,
-                              padding: EdgeInsets.fromLTRB(24.0, 5.0, 24.0, 16.0),
-                              child: Text(
-                                "LOGIN USING G+",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontSize: 14.0,
-                                    fontStyle: FontStyle.normal,
-                                    fontFamily: 'neuropol_x_rg',
-                                    color: Colors.black87),
-                              ),
-                            ),
-                          ),
-                          // ),
-                          onPressed: () {
-                            //Navigator.of(context).push(new PageRouteWithAnimation());
-                            //onPressed: () {Navigator.push(context, _pageRouteBuilder());
-                          },
-                        ),
-                        preferences:
-                        AnimationPreferences(duration: const Duration(milliseconds: 1000), autoPlay: AnimationPlayStates.Forward),
-                      ),
-                     */
-
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-
-
                           BounceInLeft(
                             child:  Container(
                               margin: EdgeInsets.only(top: 26),
@@ -258,25 +218,25 @@ class _LogInState extends State<LogIn> {
                             AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
                           ),
 
-                          BounceInDown(
+                          BounceInRight(
                             child:  Container(
                               margin: EdgeInsets.only(top: 16, bottom:  16),
                               child: SpringButton(
                                 SpringButtonType.WithOpacity,
-                                Material(
-                                  borderRadius: BorderRadius.circular(25.0),
-                                  elevation: 16,
-                                  shadowColor: Colors.green,
-                                  child: GestureDetector(
+                                InkWell(
+                                  child: Material(
+                                    borderRadius: BorderRadius.circular(25.0),
+                                    elevation: 22,
+                                    shadowColor: Colors.blue,
                                     child: Container(
                                       width: 180,
                                       height: 40,
                                       decoration: BoxDecoration(
                                         gradient: LinearGradient(
                                           colors: [
-                                            Colors.green[700],
-                                            Colors.green[700],
-                                            Colors.green[700],
+                                            Colors.blue[700],
+                                            Colors.blue[700],
+                                            Colors.blue[700],
                                           ],
                                           begin: Alignment.centerLeft,
                                           end: Alignment.centerRight,
@@ -290,9 +250,9 @@ class _LogInState extends State<LogIn> {
                                         children: [
 
                                           Padding(
-                                            padding: const EdgeInsets.only(right: 6),
+                                            padding: const EdgeInsets.only(right: 12),
                                             child: Text(
-                                              'Play Games',
+                                              'Facebook',
                                               textAlign: TextAlign.center,
                                               style: TextStyle(
                                                 fontSize: 15.0,
@@ -305,17 +265,20 @@ class _LogInState extends State<LogIn> {
                                           ),
 
                                           IconButton(
-                                            icon: SvgPicture.asset('assets/icons/svg/games.svg',
-                                                color: Colors.white),
-                                            onPressed: () {},
+                                            highlightColor: Colors.blue[200],
+                                            icon: SvgPicture.asset(
+                                                'assets/icons/svg/facebook.svg'),
+                                            onPressed: () {
+
+                                            },
                                           ),
                                         ],
                                       ),
                                     ),
-                                    onTap: (){
-                                      Navigator.of(context).push(new PageRouteWithAnimation());
-                                    },
                                   ),
+                                  onTap: (){
+                                    initiateSignIn("FB");
+                                  },
                                 ),
                               ),
                             ),
@@ -323,24 +286,23 @@ class _LogInState extends State<LogIn> {
                             AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
                           ),
 
-
-                          BounceInRight(
+                          BounceInDown(
                             child:  SpringButton(
                               SpringButtonType.WithOpacity,
-                              InkWell(
-                                child: Material(
-                                  borderRadius: BorderRadius.circular(25.0),
-                                  elevation: 22,
-                                  shadowColor: Colors.blue,
+                              Material(
+                                borderRadius: BorderRadius.circular(25.0),
+                                elevation: 16,
+                                shadowColor: Colors.green,
+                                child: GestureDetector(
                                   child: Container(
                                     width: 220,
                                     height: 40,
                                     decoration: BoxDecoration(
                                       gradient: LinearGradient(
                                         colors: [
-                                          Colors.blue[700],
-                                          Colors.blue[700],
-                                          Colors.blue[700],
+                                          Colors.green[700],
+                                          Colors.green[700],
+                                          Colors.green[700],
                                         ],
                                         begin: Alignment.centerLeft,
                                         end: Alignment.centerRight,
@@ -354,41 +316,37 @@ class _LogInState extends State<LogIn> {
                                       children: [
 
                                         Padding(
-                                          padding: const EdgeInsets.only(right: 12),
+                                          padding: const EdgeInsets.only(right: 6),
                                           child: Text(
-                                            'Facebook',
+                                            'Play Games',
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
-                                              fontSize: 15.0,
-                                              fontStyle: FontStyle.normal,
-                                              fontFamily: 'montserrat',
-                                              color: Colors.white,
+                                                fontSize: 15.0,
+                                                fontStyle: FontStyle.normal,
+                                                fontFamily: 'montserrat',
+                                                color: Colors.white,
                                                 fontWeight: FontWeight.bold
                                             ),
                                           ),
                                         ),
 
                                         IconButton(
-                                          highlightColor: Colors.blue[200],
-                                          icon: SvgPicture.asset(
-                                              'assets/icons/svg/facebook.svg'),
-                                          onPressed: () {
-
-                                          },
+                                          icon: SvgPicture.asset('assets/icons/svg/games.svg',
+                                              color: Colors.white),
+                                          onPressed: () {},
                                         ),
                                       ],
                                     ),
                                   ),
+                                  onTap: (){
+                                    Navigator.of(context).push(new PageRouteWithAnimation());
+                                  },
                                 ),
-                                onTap: (){
-                                  initiateSignIn("FB");
-                                },
                               ),
                             ),
                             preferences:
                             AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
                           ),
-
                         ],
                       ),
                     ],
@@ -444,7 +402,7 @@ class _LogInState extends State<LogIn> {
             print("----F providerId : " + user.providerId);
 
             //loginByServer(user.displayName, user.email, user.uid, user.photoUrl, "deviceToken", "memberId");
-            loginByServer(user.displayName, user.email, user.uid, "ddw.jpg", "fsefsefsf", "MEM000019");
+            loginByServer(context, user.displayName, user.email, user.uid, user.photoUrl, accessToken, '');
           } catch (e) {
             print(e);
           }
@@ -470,7 +428,7 @@ class _LogInState extends State<LogIn> {
             print("----G photoUrl : " + user.photoUrl);
             print("----G providerId : " + user.providerId);
 
-            loginByServer(user.displayName, user.email, user.uid, "ddw.jpg", "fsefsefsf", "MEM000019");
+            loginByServer(context, user.displayName, user.email, user.uid, user.photoUrl, googleAuth.accessToken, '');
           } catch (e) {
             print(e);
             print('e-----------------');
@@ -478,8 +436,7 @@ class _LogInState extends State<LogIn> {
 
           return 1;
         } catch (error) {
-
-          print('e---- ${error}');
+          print('ee----');
           return 0;
         }
     }
@@ -511,29 +468,11 @@ class _LogInState extends State<LogIn> {
     return googleSignInAccount;
   }
 
-  void loginByServer(String name, String email, String socialId, String image, String deviceToken, String memberId) {
-    //change here
+  void loginByServer(BuildContext context, String name, String email, String socialId, String image, String deviceToken, String memberId){
+    
+    apiBloc.fetchLoginRes(name, email, socialId, image, deviceToken, memberId);
 
-    SharedPreferenceHelper().saveUserApiKey('ZGHrDz4prqsu4BcApPaQYaGgq');
-    SharedPreferenceHelper().saveUserMemberId('MEM000001');
-    Navigator.of(context).push( PageRouteWithAnimation());
-
-
-    /*apiBloc.fetchLoginRes(name, email, socialId, image, deviceToken, memberId);
-     StreamBuilder(
-        stream: apiBloc.loginRes,
-        builder: (context, AsyncSnapshot<LoginResModel> snapshot) {
-          print('1111--------------');
-          if (snapshot.hasData) {
-            if(snapshot.data.status == 1){
-              SharedPreferenceHelper().saveUserApiKey(snapshot.data.responce.xApiKey);
-              Navigator.of(context).push( PageRouteWithAnimation());
-            }
-          } else if (snapshot.hasError) {
-            return Text('');
-          }
-          return Center(child: CircularProgressIndicator());
-        });*/
+    loginUserByDialog(context);
   }
 
 
@@ -560,7 +499,55 @@ class _LogInState extends State<LogIn> {
         platformChannelSpecifics,
         payload: 'Default_Sound');
   }
+
+
+  void loginUserByDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      useSafeArea: true,
+      builder: (BuildContext context) {
+        context;
+        return Dialog(
+          backgroundColor: Colors.transparent,
+          child: Stack(
+            children: [
+              FadeInUp(
+                child: Center(
+                  child: Lottie.asset('assets/animations/lottiefiles/sports-loading.json',
+                      height: 390, width: 390, repeat: true, animate: true),
+                ),
+                preferences: AnimationPreferences(duration: const Duration(milliseconds: 800), autoPlay: AnimationPlayStates.Forward),
+              ),
+
+              StreamBuilder(
+                  stream: apiBloc.loginRes,
+                  builder: (context, AsyncSnapshot<LoginResModel> snapshot) {
+                    if (snapshot.hasData) {
+                      if(snapshot.data.status == 1){
+                        SharedPreferenceHelper().saveUserApiKey(snapshot.data.responce.xApiKey);
+                        SharedPreferenceHelper().saveUserMemberId(snapshot.data.responce.memberid);
+
+                        SchedulerBinding.instance.addPostFrameCallback((_) {
+                          Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => HomeScreen(xApiKey: snapshot.data.responce.xApiKey, memberId: snapshot.data.responce.memberid,)));
+                        });
+                      }
+
+                      return Container();
+                    } else if (!snapshot.hasData) {
+                      return frostedGlassWithProgressBarWidget(context);
+                    } else return Center(
+                        child: Text("No Data Found", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 30)),);
+                  }),
+            ],
+          ),
+        );
+      },
+    );
+  }
 }
+
+
 
 class PageRouteWithAnimation extends CupertinoPageRoute {
   PageRouteWithAnimation()

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:trump_card_game/bloc/api_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:trump_card_game/helper/shared_preference_data.dart';
 import 'package:trump_card_game/model/responses/game_option_res_model.dart';
 import 'package:trump_card_game/ui/screens/autoplay.dart';
 import 'package:trump_card_game/ui/screens/game_more_option.dart';
@@ -28,7 +29,8 @@ class _IncludeGameOptionState extends State<IncludeGameOption> {
 
   @override
   Widget build(BuildContext context) {
-    apiBloc.fetchGameOptionRes('ZGHrDz4prqsu4BcApPaQYaGgq');
+    SharedPreferenceHelper().getUserApiKey().then((xApiKey) => apiBloc.fetchGameOptionRes(xApiKey));
+
     return Row(
       children: [
         Expanded(

@@ -227,7 +227,6 @@ void sendNotificationToOtherPlayerByApi(BuildContext context, String categoryNam
     ),
   );
 
-
   /*  apiBloc.fetchMatchReqToFriendRes('ZGHrDz4prqsu4BcApPaQYaGgq');
 
     StreamBuilder(

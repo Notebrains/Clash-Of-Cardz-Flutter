@@ -16,6 +16,11 @@ List<String> imgList = [
 ];
 
 class GameRule extends StatefulWidget {
+
+  GameRule({this.xApiKey, this.memberId});
+  final String xApiKey;
+  final String memberId;
+
   @override
   State<StatefulWidget> createState() {
     return _GameRuleState();

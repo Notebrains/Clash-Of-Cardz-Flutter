@@ -3,8 +3,7 @@ import 'package:trump_card_game/helper/shared_preference_data.dart';
 import 'package:trump_card_game/model/responses/profile_res_model.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 
-Widget buildHomeScreenPlayerInfo(ProfileResModel model){
-  savePlayerInfoIntoPref(model);
+Widget buildHomeScreenPlayerInfo(ProfileResModel model, String xApiKey){
 
   return SlideInDown(
       child: Stack(
@@ -27,7 +26,7 @@ Widget buildHomeScreenPlayerInfo(ProfileResModel model){
                       child: Container(
                         padding: new EdgeInsets.fromLTRB(30.0, 8.0, 30.0, 8.0),
                         margin: EdgeInsets.fromLTRB(30.0, 8.0, 8.0, 8.0),
-                        child: new Text(model.response[0].fullname,
+                        child: new Text(model.response[0].fullname??'',
                             style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.w900)),
@@ -69,7 +68,7 @@ Widget buildHomeScreenPlayerInfo(ProfileResModel model){
                         padding:
                         new EdgeInsets.fromLTRB(30.0, 8.0, 30.0, 8.0),
                         margin: EdgeInsets.fromLTRB(8.0, 8.0, 0.0, 8.0),
-                        child: Text(model.response[0].coins,
+                        child: Text(model.response[0].coins??'',
                             style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.w900)),
@@ -96,24 +95,5 @@ Widget buildHomeScreenPlayerInfo(ProfileResModel model){
       ),
       preferences:
       AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
-  );
-}
-
-void savePlayerInfoIntoPref(ProfileResModel model) {
-  SharedPreferenceHelper().getUserApiKey().then(
-        (xApiKey) =>
-            SharedPreferenceHelper().saveUserProfileData(
-                xApiKey.toString(),
-                model.response[0].memberid,
-                model.response[0].fullname,
-                model.response[0].photo,
-                model.response[0].points,
-                model.response[0].coins,
-                model.response[0].win,
-                model.response[0].loss,
-                model.response[0].matchPlayed,
-                model.response[0].redeem,
-                model.response[0].rank.toString()
-            ),
   );
 }

@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "679219523500-17cotgvv05sdr86kkjig7hgbdkphvoi6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "mridaya.game.trump.trump_card_game",
+            "certificate_hash": "d53d917c39fd01bdd0c292cd90a7d81ba1396fa2"
+          }
+        },
+        {
           "client_id": "679219523500-aueeaaj6euc9ln4gvdn51a56bkq1oe9m.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -38,6 +46,13 @@
             {
               "client_id": "679219523500-6qtkn9fle6ni1fu7ehjvbd05bvokf7ge.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "679219523500-i10bhbrmqej5prudnfmombhc78v3imjs.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "mridaya.game.trump.trumpCardGame"
+              }
             }
           ]
         }
