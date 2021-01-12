@@ -70,6 +70,7 @@ class _MyHomePageState extends State<FirebaseCrud> {
         _error = error;
       });
     });
+
     _messagesSubscription =
         _playerDetailsRef.limitToLast(10).onChildAdded.listen((Event event) {
           print('Child added: ${event.snapshot.value}');

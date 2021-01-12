@@ -1,6 +1,9 @@
 
 class FirebasePlayerDetailsModel {
-  var playerName;
-  var userId;
-  var photo;
+  String playerName = '';
+  String userId = '';
+  String photo = '';
+  String firebasePlayerKey = '';
+
+  FirebasePlayerDetailsModel(this.playerName, this.userId, this.photo, this.firebasePlayerKey);
 }

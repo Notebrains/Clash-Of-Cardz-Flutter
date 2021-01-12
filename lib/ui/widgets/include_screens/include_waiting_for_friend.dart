@@ -36,9 +36,7 @@ class IncludeWaitingForFriendState extends State<IncludeWaitingForFriend> with S
   List <FirebasePlayerDetailsModel> fbJoinedPlayerList = [];
 
   int joinedPlayerCount;
-  int joinedPlayerSize = 0;
   DatabaseReference _friendDetailsRef;
-  StreamSubscription<Event> _joinedPlayerSubscription;
   StreamSubscription<Event> playerDetailsSubscription;
 
   FirebaseApp firebaseApp;
@@ -53,15 +51,13 @@ class IncludeWaitingForFriendState extends State<IncludeWaitingForFriend> with S
   void initState() {
     super.initState();
 
+    initFirebaseCredentials();
+
     controller = AnimationController(vsync: this, duration: Duration(milliseconds: 450));
     scaleAnimation = CurvedAnimation(parent: controller, curve: Curves.elasticInOut);
 
-    controller.addListener(() {
-      setState(() {});
-    });
-
     SharedPreferenceHelper().getUserSavedData().then((sharedPrefUserProfileModel) => {
-      print('----pref ${sharedPrefUserProfileModel.memberId}'),
+      print('Fb pref ${sharedPrefUserProfileModel.memberId}'),
 
       xApiKey = sharedPrefUserProfileModel.xApiKey ?? 'NA',
       fullName = sharedPrefUserProfileModel.fullName ?? 'NA',
@@ -70,20 +66,24 @@ class IncludeWaitingForFriendState extends State<IncludeWaitingForFriend> with S
       points = sharedPrefUserProfileModel.points ?? 'NA',
     });
 
+    controller.addListener(() {
+      setState(() {});
+    });
+
     controller.forward();
 
-    initFirebaseCredentials();
 
+    print('Fb retrieveFirebaseData method called 1');
     retrieveFirebaseData();
 
     listeningToFirebaseDataUpdate();
   }
 
-  void updateState() {
+ /* updateState(){
     setState(() {
       retrieveFirebaseData();
     });
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -97,7 +97,7 @@ class IncludeWaitingForFriendState extends State<IncludeWaitingForFriend> with S
               new ConstrainedBox(
                 constraints: const BoxConstraints.expand(),
               ),
-              new Center(
+              Center(
                 child: new ClipRect(
                   child: new BackdropFilter(
                     filter: new ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
@@ -126,23 +126,28 @@ class IncludeWaitingForFriendState extends State<IncludeWaitingForFriend> with S
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     TweenAnimationBuilder<Duration>(
-                                        duration: Duration(minutes: 1),
-                                        tween: Tween(begin: Duration(minutes: 1), end: Duration.zero),
+                                        duration: Duration(minutes: 3),
+                                        tween: Tween(begin: Duration(minutes: 3), end: Duration.zero),
                                         onEnd: () {
                                           //print('Timer Ended');
 
                                           //remove first user from firebase if requested player has not joined.
-                                          _friendDetailsRef.equalTo(fbJoinedPlayerList[0].playerName).once().then((DataSnapshot snapshot) {
-                                            Map<dynamic, dynamic> children = snapshot.value;
-                                            children.forEach((key, value) {
-                                              _friendDetailsRef.child(key).remove();
-                                            });
-                                          });
+                                          _friendDetailsRef.child(fbJoinedPlayerList[0].firebasePlayerKey).remove();
 
-                                          Toast.show("Player has not joined the match", context, duration: Toast.lengthLong, gravity:  Toast.bottom);
+
+                                          Toast.show("Player has not joined the match", context, duration: Toast.lengthLong, gravity:  Toast.bottom,
+                                          backgroundColor: Colors.deepOrange,
+                                          textStyle:  TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 20,
+                                            shadows: [
+                                              Shadow(color: Colors.white),
+                                            ],
+                                          ));
 
                                           Navigator.push(
-                                              context, CupertinoPageRoute(builder: (context) => HomeScreen(),
+                                              context, CupertinoPageRoute(builder: (context) => HomeScreen(xApiKey: xApiKey, memberId: memberId,),
                                           ),
                                           );
                                         },
@@ -200,6 +205,8 @@ class IncludeWaitingForFriendState extends State<IncludeWaitingForFriend> with S
   }
 
   void retrieveFirebaseData() {
+    //print('Fb retrieveFirebaseData method called');
+
     // Demonstrates configuring the database directly
     final FirebaseDatabase database = FirebaseDatabase(app: firebaseApp);
     _friendDetailsRef = database.reference().child('friendDetails');
@@ -208,67 +215,77 @@ class IncludeWaitingForFriendState extends State<IncludeWaitingForFriend> with S
     fbJoinedPlayerList = [];
     _friendDetailsRef.once().then((onValue) {
       Map playerDetailsList = onValue.value;
-      joinedPlayerSize = playerDetailsList.length;
 
-      print('----joinedPlayerSize: $joinedPlayerSize');
+      try{
+        int joinedPlayerSize = playerDetailsList.length;
 
-      // Execute forEach()
-      playerDetailsList.forEach((playerDetailsKey, playerDetailsValue) {
-        print('Player Details List: { key: $playerDetailsKey, value: $playerDetailsValue}');
-
-        Map playerDataInPlayerDetailsList = playerDetailsValue;
-
-        if (playerDataInPlayerDetailsList.containsValue(memberId) || playerDataInPlayerDetailsList.containsValue(widget.friendId)) {
-
-          print('---- Fb data filter list: ${widget.categoryName}, ${widget.subcategoryName}, ${widget.gameType}, ${widget.cardsToPlay}');
-
-          FirebasePlayerDetailsModel model = FirebasePlayerDetailsModel();
-
-          _friendDetailsRef.child('playerName').once().then((DataSnapshot snapshot) {
-            model.playerName = snapshot.value;
-          });
+        print('Fb joinedPlayerSize: $joinedPlayerSize');
 
 
-          _friendDetailsRef.child('userId').once().then((DataSnapshot snapshot) {
-            model.userId = snapshot.value;
-          });
+        // Execute forEach()
+        playerDetailsList.forEach((playerDetailsKey, playerDetailsValue) {
+          print('Player Details List: { key: $playerDetailsKey, value: $playerDetailsValue}');
 
+          Map playerDataInPlayerDetailsList = playerDetailsValue;
 
-          _friendDetailsRef.child('image').once().then((DataSnapshot snapshot) {
-            model.photo = snapshot.value;
-          });
+          if (playerDataInPlayerDetailsList.containsValue(memberId) || playerDataInPlayerDetailsList.containsValue(widget.friendId)) {
 
-          if(widget.joinedPlayerType == 'joinedAsFriend' && fbJoinedPlayerList.length == 0){
-            Toast.show('Your friend left the match', context, duration: Toast.lengthLong, gravity:  Toast.bottom);
-          } else{
-            fbJoinedPlayerList.add(model);
+            print('Fb  Fb data filter list: ${widget.categoryName}, ${widget.subcategoryName}, ${widget.gameType}, ${widget.cardsToPlay}');
+
+            String firebasePlayerName = '';
+            String firebasePlayerId = '';
+            String firebasePlayerImage = '';
+
+            _friendDetailsRef.child(playerDetailsKey).child('playerName').once().then((DataSnapshot snapshot) {
+              print('Fb firebasePlayerName: $firebasePlayerName');
+              firebasePlayerName = snapshot.value;
+            });
+
+            _friendDetailsRef.child(playerDetailsKey).child('userId').once().then((DataSnapshot snapshot) {
+              print('Fb firebasePlayerName: $firebasePlayerName');
+              firebasePlayerName = snapshot.value;
+            });
+
+            _friendDetailsRef.child(playerDetailsKey).child('image').once().then((DataSnapshot snapshot) {
+              print('Fb firebasePlayerName: $firebasePlayerName');
+              firebasePlayerName = snapshot.value;
+            });
+
+            fbJoinedPlayerList.add(FirebasePlayerDetailsModel(firebasePlayerName, firebasePlayerId, firebasePlayerImage, playerDetailsKey));
+
+            print('Fb fbJoinedPlayerList size 1: ${fbJoinedPlayerList.length}');
+            if(widget.joinedPlayerType == 'joinedAsFriend' && fbJoinedPlayerList.length == 0){
+              Toast.show('Your friend left the match', context, duration: Toast.lengthLong, gravity:  Toast.bottom, backgroundColor: Colors.white);
+
+              Navigator.of(context).pop();
+            }
+
           }
 
-        }
+          playerDataInPlayerDetailsList.forEach((playerDataKey, playerDataValue) {
+            print('player Data In Player Details List: { inner key: $playerDataKey, inner value: $playerDataValue}');
+          });
 
-        playerDataInPlayerDetailsList.forEach((playerDataKey, playerDataValue) {
-          print('player Data In Player Details List: { inner key: $playerDataKey, inner value: $playerDataValue}');
         });
 
-      });
+        // After getting player list from fb, updating fb and start playing
+        updateFirebaseJoinedPlayerDetails();
+
+      } catch(e){
+        // After getting player list from fb, updating fb and start playing
+        updateFirebaseJoinedPlayerDetails();
+      }
+
     });
-
-    // After getting player list from fb, updating fb and start playing
-    updateFirebaseJoinedPlayerDetails();
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-    playerDetailsSubscription.cancel();
-    _joinedPlayerSubscription.cancel();
-  }
 
   Future<void> updateFirebaseJoinedPlayerDetails() async {
-    print('Fb ${fbJoinedPlayerList.length} join type: ${widget.joinedPlayerType}');
-
+    print('Fb fbJoinedPlayerList size 2: ${fbJoinedPlayerList.length} join type: ${widget.joinedPlayerType}');
     //if player is already looking for player then take 1 player and remove that player else join as host
     if (fbJoinedPlayerList.length == 0 && widget.joinedPlayerType == 'joinedAsPlayer') {
+      print('Fb push player called');
+
       _friendDetailsRef.push().set(<String, String>{
         //count: ${transactionResult.dataSnapshot.value}
         'playerName': fullName,
@@ -283,6 +300,7 @@ class IncludeWaitingForFriendState extends State<IncludeWaitingForFriend> with S
 
     } else if(fbJoinedPlayerList.length == 1 && widget.joinedPlayerType == 'joinedAsFriend'){
 
+      print('Fb push friend called');
       _friendDetailsRef.push().set(<String, String>{
         'playerName': widget.friendName,
         'image': widget.friendImage,
@@ -294,27 +312,13 @@ class IncludeWaitingForFriendState extends State<IncludeWaitingForFriend> with S
         'cardCount': widget.cardsToPlay,
       });
 
-    } else {
-      if (fbJoinedPlayerList.length == 2) {
-        _friendDetailsRef.equalTo(fbJoinedPlayerList[0].playerName).once().then((DataSnapshot snapshot) {
-          Map<dynamic, dynamic> children = snapshot.value;
-          children.forEach((key, value) {
-            _friendDetailsRef.child(key).remove();
-          });
-        });
+    } else if(fbJoinedPlayerList.length == 2) {
+      //removing both players when they matched and start the match
+      _friendDetailsRef.child(fbJoinedPlayerList[0].firebasePlayerKey).remove();
+      _friendDetailsRef.child(fbJoinedPlayerList[1].firebasePlayerKey).remove();
 
-        _friendDetailsRef.equalTo(fbJoinedPlayerList[1].playerName).once().then((DataSnapshot snapshot) {
-          Map<dynamic, dynamic> children = snapshot.value;
-          children.forEach((key, value) {
-            _friendDetailsRef.child(key).remove();
-          });
-        });
-
-        //start the game
-        openGamePlayPage(fbJoinedPlayerList[1].playerName ,fbJoinedPlayerList[1].userId ,fbJoinedPlayerList[1].photo);
-      } else {
-
-      }
+      //start the game
+      openGamePlayPage(fbJoinedPlayerList[1].playerName ,fbJoinedPlayerList[1].userId ,fbJoinedPlayerList[1].photo);
     }
   }
 
@@ -328,10 +332,10 @@ class IncludeWaitingForFriendState extends State<IncludeWaitingForFriend> with S
     database.setPersistenceCacheSizeBytes(10000000);
 
     playerDetailsSubscription = _friendDetailsRef.limitToFirst(1).onChildAdded.listen((Event event) {
-      print('Child added: ${event.snapshot.value}');
+      print('Fb Child added: ${event.snapshot.value}');
 
       //getting updated firebase list when new player added.
-      updateState();
+      retrieveFirebaseData();
 
     }, onError: (Object o) {
       final DatabaseError error = o;
@@ -352,4 +356,11 @@ class IncludeWaitingForFriendState extends State<IncludeWaitingForFriend> with S
       ),
     );
   }
+
+  @override
+  void dispose() {
+    super.dispose();
+    playerDetailsSubscription.cancel();
+  }
+
 }

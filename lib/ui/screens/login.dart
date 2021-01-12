@@ -512,7 +512,7 @@ class _LogInState extends State<LogIn> {
           backgroundColor: Colors.transparent,
           child: Stack(
             children: [
-              FadeInUp(
+              ZoomIn(
                 child: Center(
                   child: Lottie.asset('assets/animations/lottiefiles/sports-loading.json',
                       height: 390, width: 390, repeat: true, animate: true),
@@ -535,7 +535,7 @@ class _LogInState extends State<LogIn> {
 
                       return Container();
                     } else if (!snapshot.hasData) {
-                      return frostedGlassWithProgressBarWidget(context);
+                      return Container();
                     } else return Center(
                         child: Text("No Data Found", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 30)),);
                   }),

@@ -368,15 +368,11 @@ class _GameMoreOptionState extends State<GameMoreOption> {
                       onTap: (){
                         showDialog(
                             context: context,
-                            builder: (_) => IncludeWaitingForFriend(
+                            builder: (_) => IncludeSearchingForPlayer(
                                 categoryName: widget.categoryName,
                                 subcategoryName: widget.subcategoryName,
                                 gameType: gameType,
                                 cardsToPlay: cardsToBePlayed[index],
-                                friendId: '',
-                                friendName: '',
-                                friendImage: '',
-                                joinedPlayerType: 'joinedAsPlayer',
 
                             ),
                           );
