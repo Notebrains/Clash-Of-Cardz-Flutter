@@ -177,10 +177,21 @@ class _MyHomePageState extends State<HomeScreen> {
                             ),
                             // ),
                             onPressed: () {
+                              //change here
                               Navigator.push(
                                   context,
                                   CupertinoPageRoute(
-                                      builder: (BuildContext context) => Gameplay()));
+                                      builder: (BuildContext context) =>
+                                          Gameplay(
+                                              p2Name: 'Ram',
+                                              p2MemberId: 'MEM000001',
+                                              p2Image: 'https:\/\/encrypted-tbn0.gstatic.com\/images?q=tbn%3AANd9GcRiO1D51PX-BWFxtKFukrymxo_iSk-5rBu3Fg&usqp=CAU',
+                                              categoryName: 'Sports',
+                                              subcategoryName: 'Cricket',
+                                              gameType: 'Player vs Player',
+                                              cardsToPlay: '14',
+
+                                          )));
                             },
                           ),
                           preferences:

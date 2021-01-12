@@ -101,32 +101,36 @@ class Leaderboard extends StatelessWidget {
           flex: 2,
           child: Column(
             children: [
-              Container(
-                margin: EdgeInsets.fromLTRB(0, 20, 0, 20),
-                child: ColorizeAnimatedTextKit(
-                  onTap: () {
-                    //print("Tap Event");
-                  },
-                  text: [
-                    "LEADERBOARD"
-                  ],
-                  textStyle: TextStyle(
-                      fontSize: 35.0,
-                      fontStyle: FontStyle.normal,
-                      fontFamily: 'Rapier'
+              SlideInDown(
+                child: Container(
+                  margin: EdgeInsets.fromLTRB(0, 20, 0, 20),
+                  child: ColorizeAnimatedTextKit(
+                    onTap: () {
+                      //print("Tap Event");
+                    },
+                    text: [
+                      "LEADERBOARD"
+                    ],
+                    textStyle: TextStyle(
+                        fontSize: 35.0,
+                        fontStyle: FontStyle.normal,
+                        fontFamily: 'Rapier'
+                    ),
+                    colors: [
+                      Colors.grey[700],
+                      Colors.deepOrange,
+                      Colors.grey[700],
+                    ],
+                    textAlign: TextAlign.center,
+                    alignment: AlignmentDirectional.center,
+                    // or Alignment.topLeft
+                    isRepeatingAnimation: true,
+                    repeatForever: true,
+                    speed: Duration(milliseconds: 1000),
                   ),
-                  colors: [
-                    Colors.grey[700],
-                    Colors.deepOrange,
-                    Colors.grey[700],
-                  ],
-                  textAlign: TextAlign.center,
-                  alignment: AlignmentDirectional.center,
-                  // or Alignment.topLeft
-                  isRepeatingAnimation: true,
-                  repeatForever: true,
-                  speed: Duration(milliseconds: 1000),
                 ),
+                preferences:
+                AnimationPreferences(duration: const Duration(milliseconds: 1200), autoPlay: AnimationPlayStates.Forward),
               ),
 
               ZoomIn(
@@ -259,47 +263,15 @@ class Leaderboard extends StatelessWidget {
           flex: 3,
           child: Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0.0, 12.0, 2.0, 0.0),
-                child: Row(
-                  children: [
-                    Expanded(
-                      flex: 1,
-                      child: Text(
-                        'Rank',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 18.0,
-                          fontStyle: FontStyle.normal,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: 'montserrat',
-                          color: Colors.grey[700],
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 5,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
+              SlideInDown(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(0.0, 12.0, 2.0, 0.0),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        flex: 1,
                         child: Text(
-                          'Point/Name',
-                          textAlign: TextAlign.start,
-                          style: TextStyle(
-                            fontSize: 18.0,
-                            fontStyle: FontStyle.normal,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'montserrat',
-                            color: Colors.grey[700],
-                          ),
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 12.0),
-                        child: Text(
-                          'Image',
+                          'Rank',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 18.0,
@@ -310,10 +282,47 @@ class Leaderboard extends StatelessWidget {
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                      Expanded(
+                        flex: 5,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            'Point/Name',
+                            textAlign: TextAlign.start,
+                            style: TextStyle(
+                              fontSize: 18.0,
+                              fontStyle: FontStyle.normal,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'montserrat',
+                              color: Colors.grey[700],
+                            ),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Padding(
+                          padding: const EdgeInsets.only(right: 12.0),
+                          child: Text(
+                            'Image',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 18.0,
+                              fontStyle: FontStyle.normal,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'montserrat',
+                              color: Colors.grey[700],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
+                preferences:
+                AnimationPreferences(duration: const Duration(milliseconds: 1200), autoPlay: AnimationPlayStates.Forward),
               ),
+
               Divider(
                 color: Colors.black,
                 height: 1,
@@ -337,67 +346,71 @@ class Leaderboard extends StatelessWidget {
         itemCount: listData.length,
         itemBuilder: (context, index) {
           if (index < 3) return SizedBox();
-          return Column(
-            children: [
-              Row(
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: Row(
-                      children: [
-                        Text(
-                          listData[index].rank.toString(),
-                          textAlign: TextAlign.center,
+          return SlideInRight(
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: Row(
+                        children: [
+                          Text(
+                            listData[index].rank.toString(),
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 18.0,
+                              fontStyle: FontStyle.normal,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'montserrat',
+                              color: Colors.grey[700],
+                            ),
+                          ),
+                          new Container(
+                            height: 30.0,
+                            width: 1.0,
+                            color: Colors.black54,
+                            margin: const EdgeInsets.only(left: 16.0, right: 0.0),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      flex: 10,
+                      child: Padding(
+                        padding: EdgeInsets.fromLTRB(18.0, 5.0, 5.0, 5.0),
+                        child: Text(
+                          listData[index].points + '\n' + listData[index].fullname,
+                          textAlign: TextAlign.start,
                           style: TextStyle(
-                            fontSize: 18.0,
+                            fontSize: 16.0,
                             fontStyle: FontStyle.normal,
-                            fontWeight: FontWeight.bold,
                             fontFamily: 'montserrat',
-                            color: Colors.grey[700],
+                            color: Colors.grey[900],
                           ),
                         ),
-                        new Container(
-                          height: 30.0,
-                          width: 1.0,
-                          color: Colors.black54,
-                          margin: const EdgeInsets.only(left: 16.0, right: 0.0),
-                        ),
-                      ],
+                      ),
                     ),
-                  ),
-                  Expanded(
-                    flex: 10,
-                    child: Padding(
-                      padding: EdgeInsets.fromLTRB(18.0, 5.0, 5.0, 5.0),
-                      child: Text(
-                        listData[index].points + '\n' + listData[index].fullname,
-                        textAlign: TextAlign.start,
-                        style: TextStyle(
-                          fontSize: 16.0,
-                          fontStyle: FontStyle.normal,
-                          fontFamily: 'montserrat',
-                          color: Colors.grey[900],
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                        width: 40,
+                        height: 40,
+                        child: CircleAvatar(
+                          backgroundImage: NetworkImage(listData[index].photo),
                         ),
                       ),
                     ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      width: 40,
-                      height: 40,
-                      child: CircleAvatar(
-                        backgroundImage: NetworkImage(listData[index].photo),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Divider(
-                color: Colors.black,
-                height: 1,
-              ),
-            ],
+                  ],
+                ),
+                Divider(
+                  color: Colors.black,
+                  height: 1,
+                ),
+              ],
+            ),
+            preferences:
+            AnimationPreferences(duration: const Duration(milliseconds: 1200), autoPlay: AnimationPlayStates.Forward),
           );
         },
       ),

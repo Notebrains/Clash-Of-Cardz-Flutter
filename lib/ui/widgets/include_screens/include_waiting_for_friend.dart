@@ -349,9 +349,13 @@ class IncludeWaitingForFriendState extends State<IncludeWaitingForFriend> with S
       CupertinoPageRoute(
         builder: (context) =>
             Gameplay(
-              joinedPlayerName: playerName,
-              joinedPlayerId: playerId,
-              joinedPlayerImage: playerImage,
+              p2Name: playerName,
+              p2MemberId: playerId,
+              p2Image: playerImage,
+              categoryName: widget.categoryName,
+              subcategoryName: widget.subcategoryName,
+              gameType: widget.gameType,
+              cardsToPlay: widget.cardsToPlay,
             ),
       ),
     );

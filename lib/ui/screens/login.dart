@@ -22,6 +22,7 @@ import 'package:lottie/lottie.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:trump_card_game/ui/widgets/libraries/flutter_toast.dart';
+import 'package:bot_toast/bot_toast.dart';
 
 import 'gameplay.dart';
 
@@ -105,6 +106,8 @@ class _LogInState extends State<LogIn> {
     this.context = context;
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      builder: BotToastInit(), //1. call BotToastInit
+      navigatorObservers: [BotToastNavigatorObserver()],
       home: Scaffold(
         body: Container(
           decoration: new BoxDecoration(
@@ -339,7 +342,8 @@ class _LogInState extends State<LogIn> {
                                     ),
                                   ),
                                   onTap: (){
-                                    Navigator.of(context).push(new PageRouteWithAnimation());
+                                    //Navigator.of(context).push(new PageRouteWithAnimation());
+                                    showd();
                                   },
                                 ),
                               ),
@@ -544,6 +548,22 @@ class _LogInState extends State<LogIn> {
         );
       },
     );
+  }
+
+  void showd(){
+    //popup a attachments toast
+    BotToast.showAttachedWidget(
+        attachedBuilder: (_) => Card(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Icon(
+              Icons.favorite,
+              color: Colors.redAccent,
+            ),
+          ),
+        ),
+        duration: Duration(seconds: 2),
+        target: Offset(520, 520));
   }
 }
 

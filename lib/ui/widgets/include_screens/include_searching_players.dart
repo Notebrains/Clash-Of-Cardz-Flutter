@@ -39,7 +39,6 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForPlayer> wi
   DatabaseReference _playerDetailsRef;
   StreamSubscription<Event> _joinedPlayerSubscription;
   StreamSubscription<Event> playerDetailsSubscription;
-  bool _anchorToBottom = false;
   DatabaseError _error;
 
   FirebaseApp firebaseApp;
@@ -299,7 +298,7 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForPlayer> wi
         _playerDetailsRef.child(fbJoinedPlayerList[1].firebasePlayerKey).remove();
 
         //start the game
-        openGamePlayPage(fbJoinedPlayerList[1].playerName ,fbJoinedPlayerList[1].userId ,fbJoinedPlayerList[1].photo);
+        openGamePlayPage(fbJoinedPlayerList[1].playerName, fbJoinedPlayerList[1].userId, fbJoinedPlayerList[1].photo);
 
       } else{
         //removing joined players when start the match
@@ -351,9 +350,13 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForPlayer> wi
       CupertinoPageRoute(
         builder: (context) =>
             Gameplay(
-              joinedPlayerName: playerName,
-              joinedPlayerId: playerId,
-              joinedPlayerImage: playerImage,
+              p2Name: playerName,
+              p2MemberId: playerId,
+              p2Image: playerImage,
+              categoryName: widget.categoryName,
+              subcategoryName: widget.subcategoryName,
+              gameType: widget.gameType,
+              cardsToPlay: widget.cardsToPlay,
             ),
       ),
     ).then((value) => Navigator.of(context).pop());

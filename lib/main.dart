@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:trump_card_game/ui/screens/demo/firebasse_notification.dart';
 import 'package:trump_card_game/ui/screens/splash.dart';

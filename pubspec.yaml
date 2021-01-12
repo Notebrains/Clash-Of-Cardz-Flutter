@@ -51,15 +51,16 @@ dev_dependencies:
   e2e: ^0.7.0+1
   font_awesome_flutter: ^8.8.1
   flutter_screenutil: ^2.1.0
-  flutter_offline: "^0.3.0"
-  lottie: ^0.6.0
-  flutter_svg: ^0.19.0
+  flutter_offline: ^0.3.0
+  lottie: ^0.7.0+1
+  flutter_svg: ^0.19.2+1
   carousel_slider: ^2.3.1
   shared_preferences: ^0.5.12+4
   shape_of_view: ^1.0.2
   flutter_animator: ^2.1.0
   provider: ^4.3.2+3
   cached_network_image: ^2.5.0
+  bot_toast: ^3.0.5
 
   #assets_audio_player: ^2.0.10
 

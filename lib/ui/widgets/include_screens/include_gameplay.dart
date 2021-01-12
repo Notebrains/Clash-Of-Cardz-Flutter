@@ -1,21 +1,28 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:trump_card_game/helper/constantvalues/constants.dart';
+import 'package:trump_card_game/helper/exten_fun/common_fun.dart';
 import 'package:trump_card_game/helper/shared_preference_data.dart';
 import 'package:trump_card_game/model/responses/cards_res_model.dart';
 import 'package:trump_card_game/model/responses/game_option_res_model.dart';
 import 'package:trump_card_game/model/state_managements/gameplay_states_model.dart';
 import 'package:trump_card_game/ui/screens/game_result.dart';
 import 'package:trump_card_game/ui/screens/login.dart';
+import 'package:trump_card_game/ui/widgets/libraries/giffy_dialog/giffy_dialog.dart';
 import 'package:trump_card_game/ui/widgets/views/view_widgets.dart';
 import 'package:provider/provider.dart';
 
 class BuildPlayer1Screen extends StatelessWidget{
   int listLength = 0;
+  String p1Name = '';
+  String p2Name = '';
 
-  BuildPlayer1Screen(int length){
+  BuildPlayer1Screen(int length, String p1fullName, String p2Name){
     this.listLength = (length/2).round();
+    this.p1Name = p1fullName;
+    this.p2Name = p2Name;
   }
 
   @override
@@ -47,7 +54,7 @@ class BuildPlayer1Screen extends StatelessWidget{
                 Padding(
                   padding: const EdgeInsets.all(6.0),
                   child: Text(
-                    'P-1 CARDS',
+                    'P-1 Cards',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                         fontSize: 14,
@@ -138,7 +145,7 @@ class BuildPlayer1Screen extends StatelessWidget{
                     Padding(
                       padding: const EdgeInsets.all(5.0),
                       child: Text(
-                        'Player 1',
+                        getFirstWordFromText(p1Name),
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             fontSize: 14,
@@ -313,9 +320,11 @@ class BuildPlayer1Screen extends StatelessWidget{
 
 class BuildPlayerTwoScreen extends StatelessWidget {
   int listLength = 0;
+  String p2Name = '';
 
-  BuildPlayerTwoScreen(int length){
+  BuildPlayerTwoScreen(int length, String p2name){
     this.listLength = (length/2).round();
+    this.p2Name = p2name;
   }
 
   @override
@@ -348,7 +357,7 @@ class BuildPlayerTwoScreen extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.all(6.0),
                       child: Text(
-                        'P-2 CARDS',
+                        'P-2 Cards',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             fontSize: 14,
@@ -433,12 +442,14 @@ class BuildPlayerTwoScreen extends StatelessWidget {
                             color: Colors.white,
                           ),
                           onPressed: () {
-                            Navigator.push(context,
+
+                            showExitDialog(context);
+                           /* Navigator.push(context,
                               CupertinoPageRoute(
                                 builder: (context) => new GameResult(winnerName: 'Rex Scout', winnerId:'MEM00003', winnerImage: Constants.imgUrlTest, winnerCoins: '200',
                                     winnerPoints: '12', cardType: 'Cricket', clashType: '1 vs 1', playedCards: '16', isP1Won:  true),
                               ),
-                            );
+                            );*/
                           },
                         ),
                         decoration: Views.boxDecorationWidgetForIconWithBgColor(Colors.teal, 4.0, Colors.grey, 5.0, 5.0, 3.0),
@@ -510,7 +521,7 @@ class BuildPlayerTwoScreen extends StatelessWidget {
                             Padding(
                               padding: const EdgeInsets.all(5.0),
                               child: Text(
-                                "Player 2",
+                                getFirstWordFromText(p2Name),
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                     fontSize: 14,
@@ -611,6 +622,38 @@ class BuildPlayerTwoScreen extends StatelessWidget {
             )
           ],
         ),
+      ),
+    );
+  }
+
+  void showExitDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (_) => AssetGiffyDialog(
+        image: Image.asset('assets/animations/gifs/surrender.gif'),
+        title: Text(
+          'SURRENDER',
+          style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.w600),
+        ),
+        description: Text(
+          'Do you really wat to surrender the match!',
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w600),
+        ),
+        entryAnimation: EntryAnimation.RIGHT,
+        buttonOkText: Text(
+          'YES',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
+        buttonOkColor: Colors.red,
+        buttonCancelColor: Colors.greenAccent,
+        buttonCancelText: Text(
+          'NO',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
+        onOkButtonPressed: () {
+          SystemChannels.platform.invokeMethod<void>('SystemNavigator.pop');
+        },
       ),
     );
   }

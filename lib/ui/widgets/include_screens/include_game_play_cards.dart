@@ -95,7 +95,7 @@ Widget buildPlayerOneCard(
               padding: const EdgeInsets.all(8.0),
               child: FadeInImage.assetNetwork(
                   fit: BoxFit.cover,
-                  placeholder: 'assets/animations/gifs/loading.gif',
+                  placeholder: 'assets/images/cricket_1.png',
                   image: cardsList[indexOfCardDeck].cardImg,
                   height: 150,
                   width: 150
@@ -216,7 +216,10 @@ Widget buildPlayerOneCard(
                         elevation: 1,
                         child: CircleAvatar(
                           radius: 30,
-                          backgroundImage: NetworkImage(cardsList[indexOfCardDeck].flagImage),
+                          child: FadeInImage.assetNetwork(
+                            placeholder: 'assets/icons/png/white-flag.png',
+                            image: cardsList[indexOfCardDeck].flagImage,
+                          ),
                         ),
                       ),
                     ],
@@ -329,7 +332,7 @@ Widget buildPlayerTwoCard(
               padding: const EdgeInsets.all(8.0),
               child: FadeInImage.assetNetwork(
                   fit: BoxFit.cover,
-                  placeholder: 'assets/animations/gifs/loading.gif',
+                  placeholder: 'assets/images/cricket_2.png',
                   image: cardsList[cardListSizeForP2 + indexOfCardDeck].cardImg,
                   height: 150,
                   width: 150),
@@ -487,7 +490,10 @@ Widget buildPlayerTwoCard(
                         width: 16,
                         child: CircleAvatar(
                           radius: 30,
-                          backgroundImage: NetworkImage(cardsList[cardListSizeForP2 + indexOfCardDeck].flagImage),
+                          child: FadeInImage.assetNetwork(
+                            placeholder: 'assets/icons/png/white-flag.png',
+                            image: cardsList[cardListSizeForP2 + indexOfCardDeck].flagImage,
+                          ),
                         ),
                       ),
                     ],

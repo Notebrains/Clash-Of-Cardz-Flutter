@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -19,18 +21,42 @@ import 'package:trump_card_game/ui/widgets/include_screens/include_gameplay.dart
 import 'game_result.dart';
 
 class Gameplay extends StatelessWidget {
-  Gameplay({this.joinedPlayerName, this.joinedPlayerId, this.joinedPlayerImage});
+  Gameplay({this.p2Name, this.p2MemberId, this.p2Image, this.categoryName, this.subcategoryName, this.gameType, this.cardsToPlay});
 
   final List<String> playerResultStatusList = [];
-  final String joinedPlayerName;
-  final String joinedPlayerId;
-  final String joinedPlayerImage;
+  final String p2Name;
+  final String p2MemberId;
+  final String p2Image;
+  final String categoryName;
+  final String subcategoryName;
+  final String gameType;
+  final String cardsToPlay;
   int indexOfP1Card = 0;
   int indexOfCardDeck = 0;
 
+  var p1xApiKey = '';
+  var p1FullName = '';
+  var p1MemberId = '';
+  var p1Points = '';
+  var p1Photo = '';
+
+  //firebase data init
+  DatabaseReference _gamePlayRef;
+  StreamSubscription<Event> gamePlaySubscription;
+  DatabaseError _error;
+
+  FirebaseApp firebaseApp;
+
+  String _gameRoomName = 'gamePlay';
+
   @override
   Widget build(BuildContext context) {
-    apiBloc.fetchCardsRes("ZGHrDz4prqsu4BcApPaQYaGgq", 'cricket', 'sports', '2', '14');
+    
+    getSavedUserDataFromPref();
+    
+    initFirebaseCredentials();
+
+    apiBloc.fetchCardsRes("ZGHrDz4prqsu4BcApPaQYaGgq", subcategoryName, categoryName, '2', cardsToPlay);
 
     return Scaffold(
       // Provide the model to all widgets within the app. We're using
@@ -60,7 +86,7 @@ class Gameplay extends StatelessWidget {
                       children: [
                         Expanded(
                           flex: 3,
-                          child: BuildPlayer1Screen(snapshot.data.response.cards.length),
+                          child: BuildPlayer1Screen(snapshot.data.response.cards.length, p1FullName, p2Name),
                         ),
                         Expanded(
                           flex: 7,
@@ -82,7 +108,7 @@ class Gameplay extends StatelessWidget {
                                                   duration: Duration(minutes: 45),
                                                   tween: Tween(begin: Duration(minutes: 45), end: Duration.zero),
                                                   onEnd: () {
-                                                    print('Timer Ended');
+                                                    //print('Timer Ended');
                                                     if (statesModel.player1TotalPoints > statesModel.player2TotalPoints) {
                                                       showTimesUpDialog(context, true, statesModel);
                                                     } else {
@@ -139,7 +165,7 @@ class Gameplay extends StatelessWidget {
                                                             ':',
                                                             textAlign: TextAlign.center,
                                                             style: TextStyle(
-                                                              color: Colors.deepOrangeAccent[700],
+                                                              color: Colors.deepOrangeAccent,
                                                               fontWeight: FontWeight.bold,
                                                               fontSize: 46,
                                                               shadows: [
@@ -212,6 +238,7 @@ class Gameplay extends StatelessWidget {
                                                     {
                                                       //print('----p1c clicked'),
                                                       this.indexOfP1Card = indexOfP1Card,
+                                                      updateGamePlayStatus('yes', 'no'),
                                                     },
                                                   ),
                                                   preferences: AnimationPreferences(
@@ -233,24 +260,23 @@ class Gameplay extends StatelessWidget {
                                                     snapshot.data.response.cards,
                                                     onClickActionOnP2GameplayCard: (bool isWon, int winPoint) =>
                                                     {
+                                                      updateGamePlayStatus('yes', 'yes'),
+
                                                       print('---- p2c data called ${statesModel.isCardOneTouched}, $isWon, $winPoint'),
                                                       if (isWon)
                                                         {
                                                           playerResultStatusList.add("won"), // "won" is lottie file name
 
                                                           //showing lottie anim depending on win or loose
-                                                          SharedPreferenceHelper().getUserImage().then(
-                                                                (photoUrl) =>
-                                                                showWinDialog(
-                                                                    context,
-                                                                    statesModel,
-                                                                    isWon,
-                                                                    'win-result.json',
-                                                                    'You Won',
-                                                                    photoUrl,
-                                                                    4000,
-                                                                    winPoint),
-                                                          ),
+                                                          showWinDialog(
+                                                              context,
+                                                              statesModel,
+                                                              isWon,
+                                                              'win-result.json',
+                                                              'You Won',
+                                                              p1Photo,
+                                                              4000,
+                                                              winPoint),
                                                         }
                                                       else
                                                         {
@@ -318,7 +344,7 @@ class Gameplay extends StatelessWidget {
                         ),
                         Expanded(
                           flex: 3,
-                          child: BuildPlayerTwoScreen(snapshot.data.response.cards.length),
+                          child: BuildPlayerTwoScreen(snapshot.data.response.cards.length, p2Name),
                         ),
                       ],
                     ),
@@ -457,24 +483,13 @@ class Gameplay extends StatelessWidget {
       },
     );
 
-    String winnerUrl = "";
-
     Timer(Duration(milliseconds: 3000), () {
-      SharedPreferenceHelper().getUserImage().then(
-            (photoUrl) => winnerUrl = photoUrl,
-      );
-
       Navigator.pop(dialogContext);
       gotoResultScreen(context, isP1Won, statesModel);
     });
   }
 
   void gotoResultScreen(BuildContext context, bool isP1Won, GamePlayStatesModel statesModel) {
-    String winnerUrl = "";
-
-    SharedPreferenceHelper().getUserImage().then(
-          (photoUrl) => winnerUrl = photoUrl,
-    );
 
     isP1Won ? Navigator.push(
       context,
@@ -483,7 +498,7 @@ class Gameplay extends StatelessWidget {
             GameResult(
               winnerName: 'Ram Rakshman',
               winnerId: 'MEM000004',
-              winnerImage: winnerUrl,
+              winnerImage: p1Photo,
               winnerCoins: "0",
               winnerPoints: statesModel.player1TotalPoints.toString(),
               cardType: 'Cricket',
@@ -511,4 +526,95 @@ class Gameplay extends StatelessWidget {
       ),
     );
   }
+
+  void getSavedUserDataFromPref() {
+    SharedPreferenceHelper().getUserSavedData().then((sharedPrefUserProfileModel) => {
+      p1xApiKey = sharedPrefUserProfileModel.xApiKey ?? 'NA',
+      p1FullName = sharedPrefUserProfileModel.fullName ?? 'NA',
+      p1MemberId = sharedPrefUserProfileModel.memberId ?? 'NA',
+      p1Photo = sharedPrefUserProfileModel.photo ?? 'NA',
+      p1Points = sharedPrefUserProfileModel.points ?? 'NA',
+    });
+
+  }
+
+  Future<void> initFirebaseCredentials() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    await Firebase.initializeApp();
+
+    _gamePlayRef = FirebaseDatabase.instance.reference().child('gamePlay');
+
+    _gameRoomName = 'gamePlay-$p1MemberId-$p2MemberId';
+
+    gamePlaySubscription = _gamePlayRef.onChildChanged.listen(listeningToFirebaseDataUpdate);
+
+    //creating game play room for these two players
+    //pushGamePlayStatus();
+  }
+
+  //no need to use this method
+  void retrieveFirebaseData() {
+
+    //get child items present in fb db.
+    _gamePlayRef.child(_gameRoomName).once().then((onValue) {
+      Map playerDetailsList = onValue.value;
+
+      try{
+        //int joinedPlayerSize = playerDetailsList.length;
+
+        // Execute forEach()
+        playerDetailsList.forEach((playerDetailsKey, playerDetailsValue) {
+          print('Player Details List: { key: $playerDetailsKey, value: $playerDetailsValue}');
+
+          Map playerDataInPlayerDetailsList = playerDetailsValue;
+
+          playerDataInPlayerDetailsList.forEach((playerDataKey, playerDataValue) {
+            print('player Data In Player Details List: { inner key: $playerDataKey, inner value: $playerDataValue}');
+          });
+
+        });
+
+        // After getting player list from fb, updating fb and start playing
+        ////updateGamePlayStatus();
+
+      } catch(e){
+        // After getting player list from fb, updating fb and start playing
+        ////updateGamePlayStatus();
+      }
+    });
+  }
+
+  //no need to use this method
+  Future<void> pushGamePlayStatus() async {
+    _gamePlayRef.push().set(<String, String>{
+      'isP1TurnComplete': 'no',
+      'isP2TurnComplete': 'no',
+    });
+  }
+
+  Future<void> updateGamePlayStatus(String p1TurnStatus, String p2TurnStatus) async {
+    _gamePlayRef.child(_gameRoomName).set({
+      'isP1TurnComplete': p1TurnStatus,
+      'isP2TurnComplete': p2TurnStatus,
+    }).then((_) {
+      // ...
+    });
+  }
+
+  void listeningToFirebaseDataUpdate(Event event) {
+    print('Gp on data changed ${event.snapshot.value}');
+
+    // event.snapshot.value is return map. Below line getting values from map using keys
+    print('Gp isP1TurnComplete: ${event.snapshot.value['isP1TurnComplete']}');
+    print('Gp isP2TurnComplete: ${event.snapshot.value['isP2TurnComplete']}');
+
+  }
+
+
+  /*@override
+  void dispose() {
+    super.dispose();
+    playerDetailsSubscription.cancel();
+    _joinedPlayerSubscription.cancel();
+  }*/
 }

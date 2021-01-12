@@ -40,10 +40,13 @@ Widget buildHomeScreenPlayerInfo(ProfileResModel model, String xApiKey){
                       ),
                     ),
                   ),
+
                   CircleAvatar(
                     radius: 25,
-                    backgroundImage:
-                    NetworkImage(model.response[0].photo),
+                    child: FadeInImage.assetNetwork(
+                      placeholder: 'assets/icons/png/circle-avator-default-img.png',
+                      image: model.response[0].photo,
+                    ),
                   ),
                 ],
               ),
@@ -68,7 +71,7 @@ Widget buildHomeScreenPlayerInfo(ProfileResModel model, String xApiKey){
                         padding:
                         new EdgeInsets.fromLTRB(30.0, 8.0, 30.0, 8.0),
                         margin: EdgeInsets.fromLTRB(8.0, 8.0, 0.0, 8.0),
-                        child: Text(model.response[0].coins??'',
+                        child: Text(model.response[0].coins??'0',
                             style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.w900)),

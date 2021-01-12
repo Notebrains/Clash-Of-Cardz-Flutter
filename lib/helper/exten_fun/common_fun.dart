@@ -17,3 +17,8 @@ playUrlAudio(String url) async {
 //mp3 unreachable
   }
 }*/
+
+String getFirstWordFromText(String txt)
+{
+  return (txt+" ").split(" ")[0]; //add " " to string to be sure there is something to split
+}
