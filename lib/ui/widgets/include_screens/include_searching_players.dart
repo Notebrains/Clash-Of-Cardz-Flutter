@@ -8,7 +8,6 @@ import 'package:lottie/lottie.dart';
 import 'package:trump_card_game/helper/exten_fun/base_application_fun.dart';
 import 'package:trump_card_game/helper/shared_preference_data.dart';
 import 'package:trump_card_game/model/arguments/firebase_player_details_model.dart';
-import 'package:trump_card_game/ui/screens/autoplay.dart';
 import 'package:trump_card_game/ui/screens/gameplay.dart';
 import 'package:trump_card_game/ui/screens/home.dart';
 import 'package:trump_card_game/ui/widgets/custom/frosted_glass.dart';
@@ -33,10 +32,8 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForPlayer> wi
   Animation<double> scaleAnimation;
   List <FirebasePlayerDetailsModel> fbJoinedPlayerList = [];
 
-  int joinedPlayerCount;
-  int joinedPlayerSize = 0;
-  DatabaseReference _joinedPlayerCountRef;
   DatabaseReference _playerDetailsRef;
+  DatabaseReference _gameRoom;
   StreamSubscription<Event> _joinedPlayerSubscription;
   StreamSubscription<Event> playerDetailsSubscription;
   DatabaseError _error;
@@ -44,10 +41,10 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForPlayer> wi
   FirebaseApp firebaseApp;
 
   var xApiKey = '';
-  var fullName = '';
-  var memberId = '';
+  var p1FullName = '';
+  var p1MemberId = '';
   var points = '';
-  var photo = '';
+  var p1Photo = '';
 
   bool isHost = false;
 
@@ -64,9 +61,9 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForPlayer> wi
       print('Fb pref ${sharedPrefUserProfileModel.memberId}'),
 
       xApiKey = sharedPrefUserProfileModel.xApiKey ?? 'NA',
-      fullName = sharedPrefUserProfileModel.fullName ?? 'NA',
-      memberId = sharedPrefUserProfileModel.memberId ?? 'NA',
-      photo = sharedPrefUserProfileModel.photo ?? 'NA',
+      p1FullName = sharedPrefUserProfileModel.fullName ?? 'NA',
+      p1MemberId = sharedPrefUserProfileModel.memberId ?? 'NA',
+      p1Photo = sharedPrefUserProfileModel.photo ?? 'NA',
       points = sharedPrefUserProfileModel.points ?? 'NA',
     });
 
@@ -76,8 +73,6 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForPlayer> wi
 
     controller.forward();
 
-
-    print('Fb retrieveFirebaseData method called 1');
     retrieveFirebaseData();
 
     listeningToFirebaseDataUpdate();
@@ -131,22 +126,7 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForPlayer> wi
 
                                           //remove first user from firebase if requested player has not joined.
                                           _playerDetailsRef.child(fbJoinedPlayerList[0].firebasePlayerKey).remove();
-
-                                          Toast.show('Player not found!', context, duration: Toast.lengthLong, gravity:  Toast.bottom,
-                                              backgroundColor: Colors.deepOrange,
-                                              textStyle:  TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 20,
-                                                shadows: [
-                                                  Shadow(color: Colors.white),
-                                                ],
-                                              ));
-
-                                          Navigator.push(
-                                            context, CupertinoPageRoute(builder: (context) => HomeScreen(xApiKey: xApiKey, memberId: memberId,),
-                                          ),
-                                          );
+                                          funAfterNoPlayerFound();
                                         },
                                         builder: (BuildContext context, Duration value, Widget child) {
                                           //adding 0 at first if min or sec show in single digit
@@ -159,7 +139,7 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForPlayer> wi
                                               style: TextStyle(
                                                 color: Colors.white,
                                                 fontWeight: FontWeight.bold,
-                                                fontSize: 36,
+                                                fontSize: 30,
                                                 shadows: [
                                                   Shadow(color: Colors.white),
                                                 ],
@@ -203,22 +183,23 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForPlayer> wi
   }
 
   void retrieveFirebaseData() {
+    print('Fb retrieveFirebaseData method called 1');
+
     // Demonstrates configuring the database directly
+    //var firebaseInstance = FirebaseDatabase.instance;
     final FirebaseDatabase database = FirebaseDatabase(app: firebaseApp);
     _playerDetailsRef = database.reference().child('playerDetails');
+    _gameRoom = database.reference().child('gameRoom');
 
-    // Demonstrates configuring to the database using a file
-    _joinedPlayerCountRef = FirebaseDatabase.instance.reference().child('joinedPlayerCount');
 
     //get child items present in fb db.
-    fbJoinedPlayerList = [];
+    fbJoinedPlayerList.clear();
     _playerDetailsRef.once().then((onValue) {
-      Map playerDetailsList = onValue.value;
-
       try{
+        Map playerDetailsList = onValue.value;
         int joinedPlayerSize = playerDetailsList.length;
 
-        print('Fb joinedPlayerSize: $joinedPlayerSize');
+        //print('Fb joinedPlayerSize: $joinedPlayerSize');
 
         // Execute forEach()
         playerDetailsList.forEach((playerDetailsKey, playerDetailsValue) {
@@ -242,24 +223,19 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForPlayer> wi
             });
 
             _playerDetailsRef.child(playerDetailsKey).child('userId').once().then((DataSnapshot snapshot) {
-              print('Fb firebasePlayerName: $firebasePlayerName');
-              firebasePlayerName = snapshot.value;
+              print('Fb firebasePlayerId: $firebasePlayerId');
+              firebasePlayerId = snapshot.value;
             });
 
             _playerDetailsRef.child(playerDetailsKey).child('image').once().then((DataSnapshot snapshot) {
-              print('Fb firebasePlayerName: $firebasePlayerName');
-              firebasePlayerName = snapshot.value;
+              print('Fb firebasePlayerImage: $firebasePlayerImage');
+              firebasePlayerImage = snapshot.value;
             });
 
             fbJoinedPlayerList.add(FirebasePlayerDetailsModel(firebasePlayerName, firebasePlayerId, firebasePlayerImage, playerDetailsKey));
           }
 
-          playerDataInPlayerDetailsList.forEach((playerDataKey, playerDataValue) {
-            print('player Data In Player Details List: { inner key: $playerDataKey, inner value: $playerDataValue}');
-          });
-
         });
-
         // After getting player list from fb, updating fb and start playing
         updateFirebaseJoinedPlayerDetails();
 
@@ -270,17 +246,14 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForPlayer> wi
     });
   }
 
-  Future<void> updateFirebaseJoinedPlayerDetails() async {
-
+  void updateFirebaseJoinedPlayerDetails() {
     print('Fb fb Joined Player List size: ${fbJoinedPlayerList.length}');
-
     if(fbJoinedPlayerList.length == 0){
-      isHost = true;
       _playerDetailsRef.push().set(<String, String>{
         //count: ${transactionResult.dataSnapshot.value}
-        'playerName': fullName,
-        'image': photo,
-        'userId': memberId,
+        'playerName': p1FullName,
+        'image': p1Photo,
+        'userId': p1MemberId,
         'joinedUserType': 'host',
         'category': widget.categoryName,
         'subCategory': widget.subcategoryName,
@@ -288,60 +261,100 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForPlayer> wi
         'cardCount': widget.cardsToPlay,
       });
     } else if(fbJoinedPlayerList.length == 1){
-      isHost = false;
+
+      //removing joined players when start the match
+      _playerDetailsRef.child(fbJoinedPlayerList[0].firebasePlayerKey).remove();
+
+      //createGameRoom(String p1Id, String p1Name, String p1Image, String p2Id, String p2Name, String p2Image)
+      createGameRoom(fbJoinedPlayerList[0].userId, fbJoinedPlayerList[0].playerName, fbJoinedPlayerList[0].photo);
+
     } else if (fbJoinedPlayerList.length > 1) {
-      isHost = false;
       //if no player then joined as host and wait for player to join the match. Else take first player and start the match
-      if (isHost) {
+
+      //checking if user is same or different. both member id will be same if the user req for match for 2 times
+      if (p1MemberId != fbJoinedPlayerList[0].userId) {
         //removing both players when they matched and start the match
         _playerDetailsRef.child(fbJoinedPlayerList[0].firebasePlayerKey).remove();
         _playerDetailsRef.child(fbJoinedPlayerList[1].firebasePlayerKey).remove();
 
-        //start the game
-        openGamePlayPage(fbJoinedPlayerList[1].playerName, fbJoinedPlayerList[1].userId, fbJoinedPlayerList[1].photo);
-
-      } else{
-        //removing joined players when start the match
-        _playerDetailsRef.child(fbJoinedPlayerList[0].firebasePlayerKey).remove();
-
-        //start the game
-        openGamePlayPage(fbJoinedPlayerList[0].playerName ,fbJoinedPlayerList[0].userId ,fbJoinedPlayerList[0].photo);
+        //createGameRoom(String p1Id, String p1Name, String p1Image, String p2Id, String p2Name, String p2Image)
+        createGameRoom(fbJoinedPlayerList[1].userId, fbJoinedPlayerList[1].playerName, fbJoinedPlayerList[1].photo);
       }
     }
   }
 
   void listeningToFirebaseDataUpdate() {
-
-    //getting joinedPlayerCount when it changed
-
-    final FirebaseDatabase database = FirebaseDatabase(app: firebaseApp);
-
-    database.setPersistenceEnabled(true);
-    database.setPersistenceCacheSizeBytes(10000000);
-    _joinedPlayerCountRef.keepSynced(true);
-    _joinedPlayerSubscription = _joinedPlayerCountRef.onValue.listen((Event event) {
-      setState(() {
-        _error = null;
-        //joinedPlayerCount = event.snapshot.value ?? 0;
-        joinedPlayerCount = joinedPlayerSize ?? 0;
-      });
-    }, onError: (Object o) {
-      final DatabaseError error = o;
-      setState(() {
-        _error = error;
-      });
-    });
-
     playerDetailsSubscription = _playerDetailsRef.limitToFirst(1).onChildAdded.listen((Event event) {
-      print('Child added: ${event.snapshot.value}');
+      //print('--------- joinedUserType ${event.snapshot.value['joinedUserType']}');
+      //print('--------- ${event.snapshot.key}');
 
-      //getting updated firebase list when new player added.
-      retrieveFirebaseData();
+      String playerDetailsKey = event.snapshot.key;
+      String category = event.snapshot.value['category'];
+      String subCategory = event.snapshot.value['subCategory'];
+      String cardCount = event.snapshot.value['cardCount'];
+      String gameType = event.snapshot.value['gameType'];
+      String firebasePlayerName = event.snapshot.value['playerName'];
+      String firebasePlayerId = event.snapshot.value['userId'];
+      String firebasePlayerImage = event.snapshot.value['image'];
+      String joinedUserType = event.snapshot.value['joinedUserType'];
 
+      if (joinedUserType != 'host' &&
+          category == widget.categoryName &&
+          subCategory == widget.subcategoryName &&
+          gameType == widget.gameType &&
+          cardCount == widget.cardsToPlay &&
+          !fbJoinedPlayerList.contains(playerDetailsKey)
+      ) {
+        fbJoinedPlayerList.add(FirebasePlayerDetailsModel(firebasePlayerName, firebasePlayerId, firebasePlayerImage, playerDetailsKey));
+
+        //getting updated firebase list when new player added.
+        updateFirebaseJoinedPlayerDetails();
+      }
     }, onError: (Object o) {
       final DatabaseError error = o;
       print('Error: ${error.code} ${error.message}');
     });
+  }
+
+  void createGameRoom(String p2Id, String p2Name, String p2Image) async{
+    if (p2Id.isNotEmpty) {
+      String _gameRoomName = 'gr-$p1MemberId-$p2Id';
+
+      _gameRoom.child(_gameRoomName).set({
+        'p1Id': p1MemberId,
+        'p1Name': p1FullName,
+        'p1Image': p1Photo,
+        'p2Id': p2Id,
+        'p2Name': p2Name,
+        'p2Image': p2Image,
+        'category': widget.categoryName,
+        'subCategory': widget.subcategoryName,
+        'gameType': widget.gameType,
+        'cardCount': widget.cardsToPlay,
+      }).then((_) {
+        openGamePlayPage(fbJoinedPlayerList[1].playerName, fbJoinedPlayerList[1].userId, fbJoinedPlayerList[1].photo);
+      });
+    } else {
+      funAfterNoPlayerFound();
+    }
+  }
+
+  void funAfterNoPlayerFound() async{
+    Toast.show('Player not found! Please try again.', context, duration: Toast.lengthLong, gravity:  Toast.bottom,
+        backgroundColor: Colors.deepOrange,
+        textStyle:  TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+          fontSize: 20,
+          shadows: [
+            Shadow(color: Colors.white),
+          ],
+        ));
+
+    Navigator.push(
+      context, CupertinoPageRoute(builder: (context) => HomeScreen(xApiKey: xApiKey, memberId: p1MemberId,),
+    ),
+    );
   }
 
   void openGamePlayPage(String playerName, playerId, playerImage) {
@@ -349,15 +362,7 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForPlayer> wi
       context,
       CupertinoPageRoute(
         builder: (context) =>
-            Gameplay(
-              p2Name: playerName,
-              p2MemberId: playerId,
-              p2Image: playerImage,
-              categoryName: widget.categoryName,
-              subcategoryName: widget.subcategoryName,
-              gameType: widget.gameType,
-              cardsToPlay: widget.cardsToPlay,
-            ),
+            Gameplay(),
       ),
     ).then((value) => Navigator.of(context).pop());
   }

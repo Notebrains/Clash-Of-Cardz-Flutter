@@ -57,14 +57,17 @@ Widget buildPlayerOneCard(
             Container(
               width: getScreenWidth(context),
               height: getScreenHeight(context),
-              child: Image.asset('assets/images/bg_card_back.png', fit: BoxFit.fill),
+              color: Colors.deepOrangeAccent,
+              //child: Image.asset('assets/images/bg_card_back.png', fit: BoxFit.fill),
             ),
 
-            /*Align(
-              alignment: Alignment.center,
-              child: Lottie.asset('assets/animations/lottiefiles/sports-loading.json', width: 250, height: 250),
-            )*/
-
+            Padding(
+              padding: EdgeInsets.only(bottom: 20),
+              child: Align(
+                alignment: Alignment.center,
+                child: Lottie.asset('assets/animations/lottiefiles/touch-screen.json', width: 250, height: 270),
+              ),
+            ),
           ],
         ),
         onTap: () {
@@ -258,7 +261,6 @@ Widget buildPlayerTwoCard(
 
     for (int i = 0; i < cardListSizeForP2; i++) {
       cardsAttributeListP1.add(cardsList[i].attribute);
-
     }
 
     for (int i = cardListSizeForP2; i < cardsList.length; i++) {
@@ -293,13 +295,17 @@ Widget buildPlayerTwoCard(
             Container(
               width: getScreenWidth(context),
               height: getScreenHeight(context),
-              child: Image.asset('assets/images/bg_card_back.png', fit: BoxFit.fill),
+              color: Colors.deepOrangeAccent,
+              //child: Image.asset('assets/images/bg_card_back.png', fit: BoxFit.fill),
             ),
 
-            /*Align(
-                alignment: Alignment.center,
-                child: Lottie.asset('assets/animations/lottiefiles/sports-loading.json', width: 250, height: 250),
-              )*/
+            Padding(
+              padding: EdgeInsets.only(bottom: 20),
+              child: Align(
+                  alignment: Alignment.center,
+                  child: Lottie.asset('assets/animations/lottiefiles/touch-screen.json', width: 250, height: 270),
+                ),
+            )
 
           ],
         ),

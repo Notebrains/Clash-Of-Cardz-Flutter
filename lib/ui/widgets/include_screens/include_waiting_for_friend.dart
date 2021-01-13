@@ -35,7 +35,6 @@ class IncludeWaitingForFriendState extends State<IncludeWaitingForFriend> with S
   Animation<double> scaleAnimation;
   List <FirebasePlayerDetailsModel> fbJoinedPlayerList = [];
 
-  int joinedPlayerCount;
   DatabaseReference _friendDetailsRef;
   StreamSubscription<Event> playerDetailsSubscription;
 
@@ -218,9 +217,7 @@ class IncludeWaitingForFriendState extends State<IncludeWaitingForFriend> with S
 
       try{
         int joinedPlayerSize = playerDetailsList.length;
-
-        print('Fb joinedPlayerSize: $joinedPlayerSize');
-
+        //print('Fb joinedPlayerSize: $joinedPlayerSize');
 
         // Execute forEach()
         playerDetailsList.forEach((playerDetailsKey, playerDetailsValue) {
@@ -242,13 +239,13 @@ class IncludeWaitingForFriendState extends State<IncludeWaitingForFriend> with S
             });
 
             _friendDetailsRef.child(playerDetailsKey).child('userId').once().then((DataSnapshot snapshot) {
-              print('Fb firebasePlayerName: $firebasePlayerName');
-              firebasePlayerName = snapshot.value;
+              print('Fb firebasePlayerName: $firebasePlayerId');
+              firebasePlayerId = snapshot.value;
             });
 
             _friendDetailsRef.child(playerDetailsKey).child('image').once().then((DataSnapshot snapshot) {
-              print('Fb firebasePlayerName: $firebasePlayerName');
-              firebasePlayerName = snapshot.value;
+              print('Fb firebasePlayerName: $firebasePlayerImage');
+              firebasePlayerImage = snapshot.value;
             });
 
             fbJoinedPlayerList.add(FirebasePlayerDetailsModel(firebasePlayerName, firebasePlayerId, firebasePlayerImage, playerDetailsKey));
@@ -323,9 +320,7 @@ class IncludeWaitingForFriendState extends State<IncludeWaitingForFriend> with S
   }
 
   void listeningToFirebaseDataUpdate() {
-
     //getting joinedPlayerCount when it changed
-
     final FirebaseDatabase database = FirebaseDatabase(app: firebaseApp);
 
     database.setPersistenceEnabled(true);
@@ -348,15 +343,7 @@ class IncludeWaitingForFriendState extends State<IncludeWaitingForFriend> with S
       context,
       CupertinoPageRoute(
         builder: (context) =>
-            Gameplay(
-              p2Name: playerName,
-              p2MemberId: playerId,
-              p2Image: playerImage,
-              categoryName: widget.categoryName,
-              subcategoryName: widget.subcategoryName,
-              gameType: widget.gameType,
-              cardsToPlay: widget.cardsToPlay,
-            ),
+            Gameplay(),
       ),
     );
   }

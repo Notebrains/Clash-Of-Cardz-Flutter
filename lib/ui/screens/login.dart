@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:trump_card_game/bloc/api_bloc.dart';
 import 'package:trump_card_game/helper/shared_preference_data.dart';
 import 'package:trump_card_game/model/responses/login_res_model.dart';
+import 'package:trump_card_game/ui/screens/demo/custom_anim.dart';
 import 'package:trump_card_game/ui/screens/home.dart';
 import 'package:trump_card_game/ui/widgets/animations/spring_button.dart';
 import 'package:trump_card_game/ui/widgets/custom/carousel_auto_slider.dart';
@@ -106,7 +107,7 @@ class _LogInState extends State<LogIn> {
     this.context = context;
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      builder: BotToastInit(), //1. call BotToastInit
+      builder: BotToastInit(),
       navigatorObservers: [BotToastNavigatorObserver()],
       home: Scaffold(
         body: Container(
@@ -342,8 +343,7 @@ class _LogInState extends State<LogIn> {
                                     ),
                                   ),
                                   onTap: (){
-                                    //Navigator.of(context).push(new PageRouteWithAnimation());
-                                    showd();
+                                    Navigator.push(context, CupertinoPageRoute(builder: (context) => HomeScreen()),);
                                   },
                                 ),
                               ),
@@ -551,20 +551,70 @@ class _LogInState extends State<LogIn> {
   }
 
   void showd(){
-    //popup a attachments toast
-    BotToast.showAttachedWidget(
-        attachedBuilder: (_) => Card(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Icon(
-              Icons.favorite,
-              color: Colors.redAccent,
-            ),
-          ),
-        ),
-        duration: Duration(seconds: 2),
-        target: Offset(520, 520));
+    // popup a notification toast;
+
+    Builder(
+      builder: (context) => RaisedButton(
+        onPressed: () {
+          BotToast.showAttachedWidget(
+              attachedBuilder: (_) => Card(
+                color: Colors.amber,
+                child: Container(
+                  padding:
+                  const EdgeInsets.symmetric(horizontal: 8),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      FlatButton.icon(
+                        padding: const EdgeInsets.all(5),
+                        onPressed: () {
+                          BotToast.showSimpleNotification(
+                              title:
+                              "Let's go travel together.😘");
+                        },
+                        label: ConstrainedBox(
+                          constraints: const BoxConstraints(
+                              minWidth: 70),
+                          child: const Text('favorite'),
+                        ),
+                        icon: Icon(Icons.favorite,
+                            color: Colors.redAccent),
+                      ),
+                      FlatButton.icon(
+                        padding: const EdgeInsets.all(5),
+                        onPressed: () {
+                          BotToast.showSimpleNotification(
+                              title:
+                              'Thank you for liking me.😝');
+                        },
+                        label: ConstrainedBox(
+                          constraints: const BoxConstraints(
+                              minWidth: 70),
+                          child: const Text('bookmark'),
+                        ),
+                        icon: Icon(Icons.bookmark,
+                            color: Colors.redAccent),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+              wrapToastAnimation:
+                  (controller, cancel, Widget child) =>
+                  CustomAttachedAnimation(
+                    controller: controller,
+                    child: child,
+                  ),
+              animationDuration: Duration(milliseconds: 300),
+              enableSafeArea: false,
+              duration: Duration(seconds: 2),
+              targetContext: context);
+        },
+        child: const Text('customAttachedAnimation'),
+      ),
+    );
   }
+
 }
 
 

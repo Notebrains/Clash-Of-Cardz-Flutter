@@ -314,7 +314,7 @@ void showPlayerSearchingDialog(BuildContext context) {
     Navigator.push(
       context,
       CupertinoPageRoute(
-        builder: (context) => Gameplay(p2Name: 'Jack Demon', p2MemberId: 'F006754', p2Image: 'F006754'),
+        builder: (context) => Gameplay(),
       ),
     );
   });

@@ -21,27 +21,26 @@ import 'package:trump_card_game/ui/widgets/include_screens/include_gameplay.dart
 import 'game_result.dart';
 
 class Gameplay extends StatelessWidget {
-  Gameplay({this.p2Name, this.p2MemberId, this.p2Image, this.categoryName, this.subcategoryName, this.gameType, this.cardsToPlay});
 
   final List<String> playerResultStatusList = [];
-  final String p2Name;
-  final String p2MemberId;
-  final String p2Image;
-  final String categoryName;
-  final String subcategoryName;
-  final String gameType;
-  final String cardsToPlay;
   int indexOfP1Card = 0;
   int indexOfCardDeck = 0;
-
-  var p1xApiKey = '';
-  var p1FullName = '';
-  var p1MemberId = '';
-  var p1Points = '';
-  var p1Photo = '';
+  String p2Name = '';
+  String p2MemberId = '';
+  String p2Image = '';
+  String categoryName = '';
+  String subcategoryName = '';
+  String gameType = '';
+  String cardsToPlay = '';
+  String p1xApiKey = '';
+  String p1FullName = '';
+  String p1MemberId = '';
+  String p1Points = '';
+  String p1Photo = '';
 
   //firebase data init
   DatabaseReference _gamePlayRef;
+  DatabaseReference _gameRoomRef;
   StreamSubscription<Event> gamePlaySubscription;
   DatabaseError _error;
 
@@ -56,7 +55,11 @@ class Gameplay extends StatelessWidget {
     
     initFirebaseCredentials();
 
-    apiBloc.fetchCardsRes("ZGHrDz4prqsu4BcApPaQYaGgq", subcategoryName, categoryName, '2', cardsToPlay);
+    retrieveFirebaseData();
+
+    //apiBloc.fetchCardsRes("ZGHrDz4prqsu4BcApPaQYaGgq", subcategoryName, categoryName, '2', cardsToPlay);
+
+    apiBloc.fetchCardsRes("ZGHrDz4prqsu4BcApPaQYaGgq", 'Sport', 'Cricket', '2', '14');
 
     return Scaffold(
       // Provide the model to all widgets within the app. We're using
@@ -393,8 +396,9 @@ class Gameplay extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       ClipOval(
-                        child: Image.network(
-                          photoUrl,
+                        child: FadeInImage.assetNetwork(
+                          placeholder: 'assets/icons/png/circle-avator-default-img.png',
+                          image: photoUrl,
                           fit: BoxFit.fill,
                           width: 65,
                           height: 65,
@@ -496,14 +500,14 @@ class Gameplay extends StatelessWidget {
       CupertinoPageRoute(
         builder: (context) =>
             GameResult(
-              winnerName: 'Ram Rakshman',
-              winnerId: 'MEM000004',
+              winnerName: p1FullName,
+              winnerId: p1MemberId,
               winnerImage: p1Photo,
               winnerCoins: "0",
               winnerPoints: statesModel.player1TotalPoints.toString(),
-              cardType: 'Cricket',
-              clashType: '1 vs 1',
-              playedCards: '14',
+              cardType: categoryName,
+              clashType: '1 vs 1', //static
+              playedCards: cardsToPlay,
               isP1Won: true,
             ),
       ),
@@ -513,27 +517,32 @@ class Gameplay extends StatelessWidget {
       CupertinoPageRoute(
         builder: (context) =>
             GameResult(
-              winnerName: 'Raj Malhotra',
-              winnerId: 'MEM000004',
-              winnerImage: Constants.imgUrlTest,
+              winnerName: p2Name,
+              winnerId: p2MemberId,
+              winnerImage: p2Image,
               winnerCoins: "0",
               winnerPoints: statesModel.player2TotalPoints.toString(),
-              cardType: 'Cricket',
+              cardType: categoryName,
               clashType: '1 vs 1',
-              playedCards: '14',
+              playedCards: cardsToPlay,
               isP1Won: false,
             ),
       ),
     );
+
+    //remove game when match is complete
+    _gameRoomRef.child(_gameRoomName).remove();
+    //dispose firebase ref subs
+    gamePlaySubscription.cancel();
   }
 
   void getSavedUserDataFromPref() {
     SharedPreferenceHelper().getUserSavedData().then((sharedPrefUserProfileModel) => {
       p1xApiKey = sharedPrefUserProfileModel.xApiKey ?? 'NA',
-      p1FullName = sharedPrefUserProfileModel.fullName ?? 'NA',
+      /*p1FullName = sharedPrefUserProfileModel.fullName ?? 'NA',
       p1MemberId = sharedPrefUserProfileModel.memberId ?? 'NA',
       p1Photo = sharedPrefUserProfileModel.photo ?? 'NA',
-      p1Points = sharedPrefUserProfileModel.points ?? 'NA',
+      p1Points = sharedPrefUserProfileModel.points ?? 'NA',*/
     });
 
   }
@@ -543,6 +552,7 @@ class Gameplay extends StatelessWidget {
     await Firebase.initializeApp();
 
     _gamePlayRef = FirebaseDatabase.instance.reference().child('gamePlay');
+    _gameRoomRef = FirebaseDatabase.instance.reference().child('gameRoom');
 
     _gameRoomName = 'gamePlay-$p1MemberId-$p2MemberId';
 
@@ -552,34 +562,24 @@ class Gameplay extends StatelessWidget {
     //pushGamePlayStatus();
   }
 
-  //no need to use this method
   void retrieveFirebaseData() {
-
     //get child items present in fb db.
-    _gamePlayRef.child(_gameRoomName).once().then((onValue) {
-      Map playerDetailsList = onValue.value;
-
+    _gameRoomRef.child(_gameRoomName).once().then((onValue) {
       try{
-        //int joinedPlayerSize = playerDetailsList.length;
-
-        // Execute forEach()
-        playerDetailsList.forEach((playerDetailsKey, playerDetailsValue) {
-          print('Player Details List: { key: $playerDetailsKey, value: $playerDetailsValue}');
-
-          Map playerDataInPlayerDetailsList = playerDetailsValue;
-
-          playerDataInPlayerDetailsList.forEach((playerDataKey, playerDataValue) {
-            print('player Data In Player Details List: { inner key: $playerDataKey, inner value: $playerDataValue}');
-          });
-
-        });
-
-        // After getting player list from fb, updating fb and start playing
-        ////updateGamePlayStatus();
-
+        Map playersDetailsInRoom = onValue.value;
+        p1FullName = playersDetailsInRoom['p1Name'];
+        p1MemberId = playersDetailsInRoom['p1Id'];
+        p1Photo = playersDetailsInRoom['p1Image'];
+        p2Name = playersDetailsInRoom['p2Name'];
+        p2MemberId = playersDetailsInRoom['p2Id'];
+        p2Image = playersDetailsInRoom['p2Image'];
+        categoryName = playersDetailsInRoom['category'];
+        subcategoryName = playersDetailsInRoom['subCategory'];
+        gameType = playersDetailsInRoom['gameType'];
+        cardsToPlay = playersDetailsInRoom['cardCount'];
+        
       } catch(e){
-        // After getting player list from fb, updating fb and start playing
-        ////updateGamePlayStatus();
+
       }
     });
   }
