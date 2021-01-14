@@ -25,6 +25,8 @@ class Gameplay extends StatelessWidget {
   final List<String> playerResultStatusList = [];
   int indexOfP1Card = 0;
   int indexOfCardDeck = 0;
+  String p1MemberIdPref = '';
+
   String p2Name = '';
   String p2MemberId = '';
   String p2Image = '';
@@ -50,16 +52,13 @@ class Gameplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
+
     getSavedUserDataFromPref();
-    
+
     initFirebaseCredentials();
 
-    retrieveFirebaseData();
-
     //apiBloc.fetchCardsRes("ZGHrDz4prqsu4BcApPaQYaGgq", subcategoryName, categoryName, '2', cardsToPlay);
-
-    apiBloc.fetchCardsRes("ZGHrDz4prqsu4BcApPaQYaGgq", 'Sport', 'Cricket', '2', '14');
+    apiBloc.fetchCardsRes("ZGHrDz4prqsu4BcApPaQYaGgq", 'cricket', 'sports', '2', '14');
 
     return Scaffold(
       // Provide the model to all widgets within the app. We're using
@@ -539,8 +538,8 @@ class Gameplay extends StatelessWidget {
   void getSavedUserDataFromPref() {
     SharedPreferenceHelper().getUserSavedData().then((sharedPrefUserProfileModel) => {
       p1xApiKey = sharedPrefUserProfileModel.xApiKey ?? 'NA',
+      p1MemberIdPref = sharedPrefUserProfileModel.memberId ?? 'NA',
       /*p1FullName = sharedPrefUserProfileModel.fullName ?? 'NA',
-      p1MemberId = sharedPrefUserProfileModel.memberId ?? 'NA',
       p1Photo = sharedPrefUserProfileModel.photo ?? 'NA',
       p1Points = sharedPrefUserProfileModel.points ?? 'NA',*/
     });
@@ -558,30 +557,33 @@ class Gameplay extends StatelessWidget {
 
     gamePlaySubscription = _gamePlayRef.onChildChanged.listen(listeningToFirebaseDataUpdate);
 
-    //creating game play room for these two players
-    //pushGamePlayStatus();
+    //get game room data of two players
+    retrieveFirebaseData();
   }
 
-  void retrieveFirebaseData() {
-    //get child items present in fb db.
-    _gameRoomRef.child(_gameRoomName).once().then((onValue) {
-      try{
-        Map playersDetailsInRoom = onValue.value;
-        p1FullName = playersDetailsInRoom['p1Name'];
-        p1MemberId = playersDetailsInRoom['p1Id'];
-        p1Photo = playersDetailsInRoom['p1Image'];
-        p2Name = playersDetailsInRoom['p2Name'];
-        p2MemberId = playersDetailsInRoom['p2Id'];
-        p2Image = playersDetailsInRoom['p2Image'];
-        categoryName = playersDetailsInRoom['category'];
-        subcategoryName = playersDetailsInRoom['subCategory'];
-        gameType = playersDetailsInRoom['gameType'];
-        cardsToPlay = playersDetailsInRoom['cardCount'];
-        
-      } catch(e){
-
-      }
-    });
+  void retrieveFirebaseData() async{
+    try{
+      _gameRoomRef.once().then((onValue) {
+        onValue.value.forEach((playerDetailsKey, playerDetailsValue) {
+          //print('GameRoom List: { key: $playerDetailsKey, value: $playerDetailsValue}');
+          if (playerDetailsKey.contains(p1MemberIdPref)) {
+            Map playersDetailsInRoom = playerDetailsValue;
+            p1FullName = playersDetailsInRoom['p1Name'];
+            p1MemberId = playersDetailsInRoom['p1Id'];
+            p1Photo = playersDetailsInRoom['p1Image'];
+            p2Name = playersDetailsInRoom['p2Name'];
+            p2MemberId = playersDetailsInRoom['p2Id'];
+            p2Image = playersDetailsInRoom['p2Image'];
+            categoryName = playersDetailsInRoom['category'];
+            subcategoryName = playersDetailsInRoom['subCategory'];
+            gameType = playersDetailsInRoom['gameType'];
+            cardsToPlay = playersDetailsInRoom['cardCount'];
+          }
+        });
+      });
+    } catch(e){
+      print(e);
+    }
   }
 
   //no need to use this method

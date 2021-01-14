@@ -5,6 +5,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:trump_card_game/helper/constantvalues/constants.dart';
 import 'package:trump_card_game/helper/exten_fun/base_application_fun.dart';
 import 'package:trump_card_game/helper/shared_preference_data.dart';
 import 'package:trump_card_game/model/arguments/firebase_player_details_model.dart';
@@ -197,9 +198,6 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForPlayer> wi
     _playerDetailsRef.once().then((onValue) {
       try{
         Map playerDetailsList = onValue.value;
-        int joinedPlayerSize = playerDetailsList.length;
-
-        //print('Fb joinedPlayerSize: $joinedPlayerSize');
 
         // Execute forEach()
         playerDetailsList.forEach((playerDetailsKey, playerDetailsValue) {
@@ -247,6 +245,9 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForPlayer> wi
   }
 
   void updateFirebaseJoinedPlayerDetails() {
+    //this method is called only for testing
+    createGameRoom('MEM000001', 'Sam', Constants.imgUrlTest);
+
     print('Fb fb Joined Player List size: ${fbJoinedPlayerList.length}');
     if(fbJoinedPlayerList.length == 0){
       _playerDetailsRef.push().set(<String, String>{
@@ -332,7 +333,7 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForPlayer> wi
         'gameType': widget.gameType,
         'cardCount': widget.cardsToPlay,
       }).then((_) {
-        openGamePlayPage(fbJoinedPlayerList[1].playerName, fbJoinedPlayerList[1].userId, fbJoinedPlayerList[1].photo);
+        openGamePlayPage();
       });
     } else {
       funAfterNoPlayerFound();
@@ -357,7 +358,7 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForPlayer> wi
     );
   }
 
-  void openGamePlayPage(String playerName, playerId, playerImage) {
+  void openGamePlayPage() {
     Navigator.push(
       context,
       CupertinoPageRoute(

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:trump_card_game/helper/exten_fun/base_application_fun.dart';
 import 'package:shape_of_view/shape_of_view.dart';
 import 'package:trump_card_game/model/responses/cards_res_model.dart';
-import 'package:trump_card_game/model/state_managements/gameplay_states_model.dart';
 import 'package:trump_card_game/ui/widgets/include_screens/include_game_play_dialogs.dart';
 import 'package:trump_card_game/ui/widgets/libraries/flip_card.dart';
 import 'package:lottie/lottie.dart';
