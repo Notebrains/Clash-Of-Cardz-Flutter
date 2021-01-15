@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:trump_card_game/bloc/api_bloc.dart';
 import 'package:trump_card_game/helper/exten_fun/base_application_fun.dart';
+import 'package:trump_card_game/helper/shared_preference_data.dart';
 import 'package:trump_card_game/ui/screens/home.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lottie/lottie.dart';
@@ -212,7 +213,9 @@ class GameResult extends StatelessWidget {
                                   ),
                                 ),
                                 onPressed: () {
-                                  Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => HomeScreen()));
+                                  SharedPreferenceHelper().getUserSavedData().then((sharedPrefModel) {
+                                    Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => HomeScreen(xApiKey: sharedPrefModel.xApiKey, memberId: sharedPrefModel.memberId,)));
+                                  });
                                 },
                               ),
                               preferences: AnimationPreferences(

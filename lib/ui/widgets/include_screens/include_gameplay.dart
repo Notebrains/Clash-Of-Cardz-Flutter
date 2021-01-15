@@ -13,6 +13,9 @@ import 'package:trump_card_game/ui/screens/login.dart';
 import 'package:trump_card_game/ui/widgets/libraries/giffy_dialog/giffy_dialog.dart';
 import 'package:trump_card_game/ui/widgets/views/view_widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_animator/flutter_animator.dart';
+
+import 'include_game_play_win_screen.dart';
 
 class BuildPlayer1Screen extends StatelessWidget{
   int listLength = 0;
@@ -289,27 +292,33 @@ class BuildPlayer1Screen extends StatelessWidget{
         //change the number as you want
         children:  List.generate(gridListSize, (index) {
 
-          return GestureDetector(
-            child: Card(
-              elevation: 5,
-              shadowColor: Colors.grey,
-              color: Colors.orange,
-              child: ClipRRect(
-                borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                child: Image.asset(
-                  'assets/images/img_card_demo.png',
-                  width: 55,
+          return Pulse(
+            child: GestureDetector(
+              child: Card(
+                elevation: 5,
+                shadowColor: Colors.grey,
+                color: Colors.orange,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                  child: Image.asset(
+                    'assets/images/img_card_demo.png',
+                    width: 55,
+                  ),
                 ),
               ),
-            ),
 
-            onTap: (){
-              //print('---- card Count 22 $gridListSize');
-              if(gridListSize > 0){
-                context.read<GamePlayStatesModel>().updateCardCountOnDeck(statesModel.cardCountOnDeck - 1);
-                //context.read<GamePlayStatesModel>().updateRebuildDeck(true);
-              }
-            },
+              onTap: (){
+                //print('---- card Count 22 $gridListSize');
+                if(gridListSize > 0){
+                  context.read<GamePlayStatesModel>().updateCardCountOnDeck(statesModel.cardCountOnDeck - 1);
+                  //context.read<GamePlayStatesModel>().updateRebuildDeck(true);
+                }
+              },
+            ),
+            preferences: AnimationPreferences(
+                offset: Duration(milliseconds: 3000),
+                duration: const Duration(milliseconds: 2000),
+                autoPlay: AnimationPlayStates.Loop),
           );
         }),
       ),
@@ -481,7 +490,9 @@ class BuildPlayerTwoScreen extends StatelessWidget {
                             color: Colors.white,
                           ),
                           onPressed: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => LogIn()));
+                            //Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => LogIn()));
+
+
                           },
                         ),
                         decoration: Views.boxDecorationWidgetForIconWithBgColor(Colors.red[600], 4.0, Colors.grey, 5.0, 5.0, 3.0),

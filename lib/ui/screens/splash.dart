@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:trump_card_game/helper/exten_fun/base_application_fun.dart';
+import 'package:trump_card_game/helper/shared_preference_data.dart';
+import 'package:trump_card_game/ui/screens/home.dart';
 import 'package:trump_card_game/ui/screens/login.dart';
 import 'package:trump_card_game/ui/widgets/custom/horizontal_progress_indicator.dart';
 import 'package:trump_card_game/ui/widgets/libraries/animated_text_kit/animated_text_kit.dart';
@@ -36,8 +38,16 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void navigationPage() {
-    Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (BuildContext context) => LogIn()));
+    SharedPreferenceHelper().getUserSavedData().then((sharedPrefUserProfileModel) {
+      String xApiKey = sharedPrefUserProfileModel.xApiKey ?? 'NA';
+      String memberId = sharedPrefUserProfileModel.memberId ?? 'NA';
+
+      if(xApiKey != 'NA' && memberId != 'NA'){
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => HomeScreen(xApiKey: xApiKey, memberId: memberId,)));
+      } else {
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => LogIn()));
+      }
+    });
   }
 
   @override

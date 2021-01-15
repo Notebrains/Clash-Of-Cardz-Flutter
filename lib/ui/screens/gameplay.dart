@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -6,11 +7,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:trump_card_game/bloc/api_bloc.dart';
-import 'package:trump_card_game/helper/constantvalues/constants.dart';
 import 'package:trump_card_game/helper/exten_fun/base_application_fun.dart';
 import 'package:trump_card_game/helper/shared_preference_data.dart';
 import 'package:lottie/lottie.dart';
 import 'package:flutter_animator/flutter_animator.dart';
+import 'package:trump_card_game/ui/widgets/include_screens/include_game_play_win_screen.dart';
+import 'package:trump_card_game/ui/widgets/libraries/animated_text_kit/wavy.dart';
 import 'package:trump_card_game/model/state_managements/gameplay_states_model.dart';
 import 'package:trump_card_game/ui/widgets/custom/frosted_glass.dart';
 import 'package:provider/provider.dart';
@@ -21,11 +23,13 @@ import 'package:trump_card_game/ui/widgets/include_screens/include_gameplay.dart
 import 'game_result.dart';
 
 class Gameplay extends StatelessWidget {
-
+  BuildContext _context;
+  GamePlayStatesModel statesModel;
   final List<String> playerResultStatusList = [];
   int indexOfP1Card = 0;
   int indexOfCardDeck = 0;
   String p1MemberIdPref = '';
+  bool _isPlayAsP1 = false;
 
   String p2Name = '';
   String p2MemberId = '';
@@ -39,6 +43,11 @@ class Gameplay extends StatelessWidget {
   String p1MemberId = '';
   String p1Points = '';
   String p1Photo = '';
+  String winBasis = '';
+  String winPoints = '';
+
+  // gameplay stats attr
+  String p1TurnStatus = 'no',  p2TurnStatus = 'no', p1SelectedAttr = '', p1SelectedAttrValue = '', p2SelectedAttr = '', p2SelectedAttrValue = '', winner = 'p1';
 
   //firebase data init
   DatabaseReference _gamePlayRef;
@@ -52,6 +61,8 @@ class Gameplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    this._context = context;
 
     getSavedUserDataFromPref();
 
@@ -86,6 +97,7 @@ class Gameplay extends StatelessWidget {
                   children: [
                     Row(
                       children: [
+
                         Expanded(
                           flex: 3,
                           child: BuildPlayer1Screen(snapshot.data.response.cards.length, p1FullName, p2Name),
@@ -130,12 +142,12 @@ class Gameplay extends StatelessWidget {
                                                             width: 60,
                                                             height: 50,
                                                             decoration: BoxDecoration(
-                                                              color: Colors.grey[400],
+                                                              color: Colors.black,
                                                               border: Border.all(
-                                                                color: Colors.grey[350],
+                                                                color: Colors.black,
                                                                 width: 5,
                                                               ),
-                                                              borderRadius: BorderRadius.all(Radius.circular(6)),
+                                                              borderRadius: BorderRadius.all(Radius.circular(3)),
                                                               boxShadow: <BoxShadow>[
                                                                 BoxShadow(
                                                                   color: Colors.grey[500],
@@ -149,9 +161,46 @@ class Gameplay extends StatelessWidget {
                                                                 '$minutes',
                                                                 textAlign: TextAlign.center,
                                                                 style: TextStyle(
-                                                                  color: Colors.deepOrangeAccent[700],
+                                                                  color: Colors.white,
                                                                   fontWeight: FontWeight.bold,
-                                                                  fontSize: 26,
+                                                                  fontSize: 30,
+                                                                  shadows: [
+                                                                    Shadow(color: Colors.white),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+
+                                                        Container(
+                                                          width: 20,
+                                                          height: 50,
+                                                          decoration: BoxDecoration(
+                                                            color: Colors.black,
+                                                            border: Border.all(
+                                                              color: Colors.black,
+                                                              width: 5,
+                                                            ),
+                                                            borderRadius: BorderRadius.all(Radius.circular(3)),
+                                                            boxShadow: <BoxShadow>[
+                                                              BoxShadow(
+                                                                color: Colors.grey[500],
+                                                                blurRadius: 8.0,
+                                                                offset: Offset(0.0, 8.0),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                          child: Center(
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.only(bottom: 2),
+                                                              child: Text(
+                                                                ':',
+                                                                textAlign: TextAlign.center,
+                                                                style: TextStyle(
+                                                                  color: Colors.white,
+                                                                  fontWeight: FontWeight.bold,
+                                                                  fontSize: 36,
                                                                   shadows: [
                                                                     Shadow(color: Colors.white),
                                                                   ],
@@ -162,33 +211,17 @@ class Gameplay extends StatelessWidget {
                                                         ),
 
                                                         Padding(
-                                                          padding: const EdgeInsets.only(bottom:8.0),
-                                                          child: Text(
-                                                            ':',
-                                                            textAlign: TextAlign.center,
-                                                            style: TextStyle(
-                                                              color: Colors.deepOrangeAccent,
-                                                              fontWeight: FontWeight.bold,
-                                                              fontSize: 46,
-                                                              shadows: [
-                                                                Shadow(color: Colors.white),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        ),
-
-                                                        Padding(
                                                           padding: const EdgeInsets.all(5),
                                                           child: Container(
                                                             width: 60,
                                                             height: 50,
                                                             decoration: BoxDecoration(
-                                                              color: Colors.grey[400],
+                                                              color: Colors.black,
                                                               border: Border.all(
-                                                                color: Colors.grey[350],
+                                                                color: Colors.black,
                                                                 width: 5,
                                                               ),
-                                                              borderRadius: BorderRadius.all(Radius.circular(8)),
+                                                              borderRadius: BorderRadius.all(Radius.circular(3)),
                                                               boxShadow: <BoxShadow>[
                                                                 BoxShadow(
                                                                   color: Colors.grey[500],
@@ -202,9 +235,9 @@ class Gameplay extends StatelessWidget {
                                                                 '$seconds',
                                                                 textAlign: TextAlign.center,
                                                                 style: TextStyle(
-                                                                  color: Colors.deepOrangeAccent[700],
+                                                                  color: Colors.white,
                                                                   fontWeight: FontWeight.bold,
-                                                                  fontSize: 26,
+                                                                  fontSize: 30,
                                                                   shadows: [
                                                                     Shadow(color: Colors.white),
                                                                   ],
@@ -228,19 +261,23 @@ class Gameplay extends StatelessWidget {
                                             crossAxisAlignment: CrossAxisAlignment.center,
                                             children: [
                                               Container(
-                                                width: 200,
-                                                height: 250,
+                                                width: 220,
+                                                height: 300,
                                                 child: BounceInLeft(
-                                                  child: buildPlayerOneCard(
+                                                  child: buildCardAsP1(
                                                     context,
+                                                    _isPlayAsP1,
                                                     snapshot.data.response.cards,
                                                     indexOfCardDeck,
                                                     onClickActionOnP1GameplayCard:
-                                                        (int indexOfP1Card, String attributeTitle, String attributeValue) =>
+                                                        (int indexOfP1Card, String attributeTitle, String attributeValue, String winBasis, String winPoints) =>
                                                     {
                                                       //print('----p1c clicked'),
                                                       this.indexOfP1Card = indexOfP1Card,
-                                                      updateGamePlayStatus('yes', 'no'),
+
+                                                      updateGamePlayStatus( statesModel, attributeTitle, attributeValue, winBasis, winPoints),
+
+                                                      showBothCardsDialog(context, snapshot.data.response.cards),
                                                     },
                                                   ),
                                                   preferences: AnimationPreferences(
@@ -248,21 +285,27 @@ class Gameplay extends StatelessWidget {
                                                       autoPlay: AnimationPlayStates.Forward),
                                                 ),
                                               ),
+
                                               SizedBox(
                                                 width: 30,
                                               ),
+
                                               Container(
-                                                width: 200,
-                                                height: 250,
+                                                width: 150,
+                                                height: 200,
+                                                alignment: AlignmentDirectional.bottomCenter,
                                                 child: BounceInRight(
-                                                  child: buildPlayerTwoCard(
+                                                  child: buildSecondCard(false),
+
+                                                   /*
+                                                      buildPlayerTwoCardOld(
                                                     context,
                                                     indexOfP1Card,
                                                     indexOfCardDeck,
                                                     snapshot.data.response.cards,
                                                     onClickActionOnP2GameplayCard: (bool isWon, int winPoint) =>
                                                     {
-                                                      updateGamePlayStatus('yes', 'yes'),
+                                                      updateGamePlayStatusToFirebase(),
 
                                                       print('---- p2c data called ${statesModel.isCardOneTouched}, $isWon, $winPoint'),
                                                       if (isWon)
@@ -270,32 +313,19 @@ class Gameplay extends StatelessWidget {
                                                           playerResultStatusList.add("won"), // "won" is lottie file name
 
                                                           //showing lottie anim depending on win or loose
-                                                          showWinDialog(
-                                                              context,
-                                                              statesModel,
-                                                              isWon,
-                                                              'win-result.json',
-                                                              'You Won',
-                                                              p1Photo,
-                                                              4000,
-                                                              winPoint),
+                                                          showWinDialog(context, statesModel, isWon, 'win-result.json', 'You Won', p1Photo,
+                                                              4000, winPoint),
                                                         }
                                                       else
                                                         {
                                                           playerResultStatusList.add("sad"), // "sad" is lottie file name
                                                           //showing lottie anim depending on win or loose
-                                                          showWinDialog(
-                                                              context,
-                                                              statesModel,
-                                                              isWon,
-                                                              'sad-star.json',
-                                                              '\n\n\n\nYou Loose',
-                                                              '',
-                                                              3500,
-                                                              winPoint),
+                                                          showWinDialog(context, statesModel, isWon, 'sad-star.json', '\n\n\n\nYou Loose', '',
+                                                              3500, winPoint),
                                                         },
                                                     },
                                                   ),
+                                                      */
                                                   preferences: AnimationPreferences(
                                                       duration: const Duration(milliseconds: 1500),
                                                       autoPlay: AnimationPlayStates.Forward),
@@ -305,11 +335,13 @@ class Gameplay extends StatelessWidget {
                                           ),
                                         ),
                                       ),
+
                                       Expanded(
                                         child: Container(
                                           //height: getScreenHeight(context) / 6.5,
                                           child: Visibility(
-                                              visible: statesModel.isShowPlayerMatchStatus,
+                                              //visible: statesModel.isShowPlayerMatchStatus,
+                                              visible: true,
                                               child: Container(
                                                 child: RotateInUpLeft(
                                                   child: Container(
@@ -364,6 +396,163 @@ class Gameplay extends StatelessWidget {
       ),
     );
   }
+
+  void getSavedUserDataFromPref() {
+    SharedPreferenceHelper().getUserSavedData().then((sharedPrefUserProfileModel) => {
+      p1xApiKey = sharedPrefUserProfileModel.xApiKey ?? 'NA',
+      p1MemberIdPref = sharedPrefUserProfileModel.memberId ?? 'NA',
+      /*p1FullName = sharedPrefUserProfileModel.fullName ?? 'NA',
+      p1Photo = sharedPrefUserProfileModel.photo ?? 'NA',
+      p1Points = sharedPrefUserProfileModel.points ?? 'NA',*/
+    });
+  }
+
+  Future<void> initFirebaseCredentials() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    await Firebase.initializeApp();
+
+    _gamePlayRef = FirebaseDatabase.instance.reference().child('gamePlay');
+    _gameRoomRef = FirebaseDatabase.instance.reference().child('gameRoom');
+
+    gamePlaySubscription = _gamePlayRef.onChildChanged.listen(listeningToFirebaseDataUpdate);
+
+    //get game room data of two players
+    retrieveFirebaseData();
+  }
+
+  void retrieveFirebaseData() async{
+    
+    try{
+      _gameRoomRef.once().then((onValue) {
+        onValue.value.forEach((playerDetailsKey, playerDetailsValue) {
+          if (playerDetailsKey.contains(p1MemberIdPref)) {
+            Map playersDetailsInRoom = playerDetailsValue;
+            //if p1 in game room is you then adding game room p1 in your data else 
+            // if game room p2 is you then adding game room p2 data in your data.
+
+            if(p1MemberIdPref == playersDetailsInRoom['p1Id']){
+              //you are playing as p1
+              _isPlayAsP1 =true;
+              this.p1FullName = playersDetailsInRoom['p1Name'];
+              this.p1MemberId = playersDetailsInRoom['p1Id'];
+              this.p1Photo = playersDetailsInRoom['p1Image'];
+
+              this.p2Name = playersDetailsInRoom['p2Name'];
+              this.p2MemberId = playersDetailsInRoom['p2Id'];
+              this.p2Image = playersDetailsInRoom['p2Image'];
+            } else if(p1MemberIdPref == playersDetailsInRoom['p2Id']){
+              //you are playing as p2
+              _isPlayAsP1 = false;
+              this.p1FullName = playersDetailsInRoom['p2Name'];
+              this.p1MemberId = playersDetailsInRoom['p2Id'];
+              this.p1Photo = playersDetailsInRoom['p2Image'];
+
+              this.p2Name = playersDetailsInRoom['p1Name'];
+              this.p2MemberId = playersDetailsInRoom['p1Id'];
+              this.p2Image = playersDetailsInRoom['p1Image'];
+            }
+
+            this.categoryName = playersDetailsInRoom['category'];
+            this.subcategoryName = playersDetailsInRoom['subCategory'];
+            this.gameType = playersDetailsInRoom['gameType'];
+            this.cardsToPlay = playersDetailsInRoom['cardCount'];
+
+            //After getting p1Id and p2Id creating game room name
+            this._gameRoomName = 'gamePlay-$p1MemberId-$p2MemberId';
+            //print('----- gamePlay-$p1MemberId-$p2MemberId');
+          }
+        });
+      });
+    } catch(e){
+      print(e);
+    }
+  }
+
+  //no need to use this method
+  Future<void> pushGamePlayStatus() async {
+    _gamePlayRef.push().set(<String, String>{
+      'isP1TurnComplete': 'no',
+      'isP2TurnComplete': 'no',
+    });
+  }
+
+  updateGamePlayStatus(GamePlayStatesModel statesModel, String attrTitle, String attrValue, String winBasis, String winPoints) {
+    if (_isPlayAsP1) {
+      p1TurnStatus = 'yes';
+      p1SelectedAttr = attrTitle;
+      p1SelectedAttrValue = attrValue;
+      //p2SelectedAttr = '';
+      //p2SelectedAttrValue = '';
+    } else {
+      p2TurnStatus  = 'yes';
+      //p1SelectedAttr = '';
+      //p1SelectedAttrValue = '';
+      p2SelectedAttr = attrTitle;
+      p2SelectedAttrValue = attrValue;
+    }
+
+    this.winBasis = winBasis;
+    this.winPoints = winPoints;
+    this.statesModel = statesModel;
+
+    updateGamePlayStatusToFirebase();
+  }
+
+  void updateGamePlayStatusToFirebase() {
+    _gamePlayRef.child(_gameRoomName).set({
+      'isP1TurnComplete': p1TurnStatus,
+      'isP2TurnComplete': p2TurnStatus,
+      'selectedArrayPos': indexOfP1Card,
+      'p1SelectedAttr': p1SelectedAttr,
+      'p1SelectedAttrValue': p1SelectedAttrValue,
+      'p2SelectedAttr': p2SelectedAttr,
+      'p2SelectedAttrValue': p2SelectedAttrValue,
+      'winner': winner,
+
+    }).then((_) {
+      // ...
+    });
+  }
+
+  void listeningToFirebaseDataUpdate(Event event) {
+    var changeMapData = event.snapshot.value;
+    print('Gp on data changed ${event.snapshot.value}');
+    print('Gp isP1TurnComplete: ${changeMapData['isP1TurnComplete']}');
+    //print('Gp isP2TurnComplete: ${event.snapshot.value['isP2TurnComplete']}');
+
+    // event.snapshot.value is return map. Below line getting values from map using keys
+    p1TurnStatus =        changeMapData['isP1TurnComplete'];
+    p2TurnStatus =        changeMapData['isP2TurnComplete'];
+    p1SelectedAttr =      changeMapData['p1SelectedAttr'];
+    p1SelectedAttrValue = changeMapData['p1SelectedAttrValue'];
+    p2SelectedAttr =      changeMapData['p2SelectedAttr'];
+    p2SelectedAttrValue = changeMapData['p2SelectedAttrValue'];
+    winner =              changeMapData['winner'];
+
+    if (p1TurnStatus == 'no' && p2TurnStatus == 'no'){
+      buildSecondCard(false);
+    } else if (p1TurnStatus == 'yes' && p2TurnStatus == 'no'){
+      buildSecondCard(true);
+    } else if (p1TurnStatus == 'yes' && p2TurnStatus == 'yes'){
+
+      bool areYouWon = false;
+      if(winBasis == 'Highest Value'){
+        int.parse(p1SelectedAttrValue) > int.parse(p2SelectedAttrValue) ? areYouWon = true : areYouWon = false;
+      } else if (winBasis == 'Lowest Value'){
+        int.parse(p1SelectedAttrValue) < int.parse(p2SelectedAttrValue) ? areYouWon = true : areYouWon = false;
+      }
+
+      if (int.parse(p1SelectedAttrValue) > int.parse(p1SelectedAttrValue) ) {
+        showWinDialog(_context, statesModel, areYouWon, 'win-result.json', 'You Won', p1Photo, 4000, 0);
+      } else {
+        //showing lottie anim depending on win or loose
+        showWinDialog(_context, statesModel, areYouWon, 'sad-star.json', '\n\n\n\nYou Loose', '', 3500, 0);
+      }
+    }
+
+    //winBasis and winPints will be same for both player. So I am getting those value when p1 selected first value
+  }
+
 
   Widget setResultStatus(int index) {
     return playerResultStatusList[index] == 'won'
@@ -535,85 +724,8 @@ class Gameplay extends StatelessWidget {
     gamePlaySubscription.cancel();
   }
 
-  void getSavedUserDataFromPref() {
-    SharedPreferenceHelper().getUserSavedData().then((sharedPrefUserProfileModel) => {
-      p1xApiKey = sharedPrefUserProfileModel.xApiKey ?? 'NA',
-      p1MemberIdPref = sharedPrefUserProfileModel.memberId ?? 'NA',
-      /*p1FullName = sharedPrefUserProfileModel.fullName ?? 'NA',
-      p1Photo = sharedPrefUserProfileModel.photo ?? 'NA',
-      p1Points = sharedPrefUserProfileModel.points ?? 'NA',*/
-    });
 
-  }
-
-  Future<void> initFirebaseCredentials() async {
-    WidgetsFlutterBinding.ensureInitialized();
-    await Firebase.initializeApp();
-
-    _gamePlayRef = FirebaseDatabase.instance.reference().child('gamePlay');
-    _gameRoomRef = FirebaseDatabase.instance.reference().child('gameRoom');
-
-    _gameRoomName = 'gamePlay-$p1MemberId-$p2MemberId';
-
-    gamePlaySubscription = _gamePlayRef.onChildChanged.listen(listeningToFirebaseDataUpdate);
-
-    //get game room data of two players
-    retrieveFirebaseData();
-  }
-
-  void retrieveFirebaseData() async{
-    try{
-      _gameRoomRef.once().then((onValue) {
-        onValue.value.forEach((playerDetailsKey, playerDetailsValue) {
-          //print('GameRoom List: { key: $playerDetailsKey, value: $playerDetailsValue}');
-          if (playerDetailsKey.contains(p1MemberIdPref)) {
-            Map playersDetailsInRoom = playerDetailsValue;
-            p1FullName = playersDetailsInRoom['p1Name'];
-            p1MemberId = playersDetailsInRoom['p1Id'];
-            p1Photo = playersDetailsInRoom['p1Image'];
-            p2Name = playersDetailsInRoom['p2Name'];
-            p2MemberId = playersDetailsInRoom['p2Id'];
-            p2Image = playersDetailsInRoom['p2Image'];
-            categoryName = playersDetailsInRoom['category'];
-            subcategoryName = playersDetailsInRoom['subCategory'];
-            gameType = playersDetailsInRoom['gameType'];
-            cardsToPlay = playersDetailsInRoom['cardCount'];
-          }
-        });
-      });
-    } catch(e){
-      print(e);
-    }
-  }
-
-  //no need to use this method
-  Future<void> pushGamePlayStatus() async {
-    _gamePlayRef.push().set(<String, String>{
-      'isP1TurnComplete': 'no',
-      'isP2TurnComplete': 'no',
-    });
-  }
-
-  Future<void> updateGamePlayStatus(String p1TurnStatus, String p2TurnStatus) async {
-    _gamePlayRef.child(_gameRoomName).set({
-      'isP1TurnComplete': p1TurnStatus,
-      'isP2TurnComplete': p2TurnStatus,
-    }).then((_) {
-      // ...
-    });
-  }
-
-  void listeningToFirebaseDataUpdate(Event event) {
-    print('Gp on data changed ${event.snapshot.value}');
-
-    // event.snapshot.value is return map. Below line getting values from map using keys
-    print('Gp isP1TurnComplete: ${event.snapshot.value['isP1TurnComplete']}');
-    print('Gp isP2TurnComplete: ${event.snapshot.value['isP2TurnComplete']}');
-
-  }
-
-
-  /*@override
+/*@override
   void dispose() {
     super.dispose();
     playerDetailsSubscription.cancel();

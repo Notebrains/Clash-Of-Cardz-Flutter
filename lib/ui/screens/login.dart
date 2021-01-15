@@ -37,12 +37,16 @@ class LogIn extends StatefulWidget {
 class _LogInState extends State<LogIn> {
   var loggedIn = false;
   var context;
+  String firebaseToken = '';
 
 
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
   _register() {
-    _firebaseMessaging.getToken().then((token) => print(token));
+    _firebaseMessaging.getToken().then((token) {
+      this.firebaseToken = token;
+      print('----Firebase Token: $token');
+    });
   }
 
   //////local notification
@@ -406,7 +410,7 @@ class _LogInState extends State<LogIn> {
             print("----F providerId : " + user.providerId);
 
             //loginByServer(user.displayName, user.email, user.uid, user.photoUrl, "deviceToken", "memberId");
-            loginByServer(context, user.displayName, user.email, user.uid, user.photoUrl, accessToken, '');
+            loginByServer(context, user.displayName, user.email, user.uid, user.photoUrl, '');
           } catch (e) {
             print(e);
           }
@@ -432,7 +436,7 @@ class _LogInState extends State<LogIn> {
             print("----G photoUrl : " + user.photoUrl);
             print("----G providerId : " + user.providerId);
 
-            loginByServer(context, user.displayName, user.email, user.uid, user.photoUrl, googleAuth.accessToken, '');
+            loginByServer(context, user.displayName, user.email, user.uid, user.photoUrl, '');
           } catch (e) {
             print(e);
             print('e-----------------');
@@ -472,9 +476,9 @@ class _LogInState extends State<LogIn> {
     return googleSignInAccount;
   }
 
-  void loginByServer(BuildContext context, String name, String email, String socialId, String image, String deviceToken, String memberId){
+  void loginByServer(BuildContext context, String name, String email, String socialId, String image, String memberId){
     
-    apiBloc.fetchLoginRes(name, email, socialId, image, deviceToken, memberId);
+    apiBloc.fetchLoginRes(name, email, socialId, image, firebaseToken, memberId);
 
     loginUserByDialog(context);
   }
