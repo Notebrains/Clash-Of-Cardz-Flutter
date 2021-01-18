@@ -26,6 +26,7 @@ class Gameplay extends StatelessWidget {
   BuildContext _context;
   GamePlayStatesModel statesModel;
   final List<String> playerResultStatusList = [];
+  List<Cards> cards = [];
   int indexOfP1Card = 0;
   int indexOfCardDeck = 0;
   String p1MemberIdPref = '';
@@ -48,6 +49,8 @@ class Gameplay extends StatelessWidget {
 
   // gameplay stats attr
   String p1TurnStatus = 'no',  p2TurnStatus = 'no', p1SelectedAttr = '', p1SelectedAttrValue = '', p2SelectedAttr = '', p2SelectedAttrValue = '', winner = 'p1';
+
+  bool isYourNextTurn = false;
 
   //firebase data init
   DatabaseReference _gamePlayRef;
@@ -85,6 +88,7 @@ class Gameplay extends StatelessWidget {
         child: StreamBuilder(
           stream: apiBloc.cardsRes,
           builder: (context, AsyncSnapshot<CardsResModel> snapshot) {
+            cards = snapshot.data.response.cards;
             if (snapshot.hasData) {
               return Container(
                 decoration: new BoxDecoration(
@@ -97,10 +101,9 @@ class Gameplay extends StatelessWidget {
                   children: [
                     Row(
                       children: [
-
                         Expanded(
                           flex: 3,
-                          child: BuildPlayer1Screen(snapshot.data.response.cards.length, p1FullName, p2Name),
+                          child: BuildPlayer1Screen(cards.length, p1FullName, p2Name),
                         ),
                         Expanded(
                           flex: 7,
@@ -139,8 +142,8 @@ class Gameplay extends StatelessWidget {
                                                         Padding(
                                                           padding: const EdgeInsets.all(5),
                                                           child: Container(
-                                                            width: 60,
-                                                            height: 50,
+                                                            width: 55,
+                                                            height: 45,
                                                             decoration: BoxDecoration(
                                                               color: Colors.black,
                                                               border: Border.all(
@@ -175,7 +178,7 @@ class Gameplay extends StatelessWidget {
 
                                                         Container(
                                                           width: 20,
-                                                          height: 50,
+                                                          height: 45,
                                                           decoration: BoxDecoration(
                                                             color: Colors.black,
                                                             border: Border.all(
@@ -193,7 +196,7 @@ class Gameplay extends StatelessWidget {
                                                           ),
                                                           child: Center(
                                                             child: Padding(
-                                                              padding: const EdgeInsets.only(bottom: 2),
+                                                              padding: const EdgeInsets.only(bottom: 5),
                                                               child: Text(
                                                                 ':',
                                                                 textAlign: TextAlign.center,
@@ -213,8 +216,8 @@ class Gameplay extends StatelessWidget {
                                                         Padding(
                                                           padding: const EdgeInsets.all(5),
                                                           child: Container(
-                                                            width: 60,
-                                                            height: 50,
+                                                            width: 55,
+                                                            height: 45,
                                                             decoration: BoxDecoration(
                                                               color: Colors.black,
                                                               border: Border.all(
@@ -255,54 +258,56 @@ class Gameplay extends StatelessWidget {
                                       ),
                                       Container(
                                         height: getScreenHeight(context) / 1.5,
-                                        child: Center(
-                                          child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.center,
-                                            crossAxisAlignment: CrossAxisAlignment.center,
-                                            children: [
-                                              Container(
-                                                width: 220,
-                                                height: 300,
-                                                child: BounceInLeft(
-                                                  child: buildCardAsP1(
-                                                    context,
-                                                    _isPlayAsP1,
-                                                    snapshot.data.response.cards,
-                                                    indexOfCardDeck,
-                                                    onClickActionOnP1GameplayCard:
-                                                        (int indexOfP1Card, String attributeTitle, String attributeValue, String winBasis, String winPoints) =>
-                                                    {
-                                                      //print('----p1c clicked'),
-                                                      this.indexOfP1Card = indexOfP1Card,
+                                        child:  Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: [
+                                            Container(
+                                              width: 220,
+                                              height: 300,
+                                              child: BounceInLeft(
+                                                child: buildCardAsP1(
+                                                  context,
+                                                  _isPlayAsP1,
+                                                  cards,
+                                                  indexOfCardDeck,
+                                                  isYourNextTurn,
+                                                  onClickActionOnP1GameplayCard:
+                                                      (int indexOfP1Card, String attributeTitle, String attributeValue, String winBasis, String winPoints) =>
+                                                  {
+                                                    //print('----p1c clicked'),
+                                                    this.indexOfP1Card = indexOfP1Card,
 
-                                                      updateGamePlayStatus( statesModel, attributeTitle, attributeValue, winBasis, winPoints),
-
-                                                      showBothCardsDialog(context, snapshot.data.response.cards),
-                                                    },
-                                                  ),
-                                                  preferences: AnimationPreferences(
-                                                      duration: const Duration(milliseconds: 1500),
-                                                      autoPlay: AnimationPlayStates.Forward),
+                                                    updateGamePlayStatus( statesModel, attributeTitle, attributeValue, winBasis, winPoints),
+                                                  },
                                                 ),
+                                                preferences: AnimationPreferences(
+                                                    duration: const Duration(milliseconds: 1500),
+                                                    autoPlay: AnimationPlayStates.Forward),
                                               ),
+                                            ),
 
-                                              SizedBox(
-                                                width: 30,
-                                              ),
+                                            SizedBox(
+                                              width: 30,
+                                            ),
 
-                                              Container(
-                                                width: 150,
-                                                height: 200,
-                                                alignment: AlignmentDirectional.bottomCenter,
-                                                child: BounceInRight(
-                                                  child: buildSecondCard(false),
+                                            Container(
+                                              width: 150,
+                                              height: 210,
+                                              alignment: AlignmentDirectional.bottomCenter,
+                                              child: BounceInRight(
+                                                child: buildSecondCard(
+                                                  context,
+                                                  indexOfP1Card,
+                                                  indexOfCardDeck,
+                                                  cards),
 
-                                                   /*
+                                                /*
                                                       buildPlayerTwoCardOld(
                                                     context,
                                                     indexOfP1Card,
                                                     indexOfCardDeck,
-                                                    snapshot.data.response.cards,
+                                                    cards,
                                                     onClickActionOnP2GameplayCard: (bool isWon, int winPoint) =>
                                                     {
                                                       updateGamePlayStatusToFirebase(),
@@ -326,13 +331,12 @@ class Gameplay extends StatelessWidget {
                                                     },
                                                   ),
                                                       */
-                                                  preferences: AnimationPreferences(
-                                                      duration: const Duration(milliseconds: 1500),
-                                                      autoPlay: AnimationPlayStates.Forward),
-                                                ),
+                                                preferences: AnimationPreferences(
+                                                    duration: const Duration(milliseconds: 1500),
+                                                    autoPlay: AnimationPlayStates.Forward),
                                               ),
-                                            ],
-                                          ),
+                                            ),
+                                          ],
                                         ),
                                       ),
 
@@ -378,7 +382,7 @@ class Gameplay extends StatelessWidget {
                         ),
                         Expanded(
                           flex: 3,
-                          child: BuildPlayerTwoScreen(snapshot.data.response.cards.length, p2Name),
+                          child: BuildPlayerTwoScreen(cards.length, p2Name),
                         ),
                       ],
                     ),
@@ -387,8 +391,7 @@ class Gameplay extends StatelessWidget {
               );
             } else if (!snapshot.hasData) {
               return frostedGlassWithProgressBarWidget(context);
-            } else
-              return Center(
+            } else return Center(
                 child: Text("No Data Found", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 30)),
               );
           },
@@ -491,6 +494,8 @@ class Gameplay extends StatelessWidget {
       p2SelectedAttrValue = attrValue;
     }
 
+    isYourNextTurn = false;
+
     this.winBasis = winBasis;
     this.winPoints = winPoints;
     this.statesModel = statesModel;
@@ -530,9 +535,43 @@ class Gameplay extends StatelessWidget {
     winner =              changeMapData['winner'];
 
     if (p1TurnStatus == 'no' && p2TurnStatus == 'no'){
-      buildSecondCard(false);
+      //buildSecondCard(false);
+      isYourNextTurn = false;
+      buildCardAsP1(
+        _context,
+        _isPlayAsP1,
+        cards,
+        indexOfCardDeck,
+        isYourNextTurn,
+        onClickActionOnP1GameplayCard:
+            (int indexOfP1Card, String attributeTitle, String attributeValue, String winBasis, String winPoints) =>
+        {
+          //print('----p1c clicked'),
+          this.indexOfP1Card = indexOfP1Card,
+
+          updateGamePlayStatus( statesModel, attributeTitle, attributeValue, winBasis, winPoints),
+        },
+      );
+
     } else if (p1TurnStatus == 'yes' && p2TurnStatus == 'no'){
-      buildSecondCard(true);
+      //buildSecondCard(true);
+      isYourNextTurn = true;
+
+      buildCardAsP1(
+        _context,
+        _isPlayAsP1,
+        cards,
+        indexOfCardDeck,
+        isYourNextTurn,
+        onClickActionOnP1GameplayCard:
+            (int indexOfP1Card, String attributeTitle, String attributeValue, String winBasis, String winPoints) =>
+        {
+          //print('----p1c clicked'),
+          this.indexOfP1Card = indexOfP1Card,
+
+          updateGamePlayStatus( statesModel, attributeTitle, attributeValue, winBasis, winPoints),
+        },
+      );
     } else if (p1TurnStatus == 'yes' && p2TurnStatus == 'yes'){
 
       bool areYouWon = false;
@@ -623,14 +662,26 @@ class Gameplay extends StatelessWidget {
       if (isWon) {
         statesModel.playerOneTrump = statesModel.playerOneTrump + 1;
         statesModel.player1TotalPoints = statesModel.player1TotalPoints + winPoint;
+        isYourNextTurn = true;
       } else {
         statesModel.playerTwoTrump = statesModel.playerOneTrump + 1;
         statesModel.player2TotalPoints = statesModel.player2TotalPoints + winPoint;
+        isYourNextTurn = false;
       }
 
       statesModel.cardsDeckIndex = statesModel.cardsDeckIndex + 1;
 
+      p1TurnStatus = 'no';
+      p2TurnStatus = 'no';
+
+      _gamePlayRef.child(_gameRoomName).set({
+        'isP1TurnComplete': p1TurnStatus,
+        'isP2TurnComplete': p2TurnStatus,
+      });
+
+
       Timer(Duration(milliseconds: animHideTime), () {
+        showBothCardsDialog(context, cards, indexOfP1Card);
         Navigator.pop(dialogContext);
 
         context.read<GamePlayStatesModel>().updatePlayerScoreboards(
@@ -643,7 +694,7 @@ class Gameplay extends StatelessWidget {
             false);
 
         context.read<GamePlayStatesModel>().updateCardCountOnDeck(statesModel.cardCountOnDeck - 1);
-
+        
         print('------statesModel.cardCountOnDeck: ${statesModel.cardCountOnDeck}');
         if (statesModel.cardCountOnDeck == 0) {
           gotoResultScreen(context, true, statesModel);

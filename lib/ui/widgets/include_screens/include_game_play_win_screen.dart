@@ -14,7 +14,7 @@ import 'package:trump_card_game/ui/widgets/libraries/f_dotted_line.dart';
 import 'package:trump_card_game/ui/widgets/libraries/flip_card.dart';
 import 'package:trump_card_game/ui/widgets/libraries/shimmer.dart';
 
-void showBothCardsDialog(BuildContext context, List<Cards> cards ) {
+void showBothCardsDialog(BuildContext context, List<Cards> cards, int indexOfSelectedCard ) {
   BuildContext dialogContext;
   int indexOfP1Card = 0;
   int indexOfCardDeck = 0;
@@ -66,6 +66,7 @@ void showBothCardsDialog(BuildContext context, List<Cards> cards ) {
                                               _isPlayAsP1,
                                               cards,
                                               indexOfCardDeck,
+                                              indexOfSelectedCard,
                                               onClickActionOnP1GameplayCard:
                                                   (int indexOfP1Card, String attributeTitle, String attributeValue, String winBasis, String winPoints) =>
                                               {
@@ -88,7 +89,7 @@ void showBothCardsDialog(BuildContext context, List<Cards> cards ) {
                                           child: RollIn(
                                             child: buildCard2(
                                               context,
-                                              indexOfP1Card,
+                                              indexOfSelectedCard,
                                               indexOfCardDeck, cards,
                                               onClickActionOnP2GameplayCard: (bool isWon, int winPoint) =>
                                               {
@@ -190,6 +191,7 @@ Widget buildCard1(
     bool isPlayAsP1,
     List<Cards> cardsList,
     int indexOfCardDeck,
+    int indexOfSelectedCard,
     {
       Function(int p1SelectedIndexOfAttributeList, String attributeTitle, String attributeValue, String winBasis, String winPoints)
       onClickActionOnP1GameplayCard,
@@ -260,10 +262,10 @@ Widget buildCard1(
               //change the number as you want
               children: List.generate(cardsAttributeList[indexOfCardDeck].length, (index) {
                 return Container(
-                  padding: index == 0? EdgeInsets.all(2):EdgeInsets.all(0),
+                  padding: index == indexOfSelectedCard? EdgeInsets.all(2):EdgeInsets.all(0),
                   decoration: BoxDecoration(
-                      border: index == 0? Border.all(color: Colors.white):Border.all(color: Colors.transparent),
-                      borderRadius: index == 0? BorderRadius.all(Radius.circular(3)):BorderRadius.all(Radius.circular(0)),
+                      border: index == indexOfSelectedCard? Border.all(color: Colors.white):Border.all(color: Colors.transparent),
+                      borderRadius: index == indexOfSelectedCard? BorderRadius.all(Radius.circular(3)):BorderRadius.all(Radius.circular(0)),
                   ),
                   //margin: EdgeInsets.only(left: 5, right: 5),
                   margin: EdgeInsets.symmetric(vertical: 0, horizontal: 1),
@@ -396,7 +398,7 @@ Widget buildCard1(
 
 Widget buildCard2(
     BuildContext context,
-    int p1SelectedIndexOfAttributeList,
+    int indexOfSelectedCard,
     int indexOfCardDeck,
     List<Cards> cardsList, {
       Function(bool isWon, int winPoint) onClickActionOnP2GameplayCard,
@@ -460,13 +462,13 @@ Widget buildCard2(
               padding: EdgeInsets.all(3),
               //change the number as you want
               children: List.generate(cardsAttributeListOfP2[indexOfCardDeck].length, (index) {
-                return Container(padding: index == 0? EdgeInsets.all(2):EdgeInsets.all(0),
+                return Container(padding: index == indexOfSelectedCard? EdgeInsets.all(2):EdgeInsets.all(0),
                   decoration: BoxDecoration(
-                    border: index == 0? Border.all(color: Colors.white):Border.all(color: Colors.transparent),
-                    borderRadius: index == 0? BorderRadius.all(Radius.circular(3)):BorderRadius.all(Radius.circular(0)),
+                    border: index == indexOfSelectedCard? Border.all(color: Colors.white):Border.all(color: Colors.transparent),
+                    borderRadius: index == indexOfSelectedCard? BorderRadius.all(Radius.circular(3)):BorderRadius.all(Radius.circular(0)),
                   ),
                   //margin: EdgeInsets.only(left: 5, right: 5),
-                  margin: EdgeInsets.symmetric(vertical: 0, horizontal: 1),
+                  margin: EdgeInsets.symmetric(vertical: 1, horizontal: 1),
                   child: InkWell(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,

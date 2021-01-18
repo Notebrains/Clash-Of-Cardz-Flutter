@@ -19,18 +19,21 @@ import 'package:flutter_animator/flutter_animator.dart';
 import 'game_result.dart';
 
 class AutoPlay extends StatelessWidget {
-  AutoPlay({this.name, this.friendId});
+  final String categoryName;
+  final String subcategoryName;
+  final String gameType;
+  final String cardToPlay;
+  AutoPlay ({ Key key, this.categoryName, this.subcategoryName, this.gameType, this.cardToPlay}): super(key: key);
 
   final List<String> playerResultStatusList = [];
-  final String name;
-  final String friendId;
 
   int indexOfP1Card = 0;
   int indexOfCardDeck = 0;
 
   @override
   Widget build(BuildContext context) {
-    apiBloc.fetchCardsRes("ZGHrDz4prqsu4BcApPaQYaGgq", 'cricket', 'sports', '2', '14');
+    //SharedPreferenceHelper().getUserApiKey().then((xApiKey) => apiBloc.fetchCardsRes(xApiKey, subcategoryName, categoryName, '2', cardToPlay));
+    SharedPreferenceHelper().getUserApiKey().then((xApiKey) => apiBloc.fetchCardsRes("ZGHrDz4prqsu4BcApPaQYaGgq", 'cricket', 'sports', '2', '14'));
 
     return Scaffold(
       // Provide the model to all widgets within the app. We're using
@@ -63,51 +66,145 @@ class AutoPlay extends StatelessWidget {
                           child: BuildPlayer1Screen(snapshot.data.response.cards.length),
                         ),
                         Expanded(
-                          flex: 7,
+                          flex: 8,
                           child: Consumer<AutoPlayStatesModel>(
                             builder: (context, statesModel, child) => statesModel.isCardDeckClickedToBuildNewCard ? Container(
                               //width: getScreenWidth(context) - 400,
                               child: Column(
                                 children: [
                                   Container(
-                                    height: getScreenHeight(context)/6.0,
+                                    height: getScreenHeight(context) / 6.0,
                                     child: Row(
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       crossAxisAlignment: CrossAxisAlignment.center,
                                       children: [
-                                        Lottie.asset('assets/animations/lottiefiles/timer-moving.json', height: 50, width: 50),
                                         Padding(
-                                          padding: const EdgeInsets.only(left: 8.0, top: 6),
+                                          padding: const EdgeInsets.only(left: 0.0, top: 0),
                                           child: TweenAnimationBuilder<Duration>(
-                                              duration: Duration(minutes: 3),
-                                              tween: Tween(begin: Duration(minutes: 3), end: Duration.zero),
+                                              duration: Duration(minutes: 45),
+                                              tween: Tween(begin: Duration(minutes: 45), end: Duration.zero),
                                               onEnd: () {
-                                                print('Timer Ended');
-                                                /*Navigator.push(context,
-                                                  CupertinoPageRoute(
-                                                    builder: (context) => new GameResult(winnerName: 'Rex Scout', winnerId:'MEM00003', winnerImage: Constants.imgUrlTest, winnerCoins: '200',
-                                                        winnerPoints: '12', cardType: 'Cricket', clashType: '1 vs 1', playedCards: '16'),
-                                                  ),
-                                                );*/
+                                                //print('Timer Ended');
+                                                if (statesModel.player1TotalPoints > statesModel.player2TotalPoints) {
+                                                  showTimesUpDialog(context, true, statesModel);
+                                                } else {
+                                                  showTimesUpDialog(context, false, statesModel);
+                                                }
                                               },
-
                                               builder: (BuildContext context, Duration value, Widget child) {
-                                                final minutes = value.inMinutes;
-                                                final seconds = value.inSeconds % 60;
-                                                return Padding(
-                                                  padding: const EdgeInsets.symmetric(vertical: 5),
-                                                  child: Text(
-                                                    '$minutes:$seconds min',
-                                                    textAlign: TextAlign.center,
-                                                    style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontWeight: FontWeight.bold,
-                                                      fontSize: 26,
-                                                      shadows: [
-                                                        Shadow(color: Colors.white),
-                                                      ],
+
+                                                //adding 0 at first if min or sec show in single digit
+                                                final minutes = (value.inMinutes).toString().padLeft(2, "0");
+                                                final seconds = (value.inSeconds % 60).toString().padLeft(2, "0");
+                                                return Row(
+                                                  children: [
+                                                    Padding(
+                                                      padding: const EdgeInsets.all(5),
+                                                      child: Container(
+                                                        width: 55,
+                                                        height: 45,
+                                                        decoration: BoxDecoration(
+                                                          color: Colors.black,
+                                                          border: Border.all(
+                                                            color: Colors.black,
+                                                            width: 5,
+                                                          ),
+                                                          borderRadius: BorderRadius.all(Radius.circular(3)),
+                                                          boxShadow: <BoxShadow>[
+                                                            BoxShadow(
+                                                              color: Colors.grey[500],
+                                                              blurRadius: 8.0,
+                                                              offset: Offset(0.0, 8.0),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        child: Center(
+                                                          child: Text(
+                                                            '$minutes',
+                                                            textAlign: TextAlign.center,
+                                                            style: TextStyle(
+                                                              color: Colors.white,
+                                                              fontWeight: FontWeight.bold,
+                                                              fontSize: 30,
+                                                              shadows: [
+                                                                Shadow(color: Colors.white),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
                                                     ),
-                                                  ),
+
+                                                    Container(
+                                                      width: 20,
+                                                      height: 45,
+                                                      decoration: BoxDecoration(
+                                                        color: Colors.black,
+                                                        borderRadius: BorderRadius.all(Radius.circular(3)),
+                                                        boxShadow: <BoxShadow>[
+                                                          BoxShadow(
+                                                            color: Colors.grey[500],
+                                                            blurRadius: 8.0,
+                                                            offset: Offset(0.0, 8.0),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      child: Center(
+                                                        child: Padding(
+                                                          padding: const EdgeInsets.only(bottom: 5),
+                                                          child: Text(
+                                                            ':',
+                                                            textAlign: TextAlign.center,
+                                                            style: TextStyle(
+                                                              color: Colors.white,
+                                                              fontWeight: FontWeight.bold,
+                                                              fontSize: 36,
+                                                              shadows: [
+                                                                Shadow(color: Colors.white),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+
+                                                    Padding(
+                                                      padding: const EdgeInsets.all(5),
+                                                      child: Container(
+                                                        width: 55,
+                                                        height: 45,
+                                                        decoration: BoxDecoration(
+                                                          color: Colors.black,
+                                                          border: Border.all(
+                                                            color: Colors.black,
+                                                            width: 5,
+                                                          ),
+                                                          borderRadius: BorderRadius.all(Radius.circular(3)),
+                                                          boxShadow: <BoxShadow>[
+                                                            BoxShadow(
+                                                              color: Colors.grey[500],
+                                                              blurRadius: 8.0,
+                                                              offset: Offset(0.0, 8.0),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        child: Center(
+                                                          child: Text(
+                                                            '$seconds',
+                                                            textAlign: TextAlign.center,
+                                                            style: TextStyle(
+                                                              color: Colors.white,
+                                                              fontWeight: FontWeight.bold,
+                                                              fontSize: 30,
+                                                              shadows: [
+                                                                Shadow(color: Colors.white),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    )
+                                                  ],
                                                 );
                                               }),
                                         ),
@@ -122,8 +219,8 @@ class AutoPlay extends StatelessWidget {
                                         crossAxisAlignment: CrossAxisAlignment.center,
                                         children: [
                                           Container(
-                                            width: 200,
-                                            height: 250,
+                                            width: 215,
+                                            height: 300,
                                             child: BounceInLeft(
                                               child: buildPlayerOneCard(
                                                 context,
@@ -142,11 +239,12 @@ class AutoPlay extends StatelessWidget {
                                             ),
                                           ),
                                           SizedBox(
-                                            width: 30,
+                                            width: 55,
+
                                           ),
                                           Container(
-                                            width: 200,
-                                            height: 250,
+                                            width: 215,
+                                            height: 300,
                                             child: BounceInRight(
                                               child: buildPlayerTwoCard(
                                                 context,

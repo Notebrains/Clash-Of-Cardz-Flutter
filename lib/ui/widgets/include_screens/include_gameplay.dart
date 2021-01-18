@@ -292,7 +292,7 @@ class BuildPlayer1Screen extends StatelessWidget{
         //change the number as you want
         children:  List.generate(gridListSize, (index) {
 
-          return Pulse(
+          return HeartBeat(
             child: GestureDetector(
               child: Card(
                 elevation: 5,

@@ -10,6 +10,7 @@ import 'package:trump_card_game/ui/screens/game_result.dart';
 import 'package:trump_card_game/ui/screens/login.dart';
 import 'package:trump_card_game/ui/widgets/views/view_widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_animator/flutter_animator.dart';
 
 class BuildPlayer1Screen extends StatelessWidget{
   int listLength = 0;
@@ -281,28 +282,33 @@ class BuildPlayer1Screen extends StatelessWidget{
         ),
         //change the number as you want
         children:  List.generate(gridListSize, (index) {
-
-          return GestureDetector(
-            child: Card(
-              elevation: 5,
-              shadowColor: Colors.grey,
-              color: Colors.orange,
-              child: ClipRRect(
-                borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                child: Image.asset(
-                  'assets/images/img_card_demo.png',
-                  width: 55,
+         return HeartBeat(
+            child: GestureDetector(
+              child: Card(
+                elevation: 5,
+                shadowColor: Colors.grey,
+                color: Colors.orange,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                  child: Image.asset(
+                    'assets/images/img_card_demo.png',
+                    width: 55,
+                  ),
                 ),
               ),
-            ),
 
-            onTap: (){
-              print('---- card Count 22 $gridListSize');
-              if(gridListSize > 0){
-                //context.read<AutoPlayStatesModel>().updateCardCountOnDeck(statesModel.cardCountOnDeck - 1);
-                //context.read<AutoPlayStatesModel>().updateRebuildDeck(true);
-              }
-            },
+              onTap: (){
+                print('---- card Count 22 $gridListSize');
+                if(gridListSize > 0){
+                  //context.read<AutoPlayStatesModel>().updateCardCountOnDeck(statesModel.cardCountOnDeck - 1);
+                  //context.read<AutoPlayStatesModel>().updateRebuildDeck(true);
+                }
+              },
+            ),
+            preferences: AnimationPreferences(
+                offset: Duration(milliseconds: 3500),
+                duration: const Duration(milliseconds: 2500),
+                autoPlay: AnimationPlayStates.Loop),
           );
         }),
       ),

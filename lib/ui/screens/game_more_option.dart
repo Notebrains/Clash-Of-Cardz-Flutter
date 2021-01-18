@@ -366,17 +366,22 @@ class _GameMoreOptionState extends State<GameMoreOption> {
                         ),
                       ),
                       onTap: (){
-                        showDialog(
+                        if(gameType == 'Player vs Computer'){
+                          Navigator.push(context, MaterialPageRoute(
+                              builder: (BuildContext context) => AutoPlay()));
+
+                        } else {
+                          showDialog(
                             context: context,
                             builder: (_) => IncludeSearchingForPlayer(
-                                categoryName: widget.categoryName,
-                                subcategoryName: widget.subcategoryName,
-                                gameType: gameType,
-                                cardsToPlay: cardsToBePlayed[index],
+                              categoryName: widget.categoryName,
+                              subcategoryName: widget.subcategoryName,
+                              gameType: gameType,
+                              cardsToPlay: cardsToBePlayed[index],
 
                             ),
                           );
-
+                        }
                       },
                     ),
                   ),

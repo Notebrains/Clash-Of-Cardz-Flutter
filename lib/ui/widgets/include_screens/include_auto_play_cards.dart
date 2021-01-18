@@ -4,9 +4,19 @@ import 'package:flutter/material.dart';
 import 'package:trump_card_game/helper/exten_fun/base_application_fun.dart';
 import 'package:shape_of_view/shape_of_view.dart';
 import 'package:trump_card_game/model/responses/cards_res_model.dart';
+import 'package:trump_card_game/ui/widgets/libraries/f_dotted_line.dart';
 import 'package:trump_card_game/ui/widgets/libraries/flip_card.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_animator/flutter_animator.dart';
+import 'package:shape_of_view/shape_of_view.dart';
+import 'package:trump_card_game/helper/exten_fun/base_application_fun.dart';
+import 'package:trump_card_game/model/responses/cards_res_model.dart';
+import 'package:trump_card_game/ui/widgets/libraries/animated_text_kit/wavy.dart';
+import 'package:trump_card_game/ui/widgets/libraries/edge_alert.dart';
+import 'package:trump_card_game/ui/widgets/libraries/f_dotted_line.dart';
+import 'package:trump_card_game/ui/widgets/libraries/flip_card.dart';
+import 'package:trump_card_game/ui/widgets/libraries/shimmer.dart';
 
 Widget buildPlayerOneCard(
     BuildContext context,
@@ -50,19 +60,42 @@ Widget buildPlayerOneCard(
         ],
       ),
       child: GestureDetector(
-        child: Stack(
+        child:  Stack(
           children: <Widget>[
             Container(
               width: getScreenWidth(context),
               height: getScreenHeight(context),
-              child: Image.asset('assets/images/bg_card_back.png', fit: BoxFit.fill),
+              color: Colors.deepOrangeAccent,
+              //child: Image.asset('assets/images/bg_card_back.png', fit: BoxFit.fill),
             ),
+            Center(
+              child: FDottedLine(
+                color: Colors.white,
+                strokeWidth: 2.0,
+                dottedLength: 8.0,
+                space: 3.0,
+                corner: FDottedLineCorner.all(6.0),
 
-            /*Align(
-              alignment: Alignment.center,
-              child: Lottie.asset('assets/animations/lottiefiles/sports-loading.json', width: 250, height: 250),
-            )*/
-
+                /// add widget
+                child: Container(
+                  width: 140,
+                  height: 80,
+                  alignment: Alignment.center,
+                  child: HeartBeat(
+                    child: Text(
+                      'TAP TO \nSELECT A CARD',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w200,
+                        color: Colors.white,
+                        fontSize: 13,
+                      ),
+                    ),
+                    preferences: AnimationPreferences(duration: const Duration(milliseconds: 2500), autoPlay: AnimationPlayStates.Loop),
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
         onTap: () {
@@ -83,113 +116,132 @@ Widget buildPlayerOneCard(
       ),
       child:  Stack(
         children: [
+
           Container(
             color: Colors.orange,
           ),
-
           Align(
             alignment: Alignment.topCenter,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: FadeInImage.assetNetwork(
                   fit: BoxFit.cover,
-                  placeholder: 'assets/animations/gifs/loading.gif',
+                  placeholder: 'assets/images/cricket_1.png',
                   image: cardsList[indexOfCardDeck].cardImg,
-                  height: 150,
-                  width: 150
+                  height: 135,
+                  width: 135),
+            ),
+          ),
+          Align(
+            alignment: Alignment.bottomLeft,
+            child: Container(
+              width: 200,
+              height: 25,
+              child: BounceInLeft(
+                child: WavyAnimatedTextKit(
+                  textStyle: TextStyle(fontSize: 12.0, color: Colors.white, fontWeight: FontWeight.normal),
+                  text: ['*Select a stats to play'],
+                  isRepeatingAnimation: true,
+                ),
+                preferences: AnimationPreferences(duration: const Duration(milliseconds: 3000), autoPlay: AnimationPlayStates.Forward),
               ),
             ),
           ),
-
-          //child: Lottie.asset('assets/animations/lottiefiles/confused_robot-bot-3d.json', height: 150, width: 150)),
-
           Align(
             alignment: Alignment.bottomCenter,
-            child: GridView.count(
-              shrinkWrap: true,
-              crossAxisCount: 3,
-              crossAxisSpacing: 0,
-              mainAxisSpacing: 0,
-              childAspectRatio: 5 / 3,
-              physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-              // if you want IOS bouncing effect, otherwise remove this line
-              padding: EdgeInsets.all(4),
-              //change the number as you want
-              children: List.generate(cardsAttributeListP1[indexOfCardDeck].length, (index) {
-                return Container(
-                  //margin: EdgeInsets.only(left: 5, right: 5),
-                  margin: EdgeInsets.symmetric(vertical: 0, horizontal: 1),
-                  child: Material(
-                    color: Colors.transparent,
-                    borderOnForeground: true,
-                    child: InkWell(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Text(
-                                cardsAttributeListP1[indexOfCardDeck][index].value,
-                                textAlign: TextAlign.start,
-                                style: TextStyle(
-                                    fontSize: 9,
-                                    fontStyle: FontStyle.normal,
-                                    fontFamily: 'neuropol_x_rg',
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.indigo),
+            child: Container(
+              margin: EdgeInsets.only(bottom: 20, left: 5),
+              child: GridView.count(
+                shrinkWrap: true,
+                crossAxisCount: 3,
+                crossAxisSpacing: 0,
+                mainAxisSpacing: 0,
+                childAspectRatio: 5 / 3,
+                physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+                // if you want IOS bouncing effect, otherwise remove this line
+                padding: EdgeInsets.all(4),
+                //change the number as you want
+                children: List.generate(cardsAttributeListP1[indexOfCardDeck].length, (index) {
+                  return Container(
+                    //margin: EdgeInsets.only(left: 5, right: 5),
+                    margin: EdgeInsets.symmetric(vertical: 0, horizontal: 1),
+                    child: Material(
+                      color: Colors.transparent,
+                      borderOnForeground: true,
+                      child: InkWell(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            HeartBeat(
+                              child: Row(
+                                children: [
+                                  Text(
+                                    cardsAttributeListP1[indexOfCardDeck][index].value,
+                                    textAlign: TextAlign.start,
+                                    style: TextStyle(
+                                        fontSize: 10,
+                                        fontStyle: FontStyle.normal,
+                                        fontFamily: 'neuropol_x_rg',
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.indigo),
+                                  ),
+                                  Stack(alignment: Alignment.center, children: <Widget>[
+                                    Image.asset(
+                                      'assets/icons/png/stars.png',
+                                      color: Colors.yellow,
+                                    ),
+                                    Text(
+                                      cardsAttributeListP1[indexOfCardDeck][index].winPoints,
+                                      textAlign: TextAlign.right,
+                                      style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold, color: Colors.black),
+                                    ),
+                                  ]),
+                                ],
                               ),
-                              Stack(alignment: Alignment.center, children: <Widget>[
-                                Image.asset(
-                                  'assets/icons/png/stars.png',
-                                  color: Colors.yellow,
-                                ),
-                                Text(
-                                  cardsAttributeListP1[indexOfCardDeck][index].winPoints,
-                                  textAlign: TextAlign.right,
-                                  style: TextStyle(fontSize: 7, fontWeight: FontWeight.bold, color: Colors.black),
-                                ),
-                              ]),
-                            ],
-                          ),
-                          Text(
-                            cardsAttributeListP1[indexOfCardDeck][index].name,
-                            textAlign: TextAlign.start,
-                            style: TextStyle(
-                                fontSize: 8,
-                                fontStyle: FontStyle.normal,
-                                fontFamily: 'neuropol_x_rg',
-                                fontWeight: FontWeight.normal,
-                                color: Colors.white),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 10, top: 1),
-                            child: Divider(
-                              color: Colors.white,
-                              thickness: 1,
-                              height: 1,
+                              preferences: AnimationPreferences(
+                                  offset: Duration(milliseconds: 4000),
+                                  duration: const Duration(milliseconds: 1000),
+                                  autoPlay: AnimationPlayStates.Loop),
                             ),
-                          ),
-                        ],
+                            Text(
+                              cardsAttributeListP1[indexOfCardDeck][index].name,
+                              textAlign: TextAlign.start,
+                              style: TextStyle(
+                                  fontSize: 9,
+                                  fontStyle: FontStyle.normal,
+                                  fontFamily: 'neuropol_x_rg',
+                                  fontWeight: FontWeight.normal,
+                                  color: Colors.white),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(right: 10, top: 1),
+                              child: Divider(
+                                color: Colors.white,
+                                thickness: 1,
+                                height: 1,
+                              ),
+                            ),
+                          ],
+                        ),
+                        onTap: () {
+                          onClickActionOnP1AutoPlayCard(
+                              index,
+                              cardsAttributeListP1[indexOfCardDeck][index].name,
+                              cardsAttributeListP1[indexOfCardDeck][index].value
+                          );
+                        },
                       ),
-                      onTap: () {
-                        onClickActionOnP1AutoPlayCard(
-                            index,
-                            cardsAttributeListP1[indexOfCardDeck][index].name,
-                            cardsAttributeListP1[indexOfCardDeck][index].value
-                        );
-                      },
                     ),
-                  ),
-                );
-              }).toList(),
+                  );
+                }).toList(),
+              ),
             ),
           ),
-
           Column(
             children: [
               Padding(
-                padding: EdgeInsets.only(left: 25, top: 5),
+                padding: EdgeInsets.only(left: 25, top: 5, right: 5, bottom: 5),
                 child: RotationTransition(
                   alignment: Alignment.topLeft,
                   turns: new AlwaysStoppedAnimation(90 / 360),
@@ -197,24 +249,30 @@ Widget buildPlayerOneCard(
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(right: 4),
-                        child: Text(
-                          cardsList[indexOfCardDeck].cardName,
-                          style: TextStyle(
-                            fontWeight: FontWeight.w200,
-                            color: Colors.white,
-                            fontSize: 16,
+                        child: Shimmer.fromColors(
+                          baseColor: Colors.white,
+                          highlightColor: Colors.grey[400],
+                          child: Text(
+                            cardsList[indexOfCardDeck].cardName,
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
+                              fontSize: 16,
+                            ),
                           ),
                         ),
                       ),
-
                       ShapeOfView(
-                        height: 16,
-                        width: 16,
+                        height: 17,
+                        width: 17,
                         shape: CircleShape(borderColor: Colors.white, borderWidth: 1),
                         elevation: 1,
                         child: CircleAvatar(
                           radius: 30,
-                          backgroundImage: NetworkImage(cardsList[indexOfCardDeck].flagImage),
+                          child: FadeInImage.assetNetwork(
+                            placeholder: 'assets/icons/png/white-flag.png',
+                            image: cardsList[indexOfCardDeck].flagImage,
+                          ),
                         ),
                       ),
                     ],
@@ -288,13 +346,14 @@ Widget buildPlayerTwoCard(
             Container(
               width: getScreenWidth(context),
               height: getScreenHeight(context),
-              child: Image.asset('assets/images/bg_card_back.png', fit: BoxFit.fill),
+              color: Colors.deepOrangeAccent,
+              //child: Image.asset('assets/images/bg_card_back.png', fit: BoxFit.fill),
             ),
 
-            /*Align(
+            Align(
                 alignment: Alignment.center,
-                child: Lottie.asset('assets/animations/lottiefiles/sports-loading.json', width: 250, height: 250),
-              )*/
+                child: Lottie.asset('assets/animations/lottiefiles/confused_robot-bot-3d.json', width: 250, height: 250),
+              )
 
           ],
         ),
@@ -321,143 +380,168 @@ Widget buildPlayerTwoCard(
           Container(
             color: Colors.orange,
           ),
+
           Align(
             alignment: Alignment.topCenter,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: FadeInImage.assetNetwork(
                   fit: BoxFit.cover,
-                  placeholder: 'assets/animations/gifs/loading.gif',
+                  placeholder: 'assets/images/cricket_1.png',
                   image: cardsList[cardListSizeForP2 + indexOfCardDeck].cardImg,
-                  height: 150,
-                  width: 150),
+                  height: 135,
+                  width: 135),
             ),
           ),
 
           Align(
+            alignment: Alignment.bottomLeft,
+            child: Container(
+              width: 200,
+              height: 25,
+              child: BounceInLeft(
+                child: WavyAnimatedTextKit(
+                  textStyle: TextStyle(fontSize: 12.0, color: Colors.white, fontWeight: FontWeight.normal),
+                  text: ['*Select a stats to play'],
+                  isRepeatingAnimation: true,
+                ),
+                preferences: AnimationPreferences(duration: const Duration(milliseconds: 3000), autoPlay: AnimationPlayStates.Forward),
+              ),
+            ),
+          ),
+          Align(
             alignment: Alignment.bottomCenter,
-            child: GridView.count(
-              shrinkWrap: true,
-              crossAxisCount: 3,
-              crossAxisSpacing: 0,
-              mainAxisSpacing: 0,
-              childAspectRatio: 5/3,
-              physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-              // if you want IOS bouncing effect, otherwise remove this line
-              padding: EdgeInsets.all(4),
-              //change the number as you want
-              children: List.generate(cardsAttributeListOfP2[indexOfCardDeck].length, (index) {
-                return Container(
-                  //margin: EdgeInsets.only(left: 5, right: 5),
-                  margin: EdgeInsets.symmetric(vertical: 0, horizontal: 1),
-                  child: InkWell(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
+            child: Container(
+              margin: EdgeInsets.only(bottom: 20, left: 5),
+              child: GridView.count(
+                shrinkWrap: true,
+                crossAxisCount: 3,
+                crossAxisSpacing: 0,
+                mainAxisSpacing: 0,
+                childAspectRatio: 5 / 3,
+                physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+                // if you want IOS bouncing effect, otherwise remove this line
+                padding: EdgeInsets.all(4),
+                //change the number as you want
+                children: List.generate(cardsAttributeListOfP2[indexOfCardDeck].length, (index) {
+                  return Container(
+                    //margin: EdgeInsets.only(left: 5, right: 5),
+                    margin: EdgeInsets.symmetric(vertical: 0, horizontal: 1),
+                    child: Material(
+                      color: Colors.transparent,
+                      borderOnForeground: true,
+                      child: InkWell(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            HeartBeat(
+                              child: Row(
+                                children: [
+                                  Text(
+                                    cardsAttributeListOfP2[indexOfCardDeck][index].value,
+                                    textAlign: TextAlign.start,
+                                    style: TextStyle(
+                                        fontSize: 10,
+                                        fontStyle: FontStyle.normal,
+                                        fontFamily: 'neuropol_x_rg',
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.indigo),
+                                  ),
+                                  Stack(alignment: Alignment.center, children: <Widget>[
+                                    Image.asset(
+                                      'assets/icons/png/stars.png',
+                                      color: Colors.yellow,
+                                    ),
+                                    Text(
+                                      cardsAttributeListOfP2[indexOfCardDeck][index].winPoints,
+                                      textAlign: TextAlign.right,
+                                      style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold, color: Colors.black),
+                                    ),
+                                  ]),
+                                ],
+                              ),
+                              preferences: AnimationPreferences(
+                                  offset: Duration(milliseconds: 4000),
+                                  duration: const Duration(milliseconds: 1000),
+                                  autoPlay: AnimationPlayStates.Loop),
+                            ),
                             Text(
-                              cardsAttributeListOfP2[indexOfCardDeck][index].value,
+                              cardsAttributeListOfP2[indexOfCardDeck][index].name,
                               textAlign: TextAlign.start,
                               style: TextStyle(
                                   fontSize: 9,
                                   fontStyle: FontStyle.normal,
                                   fontFamily: 'neuropol_x_rg',
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.indigo),
+                                  fontWeight: FontWeight.normal,
+                                  color: Colors.white),
                             ),
-                            Stack(alignment: Alignment.center, children: <Widget>[
-                              Image.asset(
-                                'assets/icons/png/stars.png',
-                                color: Colors.yellow,
+                            Padding(
+                              padding: const EdgeInsets.only(right: 10, top: 1),
+                              child: Divider(
+                                color: Colors.white,
+                                thickness: 1,
+                                height: 1,
                               ),
-                              Text(
-                                cardsAttributeListOfP2[indexOfCardDeck][index].winPoints,
-                                textAlign: TextAlign.right,
-                                style: TextStyle(fontSize: 7, fontWeight: FontWeight.bold, color: Colors.black),
-                              ),
-                            ]),
+                            ),
                           ],
                         ),
+                        onTap: (){
+                          //p1 and p2 card will be touched in same position. So both index will be same.
 
-                        Text(
-                          cardsAttributeListOfP2[indexOfCardDeck][index].name,
-                          textAlign: TextAlign.start,
-                          style: TextStyle(
-                              fontSize: 8,
-                              fontStyle: FontStyle.normal,
-                              fontFamily: 'neuropol_x_rg',
-                              fontWeight: FontWeight.normal,
-                              color: Colors.white),
-                        ),
+                          p1SelectedAttributeValue = 0;
+                          p2SelectedAttributeValue = 0;
+                          winPoint = 0;
 
-                        Padding(
-                          padding: const EdgeInsets.only(right: 10, top: 1),
-                          child: Divider(
-                            color: Colors.white,
-                            thickness: 1,
-                            height: 1,
-                          ),
-                        ),
-                      ],
+                          p1SelectedAttributeValue = int.parse(cardsAttributeListP1[indexOfCardDeck][index].value);
+                          p2SelectedAttributeValue = int.parse(cardsAttributeListOfP2[indexOfCardDeck][index].value);
+
+                          if(cardsAttributeListP1[indexOfCardDeck][index].winBasis == 'Highest Value'){
+                            if(p1SelectedAttributeValue > p2SelectedAttributeValue){
+                              isPlayer1Won = true;
+                              winPoint = int.parse(cardsAttributeListP1[indexOfCardDeck][index].winPoints);
+                            } else {
+                              isPlayer1Won = false;
+                              winPoint = int.parse(cardsAttributeListOfP2[indexOfCardDeck][index].winPoints);
+                            }
+
+                          } else if (cardsAttributeListP1[indexOfCardDeck][index].winBasis == 'Lowest Value'){
+                            if(p1SelectedAttributeValue < p2SelectedAttributeValue){
+                              isPlayer1Won = true;
+                              winPoint = int.parse(cardsAttributeListP1[indexOfCardDeck][index].winPoints);
+                            } else {
+                              isPlayer1Won = false;
+                              winPoint = int.parse(cardsAttributeListOfP2[indexOfCardDeck][index].winPoints);
+                            }
+                          }
+
+
+                          print('----indexOfCardDeck ' + indexOfCardDeck.toString());
+                          print('----p1SelectedIndexOfAttributeList ' + p1SelectedIndexOfAttributeList.toString());
+                          print('----p2SelectedIndexOfAttributeList ' + index.toString());
+                          print('----P1 attr name ' + cardsAttributeListP1[indexOfCardDeck][index].name);
+                          print('----P1 attr value ' + cardsAttributeListP1[indexOfCardDeck][index].value);
+                          print('----P2 attr name ' + cardsAttributeListOfP2[indexOfCardDeck][index].name);
+                          print('----P2 attr value ' + cardsAttributeListOfP2[indexOfCardDeck][index].value);
+                          print('----win Point ' + winPoint.toString());
+
+                          onClickActionOnP2AutoPlayCard(
+                              isPlayer1Won,
+                              winPoint
+                          );
+                        },
+                      ),
                     ),
-
-                    onTap: (){
-                      //p1 and p2 card will be touched in same position. So both index will be same.
-
-                      p1SelectedAttributeValue = 0;
-                      p2SelectedAttributeValue = 0;
-                      winPoint = 0;
-
-                      p1SelectedAttributeValue = int.parse(cardsAttributeListP1[indexOfCardDeck][index].value);
-                      p2SelectedAttributeValue = int.parse(cardsAttributeListOfP2[indexOfCardDeck][index].value);
-
-                      if(cardsAttributeListP1[indexOfCardDeck][index].winBasis == 'Highest Value'){
-                        if(p1SelectedAttributeValue > p2SelectedAttributeValue){
-                          isPlayer1Won = true;
-                          winPoint = int.parse(cardsAttributeListP1[indexOfCardDeck][index].winPoints);
-                        } else {
-                          isPlayer1Won = false;
-                          winPoint = int.parse(cardsAttributeListOfP2[indexOfCardDeck][index].winPoints);
-                        }
-
-                      } else if (cardsAttributeListP1[indexOfCardDeck][index].winBasis == 'Lowest Value'){
-                        if(p1SelectedAttributeValue < p2SelectedAttributeValue){
-                          isPlayer1Won = true;
-                          winPoint = int.parse(cardsAttributeListP1[indexOfCardDeck][index].winPoints);
-                        } else {
-                          isPlayer1Won = false;
-                          winPoint = int.parse(cardsAttributeListOfP2[indexOfCardDeck][index].winPoints);
-                        }
-                      }
-
-
-                      print('----indexOfCardDeck ' + indexOfCardDeck.toString());
-                      print('----p1SelectedIndexOfAttributeList ' + p1SelectedIndexOfAttributeList.toString());
-                      print('----p2SelectedIndexOfAttributeList ' + index.toString());
-                      print('----P1 attr name ' + cardsAttributeListP1[indexOfCardDeck][index].name);
-                      print('----P1 attr value ' + cardsAttributeListP1[indexOfCardDeck][index].value);
-                      print('----P2 attr name ' + cardsAttributeListOfP2[indexOfCardDeck][index].name);
-                      print('----P2 attr value ' + cardsAttributeListOfP2[indexOfCardDeck][index].value);
-                      print('----win Point ' + winPoint.toString());
-
-                      onClickActionOnP2AutoPlayCard(
-                          isPlayer1Won,
-                          winPoint
-                      );
-                    },
-                  ),
-                );
-              }).toList(),
+                  );
+                }).toList(),
+              ),
             ),
           ),
-
           // Player name, flag , image in card
           Column(
             children: [
               Padding(
-                padding: EdgeInsets.only(left: 25, top: 5),
+                padding: EdgeInsets.only(left: 25, top: 5, right: 5, bottom: 5),
                 child: RotationTransition(
                   alignment: Alignment.topLeft,
                   turns: new AlwaysStoppedAnimation(90 / 360),
@@ -465,22 +549,30 @@ Widget buildPlayerTwoCard(
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(right: 4),
-                        child: Text(
-                          cardsList[cardListSizeForP2 + indexOfCardDeck].cardName,
-                          style: TextStyle(
-                            fontWeight: FontWeight.w200,
-                            color: Colors.white,
-                            fontSize: 16,
+                        child: Shimmer.fromColors(
+                          baseColor: Colors.white,
+                          highlightColor: Colors.grey[400],
+                          child: Text(
+                            cardsList[cardListSizeForP2 + indexOfCardDeck].cardName,
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
+                              fontSize: 16,
+                            ),
                           ),
                         ),
                       ),
-
-                      Container(
-                        height: 16,
-                        width: 16,
+                      ShapeOfView(
+                        height: 17,
+                        width: 17,
+                        shape: CircleShape(borderColor: Colors.white, borderWidth: 1),
+                        elevation: 1,
                         child: CircleAvatar(
                           radius: 30,
-                          backgroundImage: NetworkImage(cardsList[cardListSizeForP2 + indexOfCardDeck].flagImage),
+                          child: FadeInImage.assetNetwork(
+                            placeholder: 'assets/icons/png/white-flag.png',
+                            image: cardsList[cardListSizeForP2 + indexOfCardDeck].flagImage,
+                          ),
                         ),
                       ),
                     ],
