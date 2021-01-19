@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:trump_card_game/ui/screens/demo/firebasse_notification.dart';
+import 'package:trump_card_game/ui/screens/demo/value_listener_state_management.dart';
 import 'package:trump_card_game/ui/screens/splash.dart';
 
 /*
@@ -61,7 +62,7 @@ class MyRootApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return  MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: SplashScreen(),
+      home: MyHomePage(title: 'Value Lin',),
     );
   }
 }

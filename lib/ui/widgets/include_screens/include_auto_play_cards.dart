@@ -118,7 +118,7 @@ Widget buildPlayerOneCard(
         children: [
 
           Container(
-            color: Colors.orange,
+            color: Colors.orange[600],
           ),
           Align(
             alignment: Alignment.topCenter,
@@ -291,7 +291,8 @@ Widget buildPlayerTwoCard(
     BuildContext context,
     int p1SelectedIndexOfAttributeList,
     int indexOfCardDeck,
-    List<Cards> cardsList, {
+    List<Cards> cardsList,
+    bool isCompThinking,{
       Function(bool isWon, int winPoint) onClickActionOnP2AutoPlayCard,
     }) {
 
@@ -311,7 +312,6 @@ Widget buildPlayerTwoCard(
 
     for (int i = 0; i < cardListSizeForP2; i++) {
       cardsAttributeListP1.add(cardsList[i].attribute);
-
     }
 
     for (int i = cardListSizeForP2; i < cardsList.length; i++) {
@@ -321,13 +321,69 @@ Widget buildPlayerTwoCard(
     print(e);
   }
 
+  Widget doFlip(bool isCompThinking, GlobalKey<FlipCardState> cardKeyOfPlayerTwo) {
+    if (!isCompThinking) {
+      isCompThinking = false;
+
+      //p1 and p2 card will be touched in same position. So both index will be same.
+
+      p1SelectedAttributeValue = 0;
+      p2SelectedAttributeValue = 0;
+      winPoint = 0;
+
+      p1SelectedAttributeValue = int.parse(cardsAttributeListP1[indexOfCardDeck][p1SelectedIndexOfAttributeList].value);
+      p2SelectedAttributeValue = int.parse(cardsAttributeListOfP2[indexOfCardDeck][p1SelectedIndexOfAttributeList].value);
+
+      if(cardsAttributeListP1[indexOfCardDeck][p1SelectedIndexOfAttributeList].winBasis == 'Highest Value'){
+        if(p1SelectedAttributeValue > p2SelectedAttributeValue){
+          isPlayer1Won = true;
+          winPoint = int.parse(cardsAttributeListP1[indexOfCardDeck][p1SelectedIndexOfAttributeList].winPoints);
+        } else {
+          isPlayer1Won = false;
+          winPoint = int.parse(cardsAttributeListOfP2[indexOfCardDeck][p1SelectedIndexOfAttributeList].winPoints);
+        }
+
+      } else if (cardsAttributeListP1[indexOfCardDeck][p1SelectedIndexOfAttributeList].winBasis == 'Lowest Value'){
+        if(p1SelectedAttributeValue < p2SelectedAttributeValue){
+          isPlayer1Won = true;
+          winPoint = int.parse(cardsAttributeListP1[indexOfCardDeck][p1SelectedIndexOfAttributeList].winPoints);
+        } else {
+          isPlayer1Won = false;
+          winPoint = int.parse(cardsAttributeListOfP2[indexOfCardDeck][p1SelectedIndexOfAttributeList].winPoints);
+        }
+      }
+
+
+      print('----indexOfCardDeck ' + indexOfCardDeck.toString());
+      print('----p1SelectedIndexOfAttributeList ' + p1SelectedIndexOfAttributeList.toString());
+      print('----p2SelectedIndexOfAttributeList ' + p1SelectedIndexOfAttributeList.toString());
+      print('----P1 attr name ' + cardsAttributeListP1[indexOfCardDeck][p1SelectedIndexOfAttributeList].name);
+      print('----P1 attr value ' + cardsAttributeListP1[indexOfCardDeck][p1SelectedIndexOfAttributeList].value);
+      print('----P2 attr name ' + cardsAttributeListOfP2[indexOfCardDeck][p1SelectedIndexOfAttributeList].name);
+      print('----P2 attr value ' + cardsAttributeListOfP2[indexOfCardDeck][p1SelectedIndexOfAttributeList].value);
+      print('----win Point ' + winPoint.toString());
+
+
+      Future.delayed(Duration(seconds: 3),(){
+        cardKeyOfPlayerTwo.currentState.toggleCard();
+
+        onClickActionOnP2AutoPlayCard(
+            isPlayer1Won,
+            winPoint
+        );
+      });
+    }
+
+
+    return Container();
+  }
+
   return FlipCard(
     flipOnTouch: false,
     direction: FlipDirection.HORIZONTAL,
     speed: 1000,
     key: cardKeyOfPlayerTwo,
-    onFlipDone: (status) {
-    },
+    onFlipDone: (status) {},
 
     front: Container(
       decoration: BoxDecoration(
@@ -352,14 +408,42 @@ Widget buildPlayerTwoCard(
 
             Align(
                 alignment: Alignment.center,
-                child: Lottie.asset('assets/animations/lottiefiles/confused_robot-bot-3d.json', width: 250, height: 250),
-              )
+                child: isCompThinking ?
+                Lottie.asset('assets/animations/lottiefiles/confused_robot-bot-3d.json', width: 250, height: 250):
+                Center(
+                  child: FDottedLine(
+                    color: Colors.white,
+                    strokeWidth: 2.0,
+                    dottedLength: 8.0,
+                    space: 3.0,
+                    corner: FDottedLineCorner.all(6.0),
 
+                    /// add widget
+                    child: Container(
+                      width: 140,
+                      height: 80,
+                      alignment: Alignment.center,
+                      child: HeartBeat(
+                        child: Text(
+                          'COMPUTER CARD',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontWeight: FontWeight.w200,
+                            color: Colors.white,
+                            fontSize: 13,
+                          ),
+                        ),
+                        preferences: AnimationPreferences(duration: const Duration(milliseconds: 2500), autoPlay: AnimationPlayStates.Loop),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
           ],
         ),
 
         onTap: (){
-          cardKeyOfPlayerTwo.currentState.toggleCard();
+          //cardKeyOfPlayerTwo.currentState.toggleCard();
         },
       ),
     ),
@@ -395,14 +479,14 @@ Widget buildPlayerTwoCard(
           ),
 
           Align(
-            alignment: Alignment.bottomLeft,
+            alignment: Alignment.bottomCenter,
             child: Container(
               width: 200,
               height: 25,
               child: BounceInLeft(
                 child: WavyAnimatedTextKit(
                   textStyle: TextStyle(fontSize: 12.0, color: Colors.white, fontWeight: FontWeight.normal),
-                  text: ['*Select a stats to play'],
+                  text: ['*Stats will be automatically selected'],
                   isRepeatingAnimation: true,
                 ),
                 preferences: AnimationPreferences(duration: const Duration(milliseconds: 3000), autoPlay: AnimationPlayStates.Forward),
@@ -487,48 +571,7 @@ Widget buildPlayerTwoCard(
                           ],
                         ),
                         onTap: (){
-                          //p1 and p2 card will be touched in same position. So both index will be same.
 
-                          p1SelectedAttributeValue = 0;
-                          p2SelectedAttributeValue = 0;
-                          winPoint = 0;
-
-                          p1SelectedAttributeValue = int.parse(cardsAttributeListP1[indexOfCardDeck][index].value);
-                          p2SelectedAttributeValue = int.parse(cardsAttributeListOfP2[indexOfCardDeck][index].value);
-
-                          if(cardsAttributeListP1[indexOfCardDeck][index].winBasis == 'Highest Value'){
-                            if(p1SelectedAttributeValue > p2SelectedAttributeValue){
-                              isPlayer1Won = true;
-                              winPoint = int.parse(cardsAttributeListP1[indexOfCardDeck][index].winPoints);
-                            } else {
-                              isPlayer1Won = false;
-                              winPoint = int.parse(cardsAttributeListOfP2[indexOfCardDeck][index].winPoints);
-                            }
-
-                          } else if (cardsAttributeListP1[indexOfCardDeck][index].winBasis == 'Lowest Value'){
-                            if(p1SelectedAttributeValue < p2SelectedAttributeValue){
-                              isPlayer1Won = true;
-                              winPoint = int.parse(cardsAttributeListP1[indexOfCardDeck][index].winPoints);
-                            } else {
-                              isPlayer1Won = false;
-                              winPoint = int.parse(cardsAttributeListOfP2[indexOfCardDeck][index].winPoints);
-                            }
-                          }
-
-
-                          print('----indexOfCardDeck ' + indexOfCardDeck.toString());
-                          print('----p1SelectedIndexOfAttributeList ' + p1SelectedIndexOfAttributeList.toString());
-                          print('----p2SelectedIndexOfAttributeList ' + index.toString());
-                          print('----P1 attr name ' + cardsAttributeListP1[indexOfCardDeck][index].name);
-                          print('----P1 attr value ' + cardsAttributeListP1[indexOfCardDeck][index].value);
-                          print('----P2 attr name ' + cardsAttributeListOfP2[indexOfCardDeck][index].name);
-                          print('----P2 attr value ' + cardsAttributeListOfP2[indexOfCardDeck][index].value);
-                          print('----win Point ' + winPoint.toString());
-
-                          onClickActionOnP2AutoPlayCard(
-                              isPlayer1Won,
-                              winPoint
-                          );
                         },
                       ),
                     ),
@@ -581,8 +624,11 @@ Widget buildPlayerTwoCard(
               ),
             ],
           ),
+
+          doFlip(isCompThinking, cardKeyOfPlayerTwo),
         ],
       ),
     ),
   );
+
 }

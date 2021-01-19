@@ -19,6 +19,7 @@ import 'package:provider/provider.dart';
 import 'package:trump_card_game/model/responses/cards_res_model.dart';
 import 'package:trump_card_game/ui/widgets/include_screens/include_game_play_cards.dart';
 import 'package:trump_card_game/ui/widgets/include_screens/include_gameplay.dart';
+import 'package:trump_card_game/ui/widgets/libraries/avatar_glow.dart';
 
 import 'game_result.dart';
 
@@ -287,9 +288,23 @@ class Gameplay extends StatelessWidget {
                                               ),
                                             ),
 
-                                            SizedBox(
-                                              width: 30,
+                                            HeartBeat(
+                                              child: AvatarGlow(
+                                                endRadius: 27,
+                                                glowColor: Colors.orangeAccent,
+                                                child: Container(
+                                                  width: 55,
+                                                  child: Center(
+                                                    child: Image.asset('assets/icons/png/img_vs.png',color: Colors.black87,),
+                                                  ),
+
+                                                ),
+                                              ),
+                                              preferences: AnimationPreferences(
+                                                  duration: const Duration(milliseconds: 2000),
+                                                  autoPlay: AnimationPlayStates.Loop),
                                             ),
+
 
                                             Container(
                                               width: 150,

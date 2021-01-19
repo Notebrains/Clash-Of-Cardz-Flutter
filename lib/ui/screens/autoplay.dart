@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +16,8 @@ import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:trump_card_game/model/responses/cards_res_model.dart';
 import 'package:flutter_animator/flutter_animator.dart';
+import 'package:trump_card_game/ui/widgets/include_screens/include_game_play_win_screen.dart';
+import 'package:trump_card_game/ui/widgets/libraries/avatar_glow.dart';
 
 import 'game_result.dart';
 
@@ -26,9 +29,13 @@ class AutoPlay extends StatelessWidget {
   AutoPlay ({ Key key, this.categoryName, this.subcategoryName, this.gameType, this.cardToPlay}): super(key: key);
 
   final List<String> playerResultStatusList = [];
+  List<Cards> cards = [];
 
   int indexOfP1Card = 0;
   int indexOfCardDeck = 0;
+  int indexOfCardDeckSelectForComputer = 0;
+  bool isYourNextTurn = false;
+
 
   @override
   Widget build(BuildContext context) {
@@ -50,6 +57,7 @@ class AutoPlay extends StatelessWidget {
           stream: apiBloc.cardsRes,
           builder: (context, AsyncSnapshot<CardsResModel> snapshot) {
             if (snapshot.hasData) {
+              cards = snapshot.data.response.cards;
               return Container(
                 decoration: new BoxDecoration(
                   image: new DecorationImage(
@@ -63,7 +71,7 @@ class AutoPlay extends StatelessWidget {
                       children: [
                         Expanded(
                           flex: 3,
-                          child: BuildPlayer1Screen(snapshot.data.response.cards.length),
+                          child: BuildPlayer1Screen(cards.length),
                         ),
                         Expanded(
                           flex: 8,
@@ -224,13 +232,14 @@ class AutoPlay extends StatelessWidget {
                                             child: BounceInLeft(
                                               child: buildPlayerOneCard(
                                                 context,
-                                                snapshot.data.response.cards,
+                                                cards,
                                                 indexOfCardDeck,
                                                 onClickActionOnP1AutoPlayCard:
                                                     (int indexOfP1Card, String attributeTitle, String attributeValue) =>
                                                 {
                                                   //print('----p1c clicked'),
                                                   this.indexOfP1Card = indexOfP1Card,
+                                                    //context.read<AutoPlayStatesModel>().updateRebuildDeck(true),
                                                 },
                                               ),
                                               preferences: AnimationPreferences(
@@ -238,10 +247,24 @@ class AutoPlay extends StatelessWidget {
                                                   autoPlay: AnimationPlayStates.Forward),
                                             ),
                                           ),
-                                          SizedBox(
-                                            width: 55,
 
+                                          HeartBeat(
+                                            child: AvatarGlow(
+                                              endRadius: 27,
+                                              glowColor: Colors.orangeAccent,
+                                              child: Container(
+                                                width: 55,
+                                                child: Center(
+                                                  child: Image.asset('assets/icons/png/img_vs.png',color: Colors.black87,),
+                                                ),
+
+                                              ),
+                                            ),
+                                            preferences: AnimationPreferences(
+                                                duration: const Duration(milliseconds: 2000),
+                                                autoPlay: AnimationPlayStates.Loop),
                                           ),
+
                                           Container(
                                             width: 215,
                                             height: 300,
@@ -250,13 +273,12 @@ class AutoPlay extends StatelessWidget {
                                                 context,
                                                 indexOfP1Card,
                                                 indexOfCardDeck,
-                                                snapshot.data.response.cards,
+                                                cards,
+                                                false,
                                                 onClickActionOnP2AutoPlayCard: (bool isWon, int winPoint) =>
                                                 {
-                                                  print('---- p2c data called ${statesModel
-                                                      .isCardOneTouched}, $isWon, $winPoint'),
-                                                  if (isWon)
-                                                    {
+                                                  print('---- p2c data called ${statesModel.isCardOneTouched}, $isWon, $winPoint'),
+                                                  if (isWon) {
                                                       playerResultStatusList.add("won"), // "won" is lottie file name
 
                                                       //showing lottie anim depending on win or loose
@@ -273,8 +295,7 @@ class AutoPlay extends StatelessWidget {
                                                                 winPoint),
                                                       ),
                                                     }
-                                                  else
-                                                    {
+                                                  else {
                                                       playerResultStatusList.add("sad"), // "sad" is lottie file name
                                                       //showing lottie anim depending on win or loose
                                                       showWinDialog(
@@ -298,6 +319,7 @@ class AutoPlay extends StatelessWidget {
                                       ),
                                     ),
                                   ),
+
                                   Expanded(
                                     child: Container(
                                       //height: getScreenHeight(context) / 6.5,
@@ -355,7 +377,7 @@ class AutoPlay extends StatelessWidget {
                         ),
                         Expanded(
                           flex: 3,
-                          child: BuildPlayerTwoScreen(snapshot.data.response.cards.length),
+                          child: BuildPlayerTwoScreen(cards.length),
                         ),
                       ],
                     ),
@@ -400,7 +422,9 @@ class AutoPlay extends StatelessWidget {
                     child: Lottie.asset('assets/animations/lottiefiles/$lottieFileName',
                         height: 290, width: 290, repeat: false, animate: true),
                   ),
-                  onTap: () {},
+                  onTap: () {
+
+                  },
                 ),
                 Center(
                   child: Column(
@@ -438,6 +462,7 @@ class AutoPlay extends StatelessWidget {
         );
       },
     );
+
     try {
       //adding data in match result status list and
       //updating card index and scoreboard values
@@ -446,14 +471,20 @@ class AutoPlay extends StatelessWidget {
       if (isWon) {
         statesModel.playerOneTrump = statesModel.playerOneTrump + 1;
         statesModel.player1TotalPoints = statesModel.player1TotalPoints + winPoint;
+        isYourNextTurn = true;
       } else {
         statesModel.playerTwoTrump = statesModel.playerOneTrump + 1;
         statesModel.player2TotalPoints = statesModel.player2TotalPoints + winPoint;
+
+        isYourNextTurn = false;
+        //Choosing index of player stats list for next round for computer
+        indexOfCardDeckSelectForComputer = Random().nextInt((cards.length / 2).round());
       }
 
       statesModel.cardsDeckIndex = statesModel.cardsDeckIndex + 1;
 
       Timer(Duration(milliseconds: animHideTime), () {
+        showBothCardsDialog(context, cards, indexOfP1Card);
         Navigator.pop(dialogContext);
 
         context.read<AutoPlayStatesModel>().updatePlayerScoreboards(
@@ -511,7 +542,7 @@ class AutoPlay extends StatelessWidget {
   }
 
   void gotoResultScreen(BuildContext context, bool isP1Won, AutoPlayStatesModel statesModel) {
-    String winnerUrl = "";
+    String winnerUrl = '';
 
     SharedPreferenceHelper().getUserImage().then(
           (photoUrl) => winnerUrl = photoUrl,
@@ -533,20 +564,20 @@ class AutoPlay extends StatelessWidget {
               isP1Won: true,
             ),
       ),
-    ) :
+    ):
     Navigator.push(
       context,
       CupertinoPageRoute(
         builder: (context) =>
             GameResult(
-              winnerName: 'Raj Malhotra',
+              winnerName: 'Computer',
               winnerId: 'MEM000004',
               winnerImage: Constants.imgUrlTest,
               winnerCoins: "0",
               winnerPoints: statesModel.player2TotalPoints.toString(),
-              cardType: 'Cricket',
+              cardType: subcategoryName,
               clashType: '1 vs 1',
-              playedCards: '14',
+              playedCards: cardToPlay,
               isP1Won: false,
             ),
       ),
