@@ -62,7 +62,7 @@ class MyRootApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return  MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: MyHomePage(title: 'Value Lin',),
+      home: SplashScreen(),
     );
   }
 }

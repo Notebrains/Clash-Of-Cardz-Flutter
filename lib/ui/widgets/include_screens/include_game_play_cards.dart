@@ -8,6 +8,7 @@ import 'package:trump_card_game/ui/widgets/libraries/edge_alert.dart';
 import 'package:trump_card_game/ui/widgets/libraries/f_dotted_line.dart';
 import 'package:trump_card_game/ui/widgets/libraries/flip_card.dart';
 import 'package:trump_card_game/ui/widgets/libraries/shimmer.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 Widget buildCardAsP1(
   BuildContext context,
@@ -189,9 +190,11 @@ Widget buildCardAsP1(
                                         color: Colors.indigo),
                                   ),
                                   Stack(alignment: Alignment.center, children: <Widget>[
-                                    Image.asset(
-                                      'assets/icons/png/stars.png',
+                                    SvgPicture.asset(
+                                      'assets/icons/svg/star.svg',
                                       color: Colors.yellow,
+                                      width: 15,
+                                      height: 15,
                                     ),
                                     Text(
                                       cardsAttributeList[indexOfCardDeck][index].winPoints,
@@ -457,15 +460,9 @@ Widget buildCardAsP2(
   List<Cards> cardsList, {
   Function(bool isWon, int winPoint) onClickActionOnP2GameplayCard,
 }) {
-  GlobalKey<FlipCardState> cardKeyOfPlayerTwo = GlobalKey<FlipCardState>();
   List<List<Attribute>> cardsAttributeListOfP2 = [];
   List<List<Attribute>> cardsAttributeList = [];
-  bool isPlayer1Won = false;
-  int p1SelectedAttributeValue = 0;
-  int p2SelectedAttributeValue = 0;
-  int winPoint = 0;
   int cardListSizeForP2 = (cardsList.length / 2).round();
-  //int indexOfCardDeckForP2 = cardListSizeForP2 + indexOfCardDeck;
 
   try {
     //print('-----flagImage ' + cardsList[cardListSizeForP2 + indexOfCardDeck].flagImage);
@@ -562,9 +559,11 @@ Widget buildCardAsP2(
                                     color: Colors.indigo),
                               ),
                               Stack(alignment: Alignment.center, children: <Widget>[
-                                Image.asset(
-                                  'assets/icons/png/stars.png',
+                                SvgPicture.asset(
+                                  'assets/icons/svg/star.svg',
                                   color: Colors.yellow,
+                                  width: 15,
+                                  height: 15,
                                 ),
                                 Text(
                                   cardsAttributeListOfP2[indexOfCardDeck][index].winPoints,

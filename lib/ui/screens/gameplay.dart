@@ -20,6 +20,7 @@ import 'package:trump_card_game/model/responses/cards_res_model.dart';
 import 'package:trump_card_game/ui/widgets/include_screens/include_game_play_cards.dart';
 import 'package:trump_card_game/ui/widgets/include_screens/include_gameplay.dart';
 import 'package:trump_card_game/ui/widgets/libraries/avatar_glow.dart';
+import 'package:trump_card_game/ui/widgets/libraries/flutter_toast.dart';
 
 import 'game_result.dart';
 
@@ -182,10 +183,6 @@ class Gameplay extends StatelessWidget {
                                                           height: 45,
                                                           decoration: BoxDecoration(
                                                             color: Colors.black,
-                                                            border: Border.all(
-                                                              color: Colors.black,
-                                                              width: 5,
-                                                            ),
                                                             borderRadius: BorderRadius.all(Radius.circular(3)),
                                                             boxShadow: <BoxShadow>[
                                                               BoxShadow(
@@ -672,7 +669,6 @@ class Gameplay extends StatelessWidget {
     try {
       //adding data in match result status list and
       //updating card index and scoreboard values
-      indexOfCardDeck = indexOfCardDeck + 1;
 
       if (isWon) {
         statesModel.playerOneTrump = statesModel.playerOneTrump + 1;
@@ -684,8 +680,6 @@ class Gameplay extends StatelessWidget {
         isYourNextTurn = false;
       }
 
-      statesModel.cardsDeckIndex = statesModel.cardsDeckIndex + 1;
-
       p1TurnStatus = 'no';
       p2TurnStatus = 'no';
 
@@ -694,27 +688,42 @@ class Gameplay extends StatelessWidget {
         'isP2TurnComplete': p2TurnStatus,
       });
 
-
       Timer(Duration(milliseconds: animHideTime), () {
-        showBothCardsDialog(context, cards, indexOfP1Card);
         Navigator.pop(dialogContext);
 
-        context.read<GamePlayStatesModel>().updatePlayerScoreboards(
-            statesModel.playerOneTrump,
-            statesModel.playerTwoTrump,
-            statesModel.player1TotalPoints,
-            statesModel.player2TotalPoints,
-            statesModel.cardsDeckIndex,
-            false,
-            false);
+        showBothCardsDialog(context, cards, indexOfP1Card, indexOfCardDeck, statesModel.cardCountOnDeck == 0 ? true : false, _isPlayAsP1,onClickActionOnPlayAgain :( bool isMatchEnded){
+          if (!isMatchEnded) {
+            indexOfCardDeck = indexOfCardDeck + 1;
 
-        context.read<GamePlayStatesModel>().updateCardCountOnDeck(statesModel.cardCountOnDeck - 1);
-        
-        print('------statesModel.cardCountOnDeck: ${statesModel.cardCountOnDeck}');
-        if (statesModel.cardCountOnDeck == 0) {
-          gotoResultScreen(context, true, statesModel);
-        }
+            context.read<GamePlayStatesModel>().updatePlayerScoreboards(
+                statesModel.playerOneTrump,
+                statesModel.playerTwoTrump,
+                statesModel.player1TotalPoints,
+                statesModel.player2TotalPoints);
+
+            context.read<GamePlayStatesModel>().updateCardCountOnDeck(statesModel.cardCountOnDeck - 1);
+
+            String message = '';
+            isYourNextTurn ? message = "Your Turn To Play" : message = 'P-2 Turn To Play';
+
+            Toast.show(message, context, duration: Toast.lengthLong, gravity:  Toast.bottom,
+                backgroundColor: Colors.black87.withOpacity(0.5),
+                textStyle:  TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                  fontFamily: 'montserrat',
+                  shadows: [
+                    Shadow(color: Colors.white),
+                  ],
+                ));
+          } else{
+            gotoResultScreen(context, true, statesModel);
+          }
+
+        });
       });
+
     } catch (e) {
       print(e);
     }
@@ -763,6 +772,7 @@ class Gameplay extends StatelessWidget {
               clashType: '1 vs 1', //static
               playedCards: cardsToPlay,
               isP1Won: true,
+              gamePlayType: 'vsPlayer',
             ),
       ),
     ) :
@@ -780,6 +790,7 @@ class Gameplay extends StatelessWidget {
               clashType: '1 vs 1',
               playedCards: cardsToPlay,
               isP1Won: false,
+              gamePlayType: 'vsPlayer',
             ),
       ),
     );

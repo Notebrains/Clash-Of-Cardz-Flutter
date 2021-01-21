@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:trump_card_game/helper/exten_fun/base_application_fun.dart';
 import 'package:shape_of_view/shape_of_view.dart';
 import 'package:trump_card_game/ui/widgets/libraries/flip_card.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class PlayerCard extends StatelessWidget {
   List<String> images = [
@@ -108,9 +109,11 @@ class PlayerCard extends StatelessWidget {
                                           color: Colors.indigo),
                                     ),
                                     Stack(children: <Widget>[
-                                      Image.asset(
-                                        'assets/icons/png/stars.png',
+                                      SvgPicture.asset(
+                                        'assets/icons/svg/star.svg',
                                         color: Colors.yellow,
+                                        width: 15,
+                                        height: 15,
                                       ),
                                       Container(
                                         margin: EdgeInsets.only(left: 7, top: 3),

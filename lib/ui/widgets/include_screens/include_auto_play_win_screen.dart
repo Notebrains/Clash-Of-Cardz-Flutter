@@ -15,8 +15,8 @@ import 'package:trump_card_game/ui/widgets/libraries/flip_card.dart';
 import 'package:trump_card_game/ui/widgets/libraries/shimmer.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-void showBothCardsDialog(BuildContext context, List<Cards> cards, int indexOfSelectedCard, int indexOfCardDeck, bool isMatchEnded, bool isPlayAsP1,{
-  Function(bool isPlayAgainClicked) onClickActionOnPlayAgain,
+void showBothCardsDialog(BuildContext context, List<Cards> cards, int indexOfSelectedCard, int indexOfCardDeck, bool isMatchEnded, {
+Function(bool isPlayAgainClicked) onClickActionOnPlayAgain,
 }) {
   BuildContext dialogContext;
 
@@ -61,22 +61,15 @@ void showBothCardsDialog(BuildContext context, List<Cards> cards, int indexOfSel
                                           width: 215,
                                           height: 310,
                                           child: RotateInDownRight(
-                                            child: isPlayAsP1? buildCard1(
+                                            child: buildCard1(
                                               context,
                                               cards,
                                               indexOfCardDeck,
                                               indexOfSelectedCard,
                                               onClickActionOnP1GameplayCard:
-                                                  (int indexOfP1Card, String attributeTitle, String attributeValue, String winBasis, String winPoints) => {
-
-                                                  },
-                                            ) : buildCard2(
-                                              context,
-                                              indexOfSelectedCard,
-                                              indexOfCardDeck,
-                                              cards,
-                                              onClickActionOnP2GameplayCard: (bool isWon, int winPoint) =>
+                                                  (int indexOfP1Card, String attributeTitle, String attributeValue, String winBasis, String winPoints) =>
                                               {
+
                                               },
                                             ),
                                             preferences: AnimationPreferences(
@@ -93,22 +86,13 @@ void showBothCardsDialog(BuildContext context, List<Cards> cards, int indexOfSel
                                           width: 220,
                                           height: 315,
                                           child: RollIn(
-                                            child: isPlayAsP1 ? buildCard2(
+                                            child: buildCard2(
                                               context,
                                               indexOfSelectedCard,
                                               indexOfCardDeck,
                                               cards,
                                               onClickActionOnP2GameplayCard: (bool isWon, int winPoint) =>
                                               {
-                                              },
-                                            ) : buildCard1(
-                                              context,
-                                              cards,
-                                              indexOfCardDeck,
-                                              indexOfSelectedCard,
-                                              onClickActionOnP1GameplayCard:
-                                                  (int indexOfP1Card, String attributeTitle, String attributeValue, String winBasis, String winPoints) => {
-
                                               },
                                             ),
                                             preferences: AnimationPreferences(
@@ -129,7 +113,7 @@ void showBothCardsDialog(BuildContext context, List<Cards> cards, int indexOfSel
                                       padding: EdgeInsets.fromLTRB(0.0, 2.0, 0.0, 0.0),
                                       splashColor: Colors.grey,
                                       child: Container(
-                                        width: 250,
+                                        width: 290,
                                         height: 50,
                                         decoration: BoxDecoration(
                                           image: DecorationImage(image: AssetImage('assets/icons/png/bg_button.png'), fit: BoxFit.fill),
@@ -138,10 +122,10 @@ void showBothCardsDialog(BuildContext context, List<Cards> cards, int indexOfSel
                                           alignment: Alignment.center,
                                           padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 12.0),
                                           child: Text(
-                                            isMatchEnded ? "PLAY AGAIN" : 'MATCH ENDED',
+                                            isMatchEnded ? 'MATCH ENDED' : "PLAY NEXT CARD",
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
-                                                fontSize: 16,
+                                                fontSize: 15,
                                                 fontStyle: FontStyle.normal,
                                                 fontFamily: 'neuropol_x_rg',
                                                 fontWeight: FontWeight.bold,
@@ -251,8 +235,8 @@ Widget buildCard1(
                 return Container(
                   padding: index == indexOfSelectedCard? EdgeInsets.only(left: 3, top: 1):EdgeInsets.all(0),
                   decoration: BoxDecoration(
-                    border: index == indexOfSelectedCard? Border.all(color: Colors.white):Border.all(color: Colors.transparent),
-                    borderRadius: index == indexOfSelectedCard? BorderRadius.all(Radius.circular(3)):BorderRadius.all(Radius.circular(0)),
+                      border: index == indexOfSelectedCard? Border.all(color: Colors.white):Border.all(color: Colors.transparent),
+                      borderRadius: index == indexOfSelectedCard? BorderRadius.all(Radius.circular(3)):BorderRadius.all(Radius.circular(0)),
                   ),
                   //margin: EdgeInsets.only(left: 5, right: 5),
                   margin: EdgeInsets.symmetric(vertical: 0, horizontal: 1),

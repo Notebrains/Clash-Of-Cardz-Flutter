@@ -10,7 +10,6 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final ValueNotifier<int> _counter = ValueNotifier<int>(0);
-  final Widget goodJob = const Text('Good job!');
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,9 +20,9 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text('You have pushed the button this many times:'),
+            Text('You have pushed the button this many times: ${_counter.value}'), // this widget won't rebuild
             ValueListenableBuilder(
-              builder: (BuildContext context, int value, Widget child) {
+              builder: (BuildContext context, int value, Widget child) {  // widget under builder will rebuild
                 // This builder will only get called when the _counter
                 // is updated.
                 return Row(
@@ -38,7 +37,7 @@ class _MyHomePageState extends State<MyHomePage> {
               // The child parameter is most helpful if the child is
               // expensive to build and does not depend on the value from
               // the notifier.
-              child: goodJob,
+              child: Text('Good job! ${_counter.value}'), // this widget won't rebuild
             )
           ],
         ),

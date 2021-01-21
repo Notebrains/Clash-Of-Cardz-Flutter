@@ -52,21 +52,11 @@ class GamePlayStatesModel with ChangeNotifier {
       int playerOneTrump,
       int playerTwoTrump,
       int player1TotalPoints,
-      int player2TotalPoints,
-      int cardsDeckIndex,
-      bool isCardOneTouched,
-      bool isCardTwoTouched
-      ) {
-
+      int player2TotalPoints) {
     this.player1TotalPoints = player1TotalPoints;
     this.player2TotalPoints = player2TotalPoints;
-
     this.playerOneTrump = playerOneTrump;
     this.playerTwoTrump = playerTwoTrump;
-    this.cardsDeckIndex = cardsDeckIndex;
-
-    this.isCardOneTouched = isCardOneTouched;
-    this.isCardTwoTouched = isCardTwoTouched;
 
     notifyListeners();
   }

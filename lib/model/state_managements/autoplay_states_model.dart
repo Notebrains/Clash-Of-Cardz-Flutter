@@ -37,8 +37,6 @@ class AutoPlayStatesModel with ChangeNotifier {
       String attributeTitle,
       String attributeValue,
       String cardId,
-      bool isCardOneTouched,
-      bool isCardTwoTouched
       ) {
 
     name = 'Kiron';
@@ -58,9 +56,6 @@ class AutoPlayStatesModel with ChangeNotifier {
       int playerTwoTrump,
       int player1TotalPoints,
       int player2TotalPoints,
-      int cardsDeckIndex,
-      bool isCardOneTouched,
-      bool isCardTwoTouched
       ) {
 
     this.player1TotalPoints = player1TotalPoints;
@@ -68,10 +63,6 @@ class AutoPlayStatesModel with ChangeNotifier {
 
     this.playerOneTrump = playerOneTrump;
     this.playerTwoTrump = playerTwoTrump;
-    this.cardsDeckIndex = cardsDeckIndex;
-
-    this.isCardOneTouched = isCardOneTouched;
-    this.isCardTwoTouched = isCardTwoTouched;
 
     notifyListeners();
   }

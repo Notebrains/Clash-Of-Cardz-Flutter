@@ -23,7 +23,8 @@ class GameResult extends StatelessWidget {
       this.winnerPoints,
       this.winnerCoins,
       this.cardType,
-      this.isP1Won});
+      this.isP1Won,
+      this.gamePlayType});
 
   final String winnerName;
   final String winnerId;
@@ -34,6 +35,7 @@ class GameResult extends StatelessWidget {
   final String winnerCoins;
   final String cardType;
   final bool isP1Won;
+  final String gamePlayType;
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +86,13 @@ class GameResult extends StatelessWidget {
                             borderRadius: BorderRadius.all(Radius.circular(5.0)),
                             child: CircleAvatar(
                               radius: 30,
-                              backgroundImage: NetworkImage(winnerImage),
+                              child: FadeInImage.assetNetwork(
+                                placeholder: 'assets/icons/png/circle-avator-default-img.png',
+                                image: winnerImage,
+                                fit: BoxFit.fill,
+                                width: 65,
+                                height: 65,
+                              ),
                             ),
                           ),
                         ),
@@ -272,6 +280,9 @@ class GameResult extends StatelessWidget {
   }
 
    Widget saveGameResultToServer() {
+    if (gamePlayType == 'vsPlayer') {
+      //save game result
+    }
 
      var requestBody = {
        'match_result': [{
