@@ -60,6 +60,7 @@ class _GameMoreOptionState extends State<GameMoreOption> {
         .arguments;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       key: _drawerKey, // assign key to Scaffold
       drawer: Drawer(
         child: new ListView(
@@ -367,9 +368,7 @@ class _GameMoreOptionState extends State<GameMoreOption> {
                       ),
                       onTap: (){
                         if(gameType == 'Player vs Computer'){
-                          Navigator.push(context, MaterialPageRoute(
-                              builder: (BuildContext context) => AutoPlay()));
-
+                          Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => AutoPlay()));
                         } else {
                           showDialog(
                             context: context,
@@ -378,7 +377,6 @@ class _GameMoreOptionState extends State<GameMoreOption> {
                               subcategoryName: widget.subcategoryName,
                               gameType: gameType,
                               cardsToPlay: cardsToBePlayed[index],
-
                             ),
                           );
                         }

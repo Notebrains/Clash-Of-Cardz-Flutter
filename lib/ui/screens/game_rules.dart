@@ -42,6 +42,7 @@ class _GameRuleState extends State<GameRule> {
     setScreenOrientationToLandscape();
     apiBloc.fetchProfileRes('ZGHrDz4prqsu4BcApPaQYaGgq', "MEM000001");
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Container(
         decoration: new BoxDecoration(
           image: new DecorationImage(

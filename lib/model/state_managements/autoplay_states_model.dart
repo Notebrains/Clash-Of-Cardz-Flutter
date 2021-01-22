@@ -57,10 +57,8 @@ class AutoPlayStatesModel with ChangeNotifier {
       int player1TotalPoints,
       int player2TotalPoints,
       ) {
-
     this.player1TotalPoints = player1TotalPoints;
-    this.player1TotalPoints = player1TotalPoints;
-
+    this.player2TotalPoints = player2TotalPoints;
     this.playerOneTrump = playerOneTrump;
     this.playerTwoTrump = playerTwoTrump;
 

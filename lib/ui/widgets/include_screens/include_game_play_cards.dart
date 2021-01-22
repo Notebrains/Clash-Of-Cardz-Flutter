@@ -189,19 +189,21 @@ Widget buildCardAsP1(
                                         fontWeight: FontWeight.bold,
                                         color: Colors.indigo),
                                   ),
-                                  Stack(alignment: Alignment.center, children: <Widget>[
-                                    SvgPicture.asset(
-                                      'assets/icons/svg/star.svg',
-                                      color: Colors.yellow,
-                                      width: 15,
-                                      height: 15,
-                                    ),
-                                    Text(
-                                      cardsAttributeList[indexOfCardDeck][index].winPoints,
-                                      textAlign: TextAlign.right,
-                                      style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold, color: Colors.black),
-                                    ),
-                                  ]),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 3),
+                                    child: Stack(alignment: Alignment.center, children: <Widget>[
+                                      SvgPicture.asset(
+                                        'assets/icons/svg/star1.svg',
+                                        width: 13,
+                                        height: 13,
+                                      ),
+                                      Text(
+                                        cardsAttributeList[indexOfCardDeck][index].winPoints,
+                                        textAlign: TextAlign.right,
+                                        style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold, color: Colors.black),
+                                      ),
+                                    ]),
+                                  ),
                                 ],
                               ),
                               preferences: AnimationPreferences(
@@ -558,19 +560,21 @@ Widget buildCardAsP2(
                                     fontWeight: FontWeight.bold,
                                     color: Colors.indigo),
                               ),
-                              Stack(alignment: Alignment.center, children: <Widget>[
-                                SvgPicture.asset(
-                                  'assets/icons/svg/star.svg',
-                                  color: Colors.yellow,
-                                  width: 15,
-                                  height: 15,
-                                ),
-                                Text(
-                                  cardsAttributeListOfP2[indexOfCardDeck][index].winPoints,
-                                  textAlign: TextAlign.right,
-                                  style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold, color: Colors.black),
-                                ),
-                              ]),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 3),
+                                child: Stack(alignment: Alignment.center, children: <Widget>[
+                                  SvgPicture.asset(
+                                    'assets/icons/svg/star1.svg',
+                                    width: 13,
+                                    height: 13,
+                                  ),
+                                  Text(
+                                    cardsAttributeListOfP2[indexOfCardDeck][index].winPoints,
+                                    textAlign: TextAlign.right,
+                                    style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold, color: Colors.black),
+                                  ),
+                                ]),
+                              ),
                             ],
                           ),
                           preferences: AnimationPreferences(

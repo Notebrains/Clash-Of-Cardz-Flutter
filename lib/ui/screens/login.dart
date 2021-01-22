@@ -114,6 +114,7 @@ class _LogInState extends State<LogIn> {
       builder: BotToastInit(),
       navigatorObservers: [BotToastNavigatorObserver()],
       home: Scaffold(
+        resizeToAvoidBottomInset: false,
         body: Container(
           decoration: new BoxDecoration(
             image: new DecorationImage(

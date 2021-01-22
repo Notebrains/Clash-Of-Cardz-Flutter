@@ -60,6 +60,7 @@ Function(bool isPlayAgainClicked) onClickActionOnPlayAgain,
                                         Container(
                                           width: 215,
                                           height: 310,
+                                          margin: EdgeInsets.only(right: 12),
                                           child: RotateInDownRight(
                                             child: buildCard1(
                                               context,
@@ -78,8 +79,20 @@ Function(bool isPlayAgainClicked) onClickActionOnPlayAgain,
                                           ),
                                         ),
 
-                                        SizedBox(
-                                          width: 80,
+                                        HeartBeat(
+                                          child: AvatarGlow(
+                                            endRadius: 90,
+                                            glowColor: Colors.lightBlueAccent,
+                                            child: Container(
+                                              width: 130,
+                                              child: Center(
+                                                child: Image.asset('assets/icons/png/vs2.png'),
+                                              ),
+                                            ),
+                                          ),
+                                          preferences: AnimationPreferences(
+                                              duration: const Duration(milliseconds: 2000),
+                                              autoPlay: AnimationPlayStates.Loop),
                                         ),
 
                                         Container(
@@ -106,14 +119,14 @@ Function(bool isPlayAgainClicked) onClickActionOnPlayAgain,
                                   ),
                                 ),
 
-                                HeartBeat(
+                                Pulse(
                                   child:  Container(
                                     margin: EdgeInsets.only(top: 20),
                                     child: MaterialButton(
                                       padding: EdgeInsets.fromLTRB(0.0, 2.0, 0.0, 0.0),
                                       splashColor: Colors.grey,
                                       child: Container(
-                                        width: 290,
+                                        width: 220,
                                         height: 50,
                                         decoration: BoxDecoration(
                                           image: DecorationImage(image: AssetImage('assets/icons/png/bg_button.png'), fit: BoxFit.fill),
@@ -122,10 +135,10 @@ Function(bool isPlayAgainClicked) onClickActionOnPlayAgain,
                                           alignment: Alignment.center,
                                           padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 12.0),
                                           child: Text(
-                                            isMatchEnded ? 'MATCH ENDED' : "PLAY NEXT CARD",
+                                            isMatchEnded ? 'Match Ended' : "Play Next Card",
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
-                                                fontSize: 15,
+                                                fontSize: 14,
                                                 fontStyle: FontStyle.normal,
                                                 fontFamily: 'neuropol_x_rg',
                                                 fontWeight: FontWeight.bold,
@@ -141,7 +154,7 @@ Function(bool isPlayAgainClicked) onClickActionOnPlayAgain,
                                     ),
                                   ),
                                   preferences:
-                                  AnimationPreferences(duration: const Duration(milliseconds: 2500), autoPlay: AnimationPlayStates.Loop),
+                                  AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Loop),
                                 ),
                               ],
                             ),
@@ -189,9 +202,13 @@ Widget buildCard1(
 
   return Container(
     decoration: BoxDecoration(
+      border: Border.all(
+        color: Colors.deepOrange,
+        width: 1,
+      ),
       boxShadow: <BoxShadow>[
         BoxShadow(
-          color: Colors.white70,
+          color: Colors.deepOrangeAccent,
           blurRadius: 15.0,
           offset: Offset(5.0, 5.0),
         ),
@@ -229,12 +246,13 @@ Widget buildCard1(
               childAspectRatio: 5 / 3,
               physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
               // if you want IOS bouncing effect, otherwise remove this line
-              padding: EdgeInsets.all(4),
+              padding: EdgeInsets.all(2),
               //change the number as you want
               children: List.generate(cardsAttributeList[indexOfCardDeck].length, (index) {
                 return Container(
                   padding: index == indexOfSelectedCard? EdgeInsets.only(left: 3, top: 1):EdgeInsets.all(0),
                   decoration: BoxDecoration(
+                      color: index == indexOfSelectedCard? Colors.white24: Colors.orange,
                       border: index == indexOfSelectedCard? Border.all(color: Colors.white):Border.all(color: Colors.transparent),
                       borderRadius: index == indexOfSelectedCard? BorderRadius.all(Radius.circular(3)):BorderRadius.all(Radius.circular(0)),
                   ),
@@ -261,19 +279,21 @@ Widget buildCard1(
                                     color: Colors.indigo),
                               ),
 
-                              Stack(alignment: Alignment.center, children: <Widget>[
-                                SvgPicture.asset(
-                                  'assets/icons/svg/star.svg',
-                                  color: Colors.yellow,
-                                  width: 15,
-                                  height: 15,
-                                ),
-                                Text(
-                                  cardsAttributeList[indexOfCardDeck][index].winPoints,
-                                  textAlign: TextAlign.right,
-                                  style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold, color: Colors.black),
-                                ),
-                              ]),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 3),
+                                child: Stack(alignment: Alignment.center, children: <Widget>[
+                                  SvgPicture.asset(
+                                    'assets/icons/svg/star1.svg',
+                                    width: 13,
+                                    height: 13,
+                                  ),
+                                  Text(
+                                    cardsAttributeList[indexOfCardDeck][index].winPoints,
+                                    textAlign: TextAlign.right,
+                                    style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold, color: Colors.black),
+                                  ),
+                                ]),
+                              ),
                             ],
                           ),
                           preferences: AnimationPreferences(
@@ -378,9 +398,13 @@ Widget buildCard2(
 
   return Container(
     decoration: BoxDecoration(
+      border: Border.all(
+        color: Colors.blueAccent,
+        width: 1,
+      ),
       boxShadow: <BoxShadow>[
         BoxShadow(
-          color: Colors.white70,
+          color: Colors.blueAccent,
           blurRadius: 15.0,
           offset: Offset(5.0, 5.0),
         ),
@@ -389,7 +413,7 @@ Widget buildCard2(
     child: Stack(
       children: [
         Container(
-          color: Colors.orange,
+          color: Colors.lightBlueAccent,
         ),
         Align(
           alignment: Alignment.topCenter,
@@ -416,11 +440,12 @@ Widget buildCard2(
               childAspectRatio: 5/3,
               physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
               // if you want IOS bouncing effect, otherwise remove this line
-              padding: EdgeInsets.all(3),
+              padding: EdgeInsets.all(2),
               //change the number as you want
               children: List.generate(cardsAttributeListOfP2[indexOfCardDeck].length, (index) {
                 return Container(padding: index == indexOfSelectedCard? EdgeInsets.only(left: 3, top: 1):EdgeInsets.all(0),
                   decoration: BoxDecoration(
+                    color: index == indexOfSelectedCard? Colors.white24: Colors.lightBlueAccent,
                     border: index == indexOfSelectedCard? Border.all(color: Colors.white):Border.all(color: Colors.transparent),
                     borderRadius: index == indexOfSelectedCard? BorderRadius.all(Radius.circular(3)):BorderRadius.all(Radius.circular(0)),
                   ),
@@ -444,19 +469,21 @@ Widget buildCard2(
                                   color: Colors.indigo),
                             ),
 
-                            Stack(alignment: Alignment.center, children: <Widget>[
-                              SvgPicture.asset(
-                                'assets/icons/svg/star.svg',
-                                color: Colors.yellow,
-                                width: 15,
-                                height: 15,
-                              ),
-                              Text(
-                                cardsAttributeListOfP2[indexOfCardDeck][index].winPoints,
-                                textAlign: TextAlign.right,
-                                style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold, color: Colors.black),
-                              ),
-                            ]),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 3),
+                              child: Stack(alignment: Alignment.center, children: <Widget>[
+                                SvgPicture.asset(
+                                  'assets/icons/svg/star1.svg',
+                                  width: 13,
+                                  height: 13,
+                                ),
+                                Text(
+                                  cardsAttributeListOfP2[indexOfCardDeck][index].winPoints,
+                                  textAlign: TextAlign.right,
+                                  style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold, color: Colors.black),
+                                ),
+                              ]),
+                            ),
                           ],
                         ),
                         preferences: AnimationPreferences(

@@ -108,26 +108,21 @@ class PlayerCard extends StatelessWidget {
                                           fontWeight: FontWeight.bold,
                                           color: Colors.indigo),
                                     ),
-                                    Stack(children: <Widget>[
-                                      SvgPicture.asset(
-                                        'assets/icons/svg/star.svg',
-                                        color: Colors.yellow,
-                                        width: 15,
-                                        height: 15,
-                                      ),
-                                      Container(
-                                        margin: EdgeInsets.only(left: 7, top: 3),
-                                        child: Text(
-                                          "1",
-                                          textAlign: TextAlign.start,
-                                          style: TextStyle(
-                                              fontSize: 8,
-                                              fontFamily: 'neuropol_x_rg',
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.black),
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 3),
+                                      child: Stack(alignment: Alignment.center, children: <Widget>[
+                                        SvgPicture.asset(
+                                          'assets/icons/svg/star1.svg',
+                                          width: 13,
+                                          height: 13,
                                         ),
-                                      ),
-                                    ]),
+                                        Text(
+                                          '1',
+                                          textAlign: TextAlign.right,
+                                          style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold, color: Colors.black),
+                                        ),
+                                      ]),
+                                    ),
                                   ],
                                 ),
                                 Text(

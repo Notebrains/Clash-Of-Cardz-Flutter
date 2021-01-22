@@ -17,6 +17,7 @@ class Profile extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
+        resizeToAvoidBottomInset: false,
         body: Container(
           decoration: new BoxDecoration(
             image: new DecorationImage(

@@ -42,240 +42,244 @@ class GameResult extends StatelessWidget {
     setScreenOrientationToLandscape();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Scaffold(
-          body: Stack(
-            alignment: Alignment.center,
-            children: <Widget>[
+      home: WillPopScope(
+        onWillPop: () async => false,
+        child: Scaffold(
+            resizeToAvoidBottomInset: false,
+            body: Stack(
+              alignment: Alignment.center,
+              children: <Widget>[
 
-              Container(
-                width: double.infinity,
-                height: double.infinity,
-                child: Image.asset('assets/images/bg_img13.png', fit: BoxFit.fill),
-              ),
+                Container(
+                  width: double.infinity,
+                  height: double.infinity,
+                  child: Image.asset('assets/images/bg_img13.png', fit: BoxFit.fill),
+                ),
 
-              Stack(
-                alignment: AlignmentDirectional.center,
-                children: [
-                  FadeInDownBig(
-                    child: Container(
-                      margin: EdgeInsets.fromLTRB(0, 10, 0, 20),
-                      child: Pulse(
-                        child: Image.asset('assets/images/bg_victory.png', fit: BoxFit.contain),
-                        preferences:
-                        AnimationPreferences(duration: const Duration(milliseconds: 5500), autoPlay: AnimationPlayStates.Loop),
+                Stack(
+                  alignment: AlignmentDirectional.center,
+                  children: [
+                    FadeInDownBig(
+                      child: Container(
+                        margin: EdgeInsets.fromLTRB(0, 10, 0, 20),
+                        child: Pulse(
+                          child: Image.asset('assets/images/bg_victory.png', fit: BoxFit.contain),
+                          preferences:
+                          AnimationPreferences(duration: const Duration(milliseconds: 5500), autoPlay: AnimationPlayStates.Loop),
+                        ),
                       ),
+                      preferences:
+                      AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
                     ),
-                    preferences:
-                    AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
-                  ),
 
-                  //Lottie.asset('assets/animations/lottiefiles/confetti-on-transparent-background.json',
-                      //width: double.infinity, height: double.infinity, repeat: true, animate: true, fit: BoxFit.contain),
+                    //Lottie.asset('assets/animations/lottiefiles/confetti-on-transparent-background.json',
+                        //width: double.infinity, height: double.infinity, repeat: true, animate: true, fit: BoxFit.contain),
 
-                  Lottie.asset('assets/animations/lottiefiles/confetti-on-transparent-background.json',
-                      width: double.infinity, height: double.infinity, repeat: true, animate: true, fit: BoxFit.fitWidth, reverse: true),
+                    Lottie.asset('assets/animations/lottiefiles/confetti-on-transparent-background.json',
+                        width: double.infinity, height: double.infinity, repeat: true, animate: true, fit: BoxFit.fitWidth, reverse: true),
 
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      ZoomIn(
-                        child: Container(
-                          margin: EdgeInsets.only(top: 100),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                            child: CircleAvatar(
-                              radius: 30,
-                              child: FadeInImage.assetNetwork(
-                                placeholder: 'assets/icons/png/circle-avator-default-img.png',
-                                image: winnerImage,
-                                fit: BoxFit.fill,
-                                width: 65,
-                                height: 65,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ZoomIn(
+                          child: Container(
+                            margin: EdgeInsets.only(top: 100),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                              child: CircleAvatar(
+                                radius: 30,
+                                child: FadeInImage.assetNetwork(
+                                  placeholder: 'assets/icons/png/circle-avator-default-img.png',
+                                  image: winnerImage,
+                                  fit: BoxFit.fill,
+                                  width: 65,
+                                  height: 65,
+                                ),
                               ),
                             ),
                           ),
+                          preferences:
+                              AnimationPreferences(duration: const Duration(milliseconds: 3000), autoPlay: AnimationPlayStates.Forward),
                         ),
-                        preferences:
-                            AnimationPreferences(duration: const Duration(milliseconds: 3000), autoPlay: AnimationPlayStates.Forward),
-                      ),
-                      FadeInDownBig(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(winnerName,
-                              style: TextStyle(color: Colors.orangeAccent, fontWeight: FontWeight.w900, fontSize: 18)),
+                        FadeInDownBig(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(winnerName,
+                                style: TextStyle(color: Colors.orangeAccent, fontWeight: FontWeight.w900, fontSize: 18)),
+                          ),
+                          preferences:
+                              AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
                         ),
-                        preferences:
-                            AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
-                      ),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          HeartBeat(
-                            child: IconButton(
-                              iconSize: 20,
-                              icon: SvgPicture.asset('assets/icons/svg/card_count.svg',
-                              color: Colors.yellow[600],),
-                              onPressed: null,
-                            ),
-                            preferences: AnimationPreferences(
-                                duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Loop),
-                          ),
-                          FadeInLeftBig(
-                            child: Padding(
-                              padding: const EdgeInsets.only(right: 8.0),
-                              child: Text(
-                                playedCards,
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    fontStyle: FontStyle.normal,
-                                    fontFamily: 'montserrat',
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.grey[400]),
-                              ),
-                            ),
-                            preferences: AnimationPreferences(
-                                duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
-                          ),
-                          RubberBand(
-                            child: IconButton(
-                              iconSize: 45,
-                              icon: SvgPicture.asset('assets/icons/svg/competition.svg'),
-                              onPressed: null,
-                            ),
-                            preferences: AnimationPreferences(
-                                duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Loop),
-                          ),
-                          Flip(
-                            child: Padding(
-                              padding: const EdgeInsets.only(right: 8.0),
-                              child: Text(
-                                clashType,
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    fontStyle: FontStyle.normal,
-                                    fontFamily: 'montserrat',
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.grey[400]),
-                              ),
-                            ),
-                            preferences: AnimationPreferences(
-                                duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
-                          ),
-                          Swing(
-                            child: IconButton(
-                              iconSize: 35,
-                              icon: SvgPicture.asset('assets/icons/svg/coin.svg'),
-                              onPressed: null,
-                            ),
-                            preferences: AnimationPreferences(
-                                duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Loop),
-                          ),
-                          FadeInRightBig(
-                            child: Text(
-                              winnerPoints,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  fontStyle: FontStyle.normal,
-                                  fontFamily: 'montserrat',
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.grey[400]),
-                            ),
-                            preferences: AnimationPreferences(
-                                duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
-                          ),
-                        ],
-                      ),
-                      FadeInUpBig(
-                        child: Row(
+                        Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Pulse(
-                              child: MaterialButton(
-                                padding: EdgeInsets.fromLTRB(0.0, 8.0, 10.0, 0.0),
-                                splashColor: Colors.grey,
-                                child: Container(
-                                  width: 140,
-                                  height: 45,
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(image: AssetImage('assets/icons/png/bg_button.png'), fit: BoxFit.fill),
-                                  ),
-                                  child: Container(
-                                    alignment: Alignment.center,
-                                    padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 12.0),
-                                    child: Text(
-                                      "Home",
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          fontStyle: FontStyle.normal,
-                                          fontFamily: 'montserrat',
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black87),
-                                    ),
-                                  ),
-                                ),
-                                onPressed: () {
-                                  SharedPreferenceHelper().getUserSavedData().then((sharedPrefModel) {
-                                    Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => HomeScreen(xApiKey: sharedPrefModel.xApiKey, memberId: sharedPrefModel.memberId,)));
-                                  });
-                                },
+                            HeartBeat(
+                              child: IconButton(
+                                iconSize: 20,
+                                icon: SvgPicture.asset('assets/icons/svg/card_count.svg',
+                                color: Colors.yellow[600],),
+                                onPressed: null,
                               ),
                               preferences: AnimationPreferences(
-                                  duration: const Duration(milliseconds: 2500), autoPlay: AnimationPlayStates.Loop),
+                                  duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Loop),
                             ),
-
-                            Pulse(
-                              child: MaterialButton(
-                                padding: EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 0.0),
-                                splashColor: Colors.grey,
-                                child: Container(
-                                  width: 140,
-                                  height: 45,
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(image: AssetImage('assets/icons/png/bg_button.png'), fit: BoxFit.fill),
-                                  ),
-                                  child: Container(
-                                    alignment: Alignment.center,
-                                    padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 12.0),
-                                    child: Text(
-                                      "Play Again",
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          fontStyle: FontStyle.normal,
-                                          fontFamily: 'montserrat',
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black87),
-                                    ),
-                                  ),
+                            FadeInLeftBig(
+                              child: Padding(
+                                padding: const EdgeInsets.only(right: 8.0),
+                                child: Text(
+                                  playedCards,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontStyle: FontStyle.normal,
+                                      fontFamily: 'montserrat',
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.grey[400]),
                                 ),
-                                // ),
-                                onPressed: () {
-                                  Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => GameOption()));
-                                },
                               ),
                               preferences: AnimationPreferences(
-                                  duration: const Duration(milliseconds: 2500), autoPlay: AnimationPlayStates.Loop),
+                                  duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
+                            ),
+                            RubberBand(
+                              child: IconButton(
+                                iconSize: 45,
+                                icon: SvgPicture.asset('assets/icons/svg/competition.svg'),
+                                onPressed: null,
+                              ),
+                              preferences: AnimationPreferences(
+                                  duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Loop),
+                            ),
+                            Flip(
+                              child: Padding(
+                                padding: const EdgeInsets.only(right: 8.0),
+                                child: Text(
+                                  clashType,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontStyle: FontStyle.normal,
+                                      fontFamily: 'montserrat',
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.grey[400]),
+                                ),
+                              ),
+                              preferences: AnimationPreferences(
+                                  duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
+                            ),
+                            Swing(
+                              child: IconButton(
+                                iconSize: 35,
+                                icon: SvgPicture.asset('assets/icons/svg/coin.svg'),
+                                onPressed: null,
+                              ),
+                              preferences: AnimationPreferences(
+                                  duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Loop),
+                            ),
+                            FadeInRightBig(
+                              child: Text(
+                                winnerPoints,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    fontStyle: FontStyle.normal,
+                                    fontFamily: 'montserrat',
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.grey[400]),
+                              ),
+                              preferences: AnimationPreferences(
+                                  duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
                             ),
                           ],
                         ),
-                        preferences:
-                            AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+                        FadeInUpBig(
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Pulse(
+                                child: MaterialButton(
+                                  padding: EdgeInsets.fromLTRB(0.0, 8.0, 10.0, 0.0),
+                                  splashColor: Colors.grey,
+                                  child: Container(
+                                    width: 140,
+                                    height: 45,
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(image: AssetImage('assets/icons/png/bg_button.png'), fit: BoxFit.fill),
+                                    ),
+                                    child: Container(
+                                      alignment: Alignment.center,
+                                      padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 12.0),
+                                      child: Text(
+                                        "Home",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontStyle: FontStyle.normal,
+                                            fontFamily: 'montserrat',
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black87),
+                                      ),
+                                    ),
+                                  ),
+                                  onPressed: () {
+                                    SharedPreferenceHelper().getUserSavedData().then((sharedPrefModel) {
+                                      Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => HomeScreen(xApiKey: sharedPrefModel.xApiKey, memberId: sharedPrefModel.memberId,)));
+                                    });
+                                  },
+                                ),
+                                preferences: AnimationPreferences(
+                                    duration: const Duration(milliseconds: 2500), autoPlay: AnimationPlayStates.Loop),
+                              ),
 
-              saveGameResultToServer(),
-        ],
-      )),
+                              Pulse(
+                                child: MaterialButton(
+                                  padding: EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 0.0),
+                                  splashColor: Colors.grey,
+                                  child: Container(
+                                    width: 140,
+                                    height: 45,
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(image: AssetImage('assets/icons/png/bg_button.png'), fit: BoxFit.fill),
+                                    ),
+                                    child: Container(
+                                      alignment: Alignment.center,
+                                      padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 12.0),
+                                      child: Text(
+                                        "Play Again",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontStyle: FontStyle.normal,
+                                            fontFamily: 'montserrat',
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black87),
+                                      ),
+                                    ),
+                                  ),
+                                  // ),
+                                  onPressed: () {
+                                    Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => GameOption()));
+                                  },
+                                ),
+                                preferences: AnimationPreferences(
+                                    duration: const Duration(milliseconds: 2500), autoPlay: AnimationPlayStates.Loop),
+                              ),
+                            ],
+                          ),
+                          preferences:
+                              AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+
+                saveGameResultToServer(),
+          ],
+        )),
+      ),
     );
   }
 

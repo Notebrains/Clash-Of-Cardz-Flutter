@@ -64,349 +64,373 @@ class Gameplay extends StatelessWidget {
 
   String _gameRoomName = 'gamePlay';
 
+  final ValueNotifier<bool> p1Card1ValueNotify = ValueNotifier<bool>(true);
+  final ValueNotifier<int> computerCard2ValueNotify = ValueNotifier<int>(0);
+  final ValueNotifier<bool> gameScoreStatusValueNotify = ValueNotifier<bool>(false);
+
   @override
   Widget build(BuildContext context) {
-
     this._context = context;
+    setScreenOrientationToLandscape();
 
     getSavedUserDataFromPref();
-
     initFirebaseCredentials();
 
     //apiBloc.fetchCardsRes("ZGHrDz4prqsu4BcApPaQYaGgq", subcategoryName, categoryName, '2', cardsToPlay);
     apiBloc.fetchCardsRes("ZGHrDz4prqsu4BcApPaQYaGgq", 'cricket', 'sports', '2', '14');
 
-    return Scaffold(
-      // Provide the model to all widgets within the app. We're using
-      // ChangeNotifierProvider because that's a simple way to rebuild
-      // widgets when a model changes. We could also just use
-      // Provider, but then we would have to listen to Counter ourselves.
-      // Read Provider's docs to learn about all the available providers.
-      body: ChangeNotifierProvider(
-        // Initialize the model in the builder. That way, Provider
-        // can own GamePlayStatesModel's lifecycle, making sure to call `dispose`
-        // when not needed anymore.
-        create: (context) => GamePlayStatesModel(),
-        child: StreamBuilder(
-          stream: apiBloc.cardsRes,
-          builder: (context, AsyncSnapshot<CardsResModel> snapshot) {
-            cards = snapshot.data.response.cards;
-            if (snapshot.hasData) {
-              return Container(
-                decoration: new BoxDecoration(
-                  image: new DecorationImage(
-                    image: new AssetImage("assets/images/bg_img11.png"),
-                    fit: BoxFit.cover,
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        // Provide the model to all widgets within the app. We're using
+        // ChangeNotifierProvider because that's a simple way to rebuild
+        // widgets when a model changes. We could also just use
+        // Provider, but then we would have to listen to Counter ourselves.
+        // Read Provider's docs to learn about all the available providers.
+        body: ChangeNotifierProvider(
+          // Initialize the model in the builder. That way, Provider
+          // can own GamePlayStatesModel's lifecycle, making sure to call `dispose`
+          // when not needed anymore.
+          create: (context) => GamePlayStatesModel(),
+          child: StreamBuilder(
+            stream: apiBloc.cardsRes,
+            builder: (context, AsyncSnapshot<CardsResModel> snapshot) {
+              cards = snapshot.data.response.cards;
+              if (snapshot.hasData) {
+                return Container(
+                  decoration: new BoxDecoration(
+                    image: new DecorationImage(
+                      image: new AssetImage("assets/images/bg_img11.png"),
+                      fit: BoxFit.cover,
+                    ),
                   ),
-                ),
-                child: Stack(
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          flex: 3,
-                          child: BuildPlayer1Screen(cards.length, p1FullName, p2Name),
-                        ),
-                        Expanded(
-                          flex: 7,
-                          child: Consumer<GamePlayStatesModel>(
-                            builder: (context, statesModel, child) =>
-                                Container(
-                                  //width: getScreenWidth(context) - 400,
-                                  child: Column(
-                                    children: [
-                                      Container(
-                                        height: getScreenHeight(context) / 6.0,
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                          children: [
-                                            Padding(
-                                              padding: const EdgeInsets.only(left: 0.0, top: 0),
-                                              child: TweenAnimationBuilder<Duration>(
-                                                  duration: Duration(minutes: 45),
-                                                  tween: Tween(begin: Duration(minutes: 45), end: Duration.zero),
-                                                  onEnd: () {
-                                                    //print('Timer Ended');
-                                                    if (statesModel.player1TotalPoints > statesModel.player2TotalPoints) {
-                                                      showTimesUpDialog(context, true, statesModel);
-                                                    } else {
-                                                      showTimesUpDialog(context, false, statesModel);
-                                                    }
-                                                  },
-                                                  builder: (BuildContext context, Duration value, Widget child) {
+                  child: Stack(
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(
+                            flex: 3,
+                            child: BuildPlayer1Screen(cards.length, p1FullName, p2Name),
+                          ),
+                          Expanded(
+                            flex: 7,
+                            child: Consumer<GamePlayStatesModel>(
+                              builder: (context, statesModel, child) =>
+                                  Container(
+                                    //width: getScreenWidth(context) - 400,
+                                    child: Column(
+                                      children: [
+                                        SlideInDown(
+                                          child: Container(
+                                            height: getScreenHeight(context) / 6.0,
+                                            child: Row(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              crossAxisAlignment: CrossAxisAlignment.center,
+                                              children: [
+                                                Padding(
+                                                  padding: const EdgeInsets.only(left: 0.0, top: 0),
+                                                  child: TweenAnimationBuilder<Duration>(
+                                                      duration: Duration(minutes: 45),
+                                                      tween: Tween(begin: Duration(minutes: 45), end: Duration.zero),
+                                                      onEnd: () {
+                                                        //print('Timer Ended');
+                                                        if (statesModel.player1TotalPoints > statesModel.player2TotalPoints) {
+                                                          showTimesUpDialog(context, true, statesModel);
+                                                        } else {
+                                                          showTimesUpDialog(context, false, statesModel);
+                                                        }
+                                                      },
+                                                      builder: (BuildContext context, Duration value, Widget child) {
 
-                                                    //adding 0 at first if min or sec show in single digit
-                                                    final minutes = (value.inMinutes).toString().padLeft(2, "0");
-                                                    final seconds = (value.inSeconds % 60).toString().padLeft(2, "0");
-                                                    return Row(
-                                                      children: [
-                                                        Padding(
-                                                          padding: const EdgeInsets.all(5),
-                                                          child: Container(
-                                                            width: 55,
-                                                            height: 45,
-                                                            decoration: BoxDecoration(
-                                                              color: Colors.black,
-                                                              border: Border.all(
+                                                        //adding 0 at first if min or sec show in single digit
+                                                        final minutes = (value.inMinutes).toString().padLeft(2, "0");
+                                                        final seconds = (value.inSeconds % 60).toString().padLeft(2, "0");
+                                                        return Row(
+                                                          children: [
+                                                            SlideInLeft(
+                                                              child: Padding(
+                                                                padding: const EdgeInsets.all(5),
+                                                                child: Container(
+                                                                  width: 55,
+                                                                  height: 45,
+                                                                  decoration: BoxDecoration(
+                                                                    color: Colors.black,
+                                                                    border: Border.all(
+                                                                      color: Colors.black,
+                                                                      width: 5,
+                                                                    ),
+                                                                    borderRadius: BorderRadius.all(Radius.circular(3)),
+                                                                    boxShadow: <BoxShadow>[
+                                                                      BoxShadow(
+                                                                        color: Colors.grey[500],
+                                                                        blurRadius: 8.0,
+                                                                        offset: Offset(0.0, 8.0),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                  child: Center(
+                                                                    child: Text(
+                                                                      '$minutes',
+                                                                      textAlign: TextAlign.center,
+                                                                      style: TextStyle(
+                                                                        color: Colors.white,
+                                                                        fontWeight: FontWeight.bold,
+                                                                        fontSize: 30,
+                                                                        shadows: [
+                                                                          Shadow(color: Colors.white),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                              preferences: AnimationPreferences(
+                                                                  duration: const Duration(milliseconds: 1500),
+                                                                  autoPlay: AnimationPlayStates.Forward),
+                                                            ),
+
+
+                                                            Container(
+                                                              width: 20,
+                                                              height: 45,
+                                                              decoration: BoxDecoration(
                                                                 color: Colors.black,
-                                                                width: 5,
+                                                                borderRadius: BorderRadius.all(Radius.circular(3)),
+                                                                boxShadow: <BoxShadow>[
+                                                                  BoxShadow(
+                                                                    color: Colors.grey[500],
+                                                                    blurRadius: 8.0,
+                                                                    offset: Offset(0.0, 8.0),
+                                                                  ),
+                                                                ],
                                                               ),
-                                                              borderRadius: BorderRadius.all(Radius.circular(3)),
-                                                              boxShadow: <BoxShadow>[
-                                                                BoxShadow(
-                                                                  color: Colors.grey[500],
-                                                                  blurRadius: 8.0,
-                                                                  offset: Offset(0.0, 8.0),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                            child: Center(
-                                                              child: Text(
-                                                                '$minutes',
-                                                                textAlign: TextAlign.center,
-                                                                style: TextStyle(
-                                                                  color: Colors.white,
-                                                                  fontWeight: FontWeight.bold,
-                                                                  fontSize: 30,
-                                                                  shadows: [
-                                                                    Shadow(color: Colors.white),
-                                                                  ],
+                                                              child: Center(
+                                                                child: Padding(
+                                                                  padding: const EdgeInsets.only(bottom: 5),
+                                                                  child: Text(
+                                                                    ':',
+                                                                    textAlign: TextAlign.center,
+                                                                    style: TextStyle(
+                                                                      color: Colors.white,
+                                                                      fontWeight: FontWeight.bold,
+                                                                      fontSize: 36,
+                                                                      shadows: [
+                                                                        Shadow(color: Colors.white),
+                                                                      ],
+                                                                    ),
+                                                                  ),
                                                                 ),
                                                               ),
                                                             ),
-                                                          ),
-                                                        ),
 
-                                                        Container(
-                                                          width: 20,
-                                                          height: 45,
-                                                          decoration: BoxDecoration(
-                                                            color: Colors.black,
-                                                            borderRadius: BorderRadius.all(Radius.circular(3)),
-                                                            boxShadow: <BoxShadow>[
-                                                              BoxShadow(
-                                                                color: Colors.grey[500],
-                                                                blurRadius: 8.0,
-                                                                offset: Offset(0.0, 8.0),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                          child: Center(
-                                                            child: Padding(
-                                                              padding: const EdgeInsets.only(bottom: 5),
-                                                              child: Text(
-                                                                ':',
-                                                                textAlign: TextAlign.center,
-                                                                style: TextStyle(
-                                                                  color: Colors.white,
-                                                                  fontWeight: FontWeight.bold,
-                                                                  fontSize: 36,
-                                                                  shadows: [
-                                                                    Shadow(color: Colors.white),
-                                                                  ],
+                                                            SlideInRight(
+                                                              child: Padding(
+                                                                padding: const EdgeInsets.all(5),
+                                                                child: Container(
+                                                                  width: 55,
+                                                                  height: 45,
+                                                                  decoration: BoxDecoration(
+                                                                    color: Colors.black,
+                                                                    border: Border.all(
+                                                                      color: Colors.black,
+                                                                      width: 5,
+                                                                    ),
+                                                                    borderRadius: BorderRadius.all(Radius.circular(3)),
+                                                                    boxShadow: <BoxShadow>[
+                                                                      BoxShadow(
+                                                                        color: Colors.grey[500],
+                                                                        blurRadius: 8.0,
+                                                                        offset: Offset(0.0, 8.0),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                  child: Center(
+                                                                    child: Text(
+                                                                      '$seconds',
+                                                                      textAlign: TextAlign.center,
+                                                                      style: TextStyle(
+                                                                        color: Colors.white,
+                                                                        fontWeight: FontWeight.bold,
+                                                                        fontSize: 30,
+                                                                        shadows: [
+                                                                          Shadow(color: Colors.white),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                  ),
                                                                 ),
                                                               ),
+                                                              preferences: AnimationPreferences(
+                                                                  duration: const Duration(milliseconds: 1500),
+                                                                  autoPlay: AnimationPlayStates.Forward),
                                                             ),
-                                                          ),
-                                                        ),
-
-                                                        Padding(
-                                                          padding: const EdgeInsets.all(5),
-                                                          child: Container(
-                                                            width: 55,
-                                                            height: 45,
-                                                            decoration: BoxDecoration(
-                                                              color: Colors.black,
-                                                              border: Border.all(
-                                                                color: Colors.black,
-                                                                width: 5,
-                                                              ),
-                                                              borderRadius: BorderRadius.all(Radius.circular(3)),
-                                                              boxShadow: <BoxShadow>[
-                                                                BoxShadow(
-                                                                  color: Colors.grey[500],
-                                                                  blurRadius: 8.0,
-                                                                  offset: Offset(0.0, 8.0),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                            child: Center(
-                                                              child: Text(
-                                                                '$seconds',
-                                                                textAlign: TextAlign.center,
-                                                                style: TextStyle(
-                                                                  color: Colors.white,
-                                                                  fontWeight: FontWeight.bold,
-                                                                  fontSize: 30,
-                                                                  shadows: [
-                                                                    Shadow(color: Colors.white),
-                                                                  ],
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        )
-                                                      ],
-                                                    );
-                                                  }),
+                                                          ],
+                                                        );
+                                                      }),
+                                                ),
+                                              ],
                                             ),
-                                          ],
+                                          ),
+                                          preferences: AnimationPreferences(
+                                              duration: const Duration(milliseconds: 1500),
+                                              autoPlay: AnimationPlayStates.Forward),
                                         ),
-                                      ),
-                                      Container(
-                                        height: getScreenHeight(context) / 1.5,
-                                        child:  Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                          children: [
-                                            Container(
-                                              width: 220,
-                                              height: 300,
-                                              child: BounceInLeft(
-                                                child: buildCardAsP1(
-                                                  context,
-                                                  _isPlayAsP1,
-                                                  cards,
-                                                  indexOfCardDeck,
-                                                  isYourNextTurn,
-                                                  onClickActionOnP1GameplayCard:
-                                                      (int indexOfP1Card, String attributeTitle, String attributeValue, String winBasis, String winPoints) =>
-                                                  {
-                                                    //print('----p1c clicked'),
-                                                    this.indexOfP1Card = indexOfP1Card,
 
-                                                    updateGamePlayStatus( statesModel, attributeTitle, attributeValue, winBasis, winPoints),
-                                                  },
+                                        Container(
+                                          height: getScreenHeight(context) / 1.5,
+                                          child:  Row(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            children: [
+                                              Container(
+                                                width: 220,
+                                                height: 300,
+                                                child: BounceInLeft(
+                                                  child: buildCardAsP1(
+                                                    context,
+                                                    _isPlayAsP1,
+                                                    cards,
+                                                    indexOfCardDeck,
+                                                    isYourNextTurn,
+                                                    onClickActionOnP1GameplayCard:
+                                                        (int indexOfP1Card, String attributeTitle, String attributeValue, String winBasis, String winPoints) =>
+                                                    {
+                                                      //print('----p1c clicked'),
+                                                      this.indexOfP1Card = indexOfP1Card,
+
+                                                      updateGamePlayStatus( statesModel, attributeTitle, attributeValue, winBasis, winPoints),
+                                                    },
+                                                  ),
+                                                  preferences: AnimationPreferences(
+                                                      duration: const Duration(milliseconds: 1500),
+                                                      autoPlay: AnimationPlayStates.Forward),
+                                                ),
+                                              ),
+
+                                              HeartBeat(
+                                                child: AvatarGlow(
+                                                  endRadius: 27,
+                                                  glowColor: Colors.orangeAccent,
+                                                  child: Container(
+                                                    width: 55,
+                                                    child: Center(
+                                                      child: Image.asset('assets/icons/png/img_vs.png',color: Colors.black87,),
+                                                    ),
+
+                                                  ),
                                                 ),
                                                 preferences: AnimationPreferences(
-                                                    duration: const Duration(milliseconds: 1500),
-                                                    autoPlay: AnimationPlayStates.Forward),
+                                                    duration: const Duration(milliseconds: 2000),
+                                                    autoPlay: AnimationPlayStates.Loop),
                                               ),
-                                            ),
-
-                                            HeartBeat(
-                                              child: AvatarGlow(
-                                                endRadius: 27,
-                                                glowColor: Colors.orangeAccent,
-                                                child: Container(
-                                                  width: 55,
-                                                  child: Center(
-                                                    child: Image.asset('assets/icons/png/img_vs.png',color: Colors.black87,),
-                                                  ),
-
-                                                ),
-                                              ),
-                                              preferences: AnimationPreferences(
-                                                  duration: const Duration(milliseconds: 2000),
-                                                  autoPlay: AnimationPlayStates.Loop),
-                                            ),
 
 
-                                            Container(
-                                              width: 150,
-                                              height: 210,
-                                              alignment: AlignmentDirectional.bottomCenter,
-                                              child: BounceInRight(
-                                                child: buildSecondCard(
-                                                  context,
-                                                  indexOfP1Card,
-                                                  indexOfCardDeck,
-                                                  cards),
-
-                                                /*
-                                                      buildPlayerTwoCardOld(
+                                              Container(
+                                                width: 150,
+                                                height: 210,
+                                                alignment: AlignmentDirectional.bottomCenter,
+                                                child: BounceInRight(
+                                                  child: buildSecondCard(
                                                     context,
                                                     indexOfP1Card,
                                                     indexOfCardDeck,
-                                                    cards,
-                                                    onClickActionOnP2GameplayCard: (bool isWon, int winPoint) =>
-                                                    {
-                                                      updateGamePlayStatusToFirebase(),
+                                                    cards),
 
-                                                      print('---- p2c data called ${statesModel.isCardOneTouched}, $isWon, $winPoint'),
-                                                      if (isWon)
-                                                        {
-                                                          playerResultStatusList.add("won"), // "won" is lottie file name
+                                                  /*
+                                                        buildPlayerTwoCardOld(
+                                                      context,
+                                                      indexOfP1Card,
+                                                      indexOfCardDeck,
+                                                      cards,
+                                                      onClickActionOnP2GameplayCard: (bool isWon, int winPoint) =>
+                                                      {
+                                                        updateGamePlayStatusToFirebase(),
 
-                                                          //showing lottie anim depending on win or loose
-                                                          showWinDialog(context, statesModel, isWon, 'win-result.json', 'You Won', p1Photo,
-                                                              4000, winPoint),
-                                                        }
-                                                      else
-                                                        {
-                                                          playerResultStatusList.add("sad"), // "sad" is lottie file name
-                                                          //showing lottie anim depending on win or loose
-                                                          showWinDialog(context, statesModel, isWon, 'sad-star.json', '\n\n\n\nYou Loose', '',
-                                                              3500, winPoint),
-                                                        },
-                                                    },
-                                                  ),
-                                                      */
-                                                preferences: AnimationPreferences(
-                                                    duration: const Duration(milliseconds: 1500),
-                                                    autoPlay: AnimationPlayStates.Forward),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
+                                                        print('---- p2c data called ${statesModel.isCardOneTouched}, $isWon, $winPoint'),
+                                                        if (isWon)
+                                                          {
+                                                            playerResultStatusList.add("won"), // "won" is lottie file name
 
-                                      Expanded(
-                                        child: Container(
-                                          //height: getScreenHeight(context) / 6.5,
-                                          child: Visibility(
-                                              //visible: statesModel.isShowPlayerMatchStatus,
-                                              visible: true,
-                                              child: Container(
-                                                child: RotateInUpLeft(
-                                                  child: Container(
-                                                    padding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 8.0),
-                                                    height: 30,
-                                                    child: ListView.builder(
-                                                      physics: const BouncingScrollPhysics(
-                                                          parent: AlwaysScrollableScrollPhysics()),
-                                                      scrollDirection: Axis.horizontal,
-                                                      itemCount: playerResultStatusList.length,
-                                                      itemBuilder: (context, index) {
-                                                        return Card(
-                                                          elevation: 5,
-                                                          shadowColor: Colors.lightBlueAccent,
-                                                          color: Colors.white60,
-                                                          child: ClipOval(
-                                                            child: setResultStatus(index),
-                                                          ),
-                                                        );
+                                                            //showing lottie anim depending on win or loose
+                                                            showWinDialog(context, statesModel, isWon, 'win-result.json', 'You Won', p1Photo,
+                                                                4000, winPoint),
+                                                          }
+                                                        else
+                                                          {
+                                                            playerResultStatusList.add("sad"), // "sad" is lottie file name
+                                                            //showing lottie anim depending on win or loose
+                                                            showWinDialog(context, statesModel, isWon, 'sad-star.json', '\n\n\n\nYou Loose', '',
+                                                                3500, winPoint),
+                                                          },
                                                       },
                                                     ),
-                                                  ),
+                                                        */
                                                   preferences: AnimationPreferences(
-                                                      duration: const Duration(milliseconds: 400),
+                                                      duration: const Duration(milliseconds: 1500),
                                                       autoPlay: AnimationPlayStates.Forward),
                                                 ),
-                                              )),
+                                              ),
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                    ],
+
+                                        ValueListenableBuilder(
+                                          builder: (BuildContext context, bool isListShow, Widget child) {
+                                            return Expanded(
+                                              child: Visibility(
+                                                  visible: isListShow,
+                                                  child: Container(
+                                                    child: RotateInUpLeft(
+                                                      child: Container(
+                                                        padding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 8.0),
+                                                        height: 30,
+                                                        child: ListView.builder(
+                                                          physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+                                                          scrollDirection: Axis.horizontal,
+                                                          itemCount: playerResultStatusList.length,
+                                                          itemBuilder: (context, index) {
+                                                            return Card(
+                                                              elevation: 5,
+                                                              shadowColor: Colors.lightBlueAccent,
+                                                              color: Colors.white60,
+                                                              child: ClipOval(
+                                                                child: setResultStatus(index),
+                                                              ),
+                                                            );
+                                                          },
+                                                        ),
+                                                      ),
+                                                      preferences: AnimationPreferences(
+                                                          duration: const Duration(milliseconds: 400),
+                                                          autoPlay: AnimationPlayStates.Forward),
+                                                    ),
+                                                  )),
+                                            );
+                                          },
+                                          valueListenable: gameScoreStatusValueNotify,
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
+                            ),
                           ),
-                        ),
-                        Expanded(
-                          flex: 3,
-                          child: BuildPlayerTwoScreen(cards.length, p2Name),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              );
-            } else if (!snapshot.hasData) {
-              return frostedGlassWithProgressBarWidget(context);
-            } else return Center(
-                child: Text("No Data Found", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 30)),
-              );
-          },
+                          Expanded(
+                            flex: 3,
+                            child: BuildPlayerTwoScreen(cards.length, p2Name),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                );
+              } else if (!snapshot.hasData) {
+                return frostedGlassWithProgressBarWidget(context);
+              } else return Center(
+                  child: Text("No Data Found", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 30)),
+                );
+            },
+          ),
         ),
       ),
     );

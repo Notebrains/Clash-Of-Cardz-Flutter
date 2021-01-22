@@ -45,6 +45,7 @@ class AutoPlay extends StatelessWidget {
 
   final ValueNotifier<bool> p1Card1ValueNotify = ValueNotifier<bool>(true);
   final ValueNotifier<int> computerCard2ValueNotify = ValueNotifier<int>(0);
+  final ValueNotifier<bool> gameScoreStatusValueNotify = ValueNotifier<bool>(false);
 
   bool isP1CardFlipped = false;
   bool isP1SelectedStats = false;
@@ -54,221 +55,309 @@ class AutoPlay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     this._context = context;
-
+    setScreenOrientationToLandscape();
     getSavedUserDataFromPref();
     //apiBloc.fetchCardsRes(xApiKey, subcategoryName, categoryName, '2', cardToPlay);
     apiBloc.fetchCardsRes("ZGHrDz4prqsu4BcApPaQYaGgq", 'cricket', 'sports', '2', '14');
 
-    return Scaffold(
-      // Provide the model to all widgets within the app. We're using
-      // ChangeNotifierProvider because that's a simple way to rebuild
-      // widgets when a model changes. We could also just use
-      // Provider, but then we would have to listen to Counter ourselves.
-      // Read Provider's docs to learn about all the available providers.
-      body: ChangeNotifierProvider(
-        // Initialize the model in the builder. That way, Provider
-        // can own AutoPlayStatesModel's lifecycle, making sure to call `dispose`
-        // when not needed anymore.
-        create: (context) => AutoPlayStatesModel(),
-        child: StreamBuilder(
-          stream: apiBloc.cardsRes,
-          builder: (context, AsyncSnapshot<CardsResModel> snapshot) {
-            if (snapshot.hasData) {
-              cards = snapshot.data.response.cards;
-              return Container(
-                decoration: new BoxDecoration(
-                  image: new DecorationImage(
-                    image: new AssetImage("assets/images/bg_img11.png"),
-                    fit: BoxFit.cover,
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+          resizeToAvoidBottomInset: false,
+        // Provide the model to all widgets within the app. We're using
+        // ChangeNotifierProvider because that's a simple way to rebuild
+        // widgets when a model changes. We could also just use
+        // Provider, but then we would have to listen to Counter ourselves.
+        // Read Provider's docs to learn about all the available providers.
+        body: ChangeNotifierProvider(
+          // Initialize the model in the builder. That way, Provider
+          // can own AutoPlayStatesModel's lifecycle, making sure to call `dispose`
+          // when not needed anymore.
+          create: (context) => AutoPlayStatesModel(),
+          child: StreamBuilder(
+            stream: apiBloc.cardsRes,
+            builder: (context, AsyncSnapshot<CardsResModel> snapshot) {
+              if (snapshot.hasData) {
+                cards = snapshot.data.response.cards;
+                return Container(
+                  decoration: new BoxDecoration(
+                    image: new DecorationImage(
+                      image: new AssetImage("assets/images/bg_img11.png"),
+                      fit: BoxFit.cover,
+                    ),
                   ),
-                ),
-                child: Stack(
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          flex: 3,
-                          child: BuildPlayer1Screen(cards.length),
-                        ),
-                        Expanded(
-                          flex: 8,
-                          child: Consumer<AutoPlayStatesModel>(
-                            builder: (context, statesModel, child) => Container(
-                              //width: getScreenWidth(context) - 400,
-                              child: Column(
-                                children: [
-                                  Container(
-                                    height: getScreenHeight(context) / 6.0,
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.only(left: 0.0, top: 0),
-                                          child: TweenAnimationBuilder<Duration>(
-                                              duration: Duration(minutes: 45),
-                                              tween: Tween(begin: Duration(minutes: 45), end: Duration.zero),
-                                              onEnd: () {
-                                                //print('Timer Ended');
-                                                if (statesModel.player1TotalPoints > statesModel.player2TotalPoints) {
-                                                  showTimesUpDialog(context, true, statesModel);
-                                                } else {
-                                                  showTimesUpDialog(context, false, statesModel);
-                                                }
-                                              },
-                                              builder: (BuildContext context, Duration value, Widget child) {
+                  child: Stack(
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(
+                            flex: 3,
+                            child: BuildPlayer1Screen(cards.length, p1FullName, gameScoreStatusValueNotify),
+                          ),
+                          Expanded(
+                            flex: 8,
+                            child: Consumer<AutoPlayStatesModel>(
+                              builder: (context, statesModel, child) => Container(
+                                //width: getScreenWidth(context) - 400,
+                                child: Column(
+                                  children: [
+                                    SlideInDown(
+                                      child: Container(
+                                        height: getScreenHeight(context) / 6.0,
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.only(left: 0.0, top: 0),
+                                              child: TweenAnimationBuilder<Duration>(
+                                                  duration: Duration(minutes: 45),
+                                                  tween: Tween(begin: Duration(minutes: 45), end: Duration.zero),
+                                                  onEnd: () {
+                                                    //print('Timer Ended');
+                                                    if (statesModel.player1TotalPoints > statesModel.player2TotalPoints) {
+                                                      showTimesUpDialog(context, true, statesModel);
+                                                    } else {
+                                                      showTimesUpDialog(context, false, statesModel);
+                                                    }
+                                                  },
+                                                  builder: (BuildContext context, Duration value, Widget child) {
 
-                                                //adding 0 at first if min or sec show in single digit
-                                                final minutes = (value.inMinutes).toString().padLeft(2, "0");
-                                                final seconds = (value.inSeconds % 60).toString().padLeft(2, "0");
-                                                return Row(
-                                                  children: [
-                                                    Padding(
-                                                      padding: const EdgeInsets.all(5),
-                                                      child: Container(
-                                                        width: 55,
-                                                        height: 45,
-                                                        decoration: BoxDecoration(
-                                                          color: Colors.black,
-                                                          border: Border.all(
+                                                    //adding 0 at first if min or sec show in single digit
+                                                    final minutes = (value.inMinutes).toString().padLeft(2, "0");
+                                                    final seconds = (value.inSeconds % 60).toString().padLeft(2, "0");
+                                                    return Row(
+                                                      children: [
+                                                        SlideInLeft(
+                                                          child: Padding(
+                                                            padding: const EdgeInsets.all(5),
+                                                            child: Container(
+                                                              width: 55,
+                                                              height: 45,
+                                                              decoration: BoxDecoration(
+                                                                color: Colors.black,
+                                                                border: Border.all(
+                                                                  color: Colors.black,
+                                                                  width: 5,
+                                                                ),
+                                                                borderRadius: BorderRadius.all(Radius.circular(3)),
+                                                                boxShadow: <BoxShadow>[
+                                                                  BoxShadow(
+                                                                    color: Colors.grey[500],
+                                                                    blurRadius: 8.0,
+                                                                    offset: Offset(0.0, 8.0),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                              child: Center(
+                                                                child: Text(
+                                                                  '$minutes',
+                                                                  textAlign: TextAlign.center,
+                                                                  style: TextStyle(
+                                                                    color: Colors.white,
+                                                                    fontWeight: FontWeight.bold,
+                                                                    fontSize: 30,
+                                                                    shadows: [
+                                                                      Shadow(color: Colors.white),
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          preferences: AnimationPreferences(
+                                                              duration: const Duration(milliseconds: 1500),
+                                                              autoPlay: AnimationPlayStates.Forward),
+                                                        ),
+
+
+                                                        Container(
+                                                          width: 20,
+                                                          height: 45,
+                                                          decoration: BoxDecoration(
                                                             color: Colors.black,
-                                                            width: 5,
+                                                            borderRadius: BorderRadius.all(Radius.circular(3)),
+                                                            boxShadow: <BoxShadow>[
+                                                              BoxShadow(
+                                                                color: Colors.grey[500],
+                                                                blurRadius: 8.0,
+                                                                offset: Offset(0.0, 8.0),
+                                                              ),
+                                                            ],
                                                           ),
-                                                          borderRadius: BorderRadius.all(Radius.circular(3)),
-                                                          boxShadow: <BoxShadow>[
-                                                            BoxShadow(
-                                                              color: Colors.grey[500],
-                                                              blurRadius: 8.0,
-                                                              offset: Offset(0.0, 8.0),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        child: Center(
-                                                          child: Text(
-                                                            '$minutes',
-                                                            textAlign: TextAlign.center,
-                                                            style: TextStyle(
-                                                              color: Colors.white,
-                                                              fontWeight: FontWeight.bold,
-                                                              fontSize: 30,
-                                                              shadows: [
-                                                                Shadow(color: Colors.white),
-                                                              ],
+                                                          child: Center(
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.only(bottom: 5),
+                                                              child: Text(
+                                                                ':',
+                                                                textAlign: TextAlign.center,
+                                                                style: TextStyle(
+                                                                  color: Colors.white,
+                                                                  fontWeight: FontWeight.bold,
+                                                                  fontSize: 36,
+                                                                  shadows: [
+                                                                    Shadow(color: Colors.white),
+                                                                  ],
+                                                                ),
+                                                              ),
                                                             ),
                                                           ),
                                                         ),
-                                                      ),
-                                                    ),
 
-                                                    Container(
-                                                      width: 20,
-                                                      height: 45,
-                                                      decoration: BoxDecoration(
-                                                        color: Colors.black,
-                                                        borderRadius: BorderRadius.all(Radius.circular(3)),
-                                                        boxShadow: <BoxShadow>[
-                                                          BoxShadow(
-                                                            color: Colors.grey[500],
-                                                            blurRadius: 8.0,
-                                                            offset: Offset(0.0, 8.0),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      child: Center(
-                                                        child: Padding(
-                                                          padding: const EdgeInsets.only(bottom: 5),
-                                                          child: Text(
-                                                            ':',
-                                                            textAlign: TextAlign.center,
-                                                            style: TextStyle(
-                                                              color: Colors.white,
-                                                              fontWeight: FontWeight.bold,
-                                                              fontSize: 36,
-                                                              shadows: [
-                                                                Shadow(color: Colors.white),
-                                                              ],
+                                                        SlideInRight(
+                                                          child: Padding(
+                                                            padding: const EdgeInsets.all(5),
+                                                            child: Container(
+                                                              width: 55,
+                                                              height: 45,
+                                                              decoration: BoxDecoration(
+                                                                color: Colors.black,
+                                                                border: Border.all(
+                                                                  color: Colors.black,
+                                                                  width: 5,
+                                                                ),
+                                                                borderRadius: BorderRadius.all(Radius.circular(3)),
+                                                                boxShadow: <BoxShadow>[
+                                                                  BoxShadow(
+                                                                    color: Colors.grey[500],
+                                                                    blurRadius: 8.0,
+                                                                    offset: Offset(0.0, 8.0),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                              child: Center(
+                                                                child: Text(
+                                                                  '$seconds',
+                                                                  textAlign: TextAlign.center,
+                                                                  style: TextStyle(
+                                                                    color: Colors.white,
+                                                                    fontWeight: FontWeight.bold,
+                                                                    fontSize: 30,
+                                                                    shadows: [
+                                                                      Shadow(color: Colors.white),
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                              ),
                                                             ),
                                                           ),
+                                                          preferences: AnimationPreferences(
+                                                              duration: const Duration(milliseconds: 1500),
+                                                              autoPlay: AnimationPlayStates.Forward),
                                                         ),
-                                                      ),
-                                                    ),
-
-                                                    Padding(
-                                                      padding: const EdgeInsets.all(5),
-                                                      child: Container(
-                                                        width: 55,
-                                                        height: 45,
-                                                        decoration: BoxDecoration(
-                                                          color: Colors.black,
-                                                          border: Border.all(
-                                                            color: Colors.black,
-                                                            width: 5,
-                                                          ),
-                                                          borderRadius: BorderRadius.all(Radius.circular(3)),
-                                                          boxShadow: <BoxShadow>[
-                                                            BoxShadow(
-                                                              color: Colors.grey[500],
-                                                              blurRadius: 8.0,
-                                                              offset: Offset(0.0, 8.0),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        child: Center(
-                                                          child: Text(
-                                                            '$seconds',
-                                                            textAlign: TextAlign.center,
-                                                            style: TextStyle(
-                                                              color: Colors.white,
-                                                              fontWeight: FontWeight.bold,
-                                                              fontSize: 30,
-                                                              shadows: [
-                                                                Shadow(color: Colors.white),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    )
-                                                  ],
-                                                );
-                                              }),
+                                                      ],
+                                                    );
+                                                  }),
+                                            ),
+                                          ],
                                         ),
-                                      ],
+                                      ),
+                                      preferences: AnimationPreferences(
+                                          duration: const Duration(milliseconds: 1500),
+                                          autoPlay: AnimationPlayStates.Forward),
                                     ),
-                                  ),
-                                  Container(
-                                    height: getScreenHeight(context)/1.5,
-                                    child: Center(
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                        children: [
-                                          ValueListenableBuilder(
-                                            builder: (BuildContext context, bool value, Widget child) {
-                                              // This builder will only get called when the _counter
-                                              // is updated.
-                                              return Container(
-                                                width: 215,
-                                                height: 300,
-                                                child: BounceInLeft(
-                                                  child: buildPlayerOneCard(
-                                                    context,
-                                                    cards,
-                                                    indexOfCardDeck,
-                                                    p1Card1ValueNotify.value,
-                                                    whoIsPlaying,
-                                                    indexOfCardDeckSelectForComputer,
-                                                    onClickActionOnP1AutoPlayCard: (int indexOfP1Card, bool isWon, int winPoint, bool isFlipped) =>
-                                                    {
-                                                      print('----p1c clicked'),
-                                                      if (isFlipped && whoIsPlaying == 'player') {
-                                                        isP1CardFlipped = isFlipped,
-                                                        isP1SelectedStats = false,
-                                                        computerCard2ValueNotify.value +=1,
-                                                      } else{
-                                                        isP1SelectedStats = true,
-                                                        this.indexOfP1Card = indexOfP1Card,
-                                                        if (whoIsPlaying == 'computer') {
+
+                                    Container(
+                                      height: getScreenHeight(context)/1.5,
+                                      child: Center(
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: [
+                                            ValueListenableBuilder(
+                                              builder: (BuildContext context, bool value, Widget child) {
+                                                // This builder will only get called when the _counter
+                                                // is updated.
+                                                return Container(
+                                                  width: 215,
+                                                  height: 301,
+                                                  child: BounceInLeft(
+                                                    child: buildPlayerOneCard(
+                                                      context,
+                                                      cards,
+                                                      indexOfCardDeck,
+                                                      p1Card1ValueNotify.value,
+                                                      whoIsPlaying,
+                                                      indexOfCardDeckSelectForComputer,
+                                                      onClickActionOnP1AutoPlayCard: (int indexOfP1Card, bool isWon, int winPoint, bool isFlipped) =>
+                                                      {
+                                                        print('----p1c clicked'),
+                                                        if (isFlipped && whoIsPlaying == 'player') {
+                                                          isP1CardFlipped = isFlipped,
+                                                          isP1SelectedStats = false,
+                                                          computerCard2ValueNotify.value +=1,
+                                                        } else{
+                                                          isP1SelectedStats = true,
+                                                          this.indexOfP1Card = indexOfP1Card,
+                                                          if (whoIsPlaying == 'computer') {
+                                                            if (isWon) {
+                                                              playerResultStatusList.add("won"), // "won" is lottie file name
+                                                              //showing lottie anim depending on win or loose
+                                                              showWinDialog(context, statesModel, isWon, 'win-result.json', 'You Won', p1Photo,
+                                                                  4000, winPoint),
+                                                            } else {
+                                                              playerResultStatusList.add("sad"), // "sad" is lottie file name
+                                                              //showing lottie anim depending on win or loose
+                                                              showWinDialog(context, statesModel, isWon, 'sad-star.json', '\n\n\n\nYou Loose',
+                                                                  '', 3500, winPoint),
+                                                            },
+                                                          } else {
+                                                            computerCard2ValueNotify.value +=1,
+                                                          }
+                                                        }
+                                                      },
+                                                    ),
+                                                    preferences: AnimationPreferences(
+                                                        duration: const Duration(milliseconds: 1500),
+                                                        autoPlay: AnimationPlayStates.Forward),
+                                                  ),
+                                                );
+                                              },
+                                              valueListenable: p1Card1ValueNotify,
+                                              // The child parameter is most helpful if the child is
+                                              // expensive to build and does not depend on the value from
+                                              // the notifier.
+                                            ),
+
+                                            HeartBeat(
+                                              child: AvatarGlow(
+                                                endRadius: 27,
+                                                glowColor: Colors.white,
+                                                child: Container(
+                                                  width: 55,
+                                                  child: Center(
+                                                    child: Image.asset('assets/icons/png/img_vs.png',color: Colors.black87,),
+                                                  ),
+                                                ),
+                                              ),
+                                              preferences: AnimationPreferences(
+                                                  duration: const Duration(milliseconds: 2000),
+                                                  autoPlay: AnimationPlayStates.Loop),
+                                            ),
+
+                                            ValueListenableBuilder(
+                                              builder: (BuildContext context, int value, Widget child) {
+                                                // This builder will only get called when the _counter
+                                                // is updated.
+                                                return Container(
+                                                  width: 215,
+                                                  height: 302,
+                                                  child: BounceInRight(
+                                                    child: buildPlayerTwoCard(
+                                                      context,
+                                                      indexOfP1Card,
+                                                      indexOfCardDeck,
+                                                      cards,
+                                                      isP1SelectedStats,
+                                                      whoIsPlaying,
+                                                      indexOfCardDeckSelectForComputer,
+                                                      isP1CardFlipped,
+                                                      isP1SelectedStats,
+                                                      onClickActionOnP2AutoPlayCard: (bool isWon, int winPoint) =>
+                                                      {
+                                                        print('---- p2c data called ${statesModel.isCardOneTouched}, $isWon, $winPoint'),
+
+                                                        if (whoIsPlaying == 'player') {
                                                           if (isWon) {
                                                             playerResultStatusList.add("won"), // "won" is lottie file name
                                                             //showing lottie anim depending on win or loose
@@ -280,152 +369,86 @@ class AutoPlay extends StatelessWidget {
                                                             showWinDialog(context, statesModel, isWon, 'sad-star.json', '\n\n\n\nYou Loose',
                                                                 '', 3500, winPoint),
                                                           },
-                                                        } else {
-                                                          computerCard2ValueNotify.value +=1,
+                                                        } else{
+                                                          p1Card1ValueNotify.value = true,
                                                         }
-                                                      }
-                                                    },
+                                                      },
+                                                    ),
+                                                    preferences: AnimationPreferences(
+                                                        duration: const Duration(milliseconds: 1500),
+                                                        autoPlay: AnimationPlayStates.Forward),
                                                   ),
-                                                  preferences: AnimationPreferences(
-                                                      duration: const Duration(milliseconds: 1500),
-                                                      autoPlay: AnimationPlayStates.Forward),
-                                                ),
-                                              );
-                                            },
-                                            valueListenable: p1Card1ValueNotify,
-                                            // The child parameter is most helpful if the child is
-                                            // expensive to build and does not depend on the value from
-                                            // the notifier.
-                                          ),
-
-                                          HeartBeat(
-                                            child: AvatarGlow(
-                                              endRadius: 27,
-                                              glowColor: Colors.white,
-                                              child: Container(
-                                                width: 55,
-                                                child: Center(
-                                                  child: Image.asset('assets/icons/png/img_vs.png',color: Colors.black87,),
-                                                ),
-                                              ),
+                                                );
+                                              },
+                                              valueListenable: computerCard2ValueNotify,
+                                              // The child parameter is most helpful if the child is
+                                              // expensive to build and does not depend on the value from
+                                              // the notifier.
                                             ),
-                                            preferences: AnimationPreferences(
-                                                duration: const Duration(milliseconds: 2000),
-                                                autoPlay: AnimationPlayStates.Loop),
-                                          ),
 
-                                          ValueListenableBuilder(
-                                            builder: (BuildContext context, int value, Widget child) {
-                                              // This builder will only get called when the _counter
-                                              // is updated.
-                                              return Container(
-                                                width: 215,
-                                                height: 301,
-                                                child: BounceInRight(
-                                                  child: buildPlayerTwoCard(
-                                                    context,
-                                                    indexOfP1Card,
-                                                    indexOfCardDeck,
-                                                    cards,
-                                                    isP1SelectedStats,
-                                                    whoIsPlaying,
-                                                    indexOfCardDeckSelectForComputer,
-                                                    isP1CardFlipped,
-                                                    isP1SelectedStats,
-                                                    onClickActionOnP2AutoPlayCard: (bool isWon, int winPoint) =>
-                                                    {
-                                                      print('---- p2c data called ${statesModel.isCardOneTouched}, $isWon, $winPoint'),
-
-                                                      if (whoIsPlaying == 'player') {
-                                                        if (isWon) {
-                                                          playerResultStatusList.add("won"), // "won" is lottie file name
-                                                          //showing lottie anim depending on win or loose
-                                                          showWinDialog(context, statesModel, isWon, 'win-result.json', 'You Won', p1Photo,
-                                                              4000, winPoint),
-                                                        } else {
-                                                          playerResultStatusList.add("sad"), // "sad" is lottie file name
-                                                          //showing lottie anim depending on win or loose
-                                                          showWinDialog(context, statesModel, isWon, 'sad-star.json', '\n\n\n\nYou Loose',
-                                                              '', 3500, winPoint),
-                                                        },
-                                                      } else{
-                                                        p1Card1ValueNotify.value = true,
-                                                      }
-                                                    },
-                                                  ),
-                                                  preferences: AnimationPreferences(
-                                                      duration: const Duration(milliseconds: 1500),
-                                                      autoPlay: AnimationPlayStates.Forward),
-                                                ),
-                                              );
-                                            },
-                                            valueListenable: computerCard2ValueNotify,
-                                            // The child parameter is most helpful if the child is
-                                            // expensive to build and does not depend on the value from
-                                            // the notifier.
-                                          ),
-
-                                        ],
+                                          ],
+                                        ),
                                       ),
                                     ),
-                                  ),
 
-                                  Expanded(
-                                    child: Container(
-                                      //height: getScreenHeight(context) / 6.5,
-                                      child: Visibility(
-                                          visible: statesModel.isShowPlayerMatchStatus,
-                                          child: Container(
-                                            child: RotateInUpLeft(
+                                    ValueListenableBuilder(
+                                      builder: (BuildContext context, bool isListShow, Widget child) {
+                                        return Expanded(
+                                          child: Visibility(
+                                              visible: isListShow,
                                               child: Container(
-                                                padding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 8.0),
-                                                height: 30,
-                                                child: ListView.builder(
-                                                  physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-                                                  scrollDirection: Axis.horizontal,
-                                                  itemCount: playerResultStatusList.length,
-                                                  itemBuilder: (context, index) {
-                                                    return Card(
-                                                      elevation: 5,
-                                                      shadowColor: Colors.lightBlueAccent,
-                                                      color: Colors.white60,
-                                                      child: Consumer<AutoPlayStatesModel>(
-                                                        builder: (context, statesModel, child) => ClipOval(
-                                                          child: setResultStatus(index),
-                                                        ),
-                                                      ),
-                                                    );
-                                                  },
+                                                child: RotateInUpLeft(
+                                                  child: Container(
+                                                    padding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 8.0),
+                                                    height: 30,
+                                                    child: ListView.builder(
+                                                      physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+                                                      scrollDirection: Axis.horizontal,
+                                                      itemCount: playerResultStatusList.length,
+                                                      itemBuilder: (context, index) {
+                                                        return Card(
+                                                          elevation: 5,
+                                                          shadowColor: Colors.lightBlueAccent,
+                                                          color: Colors.white60,
+                                                          child: ClipOval(
+                                                            child: setResultStatus(index),
+                                                          ),
+                                                        );
+                                                      },
+                                                    ),
+                                                  ),
+                                                  preferences: AnimationPreferences(
+                                                      duration: const Duration(milliseconds: 400),
+                                                      autoPlay: AnimationPlayStates.Forward),
                                                 ),
-                                              ),
-                                              preferences: AnimationPreferences(
-                                                  duration: const Duration(milliseconds: 400),
-                                                  autoPlay: AnimationPlayStates.Forward),
-                                            ),
-                                          )),
+                                              )),
+                                        );
+                                      },
+                                      valueListenable: gameScoreStatusValueNotify,
                                     ),
-                                  ),
-                                ],
+
+                                  ],
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        Expanded(
-                          flex: 3,
-                          child: BuildPlayerTwoScreen(cards.length),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              );
-            } else if (!snapshot.hasData) {
-              return frostedGlassWithProgressBarWidget(context);
-            } else
-              return Center(
-                child: Text("No Data Found", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 30)),
-              );
-          },
+                          Expanded(
+                            flex: 3,
+                            child: BuildPlayerTwoScreen(cards.length),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                );
+              } else if (!snapshot.hasData) {
+                return frostedGlassWithProgressBarWidget(context);
+              } else
+                return Center(
+                  child: Text("No Data Found", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 30)),
+                );
+            },
+          ),
         ),
       ),
     );
@@ -502,48 +525,42 @@ class AutoPlay extends StatelessWidget {
       //adding data in match result status list and
       //updating card index and scoreboard values
 
-      if (isWon) {
-        statesModel.playerOneTrump = statesModel.playerOneTrump + 1;
-        statesModel.player1TotalPoints = statesModel.player1TotalPoints + winPoint;
-
-      } else {
-        statesModel.playerTwoTrump = statesModel.playerOneTrump + 1;
-        statesModel.player2TotalPoints = statesModel.player2TotalPoints + winPoint;
-      }
-
-      if (isWon) {
-        whoIsPlaying = 'player';
-        isP1CardFlipped = false;
-        isP1SelectedStats = false;
-        p1Card1ValueNotify.value = true;
-        computerCard2ValueNotify.value +=1;
-      } else {
-        isP1CardFlipped = false;
-        isP1SelectedStats = true;
-        p1Card1ValueNotify.value = false;
-        computerCard2ValueNotify.value +=1;
-        whoIsPlaying = 'computer';
-
-      }
-
       Timer(Duration(milliseconds: animHideTime), () {
         Navigator.pop(dialogContext);
+
         showBothCardsDialog(context, cards,
             whoIsPlaying == 'player'? indexOfP1Card: indexOfCardDeckSelectForComputer,
             indexOfCardDeck,
             statesModel.cardCountOnDeck == 0 ? true : false,
             onClickActionOnPlayAgain :( bool isMatchEnded){
 
-            print('-----isMatchEnded: $isMatchEnded ');
+            //print('-----isMatchEnded: $isMatchEnded ');
 
           if (!isMatchEnded) {
             indexOfCardDeck = indexOfCardDeck + 1;
+
+            print('-----isWon1: $isWon ');
+            print('-----winPoint: $winPoint ');
+            print('-----statesModel.playerOneTrump: ${statesModel.playerOneTrump} ');
+            print('-----statesModel.player1TotalPoints: ${statesModel.player1TotalPoints} ');
+            print('-----statesModel.playerTwoTrump: ${statesModel.playerTwoTrump} ');
+            print('-----statesModel.player2TotalPoints: ${statesModel.player2TotalPoints} ');
+
+            if (isWon) {
+              statesModel.playerOneTrump = statesModel.playerOneTrump + 1;
+              statesModel.player1TotalPoints = statesModel.player1TotalPoints + winPoint;
+              print('-----isWon2: ${statesModel.player1TotalPoints} ');
+            } else {
+              statesModel.playerTwoTrump = statesModel.playerOneTrump + 1;
+              statesModel.player2TotalPoints = statesModel.player2TotalPoints + winPoint;
+              print('-----isWon3: ${statesModel.player2TotalPoints} ');
+            }
 
             context.read<AutoPlayStatesModel>().updatePlayerScoreboards(
               statesModel.playerOneTrump,
               statesModel.playerTwoTrump,
               statesModel.player1TotalPoints,
-              statesModel.player2TotalPoints,);
+              statesModel.player2TotalPoints);
 
             context.read<AutoPlayStatesModel>().updateCardCountOnDeck(statesModel.cardCountOnDeck - 1);
 
@@ -564,13 +581,31 @@ class AutoPlay extends StatelessWidget {
             if (whoIsPlaying == 'computer') {
               //Choosing index of player stats list for next round for computer
               indexOfCardDeckSelectForComputer = Random().nextInt(6);
-              print('-----indexOfCardDeckSelectForComputer: $indexOfCardDeckSelectForComputer');
+              //print('-----indexOfCardDeckSelectForComputer: $indexOfCardDeckSelectForComputer');
+            }else {
+              indexOfCardDeckSelectForComputer = 55;
             }
+
           } else{
             gotoResultScreen(_context, isWon, statesModel);
           }
 
         });
+
+        if (isWon) {
+          whoIsPlaying = 'player';
+          isP1CardFlipped = false;
+          isP1SelectedStats = false;
+          p1Card1ValueNotify.value = true;
+          computerCard2ValueNotify.value +=1;
+        } else {
+          isP1CardFlipped = false;
+          isP1SelectedStats = true;
+          p1Card1ValueNotify.value = false;
+          computerCard2ValueNotify.value +=1;
+          whoIsPlaying = 'computer';
+
+        }
       });
     } catch (e) {
       print(e);
@@ -610,14 +645,14 @@ class AutoPlay extends StatelessWidget {
       CupertinoPageRoute(
         builder: (context) =>
             GameResult(
-              winnerName: 'Ram Rakshman',
-              winnerId: 'MEM000004',
+              winnerName: p1FullName,
+              winnerId: p1MemberId,
               winnerImage: p1Photo,
               winnerCoins: "0",
               winnerPoints: statesModel.player1TotalPoints.toString(),
-              cardType: 'Cricket',
+              cardType: subcategoryName,
               clashType: '1 vs 1',
-              playedCards: '14',
+              playedCards: cardToPlay,
               isP1Won: true,
               gamePlayType: 'vsComputer',
             ),
@@ -630,7 +665,7 @@ class AutoPlay extends StatelessWidget {
             GameResult(
               winnerName: 'Computer',
               winnerId: 'MEM000004',
-              winnerImage: Constants.imgUrlTest, //static
+              winnerImage: Constants.imgUrlNotFoundYellowAvatar, //static
               winnerCoins: "0",
               winnerPoints: statesModel.player2TotalPoints.toString(),
               cardType: subcategoryName,

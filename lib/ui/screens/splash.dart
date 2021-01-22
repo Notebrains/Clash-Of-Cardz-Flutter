@@ -63,6 +63,7 @@ class _SplashScreenState extends State<SplashScreen> {
             ),
           ),
           child: Scaffold(
+            resizeToAvoidBottomInset: false,
             backgroundColor: Colors.transparent,
             body: InkWell(
               child: Stack(
