@@ -126,6 +126,7 @@ class _MyHomePageState extends State<HomeScreen> {
                                   splashColor: Colors.white,
                                   icon: SvgPicture.asset('assets/icons/svg/logout.svg'),
                                   onPressed: () {
+                                    SharedPreferenceHelper().clearPrefData();
                                     Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => LogIn()));
                                   },
                                 ),
@@ -428,7 +429,7 @@ class _MyHomePageState extends State<HomeScreen> {
         model.response[0].memberid,
         model.response[0].fullname,
         model.response[0].photo,
-        model.response[0].points,
+        model.response[0].points.toString(),
         model.response[0].coins,
         model.response[0].win,
         model.response[0].loss,

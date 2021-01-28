@@ -47,98 +47,101 @@ class _GameOptionTwoState extends State<GameOptionTwo> {
   Widget build(BuildContext context) {
     subcategoryDetails = ModalRoute.of(context).settings.arguments;
 
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      key: _drawerKey, // assign key to Scaffold
-      drawer: Drawer(
-        child: new ListView(
-          children: <Widget>[
-            Container(
-              height: 55,
-              child: DrawerHeader(
-                margin: EdgeInsets.all(0),
-                child: Column(
-                  children: [
-                    Text(
-                      'Friends',
-                      textAlign: TextAlign.start,
-                      style: TextStyle(
-                        fontSize: 22,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'neuropol_x_rg',
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        key: _drawerKey, // assign key to Scaffold
+        drawer: Drawer(
+          child: new ListView(
+            children: <Widget>[
+              Container(
+                height: 55,
+                child: DrawerHeader(
+                  margin: EdgeInsets.all(0),
+                  child: Column(
+                    children: [
+                      Text(
+                        'Friends',
+                        textAlign: TextAlign.start,
+                        style: TextStyle(
+                          fontSize: 22,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'neuropol_x_rg',
+                        ),
                       ),
+                    ],
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[700],
+                  ),
+                ),
+              ),
+
+              //change here
+              //building friend list ui in drawer
+              friendList(context, widget.categoryName, widget.subcategoryName, '14'),
+            ],
+          ),
+        ),
+        body: Container(
+          decoration: new BoxDecoration(
+            image: new DecorationImage(
+              image: new AssetImage("assets/images/bg_img13.png"),
+              fit: BoxFit.cover,
+            ),
+          ),
+          child: Stack(
+            children: [
+              Container(
+                alignment: Alignment.center,
+                child: ColorizeAnimatedTextKit(
+                  onTap: () {
+                    //print("Tap Event");
+                  },
+                  text: ["CLASH OF CARDZ"],
+                  textStyle: TextStyle(
+                    fontSize: 55.0,
+                    fontStyle: FontStyle.normal,
+                    fontFamily: 'Rapier',
+                  ),
+                  colors: [
+                    Colors.grey[400],
+                    Colors.grey[500],
+                    Colors.grey[400],
+                  ],
+                  textAlign: TextAlign.center,
+                  alignment: AlignmentDirectional.center,
+                  // or Alignment.topLeft
+                  isRepeatingAnimation: true,
+                  repeatForever: true,
+                  speed: Duration(milliseconds: 1000),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 16),
+                child: Row(
+                  children: [
+                    Expanded(
+                      flex: 7,
+                      child: buildFirstList(),
+                    ),
+                    Container(
+                      height: cardsToBePlayed.length * 80.0,
+                      width: 1.5,
+                      color: Colors.indigo,
+                      margin: const EdgeInsets.only(top: 0.0, bottom: 0.0),
+                    ),
+                    Expanded(
+                      flex: 4,
+                      child: buildSecondList(cardsToBePlayed),
                     ),
                   ],
                 ),
-                decoration: BoxDecoration(
-                  color: Colors.grey[700],
-                ),
               ),
-            ),
-
-            //change here
-            //building friend list ui in drawer
-            friendList(context, widget.categoryName, widget.subcategoryName, '14'),
-          ],
-        ),
-      ),
-      body: Container(
-        decoration: new BoxDecoration(
-          image: new DecorationImage(
-            image: new AssetImage("assets/images/bg_img13.png"),
-            fit: BoxFit.cover,
+            ],
           ),
-        ),
-        child: Stack(
-          children: [
-            Container(
-              alignment: Alignment.center,
-              child: ColorizeAnimatedTextKit(
-                onTap: () {
-                  //print("Tap Event");
-                },
-                text: ["CLASH OF CARDZ"],
-                textStyle: TextStyle(
-                  fontSize: 55.0,
-                  fontStyle: FontStyle.normal,
-                  fontFamily: 'Rapier',
-                ),
-                colors: [
-                  Colors.grey[400],
-                  Colors.grey[500],
-                  Colors.grey[400],
-                ],
-                textAlign: TextAlign.center,
-                alignment: AlignmentDirectional.center,
-                // or Alignment.topLeft
-                isRepeatingAnimation: true,
-                repeatForever: true,
-                speed: Duration(milliseconds: 1000),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 16),
-              child: Row(
-                children: [
-                  Expanded(
-                    flex: 7,
-                    child: buildFirstList(),
-                  ),
-                  Container(
-                    height: cardsToBePlayed.length * 80.0,
-                    width: 1.5,
-                    color: Colors.indigo,
-                    margin: const EdgeInsets.only(top: 0.0, bottom: 0.0),
-                  ),
-                  Expanded(
-                    flex: 4,
-                    child: buildSecondList(cardsToBePlayed),
-                  ),
-                ],
-              ),
-            ),
-          ],
         ),
       ),
     );

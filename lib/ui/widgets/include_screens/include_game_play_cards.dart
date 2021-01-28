@@ -20,6 +20,7 @@ Widget buildCardAsP1(
 }) {
   GlobalKey<FlipCardState> cardKeyOfPlayerOne = GlobalKey<FlipCardState>();
   List<List<Attribute>> cardsAttributeList = [];
+  final ValueNotifier<int> isButtonTappedValueNotify = ValueNotifier<int>(77);
 
   try {
     //print('----card list1 length ' + (cardsList.length).toString());
@@ -98,11 +99,15 @@ Widget buildCardAsP1(
           ],
         ),
         onTap: () {
-          
           if (isYourTurn) {
             cardKeyOfPlayerOne.currentState.toggleCard();
           } else {
-            EdgeAlert.show(context, title: 'Info', description: 'Please wait for other player turn to play.', gravity: EdgeAlert.TOP);
+            EdgeAlert.show(context,
+                //title: 'Hint',
+                description: 'Please wait for other player turn to play.',
+                gravity: EdgeAlert.TOP,
+                icon: Icons.wb_incandescent_outlined,
+            );
           }
         },
       ),
@@ -121,7 +126,7 @@ Widget buildCardAsP1(
       child: Stack(
         children: [
           Container(
-            color: Colors.orange,
+            color: Colors.orange[600],
           ),
           Align(
             alignment: Alignment.topCenter,
@@ -150,103 +155,117 @@ Widget buildCardAsP1(
               ),
             ),
           ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Container(
-              margin: EdgeInsets.only(bottom: 20, left: 5),
-              child: GridView.count(
-                shrinkWrap: true,
-                crossAxisCount: 3,
-                crossAxisSpacing: 0,
-                mainAxisSpacing: 0,
-                childAspectRatio: 5 / 3,
-                physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-                // if you want IOS bouncing effect, otherwise remove this line
-                padding: EdgeInsets.all(4),
-                //change the number as you want
-                children: List.generate(cardsAttributeList[indexOfCardDeck].length, (index) {
-                  return Container(
-                    //margin: EdgeInsets.only(left: 5, right: 5),
-                    margin: EdgeInsets.symmetric(vertical: 0, horizontal: 1),
-                    child: Material(
-                      color: Colors.transparent,
-                      borderOnForeground: true,
-                      child: InkWell(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            HeartBeat(
-                              child: Row(
-                                children: [
-                                  Text(
-                                    cardsAttributeList[indexOfCardDeck][index].value,
-                                    textAlign: TextAlign.start,
-                                    style: TextStyle(
-                                        fontSize: 10,
-                                        fontStyle: FontStyle.normal,
-                                        fontFamily: 'neuropol_x_rg',
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.indigo),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 3),
-                                    child: Stack(alignment: Alignment.center, children: <Widget>[
-                                      SvgPicture.asset(
-                                        'assets/icons/svg/star1.svg',
-                                        width: 13,
-                                        height: 13,
-                                      ),
-                                      Text(
-                                        cardsAttributeList[indexOfCardDeck][index].winPoints,
-                                        textAlign: TextAlign.right,
-                                        style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold, color: Colors.black),
-                                      ),
-                                    ]),
-                                  ),
-                                ],
-                              ),
-                              preferences: AnimationPreferences(
-                                  offset: Duration(milliseconds: 4000),
-                                  duration: const Duration(milliseconds: 1000),
-                                  autoPlay: AnimationPlayStates.Loop),
-                            ),
-                            Text(
-                              cardsAttributeList[indexOfCardDeck][index].name,
-                              textAlign: TextAlign.start,
-                              style: TextStyle(
-                                  fontSize: 9,
-                                  fontStyle: FontStyle.normal,
-                                  fontFamily: 'neuropol_x_rg',
-                                  fontWeight: FontWeight.normal,
-                                  color: Colors.white),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(right: 10, top: 1),
-                              child: Divider(
-                                color: Colors.white,
-                                thickness: 1,
-                                height: 1,
-                              ),
-                            ),
-                          ],
+
+          ValueListenableBuilder(
+            builder: (BuildContext context, int tapIndex, Widget child) {
+              return Align(
+                alignment: Alignment.bottomCenter,
+                child: Container(
+                  margin: EdgeInsets.only(bottom: 20, left: 5),
+                  child: GridView.count(
+                    shrinkWrap: true,
+                    crossAxisCount: 3,
+                    crossAxisSpacing: 0,
+                    mainAxisSpacing: 0,
+                    childAspectRatio: 5 / 3,
+                    physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+                    // if you want IOS bouncing effect, otherwise remove this line
+                    padding: EdgeInsets.all(4),
+                    //change the number as you want
+                    children: List.generate(cardsAttributeList[indexOfCardDeck].length, (index) {
+                      return Container(
+                        padding: index == isButtonTappedValueNotify.value? EdgeInsets.only(left: 3, top: 1):EdgeInsets.all(0),
+                        decoration: BoxDecoration(
+                          color: index == isButtonTappedValueNotify.value? Colors.white24: Colors.orange[600],
+                          border: index == isButtonTappedValueNotify.value? Border.all(color: Colors.white):Border.all(color: Colors.transparent),
+                          borderRadius: index == isButtonTappedValueNotify.value? BorderRadius.all(Radius.circular(3)):BorderRadius.all(Radius.circular(0)),
                         ),
-                        onTap: () {
-                          onClickActionOnP1GameplayCard(
-                            index,
-                            cardsAttributeList[indexOfCardDeck][index].name,
-                            cardsAttributeList[indexOfCardDeck][index].value,
-                            cardsAttributeList[indexOfCardDeck][index].winBasis,
-                            cardsAttributeList[indexOfCardDeck][index].winPoints,
-                          );
-                        },
-                      ),
-                    ),
-                  );
-                }).toList(),
-              ),
-            ),
+                        //margin: EdgeInsets.only(left: 5, right: 5),
+                        margin: EdgeInsets.symmetric(vertical: 0, horizontal: 1),
+                        child: Material(
+                          color: Colors.transparent,
+                          borderOnForeground: true,
+                          child: InkWell(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                HeartBeat(
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        cardsAttributeList[indexOfCardDeck][index].value,
+                                        textAlign: TextAlign.start,
+                                        style: TextStyle(
+                                            fontSize: 10,
+                                            fontStyle: FontStyle.normal,
+                                            fontFamily: 'neuropol_x_rg',
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.indigo),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(left: 3),
+                                        child: Stack(alignment: Alignment.center, children: <Widget>[
+                                          SvgPicture.asset(
+                                            'assets/icons/svg/star1.svg',
+                                            width: 13,
+                                            height: 13,
+                                          ),
+                                          Text(
+                                            cardsAttributeList[indexOfCardDeck][index].winPoints,
+                                            textAlign: TextAlign.right,
+                                            style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold, color: Colors.black),
+                                          ),
+                                        ]),
+                                      ),
+                                    ],
+                                  ),
+                                  preferences: AnimationPreferences(
+                                      offset: Duration(milliseconds: 4000),
+                                      duration: const Duration(milliseconds: 1000),
+                                      autoPlay: AnimationPlayStates.Loop),
+                                ),
+                                Text(
+                                  cardsAttributeList[indexOfCardDeck][index].name,
+                                  textAlign: TextAlign.start,
+                                  style: TextStyle(
+                                      fontSize: 9,
+                                      fontStyle: FontStyle.normal,
+                                      fontFamily: 'neuropol_x_rg',
+                                      fontWeight: FontWeight.normal,
+                                      color: Colors.white),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 10, top: 1),
+                                  child: Divider(
+                                    color: Colors.white,
+                                    thickness: 1,
+                                    height: 1,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            onTap: () {
+                              isButtonTappedValueNotify.value = index;
+                              onClickActionOnP1GameplayCard(
+                                index,
+                                cardsAttributeList[indexOfCardDeck][index].name,
+                                cardsAttributeList[indexOfCardDeck][index].value,
+                                cardsAttributeList[indexOfCardDeck][index].winBasis,
+                                cardsAttributeList[indexOfCardDeck][index].winPoints,
+                              );
+                            },
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                ),
+              );
+            },
+            valueListenable: isButtonTappedValueNotify,
           ),
+
           Column(
             children: [
               Padding(

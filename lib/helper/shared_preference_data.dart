@@ -89,4 +89,10 @@ class SharedPreferenceHelper {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString('photo') ?? 0;
   }
+
+  void clearPrefData() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.clear();
+  }
+
 }

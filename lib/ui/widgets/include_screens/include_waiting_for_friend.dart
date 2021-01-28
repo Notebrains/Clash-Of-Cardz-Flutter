@@ -223,32 +223,11 @@ class IncludeWaitingForFriendState extends State<IncludeWaitingForFriend> with S
         playerDetailsList.forEach((playerDetailsKey, playerDetailsValue) {
           print('Player Details List: { key: $playerDetailsKey, value: $playerDetailsValue}');
 
-          Map playerDataInPlayerDetailsList = playerDetailsValue;
+          if (playerDetailsValue.containsValue(memberId) || playerDetailsValue.containsValue(widget.friendId)) {
 
-          if (playerDataInPlayerDetailsList.containsValue(memberId) || playerDataInPlayerDetailsList.containsValue(widget.friendId)) {
+            //print('Fb  Fb data filter list: ');
 
-            print('Fb  Fb data filter list: ${widget.categoryName}, ${widget.subcategoryName}, ${widget.gameType}, ${widget.cardsToPlay}');
-
-            String firebasePlayerName = '';
-            String firebasePlayerId = '';
-            String firebasePlayerImage = '';
-
-            _friendDetailsRef.child(playerDetailsKey).child('playerName').once().then((DataSnapshot snapshot) {
-              print('Fb firebasePlayerName: $firebasePlayerName');
-              firebasePlayerName = snapshot.value;
-            });
-
-            _friendDetailsRef.child(playerDetailsKey).child('userId').once().then((DataSnapshot snapshot) {
-              print('Fb firebasePlayerName: $firebasePlayerId');
-              firebasePlayerId = snapshot.value;
-            });
-
-            _friendDetailsRef.child(playerDetailsKey).child('image').once().then((DataSnapshot snapshot) {
-              print('Fb firebasePlayerName: $firebasePlayerImage');
-              firebasePlayerImage = snapshot.value;
-            });
-
-            fbJoinedPlayerList.add(FirebasePlayerDetailsModel(firebasePlayerName, firebasePlayerId, firebasePlayerImage, playerDetailsKey));
+            fbJoinedPlayerList.add(FirebasePlayerDetailsModel(playerDetailsValue['playerName'], playerDetailsValue['userId'], playerDetailsValue['image'], playerDetailsKey));
 
             print('Fb fbJoinedPlayerList size 1: ${fbJoinedPlayerList.length}');
             if(widget.joinedPlayerType == 'joinedAsFriend' && fbJoinedPlayerList.length == 0){
@@ -256,12 +235,7 @@ class IncludeWaitingForFriendState extends State<IncludeWaitingForFriend> with S
 
               Navigator.of(context).pop();
             }
-
           }
-
-          playerDataInPlayerDetailsList.forEach((playerDataKey, playerDataValue) {
-            print('player Data In Player Details List: { inner key: $playerDataKey, inner value: $playerDataValue}');
-          });
 
         });
 

@@ -5,6 +5,7 @@ import 'package:trump_card_game/helper/shared_preference_data.dart';
 import 'package:trump_card_game/model/responses/game_option_res_model.dart';
 import 'package:trump_card_game/ui/screens/autoplay.dart';
 import 'package:trump_card_game/ui/screens/game_option_2.dart';
+import 'package:trump_card_game/ui/screens/game_option_3.dart';
 import 'package:trump_card_game/ui/widgets/custom/frosted_glass.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 import 'package:trump_card_game/ui/widgets/libraries/shimmer.dart';
@@ -222,7 +223,7 @@ class _IncludeGameOptionState extends State<IncludeGameOption> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => GameOptionTwo(categoryName: categoryName, subcategoryName: subcategory[index].subcategoryName),
+                    builder: (context) => GameOptionThree(categoryName: categoryName, subcategoryName: subcategory[index].subcategoryName),
                     // Pass the arguments as part of the RouteSettings. The
                     // DetailScreen reads the arguments from these settings.
                     settings: RouteSettings(arguments: subcategory[index].subcategoryDetails,),

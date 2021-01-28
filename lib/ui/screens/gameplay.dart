@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:trump_card_game/bloc/api_bloc.dart';
 import 'package:trump_card_game/helper/exten_fun/base_application_fun.dart';
+import 'package:trump_card_game/helper/exten_fun/common_fun.dart';
 import 'package:trump_card_game/helper/shared_preference_data.dart';
 import 'package:lottie/lottie.dart';
 import 'package:flutter_animator/flutter_animator.dart';
@@ -64,8 +65,8 @@ class Gameplay extends StatelessWidget {
 
   String _gameRoomName = 'gamePlay';
 
-  final ValueNotifier<bool> p1Card1ValueNotify = ValueNotifier<bool>(true);
-  final ValueNotifier<int> computerCard2ValueNotify = ValueNotifier<int>(0);
+  final ValueNotifier<bool> card1ValueNotify = ValueNotifier<bool>(false);
+  final ValueNotifier<bool> card2ValueNotify = ValueNotifier<bool>(false);
   final ValueNotifier<bool> gameScoreStatusValueNotify = ValueNotifier<bool>(false);
 
   @override
@@ -74,6 +75,7 @@ class Gameplay extends StatelessWidget {
     setScreenOrientationToLandscape();
 
     getSavedUserDataFromPref();
+
     initFirebaseCredentials();
 
     //apiBloc.fetchCardsRes("ZGHrDz4prqsu4BcApPaQYaGgq", subcategoryName, categoryName, '2', cardsToPlay);
@@ -152,8 +154,8 @@ class Gameplay extends StatelessWidget {
                                                               child: Padding(
                                                                 padding: const EdgeInsets.all(5),
                                                                 child: Container(
-                                                                  width: 55,
-                                                                  height: 45,
+                                                                  width: 50,
+                                                                  height: 40,
                                                                   decoration: BoxDecoration(
                                                                     color: Colors.black,
                                                                     border: Border.all(
@@ -176,7 +178,7 @@ class Gameplay extends StatelessWidget {
                                                                       style: TextStyle(
                                                                         color: Colors.white,
                                                                         fontWeight: FontWeight.bold,
-                                                                        fontSize: 30,
+                                                                        fontSize: 25,
                                                                         shadows: [
                                                                           Shadow(color: Colors.white),
                                                                         ],
@@ -193,7 +195,7 @@ class Gameplay extends StatelessWidget {
 
                                                             Container(
                                                               width: 20,
-                                                              height: 45,
+                                                              height: 40,
                                                               decoration: BoxDecoration(
                                                                 color: Colors.black,
                                                                 borderRadius: BorderRadius.all(Radius.circular(3)),
@@ -214,7 +216,7 @@ class Gameplay extends StatelessWidget {
                                                                     style: TextStyle(
                                                                       color: Colors.white,
                                                                       fontWeight: FontWeight.bold,
-                                                                      fontSize: 36,
+                                                                      fontSize: 31,
                                                                       shadows: [
                                                                         Shadow(color: Colors.white),
                                                                       ],
@@ -228,8 +230,8 @@ class Gameplay extends StatelessWidget {
                                                               child: Padding(
                                                                 padding: const EdgeInsets.all(5),
                                                                 child: Container(
-                                                                  width: 55,
-                                                                  height: 45,
+                                                                  width: 50,
+                                                                  height: 40,
                                                                   decoration: BoxDecoration(
                                                                     color: Colors.black,
                                                                     border: Border.all(
@@ -252,7 +254,7 @@ class Gameplay extends StatelessWidget {
                                                                       style: TextStyle(
                                                                         color: Colors.white,
                                                                         fontWeight: FontWeight.bold,
-                                                                        fontSize: 30,
+                                                                        fontSize: 25,
                                                                         shadows: [
                                                                           Shadow(color: Colors.white),
                                                                         ],
@@ -283,61 +285,76 @@ class Gameplay extends StatelessWidget {
                                             mainAxisAlignment: MainAxisAlignment.center,
                                             crossAxisAlignment: CrossAxisAlignment.center,
                                             children: [
-                                              Container(
-                                                width: 220,
-                                                height: 300,
-                                                child: BounceInLeft(
-                                                  child: buildCardAsP1(
-                                                    context,
-                                                    _isPlayAsP1,
-                                                    cards,
-                                                    indexOfCardDeck,
-                                                    isYourNextTurn,
-                                                    onClickActionOnP1GameplayCard:
-                                                        (int indexOfP1Card, String attributeTitle, String attributeValue, String winBasis, String winPoints) =>
-                                                    {
-                                                      //print('----p1c clicked'),
-                                                      this.indexOfP1Card = indexOfP1Card,
+                                              ValueListenableBuilder(
+                                                builder: (BuildContext context, bool value, Widget child) {
+                                                  // This builder will only get called when the _counter
+                                                  // is updated.
+                                                  return Container(
+                                                    width: 220,
+                                                    height: 300,
+                                                    child: BounceInLeft(
+                                                      child: buildCardAsP1(
+                                                        context,
+                                                        _isPlayAsP1,
+                                                        cards,
+                                                        indexOfCardDeck,
+                                                        isYourNextTurn,
+                                                        onClickActionOnP1GameplayCard:
+                                                            (int indexOfP1Card, String attributeTitle, String attributeValue, String winBasis, String winPoints) =>
+                                                        {
+                                                          //print('----p1c clicked'),
+                                                          this.indexOfP1Card = indexOfP1Card,
 
-                                                      updateGamePlayStatus( statesModel, attributeTitle, attributeValue, winBasis, winPoints),
-                                                    },
-                                                  ),
-                                                  preferences: AnimationPreferences(
-                                                      duration: const Duration(milliseconds: 1500),
-                                                      autoPlay: AnimationPlayStates.Forward),
-                                                ),
+                                                          updateGamePlayStatus( statesModel, attributeTitle, attributeValue, winBasis, winPoints),
+                                                            showWinDialog(context, statesModel, true, 'sad-star.json', '\n\n\n\nYou Loose', '', 3500, 0),
+                                                        },
+                                                      ),
+                                                      preferences: AnimationPreferences(
+                                                          duration: const Duration(milliseconds: 1500),
+                                                          autoPlay: AnimationPlayStates.Forward),
+                                                    ),
+                                                  );
+                                                },
+                                                valueListenable: card1ValueNotify,
+                                                // The child parameter is most helpful if the child is
+                                                // expensive to build and does not depend on the value from
+                                                // the notifier.
                                               ),
 
-                                              HeartBeat(
+
+                                              RubberBand(
                                                 child: AvatarGlow(
                                                   endRadius: 40,
                                                   glowColor: Colors.white,
                                                   child: Container(
                                                     width: 80,
                                                     child: Center(
-                                                      child: Image.asset('assets/icons/png/vs1.png',),
+                                                      child: Image.asset('assets/icons/png/img_vs.png', color: Colors.orange[800],),
                                                     ),
 
                                                   ),
                                                 ),
                                                 preferences: AnimationPreferences(
-                                                    duration: const Duration(milliseconds: 2000),
+                                                    duration: const Duration(milliseconds: 4000),
                                                     autoPlay: AnimationPlayStates.Loop),
                                               ),
 
+                                              ValueListenableBuilder(
+                                                builder: (BuildContext context, bool value, Widget child) {
+                                                  // This builder will only get called when the _counter
+                                                  // is updated.
+                                                  return Container(
+                                                    width: 150,
+                                                    height: 210,
+                                                    alignment: AlignmentDirectional.bottomCenter,
+                                                    child: BounceInRight(
+                                                      child: buildSecondCard(
+                                                          context,
+                                                          indexOfP1Card,
+                                                          indexOfCardDeck,
+                                                          cards),
 
-                                              Container(
-                                                width: 150,
-                                                height: 210,
-                                                alignment: AlignmentDirectional.bottomCenter,
-                                                child: BounceInRight(
-                                                  child: buildSecondCard(
-                                                    context,
-                                                    indexOfP1Card,
-                                                    indexOfCardDeck,
-                                                    cards),
-
-                                                  /*
+                                                      /*
                                                         buildPlayerTwoCardOld(
                                                       context,
                                                       indexOfP1Card,
@@ -366,11 +383,18 @@ class Gameplay extends StatelessWidget {
                                                       },
                                                     ),
                                                         */
-                                                  preferences: AnimationPreferences(
-                                                      duration: const Duration(milliseconds: 1500),
-                                                      autoPlay: AnimationPlayStates.Forward),
-                                                ),
+                                                      preferences: AnimationPreferences(
+                                                          duration: const Duration(milliseconds: 1500),
+                                                          autoPlay: AnimationPlayStates.Forward),
+                                                    ),
+                                                  );
+                                                },
+                                                valueListenable: card2ValueNotify,
+                                                // The child parameter is most helpful if the child is
+                                                // expensive to build and does not depend on the value from
+                                                // the notifier.
                                               ),
+
                                             ],
                                           ),
                                         ),
@@ -472,6 +496,7 @@ class Gameplay extends StatelessWidget {
             if(p1MemberIdPref == playersDetailsInRoom['p1Id']){
               //you are playing as p1
               _isPlayAsP1 =true;
+              isYourNextTurn = true;
               this.p1FullName = playersDetailsInRoom['p1Name'];
               this.p1MemberId = playersDetailsInRoom['p1Id'];
               this.p1Photo = playersDetailsInRoom['p1Image'];
@@ -482,6 +507,7 @@ class Gameplay extends StatelessWidget {
             } else if(p1MemberIdPref == playersDetailsInRoom['p2Id']){
               //you are playing as p2
               _isPlayAsP1 = false;
+              isYourNextTurn = false;
               this.p1FullName = playersDetailsInRoom['p2Name'];
               this.p1MemberId = playersDetailsInRoom['p2Id'];
               this.p1Photo = playersDetailsInRoom['p2Image'];
@@ -551,7 +577,7 @@ class Gameplay extends StatelessWidget {
       'winner': winner,
 
     }).then((_) {
-      // ...
+
     });
   }
 
@@ -559,7 +585,7 @@ class Gameplay extends StatelessWidget {
     var changeMapData = event.snapshot.value;
     print('Gp on data changed ${event.snapshot.value}');
     print('Gp isP1TurnComplete: ${changeMapData['isP1TurnComplete']}');
-    //print('Gp isP2TurnComplete: ${event.snapshot.value['isP2TurnComplete']}');
+    print('Gp isP2TurnComplete: ${event.snapshot.value['isP2TurnComplete']}');
 
     // event.snapshot.value is return map. Below line getting values from map using keys
     p1TurnStatus =        changeMapData['isP1TurnComplete'];
@@ -571,43 +597,13 @@ class Gameplay extends StatelessWidget {
     winner =              changeMapData['winner'];
 
     if (p1TurnStatus == 'no' && p2TurnStatus == 'no'){
-      //buildSecondCard(false);
       isYourNextTurn = false;
-      buildCardAsP1(
-        _context,
-        _isPlayAsP1,
-        cards,
-        indexOfCardDeck,
-        isYourNextTurn,
-        onClickActionOnP1GameplayCard:
-            (int indexOfP1Card, String attributeTitle, String attributeValue, String winBasis, String winPoints) =>
-        {
-          //print('----p1c clicked'),
-          this.indexOfP1Card = indexOfP1Card,
-
-          updateGamePlayStatus( statesModel, attributeTitle, attributeValue, winBasis, winPoints),
-        },
-      );
+      card1ValueNotify.value = true;
 
     } else if (p1TurnStatus == 'yes' && p2TurnStatus == 'no'){
-      //buildSecondCard(true);
       isYourNextTurn = true;
+      card1ValueNotify.value = true;
 
-      buildCardAsP1(
-        _context,
-        _isPlayAsP1,
-        cards,
-        indexOfCardDeck,
-        isYourNextTurn,
-        onClickActionOnP1GameplayCard:
-            (int indexOfP1Card, String attributeTitle, String attributeValue, String winBasis, String winPoints) =>
-        {
-          //print('----p1c clicked'),
-          this.indexOfP1Card = indexOfP1Card,
-
-          updateGamePlayStatus( statesModel, attributeTitle, attributeValue, winBasis, winPoints),
-        },
-      );
     } else if (p1TurnStatus == 'yes' && p2TurnStatus == 'yes'){
 
       bool areYouWon = false;
@@ -660,7 +656,7 @@ class Gameplay extends StatelessWidget {
                     children: [
                       ClipOval(
                         child: FadeInImage.assetNetwork(
-                          placeholder: 'assets/icons/png/circle-avator-default-img.png',
+                          placeholder: isWon?'assets/icons/png/circle-avator-default-img.png': '',
                           image: photoUrl,
                           fit: BoxFit.fill,
                           width: 65,
@@ -694,30 +690,30 @@ class Gameplay extends StatelessWidget {
       //adding data in match result status list and
       //updating card index and scoreboard values
 
-      if (isWon) {
-        statesModel.playerOneTrump = statesModel.playerOneTrump + 1;
-        statesModel.player1TotalPoints = statesModel.player1TotalPoints + winPoint;
-        isYourNextTurn = true;
-      } else {
-        statesModel.playerTwoTrump = statesModel.playerOneTrump + 1;
-        statesModel.player2TotalPoints = statesModel.player2TotalPoints + winPoint;
-        isYourNextTurn = false;
-      }
-
-      p1TurnStatus = 'no';
-      p2TurnStatus = 'no';
-
-      _gamePlayRef.child(_gameRoomName).set({
-        'isP1TurnComplete': p1TurnStatus,
-        'isP2TurnComplete': p2TurnStatus,
-      });
-
       Timer(Duration(milliseconds: animHideTime), () {
         Navigator.pop(dialogContext);
 
-        showBothCardsDialog(context, cards, indexOfP1Card, indexOfCardDeck, statesModel.cardCountOnDeck == 0 ? true : false, _isPlayAsP1,onClickActionOnPlayAgain :( bool isMatchEnded){
+        showBothCardsDialog(context, cards, indexOfP1Card, indexOfCardDeck, statesModel.cardCountOnDeck == 0 ? true : false, _isPlayAsP1,
+            onClickActionOnPlayAgain :( bool isMatchEnded){
           if (!isMatchEnded) {
             indexOfCardDeck = indexOfCardDeck + 1;
+
+            if (isWon) {
+              statesModel.playerOneTrump = statesModel.playerOneTrump + 1;
+              statesModel.player1TotalPoints = statesModel.player1TotalPoints + winPoint;
+              isYourNextTurn = true;
+            } else {
+              statesModel.playerTwoTrump = statesModel.playerOneTrump + 1;
+              statesModel.player2TotalPoints = statesModel.player2TotalPoints + winPoint;
+              isYourNextTurn = false;
+            }
+
+            p1TurnStatus = 'no';
+            p2TurnStatus = 'no';
+            _gamePlayRef.child(_gameRoomName).set({
+              'isP1TurnComplete': p1TurnStatus,
+              'isP2TurnComplete': p2TurnStatus,
+            });
 
             context.read<GamePlayStatesModel>().updatePlayerScoreboards(
                 statesModel.playerOneTrump,
@@ -727,20 +723,8 @@ class Gameplay extends StatelessWidget {
 
             context.read<GamePlayStatesModel>().updateCardCountOnDeck(statesModel.cardCountOnDeck - 1);
 
-            String message = '';
-            isYourNextTurn ? message = "Your Turn To Play" : message = 'P-2 Turn To Play';
 
-            Toast.show(message, context, duration: Toast.lengthLong, gravity:  Toast.bottom,
-                backgroundColor: Colors.black87.withOpacity(0.5),
-                textStyle:  TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                  fontFamily: 'montserrat',
-                  shadows: [
-                    Shadow(color: Colors.white),
-                  ],
-                ));
+            showToast(context, isYourNextTurn ? "Your Turn To Play" : '$p2Name Turn To Play');
           } else{
             gotoResultScreen(context, true, statesModel);
           }

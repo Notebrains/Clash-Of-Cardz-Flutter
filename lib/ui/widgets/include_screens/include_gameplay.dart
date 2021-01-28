@@ -498,6 +498,7 @@ class BuildPlayerTwoScreen extends StatelessWidget {
                             color: Colors.white,
                           ),
                           onPressed: () {
+                            SharedPreferenceHelper().clearPrefData();
                             //Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => LogIn()));
 
 

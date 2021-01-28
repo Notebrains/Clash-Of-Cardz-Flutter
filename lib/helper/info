@@ -1,4 +1,15 @@
-Player cards API res:
+Error:
+1. setting page
+2. Time ended on searching for player page- not going to next page
+3. Game result not going to next page
+4. manage gameplay when playing with friends
+5. clear data on logout
+6.
+7.
+8.
+9.
+
+Player cards API res
 {
     "status": 1,
     "message": "Data fetched succesfully",
