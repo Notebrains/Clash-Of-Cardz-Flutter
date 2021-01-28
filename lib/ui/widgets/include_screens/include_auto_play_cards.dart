@@ -429,7 +429,7 @@ Widget buildPlayerTwoCard(
           cardKeyOfPlayerTwo.currentState.toggleCard();
         });
 
-        Future.delayed(Duration(milliseconds: 4500),(){
+        Future.delayed(Duration(milliseconds: 5500),(){
           onClickActionOnP2AutoPlayCard(
               isPlayer1Won,
               winPoint

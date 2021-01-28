@@ -21,11 +21,13 @@ class BuildPlayer1Screen extends StatelessWidget{
   int listLength = 0;
   String p1Name = '';
   String p2Name = '';
+  ValueNotifier<bool> gameScoreStatusValueNotify;
 
-  BuildPlayer1Screen(int length, String p1fullName, String p2Name){
+  BuildPlayer1Screen(int length, String p1fullName, String p2Name, ValueNotifier<bool> gameScoreStatusValueNotify){
     this.listLength = (length/2).round();
     this.p1Name = p1fullName;
     this.p2Name = p2Name;
+    this.gameScoreStatusValueNotify = gameScoreStatusValueNotify;
   }
 
   @override
@@ -242,18 +244,24 @@ class BuildPlayer1Screen extends StatelessWidget{
                   ],
                 ),
               ),
-              Container(
-                width: 35,
-                height: 35,
-                child: IconButton(
-                  icon: Image.asset(
-                      'assets/icons/png/ic_right.png'),
-                  onPressed: () {
-                    if(statesModel.isShowPlayerMatchStatus){
-                      context.read<GamePlayStatesModel>().showPlayerMatchStatus(false);
-                    } else context.read<GamePlayStatesModel>().showPlayerMatchStatus(true);
-                  },
+
+              HeadShake(
+                child: Container(
+                  width: 35,
+                  height: 35,
+                  child: IconButton(
+                    icon: Image.asset(
+                        'assets/icons/png/ic_right.png'),
+                    onPressed: () {
+                      if(gameScoreStatusValueNotify.value){
+                        gameScoreStatusValueNotify.value = false;
+                      } else gameScoreStatusValueNotify.value = true;
+                    },
+                  ),
                 ),
+                preferences: AnimationPreferences(
+                    duration: const Duration(milliseconds: 5500),
+                    autoPlay: AnimationPlayStates.Loop),
               ),
             ],
           ),

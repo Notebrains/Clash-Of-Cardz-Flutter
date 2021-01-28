@@ -342,7 +342,7 @@ Widget buildSecondCard(BuildContext context, int p1SelectedIndexOfAttributeList,
             Container(
               width: getScreenWidth(context),
               height: getScreenHeight(context),
-              color: Colors.deepOrangeAccent,
+              color: Colors.lightBlueAccent,
               //child: Image.asset('assets/images/bg_card_back.png', fit: BoxFit.fill),
             ),
             Center(
@@ -394,7 +394,7 @@ Widget buildSecondCard(BuildContext context, int p1SelectedIndexOfAttributeList,
       child: Stack(
         children: [
           Container(
-            color: Colors.orange,
+            color: Colors.lightBlueAccent,
           ),
 
           Align(
@@ -405,7 +405,7 @@ Widget buildSecondCard(BuildContext context, int p1SelectedIndexOfAttributeList,
                 height: 22,
                 width: 22,
                 shape: CircleShape(borderColor: Colors.white, borderWidth: 1),
-                elevation: 1,
+                elevation: 5,
                 child: CircleAvatar(
                   radius: 30,
                   child: FadeInImage.assetNetwork(
@@ -494,7 +494,7 @@ Widget buildCardAsP2(
     child: Stack(
       children: [
         Container(
-          color: Colors.orange,
+          color: Colors.lightBlueAccent,
         ),
         Align(
           alignment: Alignment.topCenter,

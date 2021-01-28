@@ -1,36 +1,31 @@
-import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:trump_card_game/bloc/api_bloc.dart';
-import 'package:trump_card_game/helper/exten_fun/base_application_fun.dart';
 import 'package:trump_card_game/model/responses/game_option_res_model.dart';
 import 'package:trump_card_game/ui/screens/autoplay.dart';
 import 'package:trump_card_game/ui/widgets/include_screens/include_drawer_play_with_friends.dart';
 import 'package:trump_card_game/ui/widgets/include_screens/include_searching_players.dart';
-import 'package:trump_card_game/ui/widgets/include_screens/include_waiting_for_friend.dart';
 import 'package:trump_card_game/ui/widgets/libraries/colorize.dart';
+import 'package:trump_card_game/ui/widgets/libraries/shimmer.dart';
 import 'package:trump_card_game/ui/widgets/views/view_widgets.dart';
 import 'package:flutter_animator/flutter_animator.dart';
-import 'package:lottie/lottie.dart';
 
-import 'gameplay.dart';
 import 'login.dart';
 
-class GameMoreOption extends StatefulWidget {
+class GameOptionThree extends StatefulWidget {
 
   final String categoryName;
   final String subcategoryName;
-  const GameMoreOption ({ Key key, this.categoryName, this.subcategoryName}): super(key: key);
+  const GameOptionThree ({ Key key, this.categoryName, this.subcategoryName}): super(key: key);
 
   @override
-  _GameMoreOptionState createState() => _GameMoreOptionState(categoryName, subcategoryName);
+  _GameOptionThreeState createState() => _GameOptionThreeState(categoryName, subcategoryName);
 }
 
-class _GameMoreOptionState extends State<GameMoreOption> {
+class _GameOptionThreeState extends State<GameOptionThree> {
 
-  _GameMoreOptionState(String categoryName, String subcategoryName);
+  _GameOptionThreeState(String categoryName, String subcategoryName);
   String categoryName = '';
   String subcategoryName = '';
 
@@ -284,13 +279,16 @@ class _GameMoreOptionState extends State<GameMoreOption> {
                     ),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(8, 16, 0, 2),
-                      child: Text(
-                        subcategoryDetails[index].gametypeName,
-                        style: TextStyle(
-                            color: Colors.black54,
-                            fontSize: 22,
-                            fontFamily: 'neuropol_x_rg',
-                            fontWeight: FontWeight.bold
+                      child: Shimmer.fromColors(
+                        baseColor: Colors.black54,
+                        highlightColor: Colors.grey[300],
+                        child: Text(
+                          subcategoryDetails[index].gametypeName,
+                          style: TextStyle(
+                              fontSize: 22,
+                              fontFamily: 'neuropol_x_rg',
+                              fontWeight: FontWeight.bold
+                          ),
                         ),
                       ),
                     ),
@@ -323,68 +321,71 @@ class _GameMoreOptionState extends State<GameMoreOption> {
         shrinkWrap: true,
         itemBuilder: (context, index) {
           return SlideInLeft(
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(36)),
-              ),
-              width: double.infinity,
-              margin: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Container(
-                    width: 60,
-                    height: 60,
-                    decoration: BoxDecoration(
-                      color: Colors.transparent,
-                      border: Border.all(
-                        color: Colors.grey[350],
-                        width: 5,
-                      ),
-                      borderRadius: BorderRadius.all(Radius.circular(35)),
-                      boxShadow: <BoxShadow>[
-                        BoxShadow(
-                          color: Color(0x60000000),
-                          blurRadius: 12.0,
-                          offset: Offset(0.0, 12.0),
+            child: GestureDetector(
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(36)),
+                ),
+                width: double.infinity,
+                margin: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Container(
+                      width: 60,
+                      height: 60,
+                      decoration: BoxDecoration(
+                        color: Colors.transparent,
+                        border: Border.all(
+                          color: Colors.grey[350],
+                          width: 5,
                         ),
-                      ],
+                        borderRadius: BorderRadius.all(Radius.circular(35)),
+                        boxShadow: <BoxShadow>[
+                          BoxShadow(
+                            color: Color(0x60000000),
+                            blurRadius: 12.0,
+                            offset: Offset(0.0, 12.0),
+                          ),
+                        ],
+                      ),
+                      child: CircleAvatar(
+                        child: Image.asset('assets/icons/png/img_sports.png'),
+                      ),
                     ),
-                    child: CircleAvatar(
-                      child: Image.asset('assets/icons/png/img_sports.png'),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(8, 16, 0, 2),
-                    child: GestureDetector(
-                      child: Text(
-                        '${cardsToBePlayed[index]} cards',
-                        style: TextStyle(
-                            color: Colors.black54,
-                            fontSize: 22,
-                            fontFamily: 'neuropol_x_rg',
-                            fontWeight: FontWeight.bold
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(8, 16, 0, 2),
+                      child: Shimmer.fromColors(
+                        baseColor: Colors.black54,
+                        highlightColor: Colors.grey[300],
+                        child: Text(
+                          '${cardsToBePlayed[index]} cards',
+                          style: TextStyle(
+                              fontSize: 22,
+                              fontFamily: 'neuropol_x_rg',
+                              fontWeight: FontWeight.bold
+                          ),
                         ),
                       ),
-                      onTap: (){
-                        if(gameType == 'Player vs Computer'){
-                          Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => AutoPlay()));
-                        } else {
-                          showDialog(
-                            context: context,
-                            builder: (_) => IncludeSearchingForPlayer(
-                              categoryName: widget.categoryName,
-                              subcategoryName: widget.subcategoryName,
-                              gameType: gameType,
-                              cardsToPlay: cardsToBePlayed[index],
-                            ),
-                          );
-                        }
-                      },
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
+              onTap: (){
+                if(gameType == 'Player vs Computer'){
+                  Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => AutoPlay()));
+                } else {
+                  showDialog(
+                    context: context,
+                    builder: (_) => IncludeSearchingForPlayer(
+                      categoryName: widget.categoryName,
+                      subcategoryName: widget.subcategoryName,
+                      gameType: gameType,
+                      cardsToPlay: cardsToBePlayed[index],
+                    ),
+                  );
+                }
+              },
             ),
             preferences: AnimationPreferences(
                 duration: const Duration(milliseconds: 1200),

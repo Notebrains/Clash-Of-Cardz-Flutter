@@ -4,9 +4,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:trump_card_game/helper/shared_preference_data.dart';
 import 'package:trump_card_game/model/responses/game_option_res_model.dart';
 import 'package:trump_card_game/ui/screens/autoplay.dart';
-import 'package:trump_card_game/ui/screens/game_more_option.dart';
+import 'package:trump_card_game/ui/screens/game_option_2.dart';
 import 'package:trump_card_game/ui/widgets/custom/frosted_glass.dart';
 import 'package:flutter_animator/flutter_animator.dart';
+import 'package:trump_card_game/ui/widgets/libraries/shimmer.dart';
 
 class IncludeGameOption extends StatefulWidget {
   @override
@@ -85,39 +86,47 @@ class _IncludeGameOptionState extends State<IncludeGameOption> {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  Container(
-                    width: 60,
-                    height: 60,
-                    decoration: BoxDecoration(
-                      color: Colors.transparent,
-                      border: Border.all(
-                        color: Colors.grey[350],
-                        width: 5,
-                      ),
-
-                      boxShadow: <BoxShadow>[
-                        BoxShadow(
-                          color: Color(0x60000000),
-                          blurRadius: 12.0,
-                          offset: Offset(0.0, 12.0),
+                  Pulse(
+                    child: Container(
+                      width: 60,
+                      height: 60,
+                      decoration: BoxDecoration(
+                        color: Colors.transparent,
+                        border: Border.all(
+                          color: Colors.grey[350],
+                          width: 5,
                         ),
-                      ],
-                      borderRadius: BorderRadius.all(Radius.circular(35)),
+
+                        boxShadow: <BoxShadow>[
+                          BoxShadow(
+                            color: Color(0x60000000),
+                            blurRadius: 12.0,
+                            offset: Offset(0.0, 12.0),
+                          ),
+                        ],
+                        borderRadius: BorderRadius.all(Radius.circular(35)),
+                      ),
+                      child: CircleAvatar(
+                        child: Image.asset('assets/icons/png/img_sports.png'),
+                      ),
                     ),
-                    child: CircleAvatar(
-                      child: Image.asset('assets/icons/png/img_sports.png'),
-                      //backgroundColor: Colors.black38,
-                    ),
+                    preferences: AnimationPreferences(
+                        duration: const Duration(milliseconds: 1500),
+                        autoPlay: AnimationPlayStates.Loop),
                   ),
+
                   Padding(
                     padding: const EdgeInsets.fromLTRB(8, 8, 0, 2),
-                    child: Text(
-                      data.response[index].categoryName,
-                      style: TextStyle(
-                          color: Colors.black54,
-                          fontSize: 30,
-                          fontFamily: 'neuropol_x_rg',
-                          fontWeight: FontWeight.bold
+                    child: Shimmer.fromColors(
+                      baseColor: Colors.black54,
+                      highlightColor: Colors.grey[300],
+                      child: Text(
+                        data.response[index].categoryName,
+                        style: TextStyle(
+                            fontSize: 30,
+                            fontFamily: 'neuropol_x_rg',
+                            fontWeight: FontWeight.bold
+                        ),
                       ),
                     ),
                   ),
@@ -189,15 +198,19 @@ class _IncludeGameOptionState extends State<IncludeGameOption> {
                         child: Image.asset('assets/icons/png/img_sports.png'),
                       ),
                     ),
+
                     Padding(
                       padding: const EdgeInsets.fromLTRB(8, 8, 0, 2),
-                      child: Text(
-                        subcategory[index].subcategoryName,
-                        style: TextStyle(
-                            color: Colors.black54,
-                            fontSize: 30,
-                            fontFamily: 'neuropol_x_rg',
-                            fontWeight: FontWeight.bold
+                      child: Shimmer.fromColors(
+                        baseColor: Colors.black54,
+                        highlightColor: Colors.grey[300],
+                        child: Text(
+                          subcategory[index].subcategoryName,
+                          style: TextStyle(
+                              fontSize: 30,
+                              fontFamily: 'neuropol_x_rg',
+                              fontWeight: FontWeight.bold
+                          ),
                         ),
                       ),
                     ),
@@ -209,12 +222,10 @@ class _IncludeGameOptionState extends State<IncludeGameOption> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => GameMoreOption(categoryName: categoryName, subcategoryName: subcategory[index].subcategoryName),
+                    builder: (context) => GameOptionTwo(categoryName: categoryName, subcategoryName: subcategory[index].subcategoryName),
                     // Pass the arguments as part of the RouteSettings. The
                     // DetailScreen reads the arguments from these settings.
-                    settings: RouteSettings(
-                      arguments: subcategory[index].subcategoryDetails,
-                    ),
+                    settings: RouteSettings(arguments: subcategory[index].subcategoryDetails,),
                   ),
                 );
               },

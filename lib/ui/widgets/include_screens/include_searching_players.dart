@@ -35,7 +35,7 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForPlayer> wi
 
   DatabaseReference _playerDetailsRef;
   DatabaseReference _gameRoom;
-  StreamSubscription<Event> _joinedPlayerSubscription;
+  //StreamSubscription<Event> _joinedPlayerSubscription;
   StreamSubscription<Event> playerDetailsSubscription;
   DatabaseError _error;
 
@@ -123,8 +123,6 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForPlayer> wi
                                         duration: Duration(minutes: 2),
                                         tween: Tween(begin: Duration(minutes: 2), end: Duration.zero),
                                         onEnd: () {
-                                          //print('Timer Ended');
-
                                           //remove first user from firebase if requested player has not joined.
                                           _playerDetailsRef.child(fbJoinedPlayerList[0].firebasePlayerKey).remove();
                                           funAfterNoPlayerFound();
@@ -184,8 +182,6 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForPlayer> wi
   }
 
   void retrieveFirebaseData() {
-    print('Fb retrieveFirebaseData method called 1');
-
     // Demonstrates configuring the database directly
     //var firebaseInstance = FirebaseDatabase.instance;
     final FirebaseDatabase database = FirebaseDatabase(app: firebaseApp);
@@ -198,7 +194,6 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForPlayer> wi
     _playerDetailsRef.once().then((onValue) {
       try{
         Map playerDetailsList = onValue.value;
-
         // Execute forEach()
         playerDetailsList.forEach((playerDetailsKey, playerDetailsValue) {
           print('Player Details List: { key: $playerDetailsKey, value: $playerDetailsValue}');
@@ -245,8 +240,8 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForPlayer> wi
   }
 
   void updateFirebaseJoinedPlayerDetails() {
-    //this method is called only for testing
-    createGameRoom('MEM000001', 'Sam', Constants.imgUrlTest);
+    //below method is called only for testing
+    //createGameRoom('MEM000001', 'Sam', Constants.imgUrlTest);
 
     print('Fb fb Joined Player List size: ${fbJoinedPlayerList.length}');
     if(fbJoinedPlayerList.length == 0){
@@ -262,7 +257,6 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForPlayer> wi
         'cardCount': widget.cardsToPlay,
       });
     } else if(fbJoinedPlayerList.length == 1){
-
       //removing joined players when start the match
       _playerDetailsRef.child(fbJoinedPlayerList[0].firebasePlayerKey).remove();
 
@@ -272,7 +266,7 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForPlayer> wi
     } else if (fbJoinedPlayerList.length > 1) {
       //if no player then joined as host and wait for player to join the match. Else take first player and start the match
 
-      //checking if user is same or different. both member id will be same if the user req for match for 2 times
+      //checking if user is same or different. Because both member id will be same if the user req for match for 2 times
       if (p1MemberId != fbJoinedPlayerList[0].userId) {
         //removing both players when they matched and start the match
         _playerDetailsRef.child(fbJoinedPlayerList[0].firebasePlayerKey).remove();
@@ -285,9 +279,9 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForPlayer> wi
   }
 
   void listeningToFirebaseDataUpdate() {
-    playerDetailsSubscription = _playerDetailsRef.limitToFirst(1).onChildAdded.listen((Event event) {
+    playerDetailsSubscription = _playerDetailsRef.limitToFirst(10).onChildAdded.listen((Event event) {
       //print('--------- joinedUserType ${event.snapshot.value['joinedUserType']}');
-      //print('--------- ${event.snapshot.key}');
+      print('--------- ${event.snapshot.key}');
 
       String playerDetailsKey = event.snapshot.key;
       String category = event.snapshot.value['category'];
@@ -361,10 +355,7 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForPlayer> wi
   void openGamePlayPage() {
     Navigator.push(
       context,
-      CupertinoPageRoute(
-        builder: (context) =>
-            Gameplay(),
-      ),
+      CupertinoPageRoute(builder: (context) => Gameplay(),),
     ).then((value) => Navigator.of(context).pop());
   }
 
@@ -372,7 +363,7 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForPlayer> wi
   void dispose() {
     super.dispose();
     playerDetailsSubscription.cancel();
-    _joinedPlayerSubscription.cancel();
+    //_joinedPlayerSubscription.cancel();
   }
 
 }

@@ -15,6 +15,8 @@ import 'package:trump_card_game/ui/widgets/libraries/flip_card.dart';
 import 'package:trump_card_game/ui/widgets/libraries/shimmer.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+
+
 void showBothCardsDialog(BuildContext context, List<Cards> cards, int indexOfSelectedCard, int indexOfCardDeck, bool isMatchEnded, bool isPlayAsP1,{
   Function(bool isPlayAgainClicked) onClickActionOnPlayAgain,
 }) {
@@ -60,6 +62,7 @@ void showBothCardsDialog(BuildContext context, List<Cards> cards, int indexOfSel
                                         Container(
                                           width: 215,
                                           height: 310,
+                                          margin: EdgeInsets.only(right: 12),
                                           child: RotateInDownRight(
                                             child: isPlayAsP1? buildCard1(
                                               context,
@@ -69,7 +72,7 @@ void showBothCardsDialog(BuildContext context, List<Cards> cards, int indexOfSel
                                               onClickActionOnP1GameplayCard:
                                                   (int indexOfP1Card, String attributeTitle, String attributeValue, String winBasis, String winPoints) => {
 
-                                                  },
+                                              },
                                             ) : buildCard2(
                                               context,
                                               indexOfSelectedCard,
@@ -85,30 +88,33 @@ void showBothCardsDialog(BuildContext context, List<Cards> cards, int indexOfSel
                                           ),
                                         ),
 
-                                        SizedBox(
-                                          width: 80,
+                                        HeartBeat(
+                                          child: AvatarGlow(
+                                            endRadius: 90,
+                                            glowColor: Colors.lightBlueAccent,
+                                            child: Container(
+                                              width: 130,
+                                              child: Center(
+                                                child: Image.asset('assets/icons/png/vs2.png'),
+                                              ),
+                                            ),
+                                          ),
+                                          preferences: AnimationPreferences(
+                                              duration: const Duration(milliseconds: 2000),
+                                              autoPlay: AnimationPlayStates.Loop),
                                         ),
 
                                         Container(
                                           width: 220,
                                           height: 315,
                                           child: RollIn(
-                                            child: isPlayAsP1 ? buildCard2(
+                                            child: buildCard2(
                                               context,
                                               indexOfSelectedCard,
                                               indexOfCardDeck,
                                               cards,
                                               onClickActionOnP2GameplayCard: (bool isWon, int winPoint) =>
                                               {
-                                              },
-                                            ) : buildCard1(
-                                              context,
-                                              cards,
-                                              indexOfCardDeck,
-                                              indexOfSelectedCard,
-                                              onClickActionOnP1GameplayCard:
-                                                  (int indexOfP1Card, String attributeTitle, String attributeValue, String winBasis, String winPoints) => {
-
                                               },
                                             ),
                                             preferences: AnimationPreferences(
@@ -122,14 +128,14 @@ void showBothCardsDialog(BuildContext context, List<Cards> cards, int indexOfSel
                                   ),
                                 ),
 
-                                HeartBeat(
+                                Pulse(
                                   child:  Container(
                                     margin: EdgeInsets.only(top: 20),
                                     child: MaterialButton(
                                       padding: EdgeInsets.fromLTRB(0.0, 2.0, 0.0, 0.0),
                                       splashColor: Colors.grey,
                                       child: Container(
-                                        width: 250,
+                                        width: 220,
                                         height: 50,
                                         decoration: BoxDecoration(
                                           image: DecorationImage(image: AssetImage('assets/icons/png/bg_button.png'), fit: BoxFit.fill),
@@ -138,10 +144,10 @@ void showBothCardsDialog(BuildContext context, List<Cards> cards, int indexOfSel
                                           alignment: Alignment.center,
                                           padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 12.0),
                                           child: Text(
-                                            isMatchEnded ? "PLAY AGAIN" : 'MATCH ENDED',
+                                            isMatchEnded ? 'Match Ended' : "Play Next Card",
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
-                                                fontSize: 16,
+                                                fontSize: 14,
                                                 fontStyle: FontStyle.normal,
                                                 fontFamily: 'neuropol_x_rg',
                                                 fontWeight: FontWeight.bold,
@@ -157,7 +163,7 @@ void showBothCardsDialog(BuildContext context, List<Cards> cards, int indexOfSel
                                     ),
                                   ),
                                   preferences:
-                                  AnimationPreferences(duration: const Duration(milliseconds: 2500), autoPlay: AnimationPlayStates.Loop),
+                                  AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Loop),
                                 ),
                               ],
                             ),
@@ -205,9 +211,13 @@ Widget buildCard1(
 
   return Container(
     decoration: BoxDecoration(
+      border: Border.all(
+        color: Colors.deepOrange,
+        width: 1,
+      ),
       boxShadow: <BoxShadow>[
         BoxShadow(
-          color: Colors.white70,
+          color: Colors.deepOrangeAccent,
           blurRadius: 15.0,
           offset: Offset(5.0, 5.0),
         ),
@@ -245,12 +255,13 @@ Widget buildCard1(
               childAspectRatio: 5 / 3,
               physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
               // if you want IOS bouncing effect, otherwise remove this line
-              padding: EdgeInsets.all(4),
+              padding: EdgeInsets.all(2),
               //change the number as you want
               children: List.generate(cardsAttributeList[indexOfCardDeck].length, (index) {
                 return Container(
                   padding: index == indexOfSelectedCard? EdgeInsets.only(left: 3, top: 1):EdgeInsets.all(0),
                   decoration: BoxDecoration(
+                    color: index == indexOfSelectedCard? Colors.white24: Colors.orange,
                     border: index == indexOfSelectedCard? Border.all(color: Colors.white):Border.all(color: Colors.transparent),
                     borderRadius: index == indexOfSelectedCard? BorderRadius.all(Radius.circular(3)):BorderRadius.all(Radius.circular(0)),
                   ),
@@ -396,9 +407,13 @@ Widget buildCard2(
 
   return Container(
     decoration: BoxDecoration(
+      border: Border.all(
+        color: Colors.blueAccent,
+        width: 1,
+      ),
       boxShadow: <BoxShadow>[
         BoxShadow(
-          color: Colors.white70,
+          color: Colors.blueAccent,
           blurRadius: 15.0,
           offset: Offset(5.0, 5.0),
         ),
@@ -407,7 +422,7 @@ Widget buildCard2(
     child: Stack(
       children: [
         Container(
-          color: Colors.orange,
+          color: Colors.lightBlueAccent,
         ),
         Align(
           alignment: Alignment.topCenter,
@@ -434,11 +449,12 @@ Widget buildCard2(
               childAspectRatio: 5/3,
               physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
               // if you want IOS bouncing effect, otherwise remove this line
-              padding: EdgeInsets.all(3),
+              padding: EdgeInsets.all(2),
               //change the number as you want
               children: List.generate(cardsAttributeListOfP2[indexOfCardDeck].length, (index) {
                 return Container(padding: index == indexOfSelectedCard? EdgeInsets.only(left: 3, top: 1):EdgeInsets.all(0),
                   decoration: BoxDecoration(
+                    color: index == indexOfSelectedCard? Colors.white24: Colors.lightBlueAccent,
                     border: index == indexOfSelectedCard? Border.all(color: Colors.white):Border.all(color: Colors.transparent),
                     borderRadius: index == indexOfSelectedCard? BorderRadius.all(Radius.circular(3)):BorderRadius.all(Radius.circular(0)),
                   ),

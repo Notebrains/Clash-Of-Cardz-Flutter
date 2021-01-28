@@ -111,7 +111,7 @@ class Gameplay extends StatelessWidget {
                         children: [
                           Expanded(
                             flex: 3,
-                            child: BuildPlayer1Screen(cards.length, p1FullName, p2Name),
+                            child: BuildPlayer1Screen(cards.length, p1FullName, p2Name, gameScoreStatusValueNotify),
                           ),
                           Expanded(
                             flex: 7,
@@ -310,12 +310,12 @@ class Gameplay extends StatelessWidget {
 
                                               HeartBeat(
                                                 child: AvatarGlow(
-                                                  endRadius: 27,
-                                                  glowColor: Colors.orangeAccent,
+                                                  endRadius: 40,
+                                                  glowColor: Colors.white,
                                                   child: Container(
-                                                    width: 55,
+                                                    width: 80,
                                                     child: Center(
-                                                      child: Image.asset('assets/icons/png/img_vs.png',color: Colors.black87,),
+                                                      child: Image.asset('assets/icons/png/vs1.png',),
                                                     ),
 
                                                   ),
