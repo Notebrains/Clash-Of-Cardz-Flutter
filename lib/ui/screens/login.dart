@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:trump_card_game/bloc/api_bloc.dart';
+import 'package:trump_card_game/helper/exten_fun/common_fun.dart';
 import 'package:trump_card_game/helper/shared_preference_data.dart';
 import 'package:trump_card_game/model/responses/login_res_model.dart';
 import 'package:trump_card_game/ui/screens/home.dart';
@@ -74,7 +75,11 @@ class _LogInState extends State<LogIn> {
           print('firebase noti: on message $message');
           //setState(() => _message = message["notification"]["title"]);
 
-          showBigPictureNotification();
+          SharedPreferenceHelper().getNotificationOnOffState().then((isNotificationOn) => {
+            if (isNotificationOn) {
+              showBigPictureNotification(),
+            }
+          });
 
         }, onResume: (Map<String, dynamic> message) async {
       print('firebase noti: on resume $message');
@@ -208,7 +213,8 @@ class _LogInState extends State<LogIn> {
                                           IconButton(
                                             icon: SvgPicture.asset('assets/icons/svg/google-plus.svg',
                                               color: Colors.white),
-                                            onPressed: () {},
+                                            onPressed: () {
+                                              onTapAudio('button');},
                                           ),
                                         ],
                                       ),
@@ -276,6 +282,7 @@ class _LogInState extends State<LogIn> {
                                                 'assets/icons/svg/facebook.svg'),
                                             onPressed: () {
 
+                                              onTapAudio('button');
                                             },
                                           ),
                                         ],
@@ -339,7 +346,8 @@ class _LogInState extends State<LogIn> {
                                         IconButton(
                                           icon: SvgPicture.asset('assets/icons/svg/games.svg',
                                               color: Colors.white),
-                                          onPressed: () {},
+                                          onPressed: () {
+                                            onTapAudio('button');},
                                         ),
                                       ],
                                     ),
@@ -507,7 +515,7 @@ class _LogInState extends State<LogIn> {
   }
 
 
-  void loginUserByDialog(BuildContext context) {
+  void loginUserByDialog(BuildContext context) async{
     showDialog(
       context: context,
       barrierDismissible: true,

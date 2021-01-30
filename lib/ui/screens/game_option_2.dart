@@ -1,6 +1,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:trump_card_game/helper/exten_fun/common_fun.dart';
 import 'package:trump_card_game/model/responses/game_option_res_model.dart';
 import 'package:trump_card_game/ui/screens/game_option_3.dart';
 import 'package:trump_card_game/ui/widgets/include_screens/include_drawer_play_with_friends.dart';
@@ -98,6 +99,7 @@ class _GameOptionTwoState extends State<GameOptionTwo> {
                 alignment: Alignment.center,
                 child: ColorizeAnimatedTextKit(
                   onTap: () {
+                    onTapAudio('button');
                     //print("Tap Event");
                   },
                   text: ["CLASH OF CARDZ"],
@@ -201,7 +203,7 @@ class _GameOptionTwoState extends State<GameOptionTwo> {
                       padding: const EdgeInsets.fromLTRB(8, 16, 0, 2),
                       child: Shimmer.fromColors(
                         baseColor: Colors.black54,
-                        highlightColor: Colors.grey[300],
+                        highlightColor: Colors.orangeAccent,
                         child: Text(
                           subcategoryDetails[index].gametypeName,
                           style: TextStyle( fontSize: 22, fontFamily: 'neuropol_x_rg', fontWeight: FontWeight.bold),
@@ -211,6 +213,7 @@ class _GameOptionTwoState extends State<GameOptionTwo> {
                   ],
                 ),
                 onTap: () {
+                  onTapAudio('button');
                   print('-----game type name: ${subcategoryDetails[index].gametypeName}');
                   if (subcategoryDetails[index].gametypeName == 'Player vs Multi Players') {
                     alertDialogForPlayerType();
@@ -275,7 +278,7 @@ class _GameOptionTwoState extends State<GameOptionTwo> {
                       padding: const EdgeInsets.fromLTRB(8, 16, 0, 2),
                       child: Shimmer.fromColors(
                         baseColor: Colors.black54,
-                        highlightColor: Colors.grey[300],
+                        highlightColor: Colors.orangeAccent,
                         child: Text(
                           '${cardsToBePlayed[index]} cards',
                           style: TextStyle(fontSize: 22, fontFamily: 'neuropol_x_rg', fontWeight: FontWeight.bold),
@@ -287,6 +290,7 @@ class _GameOptionTwoState extends State<GameOptionTwo> {
               ),
 
               onTap: () {
+                onTapAudio('button');
                 Navigator.push(
                   context,
                   MaterialPageRoute(

@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:trump_card_game/helper/shared_preference_data.dart';
 import 'package:trump_card_game/model/responses/profile_res_model.dart';
 import 'package:flutter_animator/flutter_animator.dart';
+import 'package:trump_card_game/ui/widgets/libraries/shimmer.dart';
 
 Widget buildHomeScreenPlayerInfo(ProfileResModel model, String xApiKey){
 
   return SlideInDown(
       child: Stack(
         children: <Widget>[
+
           Align(
             alignment: Alignment.center,
             child: Container(
@@ -26,10 +28,17 @@ Widget buildHomeScreenPlayerInfo(ProfileResModel model, String xApiKey){
                       child: Container(
                         padding: new EdgeInsets.fromLTRB(30.0, 8.0, 30.0, 8.0),
                         margin: EdgeInsets.fromLTRB(30.0, 8.0, 8.0, 8.0),
-                        child: new Text(model.response[0].fullname??'',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w900)),
+                        child: Shimmer.fromColors(
+                          baseColor: Colors.white,
+                          highlightColor: Colors.orangeAccent,
+                          child: Text(model.response[0].fullname??'',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w900)
+                          ),
+                        ),
+
+
                         decoration: new BoxDecoration(
                           borderRadius:
                           new BorderRadius.all(Radius.circular(30.0)),
@@ -45,13 +54,14 @@ Widget buildHomeScreenPlayerInfo(ProfileResModel model, String xApiKey){
                     radius: 25,
                     child: FadeInImage.assetNetwork(
                       placeholder: 'assets/icons/png/circle-avator-default-img.png',
-                      image: model.response[0].photo,
+                      image: model.response[0].photo??'',
                     ),
                   ),
                 ],
               ),
             ),
           ),
+
           Align(
             alignment: Alignment.bottomCenter,
             child: Container(
@@ -71,10 +81,14 @@ Widget buildHomeScreenPlayerInfo(ProfileResModel model, String xApiKey){
                         padding:
                         new EdgeInsets.fromLTRB(30.0, 8.0, 30.0, 8.0),
                         margin: EdgeInsets.fromLTRB(8.0, 8.0, 0.0, 8.0),
-                        child: Text(model.response[0].coins??'0',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w900)),
+                        child: Shimmer.fromColors(
+                          baseColor: Colors.white,
+                          highlightColor: Colors.orangeAccent,
+                          child: Text(model.response[0].coins == ''?'0': model.response[0].coins,
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w900)),
+                        ),
                         decoration: new BoxDecoration(
                           borderRadius:
                           new BorderRadius.all(Radius.circular(30.0)),

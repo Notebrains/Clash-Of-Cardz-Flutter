@@ -90,7 +90,16 @@ Widget buildPlayerOneCard(
             Container(
               width: getScreenWidth(context),
               height: getScreenHeight(context),
-              color: Colors.deepOrangeAccent,
+              decoration: new BoxDecoration(
+                gradient: new LinearGradient(
+                  colors: [
+                    Colors.deepOrange,
+                    Colors.orange[600],
+                    Colors.deepOrangeAccent,
+                  ],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,),
+              ),
               //child: Image.asset('assets/images/bg_card_back.png', fit: BoxFit.fill),
             ),
             Center(
@@ -141,7 +150,16 @@ Widget buildPlayerOneCard(
       child:  Stack(
         children: [
           Container(
-            color: Colors.orange[600],
+            decoration: new BoxDecoration(
+              gradient: new LinearGradient(
+                colors: [
+                  Colors.deepOrange,
+                  Colors.orange[600],
+                  Colors.deepOrangeAccent,
+                ],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,),
+            ),
           ),
 
           Align(
@@ -151,7 +169,7 @@ Widget buildPlayerOneCard(
               child: FadeInImage.assetNetwork(
                   fit: BoxFit.cover,
                   placeholder: 'assets/images/cricket_1.png',
-                  image: cardsList[indexOfCardDeck].cardImg,
+                  image: cardsList[indexOfCardDeck].cardImg??'',
                   height: 135,
                   width: 135),
             ),
@@ -265,15 +283,13 @@ Widget buildPlayerOneCard(
                             ),
                             onTap: () {
                               isButtonTappedValueNotify.value = index;
-                              if (isPlayerTurn) {
+                              if (isPlayerTurn && whoIsPlaying == 'player') {
                                 //p1 and p2 card will be touched in same position. So both index will be same.
                                 p1SelectedAttributeValue = 0;
                                 p2SelectedAttributeValue = 0;
                                 winPoint = 0;
 
-                                if(whoIsPlaying == 'player'){
-                                  onClickActionOnP1AutoPlayCard(index, false, 0, false);
-                                }
+                                onClickActionOnP1AutoPlayCard(index, false, 0, false);
                               }
                             },
                           ),
@@ -320,7 +336,7 @@ Widget buildPlayerOneCard(
                           radius: 30,
                           child: FadeInImage.assetNetwork(
                             placeholder: 'assets/icons/png/white-flag.png',
-                            image: cardsList[indexOfCardDeck].flagImage,
+                            image: cardsList[indexOfCardDeck].flagImage??'',
                           ),
                         ),
                       ),
@@ -476,7 +492,16 @@ Widget buildPlayerTwoCard(
         child:Stack(
           children: [
             Container(
-              color: Colors.lightBlueAccent[400],
+              decoration: new BoxDecoration(
+                gradient: new LinearGradient(
+                  colors: [
+                    Colors.lightBlue,
+                    Colors.lightBlueAccent[400],
+                    Colors.lightBlueAccent[400],
+                  ],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,),
+              ),
             ),
 
             Align(
@@ -492,7 +517,7 @@ Widget buildPlayerTwoCard(
                     radius: 30,
                     child: FadeInImage.assetNetwork(
                       placeholder: 'assets/icons/png/white-flag.png',
-                      image: cardsList[cardListSizeForP2 + indexOfCardDeck].flagImage,
+                      image: cardsList[cardListSizeForP2 + indexOfCardDeck].flagImage??'',
                     ),
                   ),
                 ),
@@ -512,7 +537,7 @@ Widget buildPlayerTwoCard(
                     child: FadeInImage.assetNetwork(
                         fit: BoxFit.cover,
                         placeholder: 'assets/images/cricket_1.png',
-                        image: cardsList[indexOfCardDeck].cardImg,
+                        image: cardsList[indexOfCardDeck].cardImg??'',
                         height: 155,
                         width: 155),
                   ),
@@ -556,7 +581,16 @@ Widget buildPlayerTwoCard(
       child: Stack(
         children: [
           Container(
-            color: Colors.lightBlueAccent,
+            decoration: new BoxDecoration(
+              gradient: new LinearGradient(
+                colors: [
+                  Colors.lightBlue,
+                  Colors.lightBlueAccent[400],
+                  Colors.lightBlueAccent[400],
+                ],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,),
+            ),
           ),
 
           Align(
@@ -566,7 +600,7 @@ Widget buildPlayerTwoCard(
               child: FadeInImage.assetNetwork(
                   fit: BoxFit.cover,
                   placeholder: 'assets/images/cricket_1.png',
-                  image: cardsList[cardListSizeForP2 + indexOfCardDeck].cardImg,
+                  image: cardsList[cardListSizeForP2 + indexOfCardDeck].cardImg??'',
                   height: 135,
                   width: 135),
             ),
@@ -714,7 +748,7 @@ Widget buildPlayerTwoCard(
                           radius: 30,
                           child: FadeInImage.assetNetwork(
                             placeholder: 'assets/icons/png/white-flag.png',
-                            image: cardsList[cardListSizeForP2 + indexOfCardDeck].flagImage,
+                            image: cardsList[cardListSizeForP2 + indexOfCardDeck].flagImage??'',
                           ),
                         ),
                       ),

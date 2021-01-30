@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:trump_card_game/bloc/api_bloc.dart';
 import 'package:trump_card_game/helper/constantvalues/constants.dart';
 import 'package:trump_card_game/helper/exten_fun/base_application_fun.dart';
+import 'package:trump_card_game/helper/exten_fun/common_fun.dart';
 import 'package:trump_card_game/model/responses/leaderboard_res_model.dart';
 import 'package:trump_card_game/ui/widgets/custom/frosted_glass.dart';
 import 'package:flutter_animator/flutter_animator.dart';
@@ -66,7 +67,8 @@ class Leaderboard extends StatelessWidget {
                 height: 33,
                 child: IconButton(
                   icon: SvgPicture.asset('assets/icons/svg/coin.svg'),
-                  onPressed: () {},
+                  onPressed: () {
+                    onTapAudio('button');},
                 ),
               ),
               Padding(
@@ -88,7 +90,8 @@ class Leaderboard extends StatelessWidget {
             width: 25,
             height: 25,
           ),
-          onPressed: () {},
+          onPressed: () {
+            onTapAudio('button');},
         ),
       ],
     );
@@ -108,6 +111,7 @@ class Leaderboard extends StatelessWidget {
                   child: ColorizeAnimatedTextKit(
                     onTap: () {
                       //print("Tap Event");
+                      onTapAudio('button');
                     },
                     text: [
                       "LEADERBOARD"

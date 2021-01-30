@@ -217,7 +217,16 @@ Widget buildCard1(
     child:  Stack(
       children: [
         Container(
-          color: Colors.orange,
+          decoration: new BoxDecoration(
+            gradient: new LinearGradient(
+              colors: [
+                Colors.deepOrange,
+                Colors.orange[600],
+                Colors.deepOrangeAccent,
+              ],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,),
+          ),
         ),
 
         Align(
@@ -227,7 +236,7 @@ Widget buildCard1(
             child: FadeInImage.assetNetwork(
                 fit: BoxFit.cover,
                 placeholder: 'assets/images/cricket_1.png',
-                image: cardsList[indexOfCardDeck].cardImg,
+                image: cardsList[indexOfCardDeck].cardImg??'',
                 height: 145,
                 width: 145
             ),
@@ -252,7 +261,7 @@ Widget buildCard1(
                 return Container(
                   padding: index == indexOfSelectedCard? EdgeInsets.only(left: 3, top: 1):EdgeInsets.all(0),
                   decoration: BoxDecoration(
-                      color: index == indexOfSelectedCard? Colors.white24: Colors.orange,
+                      color: index == indexOfSelectedCard? Colors.white24: Colors.orange[600],
                       border: index == indexOfSelectedCard? Border.all(color: Colors.white):Border.all(color: Colors.transparent),
                       borderRadius: index == indexOfSelectedCard? BorderRadius.all(Radius.circular(3)):BorderRadius.all(Radius.circular(0)),
                   ),
@@ -363,7 +372,7 @@ Widget buildCard1(
                         radius: 30,
                         child: FadeInImage.assetNetwork(
                           placeholder: 'assets/icons/png/white-flag.png',
-                          image: cardsList[indexOfCardDeck].flagImage,
+                          image: cardsList[indexOfCardDeck].flagImage??'',
                         ),
                       ),
                     ),
@@ -413,7 +422,16 @@ Widget buildCard2(
     child: Stack(
       children: [
         Container(
-          color: Colors.lightBlueAccent,
+          decoration: new BoxDecoration(
+            gradient: new LinearGradient(
+              colors: [
+                Colors.lightBlue,
+                Colors.lightBlueAccent[400],
+                Colors.lightBlueAccent[400],
+              ],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,),
+          ),
         ),
         Align(
           alignment: Alignment.topCenter,
@@ -422,7 +440,7 @@ Widget buildCard2(
             child: FadeInImage.assetNetwork(
                 fit: BoxFit.cover,
                 placeholder: 'assets/images/cricket_2.png',
-                image: cardsList[cardListSizeForP2 + indexOfCardDeck].cardImg,
+                image: cardsList[cardListSizeForP2 + indexOfCardDeck].cardImg??'',
                 height: 145,
                 width: 145),
           ),
@@ -445,7 +463,7 @@ Widget buildCard2(
               children: List.generate(cardsAttributeListOfP2[indexOfCardDeck].length, (index) {
                 return Container(padding: index == indexOfSelectedCard? EdgeInsets.only(left: 3, top: 1):EdgeInsets.all(0),
                   decoration: BoxDecoration(
-                    color: index == indexOfSelectedCard? Colors.white24: Colors.lightBlueAccent,
+                    color: index == indexOfSelectedCard? Colors.white24: Colors.lightBlueAccent[400],
                     border: index == indexOfSelectedCard? Border.all(color: Colors.white):Border.all(color: Colors.transparent),
                     borderRadius: index == indexOfSelectedCard? BorderRadius.all(Radius.circular(3)):BorderRadius.all(Radius.circular(0)),
                   ),
@@ -552,7 +570,7 @@ Widget buildCard2(
                         radius: 30,
                         child: FadeInImage.assetNetwork(
                           placeholder: 'assets/icons/png/white-flag.png',
-                          image: cardsList[cardListSizeForP2 + indexOfCardDeck].flagImage,
+                          image: cardsList[cardListSizeForP2 + indexOfCardDeck].flagImage??'',
                         ),
                       ),
                     ),

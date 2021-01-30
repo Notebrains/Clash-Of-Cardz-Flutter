@@ -5,10 +5,17 @@ import 'package:trump_card_game/ui/widgets/custom/frosted_glass.dart';
 import 'package:trump_card_game/ui/widgets/include_screens/include_statistics_screen.dart';
 
 class Statistics extends StatelessWidget {
+  String xApiKey;
+  String memberId;
+
+  Statistics(String xApiKey, String memberId){
+    this.xApiKey = xApiKey;
+    this.memberId = memberId;
+  }
 
   @override
   Widget build(BuildContext context) {
-    apiBloc.fetchStatisticsRes('ZGHrDz4prqsu4BcApPaQYaGgq', 'MEM000002');
+    apiBloc.fetchStatisticsRes(xApiKey, memberId);
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,

@@ -20,6 +20,8 @@ playUrlAudio(String url) async {
 
 import 'package:flutter/material.dart';
 import 'package:trump_card_game/ui/widgets/libraries/flutter_toast.dart';
+import 'package:audioplayers/audio_cache.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 String getFirstWordFromText(String txt)
 {
@@ -38,4 +40,26 @@ void showToast(BuildContext context, String message){
           Shadow(color: Colors.white),
         ],
       ));
+}
+
+void onTapAudio(String audioType){
+  //AudioPlayer instance;
+  AudioCache audioCache = AudioCache(prefix: "assets/audios/", fixedPlayer: AudioPlayer()..setReleaseMode(ReleaseMode.STOP));
+  switch(audioType) {
+    case "button": {audioCache.play("sfx-bat+hit+ball.mp3");}
+    break;
+
+    case "icon": {audioCache.play('sfx-bat+hit+ball.mp3'); }
+    break;
+
+    case "C": {  print("Fair"); }
+    break;
+
+    case "D": {  print("Poor"); }
+    break;
+
+    default: {
+      audioCache.play('sfx-caughtball.mp3'); }
+    break;
+  }
 }

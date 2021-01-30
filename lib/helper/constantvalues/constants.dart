@@ -22,4 +22,8 @@ class Constants{
   static const String p1CardText2 = 'TAP TO CLASH';
   static const String p1CardText3 = 'COMPUTER YET TO \nSELECT A STATS';
   static const String p1CardText4 = 'WAIT UNTIL... \nCOMPUTER SELECT A \nSTATS AND TAP';
+  static const String pvpText0 = 'WAIT UNTIL... \nP-2 SELECT A \nSTATS AND TAP';
+  static const String pvpText1 = 'P-2 IS THINKING...';
+  static const String pvpText4 = "IT'S YOUR TURN TO PLAY";
+  static const String pvpText5 = 'P-1 IS THINKING...';
 }

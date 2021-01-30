@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:trump_card_game/bloc/api_bloc.dart';
+import 'package:trump_card_game/helper/exten_fun/common_fun.dart';
 import 'package:trump_card_game/helper/shared_preference_data.dart';
 import 'package:trump_card_game/model/responses/game_option_res_model.dart';
 import 'package:trump_card_game/ui/screens/autoplay.dart';
@@ -116,6 +117,7 @@ class _GameOptionThreeState extends State<GameOptionThree> {
                 alignment: Alignment.center,
                 child: ColorizeAnimatedTextKit(
                   onTap: () {
+                    onTapAudio('button');
                     //print("Tap Event");
                   },
                   text: ["CLASH OF CARDZ"],
@@ -296,7 +298,7 @@ class _GameOptionThreeState extends State<GameOptionThree> {
                       padding: const EdgeInsets.fromLTRB(8, 16, 0, 2),
                       child: Shimmer.fromColors(
                         baseColor: Colors.black54,
-                        highlightColor: Colors.grey[300],
+                        highlightColor: Colors.orangeAccent,
                         child: Text(
                           subcategoryDetails[index].gametypeName,
                           style: TextStyle(
@@ -315,6 +317,7 @@ class _GameOptionThreeState extends State<GameOptionThree> {
                   buildSecondList(subcategoryDetails[index].cardsToBePlayed);
                   gameMoreOptState(subcategoryDetails[index].cardsToBePlayed);
 
+                  onTapAudio('button');
                 },
               ),
             ),
@@ -372,7 +375,7 @@ class _GameOptionThreeState extends State<GameOptionThree> {
                       padding: const EdgeInsets.fromLTRB(8, 16, 0, 2),
                       child: Shimmer.fromColors(
                         baseColor: Colors.black54,
-                        highlightColor: Colors.grey[300],
+                        highlightColor: Colors.orangeAccent,
                         child: Text(
                           '${cardsToBePlayed[index]} cards',
                           style: TextStyle(

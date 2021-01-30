@@ -2,11 +2,14 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:trump_card_game/helper/exten_fun/base_application_fun.dart';
+import 'package:trump_card_game/helper/globals.dart';
 import 'package:trump_card_game/helper/shared_preference_data.dart';
 import 'package:trump_card_game/ui/screens/home.dart';
 import 'package:trump_card_game/ui/screens/login.dart';
 import 'package:trump_card_game/ui/widgets/custom/horizontal_progress_indicator.dart';
 import 'package:trump_card_game/ui/widgets/libraries/animated_text_kit/animated_text_kit.dart';
+import 'package:audioplayers/audio_cache.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 
 class SplashScreen extends StatefulWidget {
@@ -18,18 +21,23 @@ class SplashScreen extends StatefulWidget {
   _SplashScreenState createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class _SplashScreenState extends State<SplashScreen> with WidgetsBindingObserver{
   String _versionName = 'V1.0';
   final splashDelay = 6;
+  static AudioCache musicCache;
+  static AudioPlayer instance;
 
   @override
   void initState() {
     super.initState();
     setScreenOrientationToLandscape();
-    //playUrlAudio("https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3");
     _loadWidget();
-    //playUrlAudio('https://youtu.be/fnliFs-XU6w?list=TLPQMDQxMjIwMjDtI_trUlJTbw');
-    //playAssetAudio('video_game_music.mp3');
+
+    SharedPreferenceHelper().getMusicOnOffState().then((isMusicOn) {
+      if (isMusicOn) {
+        playMusic();
+      }
+    });
   }
 
   _loadWidget() async {
@@ -135,4 +143,12 @@ class _SplashScreenState extends State<SplashScreen> {
       ),
     );
   }
+
+  void playMusic() async {
+    musicCache = AudioCache(prefix: "assets/audios/");
+    instance = await musicCache.loop("bg_mixkit-too-cool-too-crazy.mp3");
+
+    Globals.setAudioPlayerInstance(instance);
+  }
+
 }

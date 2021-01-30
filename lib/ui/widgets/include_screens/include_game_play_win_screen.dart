@@ -15,8 +15,6 @@ import 'package:trump_card_game/ui/widgets/libraries/flip_card.dart';
 import 'package:trump_card_game/ui/widgets/libraries/shimmer.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-
-
 void showBothCardsDialog(BuildContext context, List<Cards> cards, int indexOfSelectedCard, int indexOfCardDeck, bool isMatchEnded, bool isPlayAsP1,{
   Function(bool isPlayAgainClicked) onClickActionOnPlayAgain,
 }) {
@@ -68,19 +66,12 @@ void showBothCardsDialog(BuildContext context, List<Cards> cards, int indexOfSel
                                               context,
                                               cards,
                                               indexOfCardDeck,
-                                              indexOfSelectedCard,
-                                              onClickActionOnP1GameplayCard:
-                                                  (int indexOfP1Card, String attributeTitle, String attributeValue, String winBasis, String winPoints) => {
-
-                                              },
+                                              indexOfSelectedCard
                                             ) : buildCard2(
                                               context,
                                               indexOfSelectedCard,
                                               indexOfCardDeck,
-                                              cards,
-                                              onClickActionOnP2GameplayCard: (bool isWon, int winPoint) =>
-                                              {
-                                              },
+                                              cards
                                             ),
                                             preferences: AnimationPreferences(
                                                 duration: const Duration(milliseconds: 1500),
@@ -108,14 +99,16 @@ void showBothCardsDialog(BuildContext context, List<Cards> cards, int indexOfSel
                                           width: 220,
                                           height: 315,
                                           child: RollIn(
-                                            child: buildCard2(
-                                              context,
-                                              indexOfSelectedCard,
-                                              indexOfCardDeck,
-                                              cards,
-                                              onClickActionOnP2GameplayCard: (bool isWon, int winPoint) =>
-                                              {
-                                              },
+                                            child: isPlayAsP1? buildCard1(
+                                                context,
+                                                cards,
+                                                indexOfCardDeck,
+                                                indexOfSelectedCard
+                                            ) : buildCard2(
+                                                context,
+                                                indexOfSelectedCard,
+                                                indexOfCardDeck,
+                                                cards
                                             ),
                                             preferences: AnimationPreferences(
                                                 duration: const Duration(milliseconds: 1500),
@@ -192,11 +185,7 @@ Widget buildCard1(
     BuildContext context,
     List<Cards> cardsList,
     int indexOfCardDeck,
-    int indexOfSelectedCard,
-    {
-      Function(int p1SelectedIndexOfAttributeList, String attributeTitle, String attributeValue, String winBasis, String winPoints)
-      onClickActionOnP1GameplayCard,
-    }) {
+    int indexOfSelectedCard) {
   List<List<Attribute>> cardsAttributeList = [];
 
   try {
@@ -226,7 +215,16 @@ Widget buildCard1(
     child:  Stack(
       children: [
         Container(
-          color: Colors.orange,
+          decoration: new BoxDecoration(
+            gradient: new LinearGradient(
+              colors: [
+                Colors.deepOrange,
+                Colors.orange[600],
+                Colors.deepOrangeAccent,
+              ],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,),
+          ),
         ),
 
         Align(
@@ -236,7 +234,7 @@ Widget buildCard1(
             child: FadeInImage.assetNetwork(
                 fit: BoxFit.cover,
                 placeholder: 'assets/images/cricket_1.png',
-                image: cardsList[indexOfCardDeck].cardImg,
+                image: cardsList[indexOfCardDeck].cardImg??'',
                 height: 145,
                 width: 145
             ),
@@ -261,7 +259,7 @@ Widget buildCard1(
                 return Container(
                   padding: index == indexOfSelectedCard? EdgeInsets.only(left: 3, top: 1):EdgeInsets.all(0),
                   decoration: BoxDecoration(
-                    color: index == indexOfSelectedCard? Colors.white24: Colors.orange,
+                    color: index == indexOfSelectedCard? Colors.white24: Colors.orange[600],
                     border: index == indexOfSelectedCard? Border.all(color: Colors.white):Border.all(color: Colors.transparent),
                     borderRadius: index == indexOfSelectedCard? BorderRadius.all(Radius.circular(3)):BorderRadius.all(Radius.circular(0)),
                   ),
@@ -372,7 +370,7 @@ Widget buildCard1(
                         radius: 30,
                         child: FadeInImage.assetNetwork(
                           placeholder: 'assets/icons/png/white-flag.png',
-                          image: cardsList[indexOfCardDeck].flagImage,
+                          image: cardsList[indexOfCardDeck].flagImage??'',
                         ),
                       ),
                     ),
@@ -391,9 +389,7 @@ Widget buildCard2(
     BuildContext context,
     int indexOfSelectedCard,
     int indexOfCardDeck,
-    List<Cards> cardsList, {
-      Function(bool isWon, int winPoint) onClickActionOnP2GameplayCard,
-    }) {
+    List<Cards> cardsList) {
 
   List<List<Attribute>> cardsAttributeListOfP2 = [];
   int cardListSizeForP2 = (cardsList.length / 2).round();
@@ -422,7 +418,16 @@ Widget buildCard2(
     child: Stack(
       children: [
         Container(
-          color: Colors.lightBlueAccent,
+          decoration: new BoxDecoration(
+            gradient: new LinearGradient(
+              colors: [
+                Colors.lightBlue,
+                Colors.lightBlueAccent[400],
+                Colors.lightBlueAccent[400],
+              ],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,),
+          ),
         ),
         Align(
           alignment: Alignment.topCenter,
@@ -431,7 +436,7 @@ Widget buildCard2(
             child: FadeInImage.assetNetwork(
                 fit: BoxFit.cover,
                 placeholder: 'assets/images/cricket_2.png',
-                image: cardsList[cardListSizeForP2 + indexOfCardDeck].cardImg,
+                image: cardsList[cardListSizeForP2 + indexOfCardDeck].cardImg??'',
                 height: 145,
                 width: 145),
           ),
@@ -454,7 +459,7 @@ Widget buildCard2(
               children: List.generate(cardsAttributeListOfP2[indexOfCardDeck].length, (index) {
                 return Container(padding: index == indexOfSelectedCard? EdgeInsets.only(left: 3, top: 1):EdgeInsets.all(0),
                   decoration: BoxDecoration(
-                    color: index == indexOfSelectedCard? Colors.white24: Colors.lightBlueAccent,
+                    color: index == indexOfSelectedCard? Colors.white24: Colors.lightBlueAccent[400],
                     border: index == indexOfSelectedCard? Border.all(color: Colors.white):Border.all(color: Colors.transparent),
                     borderRadius: index == indexOfSelectedCard? BorderRadius.all(Radius.circular(3)):BorderRadius.all(Radius.circular(0)),
                   ),
@@ -561,7 +566,7 @@ Widget buildCard2(
                         radius: 30,
                         child: FadeInImage.assetNetwork(
                           placeholder: 'assets/icons/png/white-flag.png',
-                          image: cardsList[cardListSizeForP2 + indexOfCardDeck].flagImage,
+                          image: cardsList[cardListSizeForP2 + indexOfCardDeck].flagImage??'',
                         ),
                       ),
                     ),

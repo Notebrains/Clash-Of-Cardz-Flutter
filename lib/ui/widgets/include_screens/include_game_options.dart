@@ -120,7 +120,7 @@ class _IncludeGameOptionState extends State<IncludeGameOption> {
                     padding: const EdgeInsets.fromLTRB(8, 8, 0, 2),
                     child: Shimmer.fromColors(
                       baseColor: Colors.black54,
-                      highlightColor: Colors.grey[300],
+                      highlightColor: Colors.orangeAccent,
                       child: Text(
                         data.response[index].categoryName,
                         style: TextStyle(
@@ -204,7 +204,7 @@ class _IncludeGameOptionState extends State<IncludeGameOption> {
                       padding: const EdgeInsets.fromLTRB(8, 8, 0, 2),
                       child: Shimmer.fromColors(
                         baseColor: Colors.black54,
-                        highlightColor: Colors.grey[300],
+                        highlightColor: Colors.orangeAccent,
                         child: Text(
                           subcategory[index].subcategoryName,
                           style: TextStyle(

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:trump_card_game/bloc/api_bloc.dart';
 import 'package:trump_card_game/helper/exten_fun/base_application_fun.dart';
+import 'package:trump_card_game/helper/exten_fun/common_fun.dart';
 import 'package:trump_card_game/helper/shared_preference_data.dart';
 import 'package:trump_card_game/ui/screens/home.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -91,7 +92,7 @@ class GameResult extends StatelessWidget {
                                 radius: 30,
                                 child: FadeInImage.assetNetwork(
                                   placeholder: 'assets/icons/png/circle-avator-default-img.png',
-                                  image: winnerImage,
+                                  image: winnerImage??'',
                                   fit: BoxFit.fill,
                                   width: 65,
                                   height: 65,
@@ -224,6 +225,7 @@ class GameResult extends StatelessWidget {
                                     ),
                                   ),
                                   onPressed: () {
+                                    onTapAudio('button');
                                     SharedPreferenceHelper().getUserSavedData().then((sharedPrefModel) {
                                       Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => HomeScreen(xApiKey: sharedPrefModel.xApiKey, memberId: sharedPrefModel.memberId,)));
                                     });
@@ -260,6 +262,7 @@ class GameResult extends StatelessWidget {
                                   ),
                                   // ),
                                   onPressed: () {
+                                    onTapAudio('button');
                                     Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => GameOption()));
                                   },
                                 ),
@@ -336,6 +339,7 @@ class GameResult extends StatelessWidget {
       action: SnackBarAction(
         label: 'Retry',
         onPressed: () {
+          onTapAudio('button');
           saveGameResultToServer();
         },
       ),

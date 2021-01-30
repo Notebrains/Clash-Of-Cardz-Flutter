@@ -95,4 +95,26 @@ class SharedPreferenceHelper {
     prefs.clear();
   }
 
+  void saveMusicOnOffState(bool isMusicOn) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setBool('isMusicOn', isMusicOn);
+    //print('----saved $xApiKey');
+  }
+
+  Future<bool> getMusicOnOffState() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool('isMusicOn') ?? true;
+  }
+
+  void saveNotificationOnOffState(bool isNotificationOn) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setBool('isNotificationOn', isNotificationOn);
+    //print('----saved $xApiKey');
+  }
+
+  Future<bool> getNotificationOnOffState() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool('isNotificationOn') ?? true;
+  }
+
 }

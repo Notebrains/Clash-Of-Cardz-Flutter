@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:trump_card_game/bloc/api_bloc.dart';
 import 'package:trump_card_game/helper/exten_fun/base_application_fun.dart';
+import 'package:trump_card_game/helper/exten_fun/common_fun.dart';
 import 'package:trump_card_game/model/responses/profile_res_model.dart';
 import 'package:trump_card_game/ui/widgets/custom/frosted_glass.dart';
 
@@ -84,7 +85,7 @@ class _GameRuleState extends State<GameRule> {
                       FadeInImage.assetNetwork(
                         fit: BoxFit.fill,
                         placeholder: 'assets/animations/gifs/loading_text.gif',
-                        image: item,
+                        image: item??'',
                         width: double.infinity - 60,
                       ),
                       Positioned(
@@ -149,6 +150,7 @@ class _GameRuleState extends State<GameRule> {
                         color: Colors.black,
                       ),
                       onPressed: () {
+                        onTapAudio('button');
                         _controller.previousPage();
                       },
                     ),
@@ -175,6 +177,7 @@ class _GameRuleState extends State<GameRule> {
                                 color: Colors.black54),
                           ),
                           onPressed: () {
+                            onTapAudio('button');
                             _controller.animateToPage(pageIndex);
                           },
                         ))),
@@ -192,6 +195,7 @@ class _GameRuleState extends State<GameRule> {
                         color: Colors.black,
                       ),
                       onPressed: () {
+                        onTapAudio('button');
                         _controller.nextPage();
                       },
                     ),

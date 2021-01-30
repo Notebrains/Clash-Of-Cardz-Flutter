@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 import 'package:shape_of_view/shape_of_view.dart';
 import 'package:trump_card_game/helper/exten_fun/base_application_fun.dart';
+import 'package:trump_card_game/helper/exten_fun/common_fun.dart';
 import 'package:trump_card_game/model/responses/cards_res_model.dart';
 import 'package:trump_card_game/ui/widgets/libraries/animated_text_kit/wavy.dart';
 import 'package:trump_card_game/ui/widgets/libraries/edge_alert.dart';
@@ -9,13 +10,17 @@ import 'package:trump_card_game/ui/widgets/libraries/f_dotted_line.dart';
 import 'package:trump_card_game/ui/widgets/libraries/flip_card.dart';
 import 'package:trump_card_game/ui/widgets/libraries/shimmer.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:lottie/lottie.dart';
 
 Widget buildCardAsP1(
   BuildContext context,
   bool isPlayAsP1,
   List<Cards> cardsList,
-  int indexOfCardDeck, bool isYourTurn, {
-  Function(int p1SelectedIndexOfAttributeList, String attributeTitle, String attributeValue, String winBasis, String winPoints)
+  int indexOfCardDeck,
+  bool isYourNextTurn,
+  int selectedIndexOfP2Card,
+  String whoIsPlaying, {
+  Function(int p1SelectedIndexOfAttributeList, String attributeTitle, String attributeValue, String winBasis, String winPoints, bool isFlipped)
       onClickActionOnP1GameplayCard,
 }) {
   GlobalKey<FlipCardState> cardKeyOfPlayerOne = GlobalKey<FlipCardState>();
@@ -46,7 +51,22 @@ Widget buildCardAsP1(
     speed: 1000,
     key: cardKeyOfPlayerOne,
     onFlipDone: (status) {
-      //print(status);
+      print('----whoIsPlaying $whoIsPlaying');
+      print('----isYourNextTurn $isYourNextTurn');
+      print('----selectedIndexOfP2Card $selectedIndexOfP2Card');
+
+      if (whoIsPlaying == 'p1') {
+        onClickActionOnP1GameplayCard(0, 'Title', '0', 'highest','0', true);
+      } if (isYourNextTurn && whoIsPlaying == 'p2') {
+        String attributeValue = (double.parse(cardsAttributeList[indexOfCardDeck][selectedIndexOfP2Card].value).toInt()).toString();
+        String attributeTitle = cardsAttributeList[indexOfCardDeck][selectedIndexOfP2Card].name;
+        String winPoint = cardsAttributeList[indexOfCardDeck][selectedIndexOfP2Card].winPoints;
+        String winBasis = cardsAttributeList[indexOfCardDeck][selectedIndexOfP2Card].winBasis;
+
+        Future.delayed(Duration(milliseconds: 1200),(){
+          onClickActionOnP1GameplayCard(selectedIndexOfP2Card, attributeTitle, attributeValue, winBasis, winPoint, true);
+        });
+      }
     },
     front: Container(
       decoration: BoxDecoration(
@@ -65,7 +85,16 @@ Widget buildCardAsP1(
             Container(
               width: getScreenWidth(context),
               height: getScreenHeight(context),
-              color: Colors.deepOrangeAccent,
+              decoration: new BoxDecoration(
+                gradient: new LinearGradient(
+                  colors: [
+                    Colors.deepOrange,
+                    Colors.orange[600],
+                    Colors.deepOrangeAccent,
+                  ],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,),
+              ),
               //child: Image.asset('assets/images/bg_card_back.png', fit: BoxFit.fill),
             ),
             Center(
@@ -99,7 +128,7 @@ Widget buildCardAsP1(
           ],
         ),
         onTap: () {
-          if (isYourTurn) {
+          if (isYourNextTurn) {
             cardKeyOfPlayerOne.currentState.toggleCard();
           } else {
             EdgeAlert.show(context,
@@ -126,7 +155,17 @@ Widget buildCardAsP1(
       child: Stack(
         children: [
           Container(
-            color: Colors.orange[600],
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Colors.deepOrange,
+                  Colors.orange[600],
+                  Colors.orange[600],
+                ],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              ),
+            ),
           ),
           Align(
             alignment: Alignment.topCenter,
@@ -135,7 +174,7 @@ Widget buildCardAsP1(
               child: FadeInImage.assetNetwork(
                   fit: BoxFit.cover,
                   placeholder: 'assets/images/cricket_1.png',
-                  image: cardsList[indexOfCardDeck].cardImg,
+                  image: cardsList[indexOfCardDeck].cardImg??'',
                   height: 135,
                   width: 135),
             ),
@@ -174,11 +213,11 @@ Widget buildCardAsP1(
                     //change the number as you want
                     children: List.generate(cardsAttributeList[indexOfCardDeck].length, (index) {
                       return Container(
-                        padding: index == isButtonTappedValueNotify.value? EdgeInsets.only(left: 3, top: 1):EdgeInsets.all(0),
+                        padding: index == selectedIndexOfP2Card || index == isButtonTappedValueNotify.value? EdgeInsets.only(left: 3, top: 1):EdgeInsets.all(0),
                         decoration: BoxDecoration(
-                          color: index == isButtonTappedValueNotify.value? Colors.white24: Colors.orange[600],
-                          border: index == isButtonTappedValueNotify.value? Border.all(color: Colors.white):Border.all(color: Colors.transparent),
-                          borderRadius: index == isButtonTappedValueNotify.value? BorderRadius.all(Radius.circular(3)):BorderRadius.all(Radius.circular(0)),
+                          color: index == selectedIndexOfP2Card || index == isButtonTappedValueNotify.value? Colors.white24: Colors.orange[600],
+                          border: index == selectedIndexOfP2Card || index == isButtonTappedValueNotify.value? Border.all(color: Colors.white):Border.all(color: Colors.transparent),
+                          borderRadius: index == selectedIndexOfP2Card || index == isButtonTappedValueNotify.value? BorderRadius.all(Radius.circular(3)):BorderRadius.all(Radius.circular(0)),
                         ),
                         //margin: EdgeInsets.only(left: 5, right: 5),
                         margin: EdgeInsets.symmetric(vertical: 0, horizontal: 1),
@@ -247,13 +286,17 @@ Widget buildCardAsP1(
                             ),
                             onTap: () {
                               isButtonTappedValueNotify.value = index;
-                              onClickActionOnP1GameplayCard(
-                                index,
-                                cardsAttributeList[indexOfCardDeck][index].name,
-                                cardsAttributeList[indexOfCardDeck][index].value,
-                                cardsAttributeList[indexOfCardDeck][index].winBasis,
-                                cardsAttributeList[indexOfCardDeck][index].winPoints,
-                              );
+
+                              if (isYourNextTurn && whoIsPlaying == 'p1') {
+                                onClickActionOnP1GameplayCard(
+                                    index,
+                                    cardsAttributeList[indexOfCardDeck][index].name,
+                                    cardsAttributeList[indexOfCardDeck][index].value,
+                                    cardsAttributeList[indexOfCardDeck][index].winBasis,
+                                    cardsAttributeList[indexOfCardDeck][index].winPoints,
+                                    false
+                                );
+                              }
                             },
                           ),
                         ),
@@ -299,7 +342,7 @@ Widget buildCardAsP1(
                           radius: 30,
                           child: FadeInImage.assetNetwork(
                             placeholder: 'assets/icons/png/white-flag.png',
-                            image: cardsList[indexOfCardDeck].flagImage,
+                            image: cardsList[indexOfCardDeck].flagImage??'',
                           ),
                         ),
                       ),
@@ -315,7 +358,7 @@ Widget buildCardAsP1(
   );
 }
 
-Widget buildSecondCard(BuildContext context, int p1SelectedIndexOfAttributeList, int indexOfCardDeck, List<Cards> cardsList) {
+Widget buildSecondCard(BuildContext context, int p1SelectedIndexOfAttributeList, int indexOfCardDeck, List<Cards> cardsList, bool isP1CardFlipped) {
   GlobalKey<FlipCardState> cardKeyOfPlayerTwo = GlobalKey<FlipCardState>();
   List<List<Attribute>> cardsAttributeListOfP2 = [];
   List<List<Attribute>> cardsAttributeList = [];
@@ -334,6 +377,16 @@ Widget buildSecondCard(BuildContext context, int p1SelectedIndexOfAttributeList,
     }
   } catch (e) {
     print(e);
+  }
+
+  Widget doFlip(bool isP1CardFlipped, GlobalKey<FlipCardState> cardKeyOfPlayerTwo) {
+    if(isP1CardFlipped){
+      Future.delayed(Duration(milliseconds: 1200),(){
+        cardKeyOfPlayerTwo.currentState.toggleCard();
+      });
+    }
+
+    return Container();
   }
 
   return FlipCard(
@@ -355,48 +408,53 @@ Widget buildSecondCard(BuildContext context, int p1SelectedIndexOfAttributeList,
           ),
         ],
       ),
-      child: GestureDetector(
-        child: Stack(
-          children: <Widget>[
-            Container(
-              width: getScreenWidth(context),
-              height: getScreenHeight(context),
-              color: Colors.lightBlueAccent,
-              //child: Image.asset('assets/images/bg_card_back.png', fit: BoxFit.fill),
+      child:Stack(
+        children: <Widget>[
+          Container(
+            width: getScreenWidth(context),
+            height: getScreenHeight(context),
+            decoration: new BoxDecoration(
+              gradient: new LinearGradient(
+                  colors: [
+                    Colors.blueAccent,
+                    Colors.lightBlue,
+                    Colors.lightBlueAccent,
+                  ],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,),
             ),
-            Center(
-              child: FDottedLine(
-                color: Colors.white,
-                strokeWidth: 2.0,
-                dottedLength: 8.0,
-                space: 3.0,
-                corner: FDottedLineCorner.all(6.0),
+            //child: Image.asset('assets/images/bg_card_back.png', fit: BoxFit.fill),
+          ),
+          //isP1CardFlipped? Lottie.asset('assets/animations/lottiefiles/confused_robot-bot-3d.json', width: 130, height: 130):
+          Center(
+            child: FDottedLine(
+              color: Colors.white,
+              strokeWidth: 2.0,
+              dottedLength: 8.0,
+              space: 3.0,
+              corner: FDottedLineCorner.all(6.0),
 
-                /// add widget
-                child: Container(
-                  width: 100,
-                  height: 50,
-                  alignment: Alignment.center,
-                  child: HeartBeat(
-                    child: Text(
-                      'P-2 CARD',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w200,
-                        color: Colors.white,
-                        fontSize: 13,
-                      ),
+              /// add widget
+              child: Container(
+                width: 100,
+                height: 50,
+                alignment: Alignment.center,
+                child: HeartBeat(
+                  child: Text(
+                    'P-2 CARD',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w200,
+                      color: Colors.white,
+                      fontSize: 13,
                     ),
-                    preferences: AnimationPreferences(duration: const Duration(milliseconds: 2500), autoPlay: AnimationPlayStates.Loop),
                   ),
+                  preferences: AnimationPreferences(duration: const Duration(milliseconds: 2500), autoPlay: AnimationPlayStates.Loop),
                 ),
               ),
             ),
-          ],
-        ),
-        onTap: () {
-          cardKeyOfPlayerTwo.currentState.toggleCard();
-        },
+          ),
+        ],
       ),
     ),
     back: Container(
@@ -429,7 +487,7 @@ Widget buildSecondCard(BuildContext context, int p1SelectedIndexOfAttributeList,
                   radius: 30,
                   child: FadeInImage.assetNetwork(
                     placeholder: 'assets/icons/png/white-flag.png',
-                    image: cardsList[cardListSizeForP2 + indexOfCardDeck].flagImage,
+                    image: cardsList[cardListSizeForP2 + indexOfCardDeck].flagImage??'',
                   ),
                 ),
               ),
@@ -445,7 +503,7 @@ Widget buildSecondCard(BuildContext context, int p1SelectedIndexOfAttributeList,
                 child: FadeInImage.assetNetwork(
                     fit: BoxFit.cover,
                     placeholder: 'assets/images/cricket_1.png',
-                    image: cardsList[indexOfCardDeck].cardImg,
+                    image: cardsList[indexOfCardDeck].cardImg??'',
                     height: 135,
                     width: 135),
               ),
@@ -468,12 +526,15 @@ Widget buildSecondCard(BuildContext context, int p1SelectedIndexOfAttributeList,
               ),
             ],
           ),
+
+          doFlip(isP1CardFlipped, cardKeyOfPlayerTwo),
         ],
       ),
     ),
   );
 }
 
+/*
 Widget buildCardAsP2(
   BuildContext context,
   int p1SelectedIndexOfAttributeList,
@@ -522,7 +583,7 @@ Widget buildCardAsP2(
             child: FadeInImage.assetNetwork(
                 fit: BoxFit.cover,
                 placeholder: 'assets/images/cricket_2.png',
-                image: cardsList[cardListSizeForP2 + indexOfCardDeck].cardImg,
+                image: cardsList[cardListSizeForP2 + indexOfCardDeck].cardImg??'',
                 height: 140,
                 width: 140),
           ),
@@ -709,7 +770,7 @@ Widget buildCardAsP2(
                         radius: 30,
                         child: FadeInImage.assetNetwork(
                           placeholder: 'assets/icons/png/white-flag.png',
-                          image: cardsList[cardListSizeForP2 + indexOfCardDeck].flagImage,
+                          image: cardsList[cardListSizeForP2 + indexOfCardDeck].flagImage??'',
                         ),
                       ),
                     ),
@@ -723,3 +784,6 @@ Widget buildCardAsP2(
     ),
   );
 }
+ */
+
+

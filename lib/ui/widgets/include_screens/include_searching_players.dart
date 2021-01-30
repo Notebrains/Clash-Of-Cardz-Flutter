@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:trump_card_game/helper/constantvalues/constants.dart';
 import 'package:trump_card_game/helper/exten_fun/base_application_fun.dart';
+import 'package:trump_card_game/helper/exten_fun/common_fun.dart';
 import 'package:trump_card_game/helper/shared_preference_data.dart';
 import 'package:trump_card_game/model/arguments/firebase_player_details_model.dart';
 import 'package:trump_card_game/ui/screens/gameplay.dart';
@@ -318,7 +319,7 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForPlayer> wi
   void listeningToGameRoomUpdateInFirebase() {
     _gameRoomSubscription = _gameRoom.limitToFirst(10).onChildAdded.listen((Event event) {
       //print('--------- joinedUserType ${event.snapshot.value['joinedUserType']}');
-      print('-----game room added:  ${event.snapshot.key}');
+      //print('-----game room added:  ${event.snapshot.key}');
       String gameRoomKey = event.snapshot.key;
       if (gameRoomKey.contains(widget.p1MemberId)) {
         openGamePlayPage();
@@ -349,27 +350,14 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForPlayer> wi
 
 
   void funAfterNoPlayerFound() async{
-    Toast.show('Player not found! Please try again.', context, duration: Toast.lengthLong, gravity:  Toast.bottom,
-        backgroundColor: Colors.black54,
-        textStyle:  TextStyle(
-          color: Colors.white,
-          fontWeight: FontWeight.bold,
-          fontSize: 20,
-          shadows: [
-            Shadow(color: Colors.white),
-          ],
-        ));
-
+    showToast(context, 'Player not found! Please try again.');
     Navigator.push(
-      context, CupertinoPageRoute(builder: (context) => HomeScreen(xApiKey: widget.xApiKey, memberId: widget.p1MemberId,),
-    ),
-    );
+      context,
+      CupertinoPageRoute(builder: (context) => HomeScreen(xApiKey: widget.xApiKey, memberId: widget.p1MemberId,),),
+    ).then((value) => Navigator.of(context).pop());
   }
 
   void openGamePlayPage() {
-
-    print('-----openGamePlayPage');
-
     Navigator.push(
       context,
       CupertinoPageRoute(builder: (context) => Gameplay(),),

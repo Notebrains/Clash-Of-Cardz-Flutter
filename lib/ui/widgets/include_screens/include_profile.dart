@@ -9,9 +9,13 @@ import 'package:cached_network_image/cached_network_image.dart';
 
 class IncludeProfile extends StatelessWidget {
   ProfileResModel data;
+  String xApiKey;
+  String memberId;
 
-  IncludeProfile(ProfileResModel data) {
+  IncludeProfile(ProfileResModel data, String xApiKey, String memberId) {
     this.data = data;
+    this.xApiKey = xApiKey;
+    this.memberId = memberId;
   }
 
   @override
@@ -57,7 +61,7 @@ class IncludeProfile extends StatelessWidget {
                       decoration: Views.boxDecorationWidgetForPngImage(data.response[0].photo??'', 4.0, Colors.grey, 5.0, 5.0, 3.0),
                       child: FadeInImage.assetNetwork(
                           placeholder: 'assets/icons/png/NoImageFound.png',
-                          image: data.response[0].photo,
+                          image: data.response[0].photo??'',
                           fit: BoxFit.cover,
                         ),
                     ),
@@ -72,7 +76,7 @@ class IncludeProfile extends StatelessWidget {
                     ),
 
                     Text(
-                      data.response[0].fullname + ' | ' + data.response[0].memberid,
+                      data.response[0].memberid,
                       textAlign: TextAlign.center,
                       style: TextStyle(fontSize: 16.0, fontStyle: FontStyle.normal, fontFamily: 'montserrat', fontWeight: FontWeight.bold, color: Colors.black),
                     ),
@@ -104,7 +108,7 @@ class IncludeProfile extends StatelessWidget {
                         elevation: 5,
                         child: const Text('View Statistics', style: TextStyle(fontSize: 16)),
                         onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Statistics()));
+                          Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Statistics(xApiKey, memberId)));
                         },
                       ),
                     ),

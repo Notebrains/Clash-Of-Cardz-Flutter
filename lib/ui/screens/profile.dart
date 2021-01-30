@@ -29,7 +29,7 @@ class Profile extends StatelessWidget {
             stream: apiBloc.profileRes,
             builder: (context, AsyncSnapshot<ProfileResModel> snapshot) {
               if (snapshot.hasData && snapshot.data.response.length>0) {
-                return IncludeProfile(snapshot.data);
+                return IncludeProfile(snapshot.data, xApiKey, memberId);
               }  else if (!snapshot.hasData) {
                 return frostedGlassWithProgressBarWidget(context);
               } else return Center(

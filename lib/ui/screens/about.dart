@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:trump_card_game/helper/constantvalues/constants.dart';
 import 'package:trump_card_game/helper/exten_fun/base_application_fun.dart';
+import 'package:trump_card_game/helper/exten_fun/common_fun.dart';
 import 'package:trump_card_game/ui/widgets/libraries/flip_panel.dart';
 
 class AboutScreen extends StatefulWidget{
@@ -76,6 +77,7 @@ class _AboutScreenState extends State<AboutScreen>{
                        color: Colors.black,
                      ),
                      onPressed: () {
+                       onTapAudio('button');
                        Navigator.pop(context);
                      },
                    ),

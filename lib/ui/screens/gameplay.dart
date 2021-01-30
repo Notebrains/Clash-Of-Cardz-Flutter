@@ -31,9 +31,9 @@ class Gameplay extends StatelessWidget {
   final List<String> playerResultStatusList = [];
   List<Cards> cards = [];
   int indexOfP1Card = 0;
+  int indexSelectedByP2 = 55;
   int indexOfCardDeck = 0;
   String p1MemberIdPref = '';
-  bool _isPlayAsP1 = false;
 
   String p2Name = '';
   String p2MemberId = '';
@@ -50,23 +50,27 @@ class Gameplay extends StatelessWidget {
   String winBasis = '';
   String winPoints = '';
 
-  // gameplay stats attr
-  String p1TurnStatus = 'no',  p2TurnStatus = 'no', p1SelectedAttr = '', p1SelectedAttrValue = '', p2SelectedAttr = '', p2SelectedAttrValue = '', winner = 'p1';
+  // game play stats attr
+  String p1TurnStatus = 'no',  p2TurnStatus = 'no', p1SelectedAttr = '', p1SelectedAttrValue = '', p2SelectedAttr = '',
+      p2SelectedAttrValue = '', winner = 'p1';
 
+  bool _isPlayAsP1 = false;
   bool isYourNextTurn = false;
+  bool isP1CardFlipped = false;
+  bool isP1SelectedStats = false;
+  String whoIsPlaying = 'p1'; //Always p1 plays the first turn
 
   //firebase data init
   DatabaseReference _gamePlayRef;
   DatabaseReference _gameRoomRef;
   StreamSubscription<Event> gamePlaySubscription;
   DatabaseError _error;
-
   FirebaseApp firebaseApp;
 
   String _gameRoomName = 'gamePlay';
 
-  final ValueNotifier<bool> card1ValueNotify = ValueNotifier<bool>(false);
-  final ValueNotifier<bool> card2ValueNotify = ValueNotifier<bool>(false);
+  final ValueNotifier<int> card1ValueNotify = ValueNotifier<int>(77);
+  final ValueNotifier<int> card2ValueNotify = ValueNotifier<int>(77);
   final ValueNotifier<bool> gameScoreStatusValueNotify = ValueNotifier<bool>(false);
 
   @override
@@ -286,7 +290,7 @@ class Gameplay extends StatelessWidget {
                                             crossAxisAlignment: CrossAxisAlignment.center,
                                             children: [
                                               ValueListenableBuilder(
-                                                builder: (BuildContext context, bool value, Widget child) {
+                                                builder: (BuildContext context, int value, Widget child) {
                                                   // This builder will only get called when the _counter
                                                   // is updated.
                                                   return Container(
@@ -299,14 +303,28 @@ class Gameplay extends StatelessWidget {
                                                         cards,
                                                         indexOfCardDeck,
                                                         isYourNextTurn,
+                                                        indexSelectedByP2,
+                                                        whoIsPlaying,
                                                         onClickActionOnP1GameplayCard:
-                                                            (int indexOfP1Card, String attributeTitle, String attributeValue, String winBasis, String winPoints) =>
+                                                            (int indexOfP1Card, String attributeTitle, String attributeValue, String winBasis, String winPoints, bool isFlipped) =>
                                                         {
-                                                          //print('----p1c clicked'),
-                                                          this.indexOfP1Card = indexOfP1Card,
-
-                                                          updateGamePlayStatus( statesModel, attributeTitle, attributeValue, winBasis, winPoints),
-                                                            showWinDialog(context, statesModel, true, 'sad-star.json', '\n\n\n\nYou Loose', '', 3500, 0),
+                                                          print('----p1c clicked'),
+                                                          if (isFlipped && whoIsPlaying == 'p1') {
+                                                            isP1CardFlipped = isFlipped,
+                                                            isP1SelectedStats = false,
+                                                            //rebuild 2Card on flip
+                                                            card2ValueNotify.value += 1,
+                                                            //updateGamePlayStatus( statesModel, attributeTitle, attributeValue, winBasis, winPoints),
+                                                          } else{
+                                                            isP1SelectedStats = true,
+                                                            this.indexOfP1Card = indexOfP1Card,
+                                                            if (whoIsPlaying == 'p2') {
+                                                              updateGamePlayStatus( statesModel, attributeTitle, attributeValue, winBasis, winPoints),
+                                                            } else {
+                                                              card2ValueNotify.value += 1,
+                                                              updateGamePlayStatus( statesModel, attributeTitle, attributeValue, winBasis, winPoints),
+                                                            }
+                                                          }
                                                         },
                                                       ),
                                                       preferences: AnimationPreferences(
@@ -340,7 +358,7 @@ class Gameplay extends StatelessWidget {
                                               ),
 
                                               ValueListenableBuilder(
-                                                builder: (BuildContext context, bool value, Widget child) {
+                                                builder: (BuildContext context, int value, Widget child) {
                                                   // This builder will only get called when the _counter
                                                   // is updated.
                                                   return Container(
@@ -352,7 +370,9 @@ class Gameplay extends StatelessWidget {
                                                           context,
                                                           indexOfP1Card,
                                                           indexOfCardDeck,
-                                                          cards),
+                                                          cards,
+                                                          isP1CardFlipped,
+                                                      ),
 
                                                       /*
                                                         buildPlayerTwoCardOld(
@@ -394,7 +414,6 @@ class Gameplay extends StatelessWidget {
                                                 // expensive to build and does not depend on the value from
                                                 // the notifier.
                                               ),
-
                                             ],
                                           ),
                                         ),
@@ -484,7 +503,6 @@ class Gameplay extends StatelessWidget {
   }
 
   void retrieveFirebaseData() async{
-    
     try{
       _gameRoomRef.once().then((onValue) {
         onValue.value.forEach((playerDetailsKey, playerDetailsValue) {
@@ -495,8 +513,9 @@ class Gameplay extends StatelessWidget {
 
             if(p1MemberIdPref == playersDetailsInRoom['p1Id']){
               //you are playing as p1
-              _isPlayAsP1 =true;
+              _isPlayAsP1 =true; // this is different than whoIsPlaying var
               isYourNextTurn = true;
+              whoIsPlaying = 'p1';
               this.p1FullName = playersDetailsInRoom['p1Name'];
               this.p1MemberId = playersDetailsInRoom['p1Id'];
               this.p1Photo = playersDetailsInRoom['p1Image'];
@@ -508,6 +527,7 @@ class Gameplay extends StatelessWidget {
               //you are playing as p2
               _isPlayAsP1 = false;
               isYourNextTurn = false;
+              whoIsPlaying = 'p2';
               this.p1FullName = playersDetailsInRoom['p2Name'];
               this.p1MemberId = playersDetailsInRoom['p2Id'];
               this.p1Photo = playersDetailsInRoom['p2Image'];
@@ -556,8 +576,6 @@ class Gameplay extends StatelessWidget {
       p2SelectedAttrValue = attrValue;
     }
 
-    isYourNextTurn = false;
-
     this.winBasis = winBasis;
     this.winPoints = winPoints;
     this.statesModel = statesModel;
@@ -598,14 +616,15 @@ class Gameplay extends StatelessWidget {
 
     if (p1TurnStatus == 'no' && p2TurnStatus == 'no'){
       isYourNextTurn = false;
-      card1ValueNotify.value = true;
+      card1ValueNotify.value += 1;
 
     } else if (p1TurnStatus == 'yes' && p2TurnStatus == 'no'){
       isYourNextTurn = true;
-      card1ValueNotify.value = true;
+      indexSelectedByP2 = changeMapData['selectedArrayPos'];
+      card1ValueNotify.value += 1;
 
     } else if (p1TurnStatus == 'yes' && p2TurnStatus == 'yes'){
-
+      //winBasis and winPints will be same for both player. So I am getting those value when p1 selected first value
       bool areYouWon = false;
       if(winBasis == 'Highest Value'){
         int.parse(p1SelectedAttrValue) > int.parse(p2SelectedAttrValue) ? areYouWon = true : areYouWon = false;
@@ -613,17 +632,14 @@ class Gameplay extends StatelessWidget {
         int.parse(p1SelectedAttrValue) < int.parse(p2SelectedAttrValue) ? areYouWon = true : areYouWon = false;
       }
 
-      if (int.parse(p1SelectedAttrValue) > int.parse(p1SelectedAttrValue) ) {
+      //showing lottie anim depending on win or loose
+      if (areYouWon) {
         showWinDialog(_context, statesModel, areYouWon, 'win-result.json', 'You Won', p1Photo, 4000, 0);
       } else {
-        //showing lottie anim depending on win or loose
         showWinDialog(_context, statesModel, areYouWon, 'sad-star.json', '\n\n\n\nYou Loose', '', 3500, 0);
       }
     }
-
-    //winBasis and winPints will be same for both player. So I am getting those value when p1 selected first value
   }
-
 
   Widget setResultStatus(int index) {
     return playerResultStatusList[index] == 'won'
@@ -633,6 +649,9 @@ class Gameplay extends StatelessWidget {
 
   void showWinDialog(BuildContext context, GamePlayStatesModel statesModel, bool isWon, String lottieFileName, String message,
       String photoUrl, int animHideTime, int winPoint) {
+
+    print('----$isWon');
+
     BuildContext dialogContext;
     showDialog(
       context: context,
@@ -657,7 +676,7 @@ class Gameplay extends StatelessWidget {
                       ClipOval(
                         child: FadeInImage.assetNetwork(
                           placeholder: isWon?'assets/icons/png/circle-avator-default-img.png': '',
-                          image: photoUrl,
+                          image: photoUrl??'',
                           fit: BoxFit.fill,
                           width: 65,
                           height: 65,
@@ -708,13 +727,6 @@ class Gameplay extends StatelessWidget {
               isYourNextTurn = false;
             }
 
-            p1TurnStatus = 'no';
-            p2TurnStatus = 'no';
-            _gamePlayRef.child(_gameRoomName).set({
-              'isP1TurnComplete': p1TurnStatus,
-              'isP2TurnComplete': p2TurnStatus,
-            });
-
             context.read<GamePlayStatesModel>().updatePlayerScoreboards(
                 statesModel.playerOneTrump,
                 statesModel.playerTwoTrump,
@@ -728,6 +740,17 @@ class Gameplay extends StatelessWidget {
           } else{
             gotoResultScreen(context, true, statesModel);
           }
+
+          isP1CardFlipped = false;
+          card1ValueNotify.value+= 1;
+          card2ValueNotify.value += 1;
+
+          p1TurnStatus = 'no';
+          p2TurnStatus = 'no';
+          _gamePlayRef.child(_gameRoomName).set({
+            'isP1TurnComplete': p1TurnStatus,
+            'isP2TurnComplete': p2TurnStatus,
+          });
 
         });
       });

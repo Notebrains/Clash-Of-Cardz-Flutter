@@ -5,11 +5,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:trump_card_game/bloc/api_bloc.dart';
-import 'package:trump_card_game/helper/constantvalues/constants.dart';
+import 'package:trump_card_game/helper/exten_fun/common_fun.dart';
 import 'package:trump_card_game/helper/shared_preference_data.dart';
 import 'package:trump_card_game/model/responses/profile_res_model.dart';
 import 'package:trump_card_game/ui/screens/about.dart';
-import 'package:trump_card_game/ui/screens/autoplay.dart';
 import 'package:trump_card_game/ui/screens/game_rules.dart';
 import 'package:trump_card_game/ui/screens/gameplay.dart';
 import 'package:trump_card_game/ui/screens/leaderboard.dart';
@@ -24,13 +23,10 @@ import 'package:trump_card_game/ui/widgets/libraries/share_package.dart';
 import 'package:trump_card_game/ui/widgets/views/view_widgets.dart';
 
 import 'game_option.dart';
-import 'package:flutter/services.dart';
 import 'package:http/http.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:async';
 import 'dart:io';
-import 'dart:typed_data';
-import 'dart:ui' as ui;
 
 
 class HomeScreen extends StatefulWidget {
@@ -44,12 +40,13 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<HomeScreen> {
+
   @override
   Widget build(BuildContext context) {
-    print('Home-apiKey ${widget.xApiKey}');
-    print('Home-memberId ${widget.memberId}');
+    //print('Home-apiKey ${widget.xApiKey}');
+    //print('Home-memberId ${widget.memberId}');
 
-    apiBloc.fetchProfileRes(widget.xApiKey, widget.memberId);
+    fetchProfileData();
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -96,7 +93,15 @@ class _MyHomePageState extends State<HomeScreen> {
                               child: IconButton(
                                 icon: Image.asset('assets/icons/png/ic_setting.png'),
                                 onPressed: () {
-                                  Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Setting()));
+                                  onTapAudio('icon');
+                                  bool isNotifiOn;
+                                  SharedPreferenceHelper().getNotificationOnOffState().then((isNotificationOn) => {
+                                    isNotifiOn =isNotificationOn,
+                                  });
+
+                                  SharedPreferenceHelper().getMusicOnOffState().then((isMusicOn) => {
+                                    Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Setting(isMusicOn, isNotifiOn, widget.memberId))),
+                                  });
                                 },
                               ),
                               decoration:
@@ -110,6 +115,7 @@ class _MyHomePageState extends State<HomeScreen> {
                               child: IconButton(
                                 icon: Image.asset('assets/icons/png/share.png'),
                                 onPressed: () {
+                                  onTapAudio('icon');
                                   //_onShare(context, [], Constants.shareTxt, Constants.appName);
                                   urlFileShare();
                                 },
@@ -126,6 +132,7 @@ class _MyHomePageState extends State<HomeScreen> {
                                   splashColor: Colors.white,
                                   icon: SvgPicture.asset('assets/icons/svg/logout.svg'),
                                   onPressed: () {
+                                    onTapAudio('icon');
                                     SharedPreferenceHelper().clearPrefData();
                                     Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => LogIn()));
                                   },
@@ -169,6 +176,7 @@ class _MyHomePageState extends State<HomeScreen> {
                                 ),
                               ),
                               onPressed: () {
+                                onTapAudio('button');
                                 //Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => GameOption()));
                                 Navigator.push(context, CupertinoPageRoute(builder: (BuildContext context) => GameOption()));
                               },
@@ -203,6 +211,7 @@ class _MyHomePageState extends State<HomeScreen> {
                                 ),
                               ),
                               onPressed: () {
+                                onTapAudio('button');
                                 //change here
                                 Navigator.push(
                                     context,
@@ -240,6 +249,7 @@ class _MyHomePageState extends State<HomeScreen> {
                               ),
                               // ),
                               onPressed: () {
+                                onTapAudio('button');
                                 Navigator.push(context, MaterialPageRoute(
                                     builder: (BuildContext context) => GameRule(xApiKey: widget.xApiKey, memberId: widget.memberId,)));
                               },
@@ -273,6 +283,7 @@ class _MyHomePageState extends State<HomeScreen> {
                                 ),
                               ),
                               onPressed: () {
+                                onTapAudio('button');
                                 Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => AboutScreen()));
                               },
                             ),
@@ -306,6 +317,7 @@ class _MyHomePageState extends State<HomeScreen> {
                               ),
                               // ),
                               onPressed: () {
+                                onTapAudio('button');
                                 showExitDialog();
                               },
                             ),
@@ -339,11 +351,12 @@ class _MyHomePageState extends State<HomeScreen> {
                               child: IconButton(
                                 icon: Image.asset('assets/icons/png/ic_statistic_white.png'),
                                 onPressed: () {
+                                  onTapAudio('icon');
                                   Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Leaderboard()));
                                 },
                               ),
                               decoration:
-                              Views.boxDecorationWidgetForIconWithBgColor(Colors.greenAccent[700], 4.0, Colors.grey, 5.0, 5.0, 3.0),
+                              Views.boxDecorationWidgetForIconWithBgColor(Colors.amber[800], 4.0, Colors.grey, 5.0, 5.0, 3.0),
                             ),
                             Container(
                               width: 40,
@@ -352,7 +365,8 @@ class _MyHomePageState extends State<HomeScreen> {
                               child: IconButton(
                                 icon: Image.asset('assets/icons/png/ic_statistic_whites.png'),
                                 onPressed: () {
-                                  Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Statistics()));
+                                  onTapAudio('icon');
+                                  Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Statistics(widget.xApiKey, widget.memberId)));
                                 },
                               ),
                               decoration:
@@ -366,6 +380,7 @@ class _MyHomePageState extends State<HomeScreen> {
                               child: IconButton(
                                 icon: Image.asset('assets/icons/png/ic_profile_whites.png'),
                                 onPressed: () {
+                                  onTapAudio('icon');
                                   Navigator.push(context, MaterialPageRoute(
                                       builder: (BuildContext context) => Profile(xApiKey: widget.xApiKey, memberId: widget.memberId,)));
                                 },
@@ -416,6 +431,7 @@ class _MyHomePageState extends State<HomeScreen> {
               style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
             ),
             onOkButtonPressed: () {
+              onTapAudio('icon');
               SystemChannels.platform.invokeMethod<void>('SystemNavigator.pop');
             },
           ),
@@ -480,4 +496,10 @@ class _MyHomePageState extends State<HomeScreen> {
           sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size);
     }
   }
+
+  void fetchProfileData() async {
+    await apiBloc.fetchProfileRes(widget.xApiKey, widget.memberId);
+  }
+
+
 }

@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:math';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -19,7 +18,6 @@ import 'package:trump_card_game/model/responses/cards_res_model.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 import 'package:trump_card_game/ui/widgets/libraries/avatar_glow.dart';
 import 'package:trump_card_game/ui/widgets/libraries/flutter_toast.dart';
-
 import 'game_result.dart';
 
 class AutoPlay extends StatelessWidget {
@@ -36,6 +34,8 @@ class AutoPlay extends StatelessWidget {
   int indexOfCardDeck = 0;
   int indexOfCardDeckSelectForComputer = 55;
   String whoIsPlaying = 'player';
+  bool isP1CardFlipped = false;
+  bool isP1SelectedStats = false;
 
   String p1xApiKey = '';
   String p1FullName = '';
@@ -47,8 +47,6 @@ class AutoPlay extends StatelessWidget {
   final ValueNotifier<int> computerCard2ValueNotify = ValueNotifier<int>(0);
   final ValueNotifier<bool> gameScoreStatusValueNotify = ValueNotifier<bool>(false);
 
-  bool isP1CardFlipped = false;
-  bool isP1SelectedStats = false;
 
   BuildContext _context;
 
@@ -64,15 +62,7 @@ class AutoPlay extends StatelessWidget {
       onWillPop: () async => false,
       child: Scaffold(
           resizeToAvoidBottomInset: false,
-        // Provide the model to all widgets within the app. We're using
-        // ChangeNotifierProvider because that's a simple way to rebuild
-        // widgets when a model changes. We could also just use
-        // Provider, but then we would have to listen to Counter ourselves.
-        // Read Provider's docs to learn about all the available providers.
         body: ChangeNotifierProvider(
-          // Initialize the model in the builder. That way, Provider
-          // can own AutoPlayStatesModel's lifecycle, making sure to call `dispose`
-          // when not needed anymore.
           create: (context) => AutoPlayStatesModel(),
           child: StreamBuilder(
             stream: apiBloc.cardsRes,
@@ -491,7 +481,7 @@ class AutoPlay extends StatelessWidget {
                       ClipOval(
                         child: FadeInImage.assetNetwork(
                           placeholder: isWon?'assets/icons/png/circle-avator-default-img.png': '',
-                          image: photoUrl,
+                          image: photoUrl??'',
                           fit: BoxFit.fill,
                           width: 65,
                           height: 65,
@@ -599,12 +589,11 @@ class AutoPlay extends StatelessWidget {
           p1Card1ValueNotify.value = true;
           computerCard2ValueNotify.value +=1;
         } else {
+          whoIsPlaying = 'computer';
           isP1CardFlipped = false;
           isP1SelectedStats = true;
           p1Card1ValueNotify.value = false;
           computerCard2ValueNotify.value +=1;
-          whoIsPlaying = 'computer';
-
         }
       });
     } catch (e) {
