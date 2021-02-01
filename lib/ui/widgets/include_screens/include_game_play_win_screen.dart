@@ -62,16 +62,12 @@ void showBothCardsDialog(BuildContext context, List<Cards> cards, int indexOfSel
                                           height: 310,
                                           margin: EdgeInsets.only(right: 12),
                                           child: RotateInDownRight(
-                                            child: isPlayAsP1? buildCard1(
+                                            child: buildCard1(
                                               context,
                                               cards,
                                               indexOfCardDeck,
-                                              indexOfSelectedCard
-                                            ) : buildCard2(
-                                              context,
                                               indexOfSelectedCard,
-                                              indexOfCardDeck,
-                                              cards
+                                              isPlayAsP1
                                             ),
                                             preferences: AnimationPreferences(
                                                 duration: const Duration(milliseconds: 1500),
@@ -99,16 +95,12 @@ void showBothCardsDialog(BuildContext context, List<Cards> cards, int indexOfSel
                                           width: 220,
                                           height: 315,
                                           child: RollIn(
-                                            child: isPlayAsP1? buildCard1(
-                                                context,
-                                                cards,
-                                                indexOfCardDeck,
-                                                indexOfSelectedCard
-                                            ) : buildCard2(
+                                            child: buildCard2(
                                                 context,
                                                 indexOfSelectedCard,
                                                 indexOfCardDeck,
-                                                cards
+                                                cards,
+                                                isPlayAsP1
                                             ),
                                             preferences: AnimationPreferences(
                                                 duration: const Duration(milliseconds: 1500),
@@ -151,7 +143,7 @@ void showBothCardsDialog(BuildContext context, List<Cards> cards, int indexOfSel
                                       // ),
                                       onPressed: () {
                                         onClickActionOnPlayAgain(isMatchEnded);
-                                        Navigator.of(context).pop();
+                                        Navigator.pop(context);
                                       },
                                     ),
                                   ),
@@ -185,15 +177,23 @@ Widget buildCard1(
     BuildContext context,
     List<Cards> cardsList,
     int indexOfCardDeck,
-    int indexOfSelectedCard) {
+    int indexOfSelectedCard, bool isPlayAsP1) {
   List<List<Attribute>> cardsAttributeList = [];
 
   try {
     //print('----card list1 length ' + (cardsList.length).toString());
     int cardListSize = (cardsList.length / 2).round();
-    for (int i = 0; i < cardListSize; i++) {
-      cardsAttributeList.add(cardsList[i].attribute);
+
+    if (isPlayAsP1) {
+      for (int i = 0; i < cardListSize; i++) {
+        cardsAttributeList.add(cardsList[i].attribute);
+      }
+    } else {
+      for (int i = cardListSize; i < cardsList.length; i++) {
+        cardsAttributeList.add(cardsList[i].attribute);
+      }
     }
+
   } catch (e) {
     print(e);
   }
@@ -389,13 +389,19 @@ Widget buildCard2(
     BuildContext context,
     int indexOfSelectedCard,
     int indexOfCardDeck,
-    List<Cards> cardsList) {
+    List<Cards> cardsList, bool isPlayAsP1) {
 
   List<List<Attribute>> cardsAttributeListOfP2 = [];
   int cardListSizeForP2 = (cardsList.length / 2).round();
   try {
-    for (int i = cardListSizeForP2; i < cardsList.length; i++) {
-      cardsAttributeListOfP2.add(cardsList[i].attribute);
+    if (isPlayAsP1) {
+      for (int i = 0; i < cardListSizeForP2; i++) {
+        cardsAttributeListOfP2.add(cardsList[i].attribute);
+      }
+    } else {
+      for (int i = cardListSizeForP2; i < cardsList.length; i++) {
+        cardsAttributeListOfP2.add(cardsList[i].attribute);
+      }
     }
   } catch (e) {
     print(e);

@@ -6,6 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:trump_card_game/bloc/api_bloc.dart';
 import 'package:trump_card_game/helper/constantvalues/constants.dart';
 import 'package:trump_card_game/helper/exten_fun/base_application_fun.dart';
+import 'package:trump_card_game/helper/exten_fun/common_fun.dart';
 import 'package:trump_card_game/helper/shared_preference_data.dart';
 import 'package:trump_card_game/model/state_managements/autoplay_states_model.dart';
 import 'package:trump_card_game/ui/widgets/custom/frosted_glass.dart';
@@ -539,11 +540,11 @@ class AutoPlay extends StatelessWidget {
             if (isWon) {
               statesModel.playerOneTrump = statesModel.playerOneTrump + 1;
               statesModel.player1TotalPoints = statesModel.player1TotalPoints + winPoint;
-              print('-----isWon2: ${statesModel.player1TotalPoints} ');
+              //print('-----isWon2: ${statesModel.player1TotalPoints} ');
             } else {
               statesModel.playerTwoTrump = statesModel.playerOneTrump + 1;
               statesModel.player2TotalPoints = statesModel.player2TotalPoints + winPoint;
-              print('-----isWon3: ${statesModel.player2TotalPoints} ');
+              //print('-----isWon3: ${statesModel.player2TotalPoints} ');
             }
 
             context.read<AutoPlayStatesModel>().updatePlayerScoreboards(
@@ -556,17 +557,7 @@ class AutoPlay extends StatelessWidget {
 
             String message = '';
             whoIsPlaying == 'computer' ? message = "Computer Turn To Play" : message = 'Your Turn To Play';
-            Toast.show(message, context, duration: Toast.lengthLong, gravity:  Toast.bottom,
-                backgroundColor: Colors.black87.withOpacity(0.5),
-                textStyle:  TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                  fontFamily: 'montserrat',
-                  shadows: [
-                    Shadow(color: Colors.white),
-                  ],
-                ));
+            showToast(context, message);
 
             if (whoIsPlaying == 'computer') {
               //Choosing index of player stats list for next round for computer

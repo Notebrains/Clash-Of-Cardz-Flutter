@@ -22,6 +22,7 @@ import 'package:trump_card_game/ui/widgets/libraries/giffy_dialog/giffy_dialog.d
 import 'package:trump_card_game/ui/widgets/libraries/share_package.dart';
 import 'package:trump_card_game/ui/widgets/views/view_widgets.dart';
 
+import 'cards.dart';
 import 'game_option.dart';
 import 'package:http/http.dart';
 import 'package:path_provider/path_provider.dart';
@@ -215,7 +216,7 @@ class _MyHomePageState extends State<HomeScreen> {
                                 //change here
                                 Navigator.push(
                                     context,
-                                    CupertinoPageRoute(builder: (BuildContext context) => Gameplay()));
+                                    CupertinoPageRoute(builder: (BuildContext context) => Cards()));
                               },
                             ),
                             preferences:
