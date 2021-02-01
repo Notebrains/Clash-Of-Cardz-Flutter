@@ -4,8 +4,11 @@ import 'package:trump_card_game/bloc/api_bloc.dart';
 import 'package:trump_card_game/helper/exten_fun/base_application_fun.dart';
 import 'package:trump_card_game/helper/exten_fun/common_fun.dart';
 import 'package:trump_card_game/model/responses/profile_res_model.dart';
+import 'package:trump_card_game/ui/widgets/custom/card_shape_background.dart';
 import 'package:trump_card_game/ui/widgets/custom/carousel_auto_slider.dart';
 import 'package:trump_card_game/ui/widgets/custom/frosted_glass.dart';
+import 'package:lottie/lottie.dart';
+import 'package:trump_card_game/ui/widgets/libraries/colorize.dart';
 
 List<String> imgList = [
   'https://urbanmatter.com/chicago/wp-content/uploads/2020/04/Switch_RingFitAdventure_1200x675.jpg',
@@ -71,31 +74,147 @@ class _GameRuleState extends State<Cards> {
   }
 
   Widget buildUI() {
-    return Container(
-      padding: EdgeInsets.symmetric(
-        horizontal: 50.0,
-        vertical: 24.0,
-      ),
-      height: MediaQuery.of(context).size.height,
-      child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          itemCount: 30,
-          itemBuilder: (context, index) {
-            return Container(
-              padding: EdgeInsets.fromLTRB(5, 5, 5, 16),
-              //width: MediaQuery.of(context).size.width * 0.3,
-              child: Card(
-                color: Colors.deepOrange,
-                elevation: 12,
-                shadowColor: Colors.orange,
-                child: Container(
-                  child: Center(
-                      child: Image.asset('assets/images/img_card_demo.png'),
+    final screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
+    return Stack(
+      children: [
+        Container(
+          margin: EdgeInsets.fromLTRB(16, 16, 16, 0),
+          child: Align(
+            alignment: AlignmentDirectional.topStart,
+            child: Row(
+              children: [
+                FloatingActionButton(
+                  tooltip: 'Back to previous screen',
+                  backgroundColor: Colors.amber[900],
+                  child: Icon(
+                    Icons.arrow_back,
+                    color: Colors.white,
+                  ),
+                  onPressed: () {
+                    onTapAudio('button');
+                    Navigator.pop(context);
+                  },
+                ),
+
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16.0, 0.0, 8.0, 4.0),
+                  child: ColorizeAnimatedTextKit(
+                    onTap: () {
+                      //print("Tap Event");
+                    },
+                    text: [
+                      "GAME CARDS"
+                    ],
+                    textStyle: TextStyle(
+                        fontSize: 35.0,
+                        fontStyle: FontStyle.normal,
+                        fontFamily: 'Rapier'
+                    ),
+                    colors: [
+                      Colors.grey[700],
+                      Colors.amber[900],
+                      Colors.grey[700],
+                    ],
+                    textAlign: TextAlign.center,
+                    alignment: AlignmentDirectional.center,
+                    // or Alignment.topLeft
+                    isRepeatingAnimation: true,
+                    repeatForever: true,
+                    speed: Duration(milliseconds: 1000),
                   ),
                 ),
-              ),
-            );
-          }),
+              ],
+            ),
+          ),
+        ),
+
+        Container(
+          padding: EdgeInsets.symmetric(
+            horizontal: 50.0,
+            vertical: 24.0,
+          ),
+          height: MediaQuery.of(context).size.height,
+          child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: 11,
+              itemBuilder: (context, index) {
+                return Container(
+                  padding: EdgeInsets.fromLTRB(15, 5, 5, 16),
+                  //width: MediaQuery.of(context).size.width * 0.3,
+                  child: Stack(
+                    children: [
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: ClipPath(
+                          clipper: CharacterCardBackgroundClipper(),
+                          child: Container(
+                            height: 280,
+                            width: 220,
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [Colors.orange.shade400, Colors.deepOrange],
+                                begin: Alignment.topRight,
+                                end: Alignment.bottomLeft,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Align(
+                        alignment: Alignment(50, -0.9),
+                        child: Padding(
+                          padding: const EdgeInsets.only(right: 10),
+                          child: Lottie.asset('assets/animations/lottiefiles/confused_robot-bot-3d.json', width: 250, height: 290),
+                        )
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 99, right: 16, bottom: 16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: <Widget>[
+                            Hero(
+                              tag: "Cricket}",
+                              child: Material(
+                                color: Colors.transparent,
+                                child: Container(
+                                  child: ColorizeAnimatedTextKit(
+                                    onTap: () {
+                                      //print("Tap Event");
+                                    },
+                                    text: [
+                                      "CRICKET"
+                                    ],
+                                    textStyle: TextStyle(
+                                        fontSize: 30.0,
+                                        fontStyle: FontStyle.normal,
+                                        fontFamily: 'Rapier'
+                                    ),
+                                    colors: [
+                                      Colors.black54,
+                                      Colors.white60,
+                                      Colors.black54,
+                                    ],
+                                    textAlign: TextAlign.center,
+                                    alignment: AlignmentDirectional.center,
+                                    // or Alignment.topLeft
+                                    isRepeatingAnimation: true,
+                                    repeatForever: true,
+                                    speed: Duration(milliseconds: 200),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              }),
+        ),
+      ],
     );
   }
 }
