@@ -12,6 +12,7 @@ import 'package:trump_card_game/helper/shared_preference_data.dart';
 import 'package:trump_card_game/model/arguments/firebase_player_details_model.dart';
 import 'package:trump_card_game/ui/screens/gameplay.dart';
 import 'package:trump_card_game/ui/screens/home.dart';
+import 'package:trump_card_game/ui/screens/pvp.dart';
 import 'package:trump_card_game/ui/widgets/custom/frosted_glass.dart';
 import 'dart:io' show Platform;
 
@@ -120,8 +121,6 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForPlayer> wi
                                         onEnd: () {
                                           try {
                                             print('-----time ended');
-                                            //remove first user from firebase if requested player has not joined.
-                                            _playerDetailsRef.child(fbJoinedPlayerList[0].firebasePlayerKey).remove();
                                             funAfterNoPlayerFound();
                                           } catch (e) {
                                             print(e);
@@ -322,26 +321,21 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForPlayer> wi
       //print('-----game room added:  ${event.snapshot.key}');
       String gameRoomKey = event.snapshot.key;
       if (gameRoomKey.contains(widget.p1MemberId)) {
-        openGamePlayPage();
+        openGamePlayPage(
+            event.snapshot.value['p1Name'],
+            event.snapshot.value['p1Id'],
+            event.snapshot.value['p1Image'],
+            event.snapshot.value['p2Name'],
+            event.snapshot.value['p2Id'],
+            event.snapshot.value['p2Image'],
+            event.snapshot.value['category'],
+            event.snapshot.value['subCategory'],
+            event.snapshot.value['gameType'],
+            event.snapshot.value['cardCount'],
+        );
+
+        print('--------- joinedUserType ${event.snapshot.value['p1Id']}');
       }
-
-      /*String gameRoomKey = event.snapshot.key;
-      String category = event.snapshot.value['category'];
-      String subCategory = event.snapshot.value['subCategory'];
-      String cardCount = event.snapshot.value['cardCount'];
-      String gameType = event.snapshot.value['gameType'];
-      String p1Id = event.snapshot.value['p1Id'];
-      String p1Name = event.snapshot.value['p1Name'];
-      String p1Image = event.snapshot.value['p1Image'];
-      String p2Id = event.snapshot.value['p2Id'];
-      String p2Name = event.snapshot.value['p2Name'];
-      String p2Image = event.snapshot.value['p2Image'];
-
-      print('-----new game room added 1:  $_gameRoomName ,  gr-$p2Id-${widget.p1MemberId}');
-      if (_gameRoomName == gameRoomKey || 'gr-$p2Id-${widget.p1MemberId}' == gameRoomKey) {
-        print('-----new game room added 2: $gameRoomKey ,  gr-$p2Id-${widget.p1MemberId}');
-        openGamePlayPage();
-      }*/
     }, onError: (Object o) {
       final DatabaseError error = o;
       print('Error: ${error.code} ${error.message}');
@@ -350,17 +344,25 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForPlayer> wi
 
 
   void funAfterNoPlayerFound() async{
-    showToast(context, 'Player not found! Please try again.');
-    Navigator.push(
-      context,
-      CupertinoPageRoute(builder: (context) => HomeScreen(xApiKey: widget.xApiKey, memberId: widget.p1MemberId,),),
-    ).then((value) => Navigator.of(context).pop());
+    if (context != null) {
+      Navigator.push(
+        context,
+        CupertinoPageRoute(builder: (context) => HomeScreen(xApiKey: widget.xApiKey, memberId: widget.p1MemberId,),),
+      ).then((value) => {
+        showToast(context, 'Player not found! Please try again.'),
+        //remove first user from firebase if requested player has not joined.
+        _playerDetailsRef.child(fbJoinedPlayerList[0].firebasePlayerKey).remove(),
+        Navigator.of(context).pop(),
+      });
+    }
   }
 
-  void openGamePlayPage() {
+  void openGamePlayPage(String p1Name, String p1Id, String p1Img, String p2Name, String p2Id, String p2Img, String category,
+      String subcategoryName, String gameType, String cardsToPlay) {
     Navigator.push(
       context,
-      CupertinoPageRoute(builder: (context) => Gameplay(),),
+      CupertinoPageRoute(builder: (context) => Pvp(p1Name: p1Name, p1Id: p1Id, p1Image: p1Img, p2Name: p2Name, p2Id: p2Id, p2Image: p2Img,
+        categoryName: category, subcategoryName: subcategoryName, gameType: gameType, cardsToPlay: cardsToPlay,),),
     ).then((value) => Navigator.of(context).pop());
   }
 

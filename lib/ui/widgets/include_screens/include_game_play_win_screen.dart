@@ -8,6 +8,7 @@ import 'package:shape_of_view/shape_of_view.dart';
 import 'package:trump_card_game/helper/exten_fun/base_application_fun.dart';
 import 'package:trump_card_game/model/responses/cards_res_model.dart';
 import 'package:trump_card_game/ui/widgets/animations/spring_button.dart';
+import 'package:trump_card_game/ui/widgets/include_screens/include_game_play_dialogs.dart';
 import 'package:trump_card_game/ui/widgets/libraries/animated_text_kit/wavy.dart';
 import 'package:trump_card_game/ui/widgets/libraries/avatar_glow.dart';
 import 'package:trump_card_game/ui/widgets/libraries/f_dotted_line.dart';
@@ -15,9 +16,10 @@ import 'package:trump_card_game/ui/widgets/libraries/flip_card.dart';
 import 'package:trump_card_game/ui/widgets/libraries/shimmer.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-void showBothCardsDialog(BuildContext context, List<Cards> cards, int indexOfSelectedCard, int indexOfCardDeck, bool isMatchEnded, bool isPlayAsP1,{
-  Function(bool isPlayAgainClicked) onClickActionOnPlayAgain,
-}) {
+void showBothCardsDialog(BuildContext context, List<Cards> cards, int indexOfSelectedCard, int indexOfCardDeck, bool isMatchEnded,
+    bool isPlayAsP1,  bool isWon,{
+  Function(bool isMatchEnded) onClickActionOnPlayAgain,
+}) async {
   BuildContext dialogContext;
 
   showDialog(
@@ -67,7 +69,8 @@ void showBothCardsDialog(BuildContext context, List<Cards> cards, int indexOfSel
                                               cards,
                                               indexOfCardDeck,
                                               indexOfSelectedCard,
-                                              isPlayAsP1
+                                              isPlayAsP1,
+                                              isWon
                                             ),
                                             preferences: AnimationPreferences(
                                                 duration: const Duration(milliseconds: 1500),
@@ -100,7 +103,8 @@ void showBothCardsDialog(BuildContext context, List<Cards> cards, int indexOfSel
                                                 indexOfSelectedCard,
                                                 indexOfCardDeck,
                                                 cards,
-                                                isPlayAsP1
+                                                isPlayAsP1,
+                                                isWon
                                             ),
                                             preferences: AnimationPreferences(
                                                 duration: const Duration(milliseconds: 1500),
@@ -115,7 +119,7 @@ void showBothCardsDialog(BuildContext context, List<Cards> cards, int indexOfSel
 
                                 Pulse(
                                   child:  Container(
-                                    margin: EdgeInsets.only(top: 20),
+                                    margin: EdgeInsets.only(top: 16),
                                     child: MaterialButton(
                                       padding: EdgeInsets.fromLTRB(0.0, 2.0, 0.0, 0.0),
                                       splashColor: Colors.grey,
@@ -150,6 +154,23 @@ void showBothCardsDialog(BuildContext context, List<Cards> cards, int indexOfSel
                                   preferences:
                                   AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Loop),
                                 ),
+
+                                /*TweenAnimationBuilder<Duration>(
+                                    duration: Duration(minutes: 1),
+                                    tween: Tween(begin: Duration(minutes: 1), end: Duration.zero),
+                                    onEnd: () {
+                                      onClickActionOnPlayAgain(true);
+                                      Navigator.pop(context);
+                                    },
+                                    builder: (BuildContext context, Duration value, Widget child) {
+                                      final minutes = value.inMinutes;
+                                      final seconds = value.inSeconds % 60;
+                                      return Padding(
+                                          padding: const EdgeInsets.symmetric(vertical: 3),
+                                          child: Text("Game will end in $minutes:$seconds seconds if player didn't respond",
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16)));
+                                    }),*/
                               ],
                             ),
                           ),
@@ -169,7 +190,6 @@ void showBothCardsDialog(BuildContext context, List<Cards> cards, int indexOfSel
 
   /*Timer(Duration(milliseconds: 100000000), () {
     Navigator.pop(dialogContext);
-
   });*/
 }
 
@@ -177,7 +197,7 @@ Widget buildCard1(
     BuildContext context,
     List<Cards> cardsList,
     int indexOfCardDeck,
-    int indexOfSelectedCard, bool isPlayAsP1) {
+    int indexOfSelectedCard, bool isPlayAsP1, bool isWon) {
   List<List<Attribute>> cardsAttributeList = [];
 
   try {
@@ -241,6 +261,8 @@ Widget buildCard1(
           ),
         ),
 
+        showOrHideWinnerImg(isWon),
+
         Align(
           alignment: Alignment.bottomCenter,
           child: Container(
@@ -259,7 +281,7 @@ Widget buildCard1(
                 return Container(
                   padding: index == indexOfSelectedCard? EdgeInsets.only(left: 3, top: 1):EdgeInsets.all(0),
                   decoration: BoxDecoration(
-                    color: index == indexOfSelectedCard? Colors.white24: Colors.orange[600],
+                    color: index == indexOfSelectedCard? Colors.white24: Colors.transparent,
                     border: index == indexOfSelectedCard? Border.all(color: Colors.white):Border.all(color: Colors.transparent),
                     borderRadius: index == indexOfSelectedCard? BorderRadius.all(Radius.circular(3)):BorderRadius.all(Radius.circular(0)),
                   ),
@@ -385,11 +407,31 @@ Widget buildCard1(
   );
 }
 
+Widget showOrHideWinnerImg(bool isWon) {
+  return isWon? Align(
+    alignment: Alignment.topRight,
+    child: Padding(
+      padding: const EdgeInsets.all(5),
+      child: Tada(
+        child:  SvgPicture.asset(
+          'assets/icons/svg/win.svg',
+          width: 30,
+          height: 30,
+        ),
+        preferences:
+        AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Loop),
+      ),
+
+    ),
+  ): Container();
+
+}
+
 Widget buildCard2(
     BuildContext context,
     int indexOfSelectedCard,
     int indexOfCardDeck,
-    List<Cards> cardsList, bool isPlayAsP1) {
+    List<Cards> cardsList, bool isPlayAsP1, bool isWon) {
 
   List<List<Attribute>> cardsAttributeListOfP2 = [];
   int cardListSizeForP2 = (cardsList.length / 2).round();
@@ -428,8 +470,8 @@ Widget buildCard2(
             gradient: new LinearGradient(
               colors: [
                 Colors.lightBlue,
-                Colors.lightBlueAccent[400],
-                Colors.lightBlueAccent[400],
+                Colors.lightBlue[300],
+                Colors.lightBlue[300],
               ],
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,),
@@ -448,6 +490,9 @@ Widget buildCard2(
           ),
         ),
 
+
+        showOrHideWinnerImg(isWon? false: true),
+
         Align(
           alignment: Alignment.bottomCenter,
           child: Container(
@@ -465,7 +510,7 @@ Widget buildCard2(
               children: List.generate(cardsAttributeListOfP2[indexOfCardDeck].length, (index) {
                 return Container(padding: index == indexOfSelectedCard? EdgeInsets.only(left: 3, top: 1):EdgeInsets.all(0),
                   decoration: BoxDecoration(
-                    color: index == indexOfSelectedCard? Colors.white24: Colors.lightBlueAccent[400],
+                    color: index == indexOfSelectedCard? Colors.white24: Colors.transparent,
                     border: index == indexOfSelectedCard? Border.all(color: Colors.white):Border.all(color: Colors.transparent),
                     borderRadius: index == indexOfSelectedCard? BorderRadius.all(Radius.circular(3)):BorderRadius.all(Radius.circular(0)),
                   ),

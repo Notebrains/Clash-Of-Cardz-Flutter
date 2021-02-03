@@ -68,7 +68,7 @@ class AutoPlay extends StatelessWidget {
           child: StreamBuilder(
             stream: apiBloc.cardsRes,
             builder: (context, AsyncSnapshot<CardsResModel> snapshot) {
-              if (snapshot.hasData) {
+              if (snapshot.hasData && snapshot.data.status == 1) {
                 cards = snapshot.data.response.cards;
                 return Container(
                   decoration: new BoxDecoration(

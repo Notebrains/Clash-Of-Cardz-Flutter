@@ -52,7 +52,7 @@ void onTapAudio(String audioType){
     case "icon": {audioCache.play('sfx-bat+hit+ball.mp3'); }
     break;
 
-    case "C": {  print("Fair"); }
+    case "pvp_screen": {audioCache.play('sword_sms.mp3');}
     break;
 
     case "D": {  print("Poor"); }

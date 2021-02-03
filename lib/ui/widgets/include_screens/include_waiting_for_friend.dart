@@ -8,7 +8,7 @@ import 'package:lottie/lottie.dart';
 import 'package:trump_card_game/helper/exten_fun/base_application_fun.dart';
 import 'package:trump_card_game/helper/shared_preference_data.dart';
 import 'package:trump_card_game/model/arguments/firebase_player_details_model.dart';
-import 'package:trump_card_game/ui/screens/gameplay.dart';
+import 'package:trump_card_game/ui/screens/pvp.dart';
 import 'package:trump_card_game/ui/screens/home.dart';
 import 'dart:io' show Platform;
 
@@ -312,14 +312,16 @@ class IncludeWaitingForFriendState extends State<IncludeWaitingForFriend> with S
     });
   }
 
-  void openGamePlayPage(String playerName, playerId, playerImage) {
+  void openGamePlayPage(String player2Name, player2Id, player2Image) {
     Navigator.push(
       context,
       CupertinoPageRoute(
         builder: (context) =>
-            Gameplay(),
+            Pvp(p1Name: fullName, p1Id: memberId, p1Image: photo, p2Name: player2Name, p2Id: player2Id, p2Image: player2Image,
+              categoryName: widget.categoryName, subcategoryName: widget.subcategoryName, gameType: widget.gameType,
+              cardsToPlay: widget.cardsToPlay,)
       ),
-    );
+    ).then((value) => Navigator.of(context).pop());
   }
 
   @override

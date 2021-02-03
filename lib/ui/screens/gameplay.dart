@@ -12,6 +12,7 @@ import 'package:trump_card_game/helper/exten_fun/common_fun.dart';
 import 'package:trump_card_game/helper/shared_preference_data.dart';
 import 'package:lottie/lottie.dart';
 import 'package:flutter_animator/flutter_animator.dart';
+import 'package:trump_card_game/ui/widgets/include_screens/include_game_play_dialogs.dart';
 import 'package:trump_card_game/ui/widgets/include_screens/include_game_play_win_screen.dart';
 import 'package:trump_card_game/ui/widgets/libraries/animated_text_kit/wavy.dart';
 import 'package:trump_card_game/model/state_managements/gameplay_states_model.dart';
@@ -26,15 +27,9 @@ import 'package:trump_card_game/ui/widgets/libraries/flutter_toast.dart';
 import 'game_result.dart';
 
 class Gameplay extends StatelessWidget {
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  GamePlayStatesModel statesModelGlobal;
-  final List<String> playerResultStatusList = [];
-  List<Cards> cards = [];
-  int indexOfP1Card = 0;
-  int indexSelectedByP2 = 55;
-  int indexOfCardDeck = 0;
-  String p1MemberIdPref = '';
-
+  String p1FullName = '';
+  String p1MemberId = '';
+  String p1Photo = '';
   String p2Name = '';
   String p2MemberId = '';
   String p2Image = '';
@@ -42,11 +37,31 @@ class Gameplay extends StatelessWidget {
   String subcategoryName = '';
   String gameType = '';
   String cardsToPlay = '';
+
+  Gameplay({
+    this.p1FullName,
+    this.p1MemberId,
+    this.p1Photo,
+    this.p2Name,
+    this.p2MemberId,
+    this.p2Image,
+    this.categoryName,
+    this.subcategoryName,
+    this.gameType,
+    this.cardsToPlay,
+  });
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  GamePlayStatesModel statesModelGlobal = GamePlayStatesModel();
+  final List<String> playerResultStatusList = [];
+  List<Cards> cards = [];
+  int indexOfP1Card = 0;
+  int indexSelectedByP2 = 55;
+  int indexOfCardDeck = 0;
+  String p1MemberIdPref = '';
+
   String p1xApiKey = '';
-  String p1FullName = '';
-  String p1MemberId = '';
   String p1Points = '';
-  String p1Photo = '';
   String winBasis = '';
   String winPoints = '';
 
@@ -56,7 +71,7 @@ class Gameplay extends StatelessWidget {
       p1SelectedAttr = '',
       p1SelectedAttrValue = '0',
       p2SelectedAttr = '',
-      p2SelectedAttrValue = '0',
+      p2SelectedAttrValue = '1',
       winner = 'p1';
 
   bool _isPlayAsP1 = false;
@@ -83,27 +98,23 @@ class Gameplay extends StatelessWidget {
     setScreenOrientationToLandscape();
     getSavedUserDataFromPref();
     initFirebaseCredentials();
+    manageP1AndP2Data();
 
-    fetchApiData();
-
-    return Scaffold(
-      key: _scaffoldKey,
-      resizeToAvoidBottomInset: false,
-      // Provide the model to all widgets within the app. We're using
-      // ChangeNotifierProvider because that's a simple way to rebuild
-      // widgets when a model changes. We could also just use
-      // Provider, but then we would have to listen to Counter ourselves.
-      // Read Provider's docs to learn about all the available providers.
-      body: ChangeNotifierProvider(
-        // Initialize the model in the builder. That way, Provider
-        // can own GamePlayStatesModel's lifecycle, making sure to call `dispose`
-        // when not needed anymore.
-        create: (context) => GamePlayStatesModel(),
-        child: StreamBuilder(
+    //fetchApiData();
+    apiBloc.fetchCardsRes("ZGHrDz4prqsu4BcApPaQYaGgq", 'cricket', 'sports', '2', '14');
+    return ChangeNotifierProvider(
+      // Initialize the model in the builder. That way, Provider
+      // can own GamePlayStatesModel's lifecycle, making sure to call `dispose`
+      // when not needed anymore.
+      create: (context) => statesModelGlobal,
+      child: Scaffold(
+        key: _scaffoldKey,
+        resizeToAvoidBottomInset: false,
+        body: StreamBuilder(
           stream: apiBloc.cardsRes,
           builder: (context, AsyncSnapshot<CardsResModel> snapshot) {
-            cards = snapshot.data.response.cards;
-            if (snapshot.hasData) {
+            if (snapshot.hasData && snapshot.data.status == 1) {
+              cards = snapshot.data.response.cards;
               return Container(
                 decoration: new BoxDecoration(
                   image: new DecorationImage(
@@ -126,157 +137,14 @@ class Gameplay extends StatelessWidget {
                               //width: getScreenWidth(context) - 400,
                               child: Column(
                                 children: [
-                                  Container(
-                                    height: getScreenHeight(context) / 6.0,
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.only(left: 0.0, top: 0),
-                                          child: TweenAnimationBuilder<Duration>(
-                                              duration: Duration(minutes: 45),
-                                              tween: Tween(begin: Duration(minutes: 45), end: Duration.zero),
-                                              onEnd: () {
-                                                //print('Timer Ended');
-                                                if (statesModel.player1TotalPoints > statesModel.player2TotalPoints) {
-                                                  showTimesUpDialog(context, true, statesModel);
-                                                } else {
-                                                  showTimesUpDialog(context, false, statesModel);
-                                                }
-                                              },
-                                              builder: (BuildContext context, Duration value, Widget child) {
-                                                //adding 0 at first if min or sec show in single digit
-                                                final minutes = (value.inMinutes).toString().padLeft(2, "0");
-                                                final seconds = (value.inSeconds % 60).toString().padLeft(2, "0");
-                                                return Row(
-                                                  children: [
-                                                    SlideInLeft(
-                                                      child: Padding(
-                                                        padding: const EdgeInsets.all(5),
-                                                        child: Container(
-                                                          width: 50,
-                                                          height: 40,
-                                                          decoration: BoxDecoration(
-                                                            color: Colors.black,
-                                                            border: Border.all(
-                                                              color: Colors.black,
-                                                              width: 5,
-                                                            ),
-                                                            borderRadius: BorderRadius.all(Radius.circular(3)),
-                                                            boxShadow: <BoxShadow>[
-                                                              BoxShadow(
-                                                                color: Colors.grey[500],
-                                                                blurRadius: 8.0,
-                                                                offset: Offset(0.0, 8.0),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                          child: Center(
-                                                            child: Text(
-                                                              '$minutes',
-                                                              textAlign: TextAlign.center,
-                                                              style: TextStyle(
-                                                                color: Colors.white,
-                                                                fontWeight: FontWeight.bold,
-                                                                fontSize: 25,
-                                                                shadows: [
-                                                                  Shadow(color: Colors.white),
-                                                                ],
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      preferences: AnimationPreferences(
-                                                          duration: const Duration(milliseconds: 1500),
-                                                          autoPlay: AnimationPlayStates.Forward),
-                                                    ),
-                                                    SlideInDown(
-                                                      child: Container(
-                                                        width: 20,
-                                                        height: 40,
-                                                        decoration: BoxDecoration(
-                                                          color: Colors.black,
-                                                          borderRadius: BorderRadius.all(Radius.circular(3)),
-                                                          boxShadow: <BoxShadow>[
-                                                            BoxShadow(
-                                                              color: Colors.grey[500],
-                                                              blurRadius: 8.0,
-                                                              offset: Offset(0.0, 8.0),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        child: Center(
-                                                          child: Padding(
-                                                            padding: const EdgeInsets.only(bottom: 5),
-                                                            child: Text(
-                                                              ':',
-                                                              textAlign: TextAlign.center,
-                                                              style: TextStyle(
-                                                                color: Colors.white,
-                                                                fontWeight: FontWeight.bold,
-                                                                fontSize: 31,
-                                                                shadows: [
-                                                                  Shadow(color: Colors.white),
-                                                                ],
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      preferences: AnimationPreferences(
-                                                          duration: const Duration(milliseconds: 1500),
-                                                          autoPlay: AnimationPlayStates.Forward),
-                                                    ),
-                                                    SlideInRight(
-                                                      child: Padding(
-                                                        padding: const EdgeInsets.all(5),
-                                                        child: Container(
-                                                          width: 50,
-                                                          height: 40,
-                                                          decoration: BoxDecoration(
-                                                            color: Colors.black,
-                                                            border: Border.all(
-                                                              color: Colors.black,
-                                                              width: 5,
-                                                            ),
-                                                            borderRadius: BorderRadius.all(Radius.circular(3)),
-                                                            boxShadow: <BoxShadow>[
-                                                              BoxShadow(
-                                                                color: Colors.grey[500],
-                                                                blurRadius: 8.0,
-                                                                offset: Offset(0.0, 8.0),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                          child: Center(
-                                                            child: Text(
-                                                              '$seconds',
-                                                              textAlign: TextAlign.center,
-                                                              style: TextStyle(
-                                                                color: Colors.white,
-                                                                fontWeight: FontWeight.bold,
-                                                                fontSize: 25,
-                                                                shadows: [
-                                                                  Shadow(color: Colors.white),
-                                                                ],
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      preferences: AnimationPreferences(
-                                                          duration: const Duration(milliseconds: 1500),
-                                                          autoPlay: AnimationPlayStates.Forward),
-                                                    ),
-                                                  ],
-                                                );
-                                              }),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
+                                  gamePlayTimerUi(context, onTimeEnd: (bool isTimeEnded) => {
+                                      //print('Timer Ended');
+                                      if (statesModel.player1TotalPoints > statesModel.player2TotalPoints) {
+                                          showTimesUpDialog(context, true, statesModel),
+                                      } else {
+                                          showTimesUpDialog(context, false, statesModel),
+                                        }
+                                  },),
                                   Container(
                                     height: getScreenHeight(context) / 1.5,
                                     child: Row(
@@ -319,7 +187,7 @@ class Gameplay extends StatelessWidget {
                                                         if (whoIsPlaying == 'p2'){
                                                           updateGamePlayStatus( attributeTitle, attributeValue, winBasis, winPoints),
                                                         } else {
-                                                          card2ValueNotify.value += 1,
+                                                          //card2ValueNotify.value += 1,
                                                           //update p2 thinking
                                                           updateGamePlayStatus(attributeTitle, attributeValue, winBasis, winPoints),
                                                         }
@@ -336,6 +204,7 @@ class Gameplay extends StatelessWidget {
                                           // expensive to build and does not depend on the value from
                                           // the notifier.
                                         ),
+
                                         RubberBand(
                                           child: AvatarGlow(
                                             endRadius: 40,
@@ -353,6 +222,7 @@ class Gameplay extends StatelessWidget {
                                           preferences: AnimationPreferences(
                                               duration: const Duration(milliseconds: 4000), autoPlay: AnimationPlayStates.Loop),
                                         ),
+
                                         ValueListenableBuilder(
                                           builder: (BuildContext context, int value, Widget child) {
                                             // This builder will only get called when the _counter
@@ -363,44 +233,44 @@ class Gameplay extends StatelessWidget {
                                               alignment: AlignmentDirectional.bottomCenter,
                                               child: BounceInRight(
                                                 child: buildSecondCard(
-                                                  context,
-                                                  indexOfP1Card,
-                                                  indexOfCardDeck,
-                                                  cards,
-                                                  isP1CardFlipped,
-                                                  p1TurnStatus,
-                                                  p2TurnStatus
+                                                    context,
+                                                    indexOfP1Card,
+                                                    indexOfCardDeck,
+                                                    cards,
+                                                    isP1CardFlipped,
+                                                    p1TurnStatus,
+                                                    p2TurnStatus
                                                 ),
 
                                                 /*
-                                                        buildPlayerTwoCardOld(
-                                                      context,
-                                                      indexOfP1Card,
-                                                      indexOfCardDeck,
-                                                      cards,
-                                                      onClickActionOnP2GameplayCard: (bool isWon, int winPoint) =>
-                                                      {
-                                                        updateGamePlayStatusToFirebase(),
+                                                          buildPlayerTwoCardOld(
+                                                        context,
+                                                        indexOfP1Card,
+                                                        indexOfCardDeck,
+                                                        cards,
+                                                        onClickActionOnP2GameplayCard: (bool isWon, int winPoint) =>
+                                                        {
+                                                          updateGamePlayStatusToFirebase(),
 
-                                                        print('---- p2c data called ${statesModel.isCardOneTouched}, $isWon, $winPoint'),
-                                                        if (isWon)
-                                                          {
-                                                            playerResultStatusList.add("won"), // "won" is lottie file name
+                                                          print('---- p2c data called ${statesModel.isCardOneTouched}, $isWon, $winPoint'),
+                                                          if (isWon)
+                                                            {
+                                                              playerResultStatusList.add("won"), // "won" is lottie file name
 
-                                                            //showing lottie anim depending on win or loose
-                                                            showWinDialog(context, statesModel, isWon, 'win-result.json', 'You Won', p1Photo,
-                                                                4000, winPoint),
-                                                          }
-                                                        else
-                                                          {
-                                                            playerResultStatusList.add("sad"), // "sad" is lottie file name
-                                                            //showing lottie anim depending on win or loose
-                                                            showWinDialog(context, statesModel, isWon, 'sad-star.json', '\n\n\n\nYou Loose', '',
-                                                                3500, winPoint),
-                                                          },
-                                                      },
-                                                    ),
-                                                        */
+                                                              //showing lottie anim depending on win or loose
+                                                              showWinDialog(context, statesModel, isWon, 'win-result.json', 'You Won', p1Photo,
+                                                                  4000, winPoint),
+                                                            }
+                                                          else
+                                                            {
+                                                              playerResultStatusList.add("sad"), // "sad" is lottie file name
+                                                              //showing lottie anim depending on win or loose
+                                                              showWinDialog(context, statesModel, isWon, 'sad-star.json', '\n\n\n\nYou Loose', '',
+                                                                  3500, winPoint),
+                                                            },
+                                                        },
+                                                      ),
+                                                          */
 
                                                 preferences: AnimationPreferences(
                                                     duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
@@ -463,7 +333,7 @@ class Gameplay extends StatelessWidget {
                   ],
                 ),
               );
-            } else if (!snapshot.hasData) {
+            } else if (!snapshot.hasData ) {
               return frostedGlassWithProgressBarWidget(context);
             } else
               return Center(
@@ -496,10 +366,47 @@ class Gameplay extends StatelessWidget {
 
 
     //get game room data of two players
-    retrieveFirebaseData();
+    //retrieveFirebaseData();
   }
 
-  void retrieveFirebaseData() async {
+  void manageP1AndP2Data(){
+    //if p1 in game room is you then adding game room p1 in your data else
+    // if game room p2 is you then adding game room p2 data in your data.
+
+    //After getting p1Id and p2Id creating game room name
+    this._gameRoomName = 'gamePlay-$p1MemberId-$p2MemberId';
+    print('-----_gameRoomName: $_gameRoomName');
+
+    if (p1MemberIdPref == p1MemberId) {
+      //you are playing as p1
+      _isPlayAsP1 = true; // this is different than whoIsPlaying var
+      isYourNextTurn = true;
+      whoIsPlaying = 'p1';
+      this.p1FullName = p1FullName;
+      this.p1MemberId = p1MemberId;
+      this.p1Photo = p1Photo;
+
+      this.p2Name = p2Name;
+      this.p2MemberId = p2MemberId;
+      this.p2Image = p2Image;
+    } else if (p1MemberIdPref == p2MemberId) {
+      //you are playing as p2
+      _isPlayAsP1 = false;
+      isYourNextTurn = false;
+      whoIsPlaying = 'p2';
+      this.p1FullName = p2Name;
+      this.p1MemberId = p2MemberId;
+      this.p1Photo = p2Image;
+
+      this.p2Name = p1FullName;
+      this.p2MemberId = p1MemberId;
+      this.p2Image = p1Photo;
+    }
+
+    listeningToFirebaseDataUpdate(_gameRoomName);
+  }
+
+  /*void retrieveFirebaseData() async {
     try {
       _gameRoomRef.once().then((onValue) {
         onValue.value.forEach((playerDetailsKey, playerDetailsValue) {
@@ -551,9 +458,9 @@ class Gameplay extends StatelessWidget {
     } catch (e) {
       print(e);
     }
-  }
+  }*/
 
-  updateGamePlayStatus(String attrTitle, String attrValue, String winBasis, String winPoints) {
+  updateGamePlayStatus(String attrTitle, String attrValue, String winBasis, String winPoints) async{
     if (_isPlayAsP1) {
       p1TurnStatus = 'yes';
       p1SelectedAttr = attrTitle;
@@ -567,50 +474,64 @@ class Gameplay extends StatelessWidget {
     this.winBasis = winBasis;
     this.winPoints = winPoints;
 
+    print('-------p1TurnStatus: $p1TurnStatus');
+    print('----p2TurnStatus: $p2TurnStatus');
+
     updateGamePlayStatusToFirebase();
   }
 
-  void updateGamePlayStatusToFirebase() {
+  void updateGamePlayStatusToFirebase() async{
     _gamePlayRef.child(_gameRoomName).set({
       'isP1TurnComplete': p1TurnStatus,
       'isP2TurnComplete': p2TurnStatus,
-      /*'selectedArrayPos': indexOfP1Card,
+      'selectedArrayPos': indexOfP1Card,
       'p1SelectedAttr': p1SelectedAttr,
       'p1SelectedAttrValue': p1SelectedAttrValue,
       'p2SelectedAttr': p2SelectedAttr,
       'p2SelectedAttrValue': p2SelectedAttrValue,
-      'winner': winner,*/
+      'winner': winner,
     }).then((_) {});
   }
 
-  void listeningToFirebaseDataUpdate(String gameRoomName) {
+  void listeningToFirebaseDataUpdate(String gameRoomName) async {
     gamePlaySubscription = _gamePlayRef.onChildChanged.listen((Event event){
       if (event.snapshot.key == gameRoomName) {
-        var changeMapData = event.snapshot.value;/*
+        var changeMapData = event.snapshot.value;
+
         print('Gp on data changed ${event.snapshot.key}');
         print('Gp isP1TurnComplete: ${changeMapData['isP1TurnComplete']}');
         print('Gp isP2TurnComplete: ${event.snapshot.value['isP2TurnComplete']}');
         print('Gp p1SelectedAttr: ${event.snapshot.value['p1SelectedAttr']}');
         print('Gp p1SelectedAttrValue: ${event.snapshot.value['p1SelectedAttrValue']}');
         print('Gp p2SelectedAttr: ${event.snapshot.value['p2SelectedAttr']}');
-        print('Gp p2SelectedAttrValue: ${event.snapshot.value['p2SelectedAttrValue']}');*/
+        print('Gp p2SelectedAttrValue: ${event.snapshot.value['p2SelectedAttrValue']}');
 
         // event.snapshot.value is return map. Below line getting values from map using keys
         p1TurnStatus = changeMapData['isP1TurnComplete'];
         p2TurnStatus = changeMapData['isP2TurnComplete'];
-  /*      p1SelectedAttr = changeMapData['p1SelectedAttr'];
+        p1SelectedAttr = changeMapData['p1SelectedAttr'];
         p1SelectedAttrValue = changeMapData['p1SelectedAttrValue'];
         p2SelectedAttr = changeMapData['p2SelectedAttr'];
         p2SelectedAttrValue = changeMapData['p2SelectedAttrValue'];
-        winner = changeMapData['winner'];*/
+        winner = changeMapData['winner'];
 
         try {
-          if (p1TurnStatus == 'no' && p2TurnStatus == 'no') {
-            card1ValueNotify.value += 1;
-          } else if (p1TurnStatus == 'yes' && p2TurnStatus == 'no') {
-            isYourNextTurn = true;
+          if (p1TurnStatus == 'yes' && p2TurnStatus == 'no') {
+            if (!_isPlayAsP1) {
+              indexSelectedByP2 = changeMapData['selectedArrayPos'];
+              whoIsPlaying = 'p2';
+              isYourNextTurn = true;
+              card1ValueNotify.value +=1;
+            }
+            card2ValueNotify.value +=1;
+
+          } else if (p1TurnStatus == 'no' && p2TurnStatus == 'yes') {
             indexSelectedByP2 = changeMapData['selectedArrayPos'];
-            card2ValueNotify.value += 1;
+            isYourNextTurn = true;
+            whoIsPlaying = 'p2';
+            card2ValueNotify.value +=1;
+            card1ValueNotify.value +=1;
+
           } else if (p1TurnStatus == 'yes' && p2TurnStatus == 'yes') {
             //winBasis and winPints will be same for both player. So I am getting those value when p1 selected first value
             bool areYouWon = false;
@@ -639,11 +560,11 @@ class Gameplay extends StatelessWidget {
     });
   }
 
-  void showWinOrLossDialog(bool areYouWon){
+  void showWinOrLossDialog(bool areYouWon) async{
     if (areYouWon) {
-      showWinDialog(_scaffoldKey.currentContext, areYouWon, 'win-result.json', 'You Won', p1Photo, 4000, 0);
+      showWinDialog(_scaffoldKey.currentContext, areYouWon, 'win-result.json', 'You Won', p1Photo, 4000);
     } else {
-      showWinDialog(_scaffoldKey.currentContext, areYouWon, 'sad-star.json', '\n\n\n\nYou Loose', '', 3500, 0);
+      showWinDialog(_scaffoldKey.currentContext, areYouWon, 'sad-star.json', '\n\n\n\nYou Loose', '', 3500);
     }
   }
 
@@ -654,7 +575,7 @@ class Gameplay extends StatelessWidget {
   }
 
   void showWinDialog(BuildContext context, bool isWon, String lottieFileName, String message,
-      String photoUrl, int animHideTime, int winPoint) {
+      String photoUrl, int animHideTime) async {
 
     BuildContext dialogContext;
     showDialog(
@@ -709,6 +630,7 @@ class Gameplay extends StatelessWidget {
         );
       },
     );
+
     try {
       //adding data in match result status list and
       //updating card index and scoreboard values
@@ -716,43 +638,59 @@ class Gameplay extends StatelessWidget {
       Timer(Duration(milliseconds: animHideTime), () {
         Navigator.pop(dialogContext);
 
-        showBothCardsDialog(context, cards, indexOfP1Card, indexOfCardDeck, statesModelGlobal.cardCountOnDeck == 0 ? true : false, _isPlayAsP1,
-            onClickActionOnPlayAgain: (bool isMatchEnded) {
+        bool isMatchEndedStatus = statesModelGlobal.cardCountOnDeck == 1 ? true : false;
+
+        showBothCardsDialog(context, cards, indexOfP1Card, indexOfCardDeck, isMatchEndedStatus, _isPlayAsP1,
+            isWon, onClickActionOnPlayAgain: (bool isMatchEnded) {
           try{
             if (!isMatchEnded) {
               indexOfCardDeck = indexOfCardDeck + 1;
 
+              /*print('-----isWon1: $isWon ');
+              print('-----winPoint: $winPoints ');
+              print('-----statesModel.playerOneTrump: ${statesModelGlobal.playerOneTrump} ');
+              print('-----statesModel.player1TotalPoints: ${statesModelGlobal.player1TotalPoints} ');
+              print('-----statesModel.playerTwoTrump: ${statesModelGlobal.playerTwoTrump} ');
+              print('-----statesModel.player2TotalPoints: ${statesModelGlobal.player2TotalPoints} ');*/
+
+              print('-----statesModel.cardCountOnDeck: ${statesModelGlobal.cardCountOnDeck}');
+
               if (isWon) {
                 statesModelGlobal.playerOneTrump = statesModelGlobal.playerOneTrump + 1;
-                statesModelGlobal.player1TotalPoints = statesModelGlobal.player1TotalPoints + winPoint;
-                isYourNextTurn = true;
+                statesModelGlobal.player1TotalPoints = statesModelGlobal.player1TotalPoints + int.parse(winPoints);
               } else {
                 statesModelGlobal.playerTwoTrump = statesModelGlobal.playerOneTrump + 1;
-                statesModelGlobal.player2TotalPoints = statesModelGlobal.player2TotalPoints + winPoint;
-                isYourNextTurn = false;
+                statesModelGlobal.player2TotalPoints = statesModelGlobal.player2TotalPoints + int.parse(winPoints);
               }
 
-              context.read<GamePlayStatesModel>().updatePlayerScoreboards(
+              showToast(context, isWon ? "Your Turn To Play" : '$p2Name Turn To Play');
+
+
+              if (isWon) {
+                isYourNextTurn = true;
+                whoIsPlaying = 'p1';
+              } else {
+                isYourNextTurn = false;
+                whoIsPlaying = 'p2';
+              }
+              isP1CardFlipped = false;
+              indexSelectedByP2 = 55;
+
+              p1TurnStatus = 'no';
+              p2TurnStatus = 'no';
+              updateGamePlayStatusToFirebase();
+
+              _scaffoldKey.currentContext.read<GamePlayStatesModel>().updatePlayerScoreboards(
                   statesModelGlobal.playerOneTrump,
                   statesModelGlobal.playerTwoTrump,
                   statesModelGlobal.player1TotalPoints,
                   statesModelGlobal.player2TotalPoints);
 
-              context.read<GamePlayStatesModel>().updateCardCountOnDeck(statesModelGlobal.cardCountOnDeck - 1);
+              _scaffoldKey.currentContext.read<GamePlayStatesModel>().updateCardCountOnDeck(statesModelGlobal.cardCountOnDeck - 1);
 
-
-              showToast(context, isYourNextTurn ? "Your Turn To Play" : '$p2Name Turn To Play');
             } else {
               gotoResultScreen(context, true, statesModelGlobal);
             }
-
-            isP1CardFlipped = false;
-            card1ValueNotify.value += 1;
-            card2ValueNotify.value += 1;
-
-            p1TurnStatus = 'no';
-            p2TurnStatus = 'no';
-            updateGamePlayStatusToFirebase();
 
           } catch(e){
 

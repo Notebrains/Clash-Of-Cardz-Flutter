@@ -7,6 +7,7 @@ import 'package:trump_card_game/helper/exten_fun/common_fun.dart';
 import 'package:trump_card_game/helper/shared_preference_data.dart';
 import 'package:trump_card_game/model/responses/login_res_model.dart';
 import 'package:trump_card_game/ui/screens/home.dart';
+import 'package:trump_card_game/ui/screens/pvp.dart';
 import 'package:trump_card_game/ui/widgets/animations/spring_button.dart';
 import 'package:trump_card_game/ui/widgets/custom/carousel_auto_slider.dart';
 import 'package:trump_card_game/ui/widgets/custom/frosted_glass.dart';
@@ -353,7 +354,7 @@ class _LogInState extends State<LogIn> {
                                     ),
                                   ),
                                   onTap: (){
-                                    Navigator.push(context, CupertinoPageRoute(builder: (context) => HomeScreen()),);
+                                    Navigator.push(context, CupertinoPageRoute(builder: (context) => Pvp()),);
                                   },
                                 ),
                               ),
@@ -541,8 +542,10 @@ class _LogInState extends State<LogIn> {
                         SharedPreferenceHelper().saveUserApiKey(snapshot.data.responce.xApiKey);
                         SharedPreferenceHelper().saveUserMemberId(snapshot.data.responce.memberid);
 
-                        SchedulerBinding.instance.addPostFrameCallback((_) {
-                          Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => HomeScreen(xApiKey: snapshot.data.responce.xApiKey, memberId: snapshot.data.responce.memberid,)));
+                        Timer(Duration(milliseconds: 2000), () {
+                          SchedulerBinding.instance.addPostFrameCallback((_) {
+                            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => HomeScreen(xApiKey: snapshot.data.responce.xApiKey, memberId: snapshot.data.responce.memberid,)));
+                          });
                         });
                       }
 

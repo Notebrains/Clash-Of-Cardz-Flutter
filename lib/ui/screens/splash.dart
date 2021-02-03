@@ -73,70 +73,68 @@ class _SplashScreenState extends State<SplashScreen> with WidgetsBindingObserver
           child: Scaffold(
             resizeToAvoidBottomInset: false,
             backgroundColor: Colors.transparent,
-            body: InkWell(
-              child: Stack(
-                fit: StackFit.expand,
-                children: <Widget>[
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      Expanded(
-                        flex: 6,
-                        child: Container(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              SizedBox(
-                                child: ColorizeAnimatedTextKit(
-                                  onTap: () {
-                                    //print("Tap Event");
-                                  },
-                                  text: [
-                                    "CLASH OF CARDZ",
-                                    "LET'S PLAY",
-                                    "CLASH OF CARDZ",
-                                    "ROCK & ROLL",
-                                  ],
-                                  textStyle: TextStyle(
-                                      fontSize: 60.0,
-                                      fontStyle: FontStyle.normal,
-                                      fontFamily: 'Rapier'),
-                                  colors: [
-                                    Colors.grey[700],
-                                    Colors.amber[400],
-                                    Colors.lightBlue,
-                                    Colors.redAccent,
-                                  ],
-                                  textAlign: TextAlign.center,
-                                  alignment: AlignmentDirectional.center,
-                                  // or Alignment.topLeft
-                                  isRepeatingAnimation: true,
-                                  repeatForever: true,
-                                ),
+            body: Stack(
+              fit: StackFit.expand,
+              children: <Widget>[
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    Expanded(
+                      flex: 6,
+                      child: Container(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            SizedBox(
+                              child: ColorizeAnimatedTextKit(
+                                onTap: () {
+                                  //print("Tap Event");
+                                },
+                                text: [
+                                  "CLASH OF CARDZ",
+                                  "LET'S PLAY",
+                                  "CLASH OF CARDZ",
+                                  "ROCK & ROLL",
+                                ],
+                                textStyle: TextStyle(
+                                    fontSize: 60.0,
+                                    fontStyle: FontStyle.normal,
+                                    fontFamily: 'Rapier'),
+                                colors: [
+                                  Colors.grey[700],
+                                  Colors.amber[400],
+                                  Colors.lightBlue,
+                                  Colors.redAccent,
+                                ],
+                                textAlign: TextAlign.center,
+                                alignment: AlignmentDirectional.center,
+                                // or Alignment.topLeft
+                                isRepeatingAnimation: true,
+                                repeatForever: true,
                               ),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 5.0),
-                              ),
-                            ],
-                          ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 5.0),
+                            ),
+                          ],
                         ),
                       ),
-                      Expanded(
-                        flex: 1,
-                        child: Container(
-                          margin: EdgeInsets.symmetric(vertical: 20),
-                          width: 600,
-                          height: 20,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                            child: HorizontalProgressIndicator(),
-                          ),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                        margin: EdgeInsets.symmetric(vertical: 20),
+                        width: 600,
+                        height: 20,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          child: HorizontalProgressIndicator(),
                         ),
                       ),
-                    ],
-                  ),
-                ],
-              ),
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
         ),

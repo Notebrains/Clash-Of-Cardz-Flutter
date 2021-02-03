@@ -53,212 +53,208 @@ class _SettingState extends State<Setting> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    SlideInLeft(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          SlideInDown(
-                            child: MaterialButton(
-                              splashColor: Colors.grey,
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SlideInDown(
+                          child: MaterialButton(
+                            splashColor: Colors.grey,
+                            child: Container(
+                              alignment: Alignment.center,
+                              width: 270,
+                              height: 60,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(image: AssetImage('assets/icons/png/bg_button.png'), fit: BoxFit.fill),
+                              ),
+                              child: Container(
+                                padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 12.0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    IconButton(
+                                      icon: Image.asset(
+                                        'assets/icons/png/ic_music_on.png',
+                                        color: Colors.black,
+                                      ),
+                                      onPressed: null,
+                                    ),
+                                    Text(
+                                      "Music",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          fontStyle: FontStyle.normal,
+                                          fontFamily: 'montserrat',
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black87),
+                                    ),
+                                    Switch(
+                                      value: widget.isMusicOn,
+                                      onChanged: (bool newValue) {
+                                        setState(() {
+                                          widget.isMusicOn = newValue;
+                                        });
+                                        changeAudioPlayerStats(widget.isMusicOn);
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            // ),
+                            onPressed: () {
+                              onTapAudio('button');
+                            },
+                          ),
+                          preferences: AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
+                        ),
+                        SlideInLeft(
+                          child: MaterialButton(
+                            splashColor: Colors.grey,
+                            child: Container(
+                              width: 270,
+                              height: 60,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(image: AssetImage('assets/icons/png/bg_button.png'), fit: BoxFit.fill),
+                              ),
+                              child: Container(
+                                padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 12.0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    IconButton(
+                                      icon: Image.asset(
+                                        'assets/icons/png/ic_notification_on.png',
+                                        color: Colors.black,
+                                      ),
+                                      onPressed: null,
+                                    ),
+                                    Text(
+                                      "Notification",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          fontStyle: FontStyle.normal,
+                                          fontFamily: 'montserrat',
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black87),
+                                    ),
+                                    Switch(
+                                      value: widget.isNotificationOn,
+                                      onChanged: (bool newValue) {
+                                        setState(() {
+                                          widget.isNotificationOn = newValue;
+                                        });
+                                        SharedPreferenceHelper().saveNotificationOnOffState(widget.isNotificationOn);
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            // ),
+                            onPressed: () {
+                              onTapAudio('button');
+                            },
+                          ),
+                          preferences: AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
+                        ),
+
+                        SlideInRight(
+                          child: MaterialButton(
+                            padding: EdgeInsets.fromLTRB(0.0, 2.0, 0.0, 0.0),
+                            splashColor: Colors.grey,
+                            child: Container(
+                              width: 270,
+                              height: 60,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(image: AssetImage('assets/icons/png/bg_button.png'), fit: BoxFit.fill),
+                              ),
                               child: Container(
                                 alignment: Alignment.center,
-                                width: 270,
-                                height: 60,
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(image: AssetImage('assets/icons/png/bg_button.png'), fit: BoxFit.fill),
-                                ),
-                                child: Container(
-                                  padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 12.0),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      IconButton(
-                                        icon: Image.asset(
-                                          'assets/icons/png/ic_music_on.png',
-                                          color: Colors.black,
-                                        ),
-                                        onPressed: null,
-                                      ),
-                                      Text(
-                                        "Music",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                            fontSize: 18,
-                                            fontStyle: FontStyle.normal,
-                                            fontFamily: 'montserrat',
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.black87),
-                                      ),
-                                      Switch(
-                                        value: widget.isMusicOn,
-                                        onChanged: (bool newValue) {
-                                          setState(() {
-                                            widget.isMusicOn = newValue;
-                                          });
-                                          changeAudioPlayerStats(widget.isMusicOn);
-                                        },
-                                      ),
-                                    ],
-                                  ),
+                                padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 12.0),
+                                child: Text(
+                                  "Logout",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontStyle: FontStyle.normal,
+                                      fontFamily: 'montserrat',
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black87),
                                 ),
                               ),
-                              // ),
-                              onPressed: () {
-                                onTapAudio('button');
-                              },
                             ),
-                            preferences: AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
+                            // ),
+                            onPressed: () {
+                              onTapAudio('button');
+                              SharedPreferenceHelper().clearPrefData();
+                              Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => LogIn()));
+                            },
                           ),
-                          SlideInLeft(
-                            child: MaterialButton(
-                              splashColor: Colors.grey,
+                          preferences: AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
+                        ),
+
+                        SlideInUp(
+                          child: MaterialButton(
+                            padding: EdgeInsets.fromLTRB(0.0, 2.0, 0.0, 0.0),
+                            splashColor: Colors.grey,
+                            child: Container(
+                              width: 270,
+                              height: 60,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(image: AssetImage('assets/icons/png/bg_button.png'), fit: BoxFit.fill),
+                              ),
                               child: Container(
-                                width: 270,
-                                height: 60,
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(image: AssetImage('assets/icons/png/bg_button.png'), fit: BoxFit.fill),
-                                ),
-                                child: Container(
-                                  padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 12.0),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      IconButton(
-                                        icon: Image.asset(
-                                          'assets/icons/png/ic_notification_on.png',
-                                          color: Colors.black,
-                                        ),
-                                        onPressed: null,
-                                      ),
-                                      Text(
-                                        "Notification",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                            fontSize: 18,
-                                            fontStyle: FontStyle.normal,
-                                            fontFamily: 'montserrat',
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.black87),
-                                      ),
-                                      Switch(
-                                        value: widget.isNotificationOn,
-                                        onChanged: (bool newValue) {
-                                          setState(() {
-                                            widget.isNotificationOn = newValue;
-                                          });
-                                          SharedPreferenceHelper().saveNotificationOnOffState(widget.isNotificationOn);
-                                        },
-                                      ),
-                                    ],
-                                  ),
+                                alignment: Alignment.center,
+                                padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 12.0),
+                                child: Text(
+                                  "Close",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontStyle: FontStyle.normal,
+                                      fontFamily: 'montserrat',
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black87),
                                 ),
                               ),
-                              // ),
-                              onPressed: () {
-                                onTapAudio('button');
-                              },
                             ),
-                            preferences: AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
+                            // ),
+                            onPressed: () {
+                              onTapAudio('button');
+                              goBackToPreviousScreen(context);
+                            },
                           ),
+                          preferences: AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
+                        ),
 
-                          SlideInRight(
-                            child: MaterialButton(
-                              padding: EdgeInsets.fromLTRB(0.0, 2.0, 0.0, 0.0),
-                              splashColor: Colors.grey,
-                              child: Container(
-                                width: 270,
-                                height: 60,
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(image: AssetImage('assets/icons/png/bg_button.png'), fit: BoxFit.fill),
-                                ),
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 12.0),
-                                  child: Text(
-                                    "Logout",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontStyle: FontStyle.normal,
-                                        fontFamily: 'montserrat',
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black87),
-                                  ),
-                                ),
-                              ),
-                              // ),
-                              onPressed: () {
-                                onTapAudio('button');
-                                SharedPreferenceHelper().clearPrefData();
-                                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => LogIn()));
-                              },
-                            ),
-                            preferences: AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
-                          ),
-
-                          SlideInUp(
-                            child: MaterialButton(
-                              padding: EdgeInsets.fromLTRB(0.0, 2.0, 0.0, 0.0),
-                              splashColor: Colors.grey,
-                              child: Container(
-                                width: 270,
-                                height: 60,
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(image: AssetImage('assets/icons/png/bg_button.png'), fit: BoxFit.fill),
-                                ),
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 12.0),
-                                  child: Text(
-                                    "Close",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontStyle: FontStyle.normal,
-                                        fontFamily: 'montserrat',
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black87),
-                                  ),
-                                ),
-                              ),
-                              // ),
-                              onPressed: () {
-                                onTapAudio('button');
-                                goBackToPreviousScreen(context);
-                              },
-                            ),
-                            preferences: AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
-                          ),
-
-                          FadeInDown(
-                            child: Padding(
-                              padding: const EdgeInsets.all(10.0),
-                              child: Text(
-                                "Player Id: ${widget.memberId}",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(fontSize: 16, fontStyle: FontStyle.italic, fontWeight: FontWeight.bold, fontFamily: 'montserrat', color: Colors.black87),
-                              ),
-                            ),
-                            preferences: AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
-                          ),
-
-                          FadeInDown(
+                        FadeInDown(
+                          child: Padding(
+                            padding: const EdgeInsets.all(10.0),
                             child: Text(
-                              "Version: 1.0.1",
+                              "Player Id: ${widget.memberId}",
                               textAlign: TextAlign.center,
                               style: TextStyle(fontSize: 16, fontStyle: FontStyle.italic, fontWeight: FontWeight.bold, fontFamily: 'montserrat', color: Colors.black87),
                             ),
-                            preferences: AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
                           ),
+                          preferences: AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
+                        ),
 
-                        ],
-                      ),
-                      preferences:
-                          AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
+                        FadeInDown(
+                          child: Text(
+                            "Version: 1.0.1",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontSize: 16, fontStyle: FontStyle.italic, fontWeight: FontWeight.bold, fontFamily: 'montserrat', color: Colors.black87),
+                          ),
+                          preferences: AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
+                        ),
+
+                      ],
                     ),
 
-                    SlideInRight(
+                    ZoomIn(
                       child: Container(
                         margin: EdgeInsets.only(bottom: 50, left: 50),
                         child: Lottie.asset(
@@ -271,7 +267,7 @@ class _SettingState extends State<Setting> {
                         ),
                       ),
                       preferences:
-                          AnimationPreferences(duration: const Duration(milliseconds: 1000), autoPlay: AnimationPlayStates.Forward),
+                          AnimationPreferences(duration: const Duration(milliseconds: 2000), autoPlay: AnimationPlayStates.Forward),
                     ),
                   ],
                 ),

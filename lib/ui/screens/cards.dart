@@ -5,7 +5,6 @@ import 'package:trump_card_game/helper/exten_fun/base_application_fun.dart';
 import 'package:trump_card_game/helper/exten_fun/common_fun.dart';
 import 'package:trump_card_game/model/responses/profile_res_model.dart';
 import 'package:trump_card_game/ui/widgets/custom/card_shape_background.dart';
-import 'package:trump_card_game/ui/widgets/custom/carousel_auto_slider.dart';
 import 'package:trump_card_game/ui/widgets/custom/frosted_glass.dart';
 import 'package:lottie/lottie.dart';
 import 'package:trump_card_game/ui/widgets/libraries/colorize.dart';

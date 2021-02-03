@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 import 'package:shape_of_view/shape_of_view.dart';
 import 'package:trump_card_game/helper/exten_fun/base_application_fun.dart';
-import 'package:trump_card_game/helper/exten_fun/common_fun.dart';
 import 'package:trump_card_game/model/responses/cards_res_model.dart';
 import 'package:trump_card_game/ui/widgets/libraries/animated_text_kit/wavy.dart';
 import 'package:trump_card_game/ui/widgets/libraries/edge_alert.dart';
@@ -51,10 +50,6 @@ Widget buildCardAsP1(
     speed: 1000,
     key: cardKeyOfPlayerOne,
     onFlipDone: (status) {
-      print('----whoIsPlaying $whoIsPlaying');
-      print('----isYourNextTurn $isYourNextTurn');
-      print('----selectedIndexOfP2Card $selectedIndexOfP2Card');
-
       if (whoIsPlaying == 'p1') {
         onClickActionOnP1GameplayCard(0, 'Title', '0', 'highest','0', true);
       } if (isYourNextTurn && whoIsPlaying == 'p2') {
@@ -128,6 +123,11 @@ Widget buildCardAsP1(
           ],
         ),
         onTap: () {
+
+          print('----whoIsPlaying $whoIsPlaying');
+          print('----isYourNextTurn $isYourNextTurn');
+          print('----selectedIndexOfP2Card $selectedIndexOfP2Card');
+
           if (isYourNextTurn) {
             cardKeyOfPlayerOne.currentState.toggleCard();
           } else {
@@ -160,7 +160,7 @@ Widget buildCardAsP1(
                 colors: [
                   Colors.deepOrange,
                   Colors.orange[600],
-                  Colors.orange[600],
+                  Colors.deepOrangeAccent,
                 ],
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
@@ -215,7 +215,7 @@ Widget buildCardAsP1(
                       return Container(
                         padding: index == selectedIndexOfP2Card || index == isButtonTappedValueNotify.value? EdgeInsets.only(left: 3, top: 1):EdgeInsets.all(0),
                         decoration: BoxDecoration(
-                          color: index == selectedIndexOfP2Card || index == isButtonTappedValueNotify.value? Colors.white24: Colors.orange[600],
+                          color: index == selectedIndexOfP2Card || index == isButtonTappedValueNotify.value? Colors.white24: Colors.transparent,
                           border: index == selectedIndexOfP2Card || index == isButtonTappedValueNotify.value? Border.all(color: Colors.white):Border.all(color: Colors.transparent),
                           borderRadius: index == selectedIndexOfP2Card || index == isButtonTappedValueNotify.value? BorderRadius.all(Radius.circular(3)):BorderRadius.all(Radius.circular(0)),
                         ),
@@ -286,7 +286,6 @@ Widget buildCardAsP1(
                             ),
                             onTap: () {
                               isButtonTappedValueNotify.value = index;
-
                               if (isYourNextTurn && whoIsPlaying == 'p1') {
                                 onClickActionOnP1GameplayCard(
                                     index,
@@ -381,7 +380,9 @@ Widget buildSecondCard(BuildContext context, int p1SelectedIndexOfAttributeList,
 
   Widget doFlip(bool isP1CardFlipped, GlobalKey<FlipCardState> cardKeyOfPlayerTwo) {
     try {
-      if(isP1CardFlipped){
+      print('-----1  p1turnStatus: $p1turnStatus , p2turnStatus: $p2turnStatus');
+      if(isP1CardFlipped && p1turnStatus == 'no' && p2turnStatus == 'no'){
+        print('-----2  p1turnStatus: $p1turnStatus , p2turnStatus: $p2turnStatus');
             Future.delayed(Duration(milliseconds: 800),(){
               cardKeyOfPlayerTwo.currentState.toggleCard();
             });
@@ -501,9 +502,8 @@ Widget buildSecondCard(BuildContext context, int p1SelectedIndexOfAttributeList,
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-
-              p1turnStatus == 'yes' && p2turnStatus == 'no' ?
-              Lottie.asset('assets/animations/lottiefiles/confused_robot-bot-3d.json', width: 150, height: 150):
+              p1turnStatus == 'yes' || p2turnStatus == 'yes' ?
+              Lottie.asset('assets/animations/lottiefiles/timer-progress-animation.json', width: 150, height: 150):
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: FadeInImage.assetNetwork(

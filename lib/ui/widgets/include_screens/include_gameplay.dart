@@ -317,10 +317,10 @@ class BuildPlayer1Screen extends StatelessWidget{
 
               onTap: (){
                 //print('---- card Count 22 $gridListSize');
-                if(gridListSize > 0){
+               /* if(gridListSize > 0){
                   context.read<GamePlayStatesModel>().updateCardCountOnDeck(statesModel.cardCountOnDeck - 1);
                   //context.read<GamePlayStatesModel>().updateRebuildDeck(true);
-                }
+                }*/
               },
             ),
             preferences: AnimationPreferences(

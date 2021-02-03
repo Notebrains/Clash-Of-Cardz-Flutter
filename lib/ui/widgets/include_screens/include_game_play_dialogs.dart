@@ -5,6 +5,184 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 import 'package:trump_card_game/helper/exten_fun/base_application_fun.dart';
+import 'package:trump_card_game/model/state_managements/gameplay_states_model.dart';
+
+Widget gamePlayTimerUi(BuildContext context, {
+Function(bool isTimeEnded) onTimeEnd,
+}){
+  return Container(
+    height: getScreenHeight(context) / 6.0,
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 0.0, top: 0),
+          child: TweenAnimationBuilder<Duration>(
+              duration: Duration(minutes: 45),
+              tween: Tween(begin: Duration(minutes: 45), end: Duration.zero),
+              onEnd: () {
+                onTimeEnd(true);
+                },
+              builder: (BuildContext context, Duration value, Widget child) {
+                //adding 0 at first if min or sec show in single digit
+                final minutes = (value.inMinutes).toString().padLeft(2, "0");
+                final seconds = (value.inSeconds % 60).toString().padLeft(2, "0");
+                return Row(
+                  children: [
+                    SlideInLeft(
+                      child: Padding(
+                        padding: const EdgeInsets.all(5),
+                        child: Container(
+                          width: 50,
+                          height: 40,
+                          decoration: BoxDecoration(
+                            color: Colors.black,
+                            border: Border.all(
+                              color: Colors.black,
+                              width: 5,
+                            ),
+                            borderRadius: BorderRadius.all(Radius.circular(3)),
+                            boxShadow: <BoxShadow>[
+                              BoxShadow(
+                                color: Colors.grey[500],
+                                blurRadius: 8.0,
+                                offset: Offset(0.0, 8.0),
+                              ),
+                            ],
+                          ),
+                          child: Center(
+                            child: Text(
+                              '$minutes',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 25,
+                                shadows: [
+                                  Shadow(color: Colors.white),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      preferences: AnimationPreferences(
+                          duration: const Duration(milliseconds: 1500),
+                          autoPlay: AnimationPlayStates.Forward),
+                    ),
+                    SlideInDown(
+                      child: Container(
+                        width: 20,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: BorderRadius.all(Radius.circular(3)),
+                          boxShadow: <BoxShadow>[
+                            BoxShadow(
+                              color: Colors.grey[500],
+                              blurRadius: 8.0,
+                              offset: Offset(0.0, 8.0),
+                            ),
+                          ],
+                        ),
+                        child: Center(
+                          child: Padding(
+                            padding: const EdgeInsets.only(bottom: 5),
+                            child: Text(
+                              ':',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 31,
+                                shadows: [
+                                  Shadow(color: Colors.white),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      preferences: AnimationPreferences(
+                          duration: const Duration(milliseconds: 1500),
+                          autoPlay: AnimationPlayStates.Forward),
+                    ),
+                    SlideInRight(
+                      child: Padding(
+                        padding: const EdgeInsets.all(5),
+                        child: Container(
+                          width: 50,
+                          height: 40,
+                          decoration: BoxDecoration(
+                            color: Colors.black,
+                            border: Border.all(
+                              color: Colors.black,
+                              width: 5,
+                            ),
+                            borderRadius: BorderRadius.all(Radius.circular(3)),
+                            boxShadow: <BoxShadow>[
+                              BoxShadow(
+                                color: Colors.grey[500],
+                                blurRadius: 8.0,
+                                offset: Offset(0.0, 8.0),
+                              ),
+                            ],
+                          ),
+                          child: Center(
+                            child: Text(
+                              '$seconds',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 25,
+                                shadows: [
+                                  Shadow(color: Colors.white),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      preferences: AnimationPreferences(
+                          duration: const Duration(milliseconds: 1500),
+                          autoPlay: AnimationPlayStates.Forward),
+                    ),
+                  ],
+                );
+              }),
+        ),
+      ],
+    ),
+  );
+}
+
+void showTimesUpDialog(BuildContext context, bool isP1Won, GamePlayStatesModel statesModel) {
+  BuildContext dialogContext;
+  showDialog(
+    context: context,
+    barrierDismissible: true,
+    useSafeArea: true,
+    builder: (BuildContext context) {
+      dialogContext = context;
+      return Dialog(
+        backgroundColor: Colors.transparent,
+        child: FadeInUp(
+          child: Center(
+            child: Lottie.asset('assets/animations/lottiefiles/times-up.json', height: 290, width: 290, repeat: false, animate: true),
+          ),
+          preferences: AnimationPreferences(duration: const Duration(milliseconds: 800), autoPlay: AnimationPlayStates.Forward),
+        ),
+      );
+    },
+  );
+
+  Timer(Duration(milliseconds: 3000), () {
+    Navigator.pop(dialogContext);
+    //gotoResultScreen(context, isP1Won, statesModel);
+  });
+}
 
 void showWrongSelectionDialog(BuildContext context, String selectedAttrName) {
   BuildContext dialogContext;

@@ -121,7 +121,7 @@ Function(bool isPlayAgainClicked) onClickActionOnPlayAgain,
 
                                 Pulse(
                                   child:  Container(
-                                    margin: EdgeInsets.only(top: 20),
+                                    margin: EdgeInsets.only(top: 16),
                                     child: MaterialButton(
                                       padding: EdgeInsets.fromLTRB(0.0, 2.0, 0.0, 0.0),
                                       splashColor: Colors.grey,
@@ -261,7 +261,7 @@ Widget buildCard1(
                 return Container(
                   padding: index == indexOfSelectedCard? EdgeInsets.only(left: 3, top: 1):EdgeInsets.all(0),
                   decoration: BoxDecoration(
-                      color: index == indexOfSelectedCard? Colors.white24: Colors.orange[600],
+                      color: index == indexOfSelectedCard? Colors.white24: Colors.transparent,
                       border: index == indexOfSelectedCard? Border.all(color: Colors.white):Border.all(color: Colors.transparent),
                       borderRadius: index == indexOfSelectedCard? BorderRadius.all(Radius.circular(3)):BorderRadius.all(Radius.circular(0)),
                   ),
@@ -463,7 +463,7 @@ Widget buildCard2(
               children: List.generate(cardsAttributeListOfP2[indexOfCardDeck].length, (index) {
                 return Container(padding: index == indexOfSelectedCard? EdgeInsets.only(left: 3, top: 1):EdgeInsets.all(0),
                   decoration: BoxDecoration(
-                    color: index == indexOfSelectedCard? Colors.white24: Colors.lightBlueAccent[400],
+                    color: index == indexOfSelectedCard? Colors.white24: Colors.transparent,
                     border: index == indexOfSelectedCard? Border.all(color: Colors.white):Border.all(color: Colors.transparent),
                     borderRadius: index == indexOfSelectedCard? BorderRadius.all(Radius.circular(3)):BorderRadius.all(Radius.circular(0)),
                   ),

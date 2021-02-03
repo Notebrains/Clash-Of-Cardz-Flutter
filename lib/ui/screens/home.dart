@@ -92,7 +92,7 @@ class _MyHomePageState extends State<HomeScreen> {
                               height: 40,
                               margin: EdgeInsets.all(5),
                               child: IconButton(
-                                icon: Image.asset('assets/icons/png/ic_setting.png'),
+                                icon: Image.asset('assets/icons/png/ic_setting.png', color: Colors.white,),
                                 onPressed: () {
                                   onTapAudio('icon');
                                   bool isNotifiOn;
@@ -106,7 +106,7 @@ class _MyHomePageState extends State<HomeScreen> {
                                 },
                               ),
                               decoration:
-                              Views.boxDecorationWidgetForIconWithBgColor(Colors.black87, 4.0, Colors.grey, 5.0, 5.0, 3.0),
+                              Views.boxDecorationWidgetForIconWithBgColor(Colors.black, 4.0, Colors.grey, 5.0, 5.0, 3.0),
                             ),
 
                             Container(
@@ -350,14 +350,14 @@ class _MyHomePageState extends State<HomeScreen> {
                               height: 40,
                               margin: EdgeInsets.all(5),
                               child: IconButton(
-                                icon: Image.asset('assets/icons/png/ic_statistic_white.png'),
+                                icon: SvgPicture.asset('assets/icons/svg/stage.svg', color: Colors.white,),
                                 onPressed: () {
                                   onTapAudio('icon');
                                   Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Leaderboard()));
                                 },
                               ),
                               decoration:
-                              Views.boxDecorationWidgetForIconWithBgColor(Colors.amber[800], 4.0, Colors.grey, 5.0, 5.0, 3.0),
+                              Views.boxDecorationWidgetForIconWithBgColor(Colors.amber[700], 4.0, Colors.grey, 5.0, 5.0, 3.0),
                             ),
                             Container(
                               width: 40,
@@ -371,7 +371,7 @@ class _MyHomePageState extends State<HomeScreen> {
                                 },
                               ),
                               decoration:
-                              Views.boxDecorationWidgetForIconWithBgColor(Colors.indigoAccent, 4.0, Colors.grey, 5.0, 5.0, 3.0),
+                              Views.boxDecorationWidgetForIconWithBgColor(Colors.cyan, 4.0, Colors.grey, 5.0, 5.0, 3.0),
                             ),
 
                             Container(
@@ -379,7 +379,7 @@ class _MyHomePageState extends State<HomeScreen> {
                               height: 40,
                               margin: EdgeInsets.all(5),
                               child: IconButton(
-                                icon: Image.asset('assets/icons/png/ic_profile_whites.png'),
+                                icon: SvgPicture.asset('assets/icons/svg/user.svg', color: Colors.white,),
                                 onPressed: () {
                                   onTapAudio('icon');
                                   Navigator.push(context, MaterialPageRoute(
@@ -387,7 +387,7 @@ class _MyHomePageState extends State<HomeScreen> {
                                 },
                               ),
                               decoration:
-                              Views.boxDecorationWidgetForIconWithBgColor(Colors.lightBlue, 4.0, Colors.grey, 5.0, 5.0, 3.0),
+                              Views.boxDecorationWidgetForIconWithBgColor(Colors.black54, 4.0, Colors.grey, 5.0, 5.0, 3.0),
                             ),
                           ],
                         ),

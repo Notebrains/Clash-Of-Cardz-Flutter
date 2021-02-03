@@ -211,7 +211,7 @@ Widget buildPlayerOneCard(
                       return Container(
                         padding: index == indexOfCardDeckSelectForComputer || index == isButtonTappedValueNotify.value? EdgeInsets.only(left: 3, top: 1):EdgeInsets.all(0),
                         decoration: BoxDecoration(
-                          color: index == indexOfCardDeckSelectForComputer || index == isButtonTappedValueNotify.value? Colors.white24: Colors.orange[600],
+                          color: index == indexOfCardDeckSelectForComputer || index == isButtonTappedValueNotify.value? Colors.white24: Colors.transparent,
                           border: index == indexOfCardDeckSelectForComputer || index == isButtonTappedValueNotify.value? Border.all(color: Colors.white):Border.all(color: Colors.transparent),
                           borderRadius: index == indexOfCardDeckSelectForComputer || index == isButtonTappedValueNotify.value? BorderRadius.all(Radius.circular(3)):BorderRadius.all(Radius.circular(0)),
                         ),
@@ -643,7 +643,7 @@ Widget buildPlayerTwoCard(
                   return Container(
                     padding: index == selectedIndex? EdgeInsets.only(left: 3, top: 1):EdgeInsets.all(0),
                     decoration: BoxDecoration(
-                      color: index == selectedIndex? Colors.white24: Colors.lightBlueAccent,
+                      color: index == selectedIndex? Colors.white24: Colors.transparent,
                       border: index == selectedIndex? Border.all(color: Colors.white):Border.all(color: Colors.transparent),
                       borderRadius: index == selectedIndex? BorderRadius.all(Radius.circular(3)):BorderRadius.all(Radius.circular(0)),
                     ),
