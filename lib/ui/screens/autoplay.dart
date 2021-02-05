@@ -282,11 +282,13 @@ class AutoPlay extends StatelessWidget {
                                                           this.indexOfP1Card = indexOfP1Card,
                                                           if (whoIsPlaying == 'computer') {
                                                             if (isWon) {
+                                                              onTapAudio('match_win'),
                                                               playerResultStatusList.add("won"), // "won" is lottie file name
                                                               //showing lottie anim depending on win or loose
                                                               showWinDialog(context, statesModel, isWon, 'win-result.json', 'You Won', p1Photo,
                                                                   4000, winPoint),
                                                             } else {
+                                                              onTapAudio('match_lost'),
                                                               playerResultStatusList.add("sad"), // "sad" is lottie file name
                                                               //showing lottie anim depending on win or loose
                                                               showWinDialog(context, statesModel, isWon, 'sad-star.json', '\n\n\n\nYou Loose',
@@ -350,11 +352,13 @@ class AutoPlay extends StatelessWidget {
 
                                                         if (whoIsPlaying == 'player') {
                                                           if (isWon) {
+                                                            onTapAudio('match_win'),
                                                             playerResultStatusList.add("won"), // "won" is lottie file name
                                                             //showing lottie anim depending on win or loose
                                                             showWinDialog(context, statesModel, isWon, 'win-result.json', 'You Won', p1Photo,
                                                                 4000, winPoint),
                                                           } else {
+                                                            onTapAudio('match_lost'),
                                                             playerResultStatusList.add("sad"), // "sad" is lottie file name
                                                             //showing lottie anim depending on win or loose
                                                             showWinDialog(context, statesModel, isWon, 'sad-star.json', '\n\n\n\nYou Loose',
@@ -522,7 +526,8 @@ class AutoPlay extends StatelessWidget {
         showBothCardsDialog(context, cards,
             whoIsPlaying == 'player'? indexOfP1Card: indexOfCardDeckSelectForComputer,
             indexOfCardDeck,
-            statesModel.cardCountOnDeck == 0 ? true : false,
+            statesModel.cardCountOnDeck == 1 ? true : false,
+            isWon,
             onClickActionOnPlayAgain :( bool isMatchEnded){
 
             //print('-----isMatchEnded: $isMatchEnded ');
@@ -645,7 +650,7 @@ class AutoPlay extends StatelessWidget {
             GameResult(
               winnerName: 'Computer',
               winnerId: 'MEM000004',
-              winnerImage: Constants.imgUrlNotFoundYellowAvatar, //static
+              winnerImage: Constants.imgUrlComputer, //static
               winnerCoins: "0",
               winnerPoints: statesModel.player2TotalPoints.toString(),
               cardType: subcategoryName,

@@ -697,7 +697,7 @@ Widget buildPlayerTwoCard(
                               fontStyle: FontStyle.normal,
                               fontFamily: 'neuropol_x_rg',
                               fontWeight: FontWeight.normal,
-                              color: Colors.indigo),
+                              color: Colors.white),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(right: 10, top: 1),

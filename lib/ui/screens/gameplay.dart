@@ -71,7 +71,7 @@ class Gameplay extends StatelessWidget {
       p1SelectedAttr = '',
       p1SelectedAttrValue = '0',
       p2SelectedAttr = '',
-      p2SelectedAttrValue = '1',
+      p2SelectedAttrValue = '0',
       winner = 'p1';
 
   bool _isPlayAsP1 = false;
@@ -96,7 +96,7 @@ class Gameplay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     setScreenOrientationToLandscape();
-    getSavedUserDataFromPref();
+    //getSavedUserDataFromPref();
     initFirebaseCredentials();
     manageP1AndP2Data();
 

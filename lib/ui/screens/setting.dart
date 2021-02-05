@@ -13,11 +13,13 @@ import 'package:flutter_animator/flutter_animator.dart';
 class Setting extends StatefulWidget {
   bool isMusicOn;
   bool isNotificationOn;
+  bool isSfxOn;
   String memberId;
 
-  Setting(bool isMusicOn, bool isNotificationOn, String memberId) {
+  Setting(bool isMusicOn, bool isNotificationOn, bool isSfxOn, String memberId) {
     this.isMusicOn = isMusicOn;
     this.isNotificationOn = isNotificationOn;
+    this.isSfxOn = isSfxOn;
     this.memberId = memberId;
   }
 
@@ -62,8 +64,8 @@ class _SettingState extends State<Setting> {
                             splashColor: Colors.grey,
                             child: Container(
                               alignment: Alignment.center,
-                              width: 270,
-                              height: 60,
+                              width: 260,
+                              height: 50,
                               decoration: BoxDecoration(
                                 image: DecorationImage(image: AssetImage('assets/icons/png/bg_button.png'), fit: BoxFit.fill),
                               ),
@@ -75,7 +77,7 @@ class _SettingState extends State<Setting> {
                                     IconButton(
                                       icon: Image.asset(
                                         'assets/icons/png/ic_music_on.png',
-                                        color: Colors.black,
+                                        color: Colors.white,
                                       ),
                                       onPressed: null,
                                     ),
@@ -83,7 +85,7 @@ class _SettingState extends State<Setting> {
                                       "Music",
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
-                                          fontSize: 18,
+                                          fontSize: 15,
                                           fontStyle: FontStyle.normal,
                                           fontFamily: 'montserrat',
                                           fontWeight: FontWeight.bold,
@@ -109,12 +111,66 @@ class _SettingState extends State<Setting> {
                           ),
                           preferences: AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
                         ),
+
+                        SlideInRight(
+                          child: MaterialButton(
+                            splashColor: Colors.grey,
+                            child: Container(
+                              alignment: Alignment.center,
+                              width: 260,
+                              height: 50,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(image: AssetImage('assets/icons/png/bg_button.png'), fit: BoxFit.fill),
+                              ),
+                              child: Container(
+                                padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 12.0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    IconButton(
+                                      icon: Image.asset(
+                                        'assets/icons/png/ic_music_on.png',
+                                        color: Colors.white,
+                                      ),
+                                      onPressed: null,
+                                    ),
+                                    Text(
+                                      "SFX",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          fontSize: 15,
+                                          fontStyle: FontStyle.normal,
+                                          fontFamily: 'montserrat',
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black87),
+                                    ),
+                                    Switch(
+                                      value: widget.isSfxOn,
+                                      onChanged: (bool newValue) {
+                                        setState(() {
+                                          widget.isSfxOn = newValue;
+                                        });
+                                        changeAudioPlayerStats(widget.isSfxOn);
+                                        SharedPreferenceHelper().saveSfxOnOffState(widget.isSfxOn);
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            // ),
+                            onPressed: () {
+                              onTapAudio('button');
+                            },
+                          ),
+                          preferences: AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
+                        ),
                         SlideInLeft(
                           child: MaterialButton(
                             splashColor: Colors.grey,
                             child: Container(
-                              width: 270,
-                              height: 60,
+                              width: 260,
+                              height: 50,
                               decoration: BoxDecoration(
                                 image: DecorationImage(image: AssetImage('assets/icons/png/bg_button.png'), fit: BoxFit.fill),
                               ),
@@ -126,7 +182,7 @@ class _SettingState extends State<Setting> {
                                     IconButton(
                                       icon: Image.asset(
                                         'assets/icons/png/ic_notification_on.png',
-                                        color: Colors.black,
+                                        color: Colors.white,
                                       ),
                                       onPressed: null,
                                     ),
@@ -134,7 +190,7 @@ class _SettingState extends State<Setting> {
                                       "Notification",
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
-                                          fontSize: 18,
+                                          fontSize: 15,
                                           fontStyle: FontStyle.normal,
                                           fontFamily: 'montserrat',
                                           fontWeight: FontWeight.bold,
@@ -166,8 +222,8 @@ class _SettingState extends State<Setting> {
                             padding: EdgeInsets.fromLTRB(0.0, 2.0, 0.0, 0.0),
                             splashColor: Colors.grey,
                             child: Container(
-                              width: 270,
-                              height: 60,
+                              width: 260,
+                              height: 50,
                               decoration: BoxDecoration(
                                 image: DecorationImage(image: AssetImage('assets/icons/png/bg_button.png'), fit: BoxFit.fill),
                               ),
@@ -178,7 +234,7 @@ class _SettingState extends State<Setting> {
                                   "Logout",
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
-                                      fontSize: 16,
+                                      fontSize: 15,
                                       fontStyle: FontStyle.normal,
                                       fontFamily: 'montserrat',
                                       fontWeight: FontWeight.bold,
@@ -201,8 +257,8 @@ class _SettingState extends State<Setting> {
                             padding: EdgeInsets.fromLTRB(0.0, 2.0, 0.0, 0.0),
                             splashColor: Colors.grey,
                             child: Container(
-                              width: 270,
-                              height: 60,
+                              width: 260,
+                              height: 50,
                               decoration: BoxDecoration(
                                 image: DecorationImage(image: AssetImage('assets/icons/png/bg_button.png'), fit: BoxFit.fill),
                               ),
@@ -213,7 +269,7 @@ class _SettingState extends State<Setting> {
                                   "Close",
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
-                                      fontSize: 16,
+                                      fontSize: 15,
                                       fontStyle: FontStyle.normal,
                                       fontFamily: 'montserrat',
                                       fontWeight: FontWeight.bold,
@@ -236,7 +292,7 @@ class _SettingState extends State<Setting> {
                             child: Text(
                               "Player Id: ${widget.memberId}",
                               textAlign: TextAlign.center,
-                              style: TextStyle(fontSize: 16, fontStyle: FontStyle.italic, fontWeight: FontWeight.bold, fontFamily: 'montserrat', color: Colors.black87),
+                              style: TextStyle(fontSize: 13, fontStyle: FontStyle.italic, fontWeight: FontWeight.bold, fontFamily: 'montserrat', color: Colors.black87),
                             ),
                           ),
                           preferences: AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
@@ -246,7 +302,7 @@ class _SettingState extends State<Setting> {
                           child: Text(
                             "Version: 1.0.1",
                             textAlign: TextAlign.center,
-                            style: TextStyle(fontSize: 16, fontStyle: FontStyle.italic, fontWeight: FontWeight.bold, fontFamily: 'montserrat', color: Colors.black87),
+                            style: TextStyle(fontSize: 13, fontStyle: FontStyle.italic, fontWeight: FontWeight.bold, fontFamily: 'montserrat', color: Colors.black87),
                           ),
                           preferences: AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
                         ),

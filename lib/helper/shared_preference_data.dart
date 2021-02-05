@@ -106,6 +106,17 @@ class SharedPreferenceHelper {
     return prefs.getBool('isMusicOn') ?? true;
   }
 
+  void saveSfxOnOffState(bool isMusicOn) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setBool('isSfxOn', isMusicOn);
+    //print('----saved $xApiKey');
+  }
+
+  Future<bool> getSfxOnOffState() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool('isSfxOn') ?? true;
+  }
+
   void saveNotificationOnOffState(bool isNotificationOn) async {
     final prefs = await SharedPreferences.getInstance();
     prefs.setBool('isNotificationOn', isNotificationOn);

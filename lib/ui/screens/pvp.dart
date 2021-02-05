@@ -2,15 +2,16 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:trump_card_game/helper/constantvalues/constants.dart';
 import 'package:trump_card_game/helper/exten_fun/base_application_fun.dart';
 import 'package:trump_card_game/helper/exten_fun/common_fun.dart';
+import 'package:trump_card_game/ui/screens/autoplay.dart';
 import 'package:trump_card_game/ui/screens/gameplay.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 import 'package:trump_card_game/ui/widgets/libraries/colorize.dart';
 import 'package:shape_of_view/shape_of_view.dart';
 
-
-class Pvp extends StatefulWidget{
+class Pvp extends StatefulWidget {
   final String p1Name;
   final String p1Id;
   final String p1Image;
@@ -22,49 +23,33 @@ class Pvp extends StatefulWidget{
   final String gameType;
   final String cardsToPlay;
 
-  Pvp({this.p1Name,
-      this.p1Id,
-      this.p1Image,
-      this.p2Name,
-      this.p2Id,
-      this.p2Image,
-      this.categoryName,
-      this.subcategoryName,
-      this.gameType,
-      this.cardsToPlay,
+  Pvp({
+    this.p1Name,
+    this.p1Id,
+    this.p1Image,
+    this.p2Name,
+    this.p2Id,
+    this.p2Image,
+    this.categoryName,
+    this.subcategoryName,
+    this.gameType,
+    this.cardsToPlay,
   });
 
-
   @override
-  State<StatefulWidget> createState() {
-    return _PvpState();
-  }
+  _PvpState createState() => _PvpState();
 }
 
-class _PvpState extends State<Pvp>{
+class _PvpState extends State<Pvp> {
   bool _isOpenGamePlayScreen = false;
-  
+
   @override
   void initState() {
     super.initState();
     setScreenOrientationToLandscape();
     onTapAudio('pvp_screen');
-    _loadWidget();
-  }
 
-
-  _loadWidget() async {
-    var _duration = Duration(seconds: 2);
-    return Timer(_duration, navigationPage);
-  }
-
-  void navigationPage() async {
-    Navigator.push(
-      context,
-      CupertinoPageRoute(builder: (context) => Gameplay(p1FullName: widget.p1Name, p1MemberId:  widget.p1Id, p1Photo:  widget.p1Image,
-        p2Name:  widget.p2Name, p2MemberId:  widget.p2Id, p2Image:  widget.p2Image, categoryName:  widget.categoryName,
-        subcategoryName: widget.subcategoryName, gameType:  widget.gameType, cardsToPlay:  widget.cardsToPlay,),),
-    ).then((value) => Navigator.of(context).pop());
+    openGamePlayPage();
   }
 
   @override
@@ -103,7 +88,8 @@ class _PvpState extends State<Pvp>{
                           ),
                         ),
                       ),
-                      preferences: AnimationPreferences(duration: const Duration(milliseconds: 2100), autoPlay: AnimationPlayStates.Forward),
+                      preferences:
+                          AnimationPreferences(duration: const Duration(milliseconds: 2100), autoPlay: AnimationPlayStates.Forward),
                     ),
                     SizedBox(
                       height: 20,
@@ -127,7 +113,8 @@ class _PvpState extends State<Pvp>{
                         repeatForever: true,
                         speed: Duration(milliseconds: 800),
                       ),
-                      preferences: AnimationPreferences(duration: const Duration(milliseconds: 2200), autoPlay: AnimationPlayStates.Forward),
+                      preferences:
+                          AnimationPreferences(duration: const Duration(milliseconds: 2200), autoPlay: AnimationPlayStates.Forward),
                     ),
                   ],
                 ),
@@ -149,10 +136,12 @@ class _PvpState extends State<Pvp>{
                           child: FadeInImage.assetNetwork(
                             placeholder: 'assets/icons/png/circle-avator-default-img.png',
                             image: widget.p2Image,
+                            fit: BoxFit.contain,
                           ),
                         ),
                       ),
-                      preferences: AnimationPreferences(duration: const Duration(milliseconds: 2000), autoPlay: AnimationPlayStates.Forward),
+                      preferences:
+                          AnimationPreferences(duration: const Duration(milliseconds: 2000), autoPlay: AnimationPlayStates.Forward),
                     ),
                     SizedBox(
                       height: 20,
@@ -176,7 +165,8 @@ class _PvpState extends State<Pvp>{
                         repeatForever: true,
                         speed: Duration(milliseconds: 800),
                       ),
-                      preferences: AnimationPreferences(duration: const Duration(milliseconds: 1800), autoPlay: AnimationPlayStates.Forward),
+                      preferences:
+                          AnimationPreferences(duration: const Duration(milliseconds: 1800), autoPlay: AnimationPlayStates.Forward),
                     ),
                   ],
                 ),
@@ -190,25 +180,31 @@ class _PvpState extends State<Pvp>{
     );
   }
 
-  Widget openGamePlayPage(){
-    if (_isOpenGamePlayScreen) {
-      /*Timer(Duration(milliseconds: 2000), () {
-        Navigator.push(
+  void openGamePlayPage() async {
+    Future.delayed(const Duration(milliseconds: 2500), () {
+      Navigator.pushAndRemoveUntil(
           context,
-          CupertinoPageRoute(builder: (context) => Gameplay(p1FullName: widget.p1Name, p1MemberId:  widget.p1Id, p1Photo:  widget.p1Image,
-            p2Name:  widget.p2Name, p2MemberId:  widget.p2Id, p2Image:  widget.p2Image, categoryName:  widget.categoryName,
-            subcategoryName: widget.subcategoryName, gameType:  widget.gameType, cardsToPlay:  widget.cardsToPlay,),),
-        );
-      });*/
-
-      Future.delayed(const Duration(seconds: 3));
-      Navigator.push(context, new MaterialPageRoute(builder: (__) =>  Gameplay(p1FullName: widget.p1Name, p1MemberId:  widget.p1Id, p1Photo:  widget.p1Image,
-        p2Name:  widget.p2Name, p2MemberId:  widget.p2Id, p2Image:  widget.p2Image, categoryName:  widget.categoryName,
-        subcategoryName: widget.subcategoryName, gameType:  widget.gameType, cardsToPlay:  widget.cardsToPlay,)));
-
-    }  
-    return Container();
+          MaterialPageRoute(
+              builder: (context) => widget.p2Image != Constants.imgUrlComputer? Gameplay(
+                p1FullName: widget.p1Name,
+                p1MemberId: widget.p1Id,
+                p1Photo: widget.p1Image,
+                p2Name: widget.p2Name,
+                p2MemberId: widget.p2Id,
+                p2Image: widget.p2Image,
+                categoryName: widget.categoryName,
+                subcategoryName: widget.subcategoryName,
+                gameType: widget.gameType,
+                cardsToPlay: widget.cardsToPlay,
+              ): AutoPlay(
+                categoryName: widget.categoryName,
+                subcategoryName: widget.subcategoryName,
+                gameType: widget.gameType,
+                cardToPlay: widget.cardsToPlay,
+              ),
+          ),
+          ModalRoute.withName("/Gameplay")
+      );
+    });
   }
-
 }
-

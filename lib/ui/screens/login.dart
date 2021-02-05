@@ -405,53 +405,47 @@ class _LogInState extends State<LogIn> {
         final accessToken = facebookLoginResult.accessToken.token;
         print("----Fb accessToken : " + accessToken);
         if (facebookLoginResult.status == FacebookLoginStatus.loggedIn) {
-          final facebookAuthCred = FacebookAuthProvider.getCredential(accessToken: accessToken);
-          final user = await FirebaseAuth.instance.signInWithCredential(facebookAuthCred);
+          final facebookAuthCred = FacebookAuthProvider.credential(accessToken);
+          UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(facebookAuthCred);
           //var user = (await firebaseAuth.signInWithCredential(facebookAuthCred)).user;
-          try {
-            print("----F User : " + user.displayName);
-            print("----F uid : " + user.uid);
-            print("----F email : " + user.email);
-            print("----F phoneNumber : " + user.phoneNumber);
-            print("----F photoUrl : " + user.photoUrl);
-            print("----F providerId : " + user.providerId);
+          print("----F User : " + userCredential.user.displayName);
+          print("----F uid : " + userCredential.user.uid);
+          print("----F email : " + userCredential.user.email);
+          print("----F phoneNumber : " + userCredential.user.phoneNumber);
+          print("----F photoUrl : " + userCredential.user.photoURL);
+          print("----F providerId : " + userCredential.user.tenantId);
 
-            //loginByServer(user.displayName, user.email, user.uid, user.photoUrl, "deviceToken", "memberId");
-            loginByServer(context, user.displayName, user.email, user.uid, user.photoUrl, '');
-          } catch (e) {
-            print(e);
-          }
+          //loginByServer(user.displayName, user.email, user.uid, user.photoUrl, "deviceToken", "memberId");
+          loginByServer(context, userCredential.user.displayName, userCredential.user.email, userCredential.user.uid, userCredential.user.photoURL, '');
+
           return 1;
         } else
           print("--------");
           return 0;
         break;
+
       case "G":
         try {
           GoogleSignInAccount googleSignInAccount = await _handleGoogleSignIn();
           final googleAuth = await googleSignInAccount.authentication;
           print("----G accessToken : " + googleAuth.accessToken);
-          final googleAuthCred = GoogleAuthProvider.getCredential(
+          final googleAuthCred = GoogleAuthProvider.credential(
               idToken: googleAuth.idToken, accessToken: googleAuth.accessToken);
-          final user = await FirebaseAuth.instance.signInWithCredential(googleAuthCred);
+          UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(googleAuthCred);
 
-          try {
-            print("----G User : " + user.displayName);
-            print("----G uid : " + user.uid);
-            print("----G email : " + user.email);
-            //print("----F phoneNumber : " + user.phoneNumber);
-            print("----G photoUrl : " + user.photoUrl);
-            print("----G providerId : " + user.providerId);
 
-            loginByServer(context, user.displayName, user.email, user.uid, user.photoUrl, '');
-          } catch (e) {
-            print(e);
-            print('e-----------------');
-          }
+          print("----G User : " + userCredential.user.displayName);
+          print("----G uid : " + userCredential.user.uid);
+          print("----G email : " + userCredential.user.email);
+          //print("----F phoneNumber : " + userCredential.phoneNumber);
+          print("----G photoUrl : " + userCredential.user.photoURL);
+          //print("----G providerId : " + userCredential.user.tenantId);
+
+          loginByServer(context, userCredential.user.displayName, userCredential.user.email, userCredential.user.uid, userCredential.user.photoURL, '');
 
           return 1;
         } catch (error) {
-          print('ee----');
+          print(error.toString());
           return 0;
         }
     }
@@ -461,7 +455,7 @@ class _LogInState extends State<LogIn> {
   Future<FacebookLoginResult> _handleFBSignIn() async {
     FacebookLogin facebookLogin = FacebookLogin();
     FacebookLoginResult facebookLoginResult =
-    await facebookLogin.logInWithReadPermissions(['email']);
+    await facebookLogin.logIn(['email']);
     switch (facebookLoginResult.status) {
       case FacebookLoginStatus.cancelledByUser:
         print("Cancelled");
@@ -483,7 +477,7 @@ class _LogInState extends State<LogIn> {
     return googleSignInAccount;
   }
 
-  void loginByServer(BuildContext context, String name, String email, String socialId, String image, String memberId){
+  void loginByServer(BuildContext context, String name, String email, String socialId, String image, String memberId) async{
     
     apiBloc.fetchLoginRes(name, email, socialId, image, firebaseToken, memberId);
 

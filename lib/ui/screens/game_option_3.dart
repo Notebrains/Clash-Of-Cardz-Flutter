@@ -2,10 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:trump_card_game/bloc/api_bloc.dart';
+import 'package:trump_card_game/helper/constantvalues/constants.dart';
 import 'package:trump_card_game/helper/exten_fun/common_fun.dart';
 import 'package:trump_card_game/helper/shared_preference_data.dart';
 import 'package:trump_card_game/model/responses/game_option_res_model.dart';
 import 'package:trump_card_game/ui/screens/autoplay.dart';
+import 'package:trump_card_game/ui/screens/pvp.dart';
 import 'package:trump_card_game/ui/widgets/include_screens/include_drawer_play_with_friends.dart';
 import 'package:trump_card_game/ui/widgets/include_screens/include_searching_players.dart';
 import 'package:trump_card_game/ui/widgets/libraries/colorize.dart';
@@ -391,7 +393,10 @@ class _GameOptionThreeState extends State<GameOptionThree> {
               ),
               onTap: (){
                 if(gameType == 'Player vs Computer'){
-                  Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => AutoPlay()));
+                  Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Pvp(p1Name: p1FullName, p1Id: p1MemberId,
+                    p1Image: p1Photo, p2Name: 'Computer', p2Id: 'COMP00005', p2Image: Constants.imgUrlComputer, categoryName: widget.categoryName,
+                    subcategoryName: widget.subcategoryName, gameType: gameType, cardsToPlay: cardsToBePlayed[index],),
+                  ));
                 } else {
                   showDialog(
                     context: context,

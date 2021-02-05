@@ -99,9 +99,13 @@ class _MyHomePageState extends State<HomeScreen> {
                                   SharedPreferenceHelper().getNotificationOnOffState().then((isNotificationOn) => {
                                     isNotifiOn =isNotificationOn,
                                   });
+                                  bool isSfxOn;
+                                  SharedPreferenceHelper().getSfxOnOffState().then((isSFXOn) => {
+                                    isSfxOn = isSFXOn,
+                                  });
 
                                   SharedPreferenceHelper().getMusicOnOffState().then((isMusicOn) => {
-                                    Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Setting(isMusicOn, isNotifiOn, widget.memberId))),
+                                    Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Setting(isMusicOn, isNotifiOn, isSfxOn, widget.memberId))),
                                   });
                                 },
                               ),

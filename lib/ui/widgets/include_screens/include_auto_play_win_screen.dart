@@ -15,7 +15,7 @@ import 'package:trump_card_game/ui/widgets/libraries/flip_card.dart';
 import 'package:trump_card_game/ui/widgets/libraries/shimmer.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-void showBothCardsDialog(BuildContext context, List<Cards> cards, int indexOfSelectedCard, int indexOfCardDeck, bool isMatchEnded, {
+void showBothCardsDialog(BuildContext context, List<Cards> cards, int indexOfSelectedCard, int indexOfCardDeck, bool isMatchEnded, bool isWon, {
 Function(bool isPlayAgainClicked) onClickActionOnPlayAgain,
 }) {
   BuildContext dialogContext;
@@ -67,6 +67,7 @@ Function(bool isPlayAgainClicked) onClickActionOnPlayAgain,
                                               cards,
                                               indexOfCardDeck,
                                               indexOfSelectedCard,
+                                              isWon,
                                               onClickActionOnP1GameplayCard:
                                                   (int indexOfP1Card, String attributeTitle, String attributeValue, String winBasis, String winPoints) =>
                                               {
@@ -104,6 +105,7 @@ Function(bool isPlayAgainClicked) onClickActionOnPlayAgain,
                                               indexOfSelectedCard,
                                               indexOfCardDeck,
                                               cards,
+                                              isWon,
                                               onClickActionOnP2GameplayCard: (bool isWon, int winPoint) =>
                                               {
                                               },
@@ -183,7 +185,7 @@ Widget buildCard1(
     BuildContext context,
     List<Cards> cardsList,
     int indexOfCardDeck,
-    int indexOfSelectedCard,
+    int indexOfSelectedCard, bool isWon,
     {
       Function(int p1SelectedIndexOfAttributeList, String attributeTitle, String attributeValue, String winBasis, String winPoints)
       onClickActionOnP1GameplayCard,
@@ -242,6 +244,9 @@ Widget buildCard1(
             ),
           ),
         ),
+
+
+        showOrHideWinnerImg(isWon),
 
         Align(
           alignment: Alignment.bottomCenter,
@@ -387,11 +392,32 @@ Widget buildCard1(
   );
 }
 
+Widget showOrHideWinnerImg(bool isWon) {
+  return isWon? Align(
+    alignment: Alignment.topRight,
+    child: Padding(
+      padding: const EdgeInsets.all(5),
+      child: Tada(
+        child:  SvgPicture.asset(
+          'assets/icons/svg/win.svg',
+          width: 30,
+          height: 30,
+        ),
+        preferences:
+        AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Loop),
+      ),
+
+    ),
+  ): Container();
+
+}
+
+
 Widget buildCard2(
     BuildContext context,
     int indexOfSelectedCard,
     int indexOfCardDeck,
-    List<Cards> cardsList, {
+    List<Cards> cardsList, bool isWon, {
       Function(bool isWon, int winPoint) onClickActionOnP2GameplayCard,
     }) {
 
@@ -445,6 +471,8 @@ Widget buildCard2(
                 width: 145),
           ),
         ),
+
+        showOrHideWinnerImg(isWon? false: true),
 
         Align(
           alignment: Alignment.bottomCenter,
