@@ -4,6 +4,7 @@ import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'package:trump_card_game/helper/constantvalues/api_constants.dart';
 import 'package:trump_card_game/model/responses/cards_res_model.dart';
+import 'package:trump_card_game/model/responses/cms_res_model.dart';
 import 'package:trump_card_game/model/responses/friends_res_model.dart';
 import 'package:trump_card_game/model/responses/game_option_res_model.dart';
 import 'package:trump_card_game/model/responses/login_res_model.dart';
@@ -268,6 +269,30 @@ Future<SaveGameResultResModel> fetchSaveGameResultApi(String xApiKey, Map<String
       return SaveGameResultResModel.fromJson(json.decode(response.body)); //Return decoded response
     } else {
       throw Exception('Failed to load Save Game Result response');
+    }
+  }
+
+
+  Future<CmsResModel> fetchCmsApi(String xApiKey, String slug) async {
+    Map<String, String> headers = {
+      "Content-Type": 'application/x-www-form-urlencoded',
+      'x-api-key': xApiKey};
+
+    var requestBody = {
+      'page_slug': slug,
+    };
+
+    http.Response response = await http.post(
+      UrlConstants.cms_game_data,
+      headers: headers,
+      body: requestBody,
+    );
+    print(response.body.toString());
+
+    if (response.statusCode == 200) {
+      return CmsResModel.fromJson(json.decode(response.body)); //Return decoded response
+    } else {
+      throw Exception('Failed to load cms_game_data response');
     }
   }
 }

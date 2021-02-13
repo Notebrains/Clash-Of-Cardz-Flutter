@@ -1,6 +1,6 @@
 /// status : 1
 /// message : "Data fetched succesfully"
-/// response : [{"category_name":"Sports","category_icon":"https://www.flaticon.com/svg/static/icons/svg/2636/2636890.svg","subcategory":[{"subcategory_name":"Cricket","subcategory_icon":"https://www.flaticon.com/svg/static/icons/svg/2636/2636890.svg","subcategory_details":[{"cards_to_be_played":["14","22","30"],"gametype_name":"Player vs Player","no_of_player_played":"2"},{"cards_to_be_played":["15","20","25"],"gametype_name":"Player vs Computer","no_of_player_played":"2"},{"cards_to_be_played":["10","12","14"],"gametype_name":"Tournament","no_of_player_played":"2"},{"cards_to_be_played":["20","28","40","75"],"gametype_name":"Player vs Multi Players","no_of_player_played":"4"}]}]},{"category_name":"TEST","category_icon":"https://www.flaticon.com/svg/static/icons/svg/2636/2636890.svg","subcategory":[{"subcategory_name":"Hockey","subcategory_icon":"https://www.flaticon.com/svg/static/icons/svg/2636/2636890.svg","subcategory_details":[{"cards_to_be_played":["20","28","40","75"],"gametype_name":"Player vs Multi Players","no_of_player_played":"4"}]},{"subcategory_name":"Car Racing","subcategory_icon":"https://www.flaticon.com/svg/static/icons/svg/2636/2636890.svg","subcategory_details":[{"cards_to_be_played":["20","28","40","75"],"gametype_name":"Player vs Multi Players","no_of_player_played":"4"}]}]}]
+/// response : [{"category_name":"Sports","category_icon":"https://predictfox.com/trumpcard/assets/uploads/category/<i class=\"fas fa-icons\"></i>","category_details":[{"sub1category_name":"Cricket","sub1category_icon":"https://predictfox.com/trumpcard/assets/uploads/subcategory/1613028617cricket.svg","sub1category_background":"https://predictfox.com/trumpcard/assets/uploads/subcategory/1613048400crickrtrules.png","sub1category_audio":"https://predictfox.com/trumpcard/assets/uploads/subcategory/1613028617Somebody-Like-You_15_SHK013501.mp3","sub1category_details":[{"sub2category_name":"IPL","sub2category_icon":"https://predictfox.com/trumpcard/assets/uploads/subsubcategory/161294089216129408921612940892crickrtrules.png","sub2category_details":[{"sub3category_name":"1991-2000","sub3category_icon":"https://predictfox.com/trumpcard/assets/uploads/subsubsubcategory/1612957351badminton.svg"},{"sub3category_name":"2001-2010","sub3category_icon":"https://predictfox.com/trumpcard/assets/uploads/subsubsubcategory/161295438816129543881612954388cricket1.svg"}]}]},{"sub1category_name":"Cricket","sub1category_icon":"https://predictfox.com/trumpcard/assets/uploads/subcategory/1613028617cricket.svg","sub1category_background":"https://predictfox.com/trumpcard/assets/uploads/subcategory/1613048400crickrtrules.png","sub1category_audio":"https://predictfox.com/trumpcard/assets/uploads/subcategory/1613028617Somebody-Like-You_15_SHK013501.mp3","sub1category_details":[{"sub2category_name":"IPL","sub2category_icon":"https://predictfox.com/trumpcard/assets/uploads/subsubcategory/161294089216129408921612940892crickrtrules.png","sub2category_details":[{"sub3category_name":"1991-2000","sub3category_icon":"https://predictfox.com/trumpcard/assets/uploads/subsubsubcategory/1612957351badminton.svg"},{"sub3category_name":"2001-2010","sub3category_icon":"https://predictfox.com/trumpcard/assets/uploads/subsubsubcategory/161295438816129543881612954388cricket1.svg"}]}]},{"sub1category_name":"Cricket","sub1category_icon":"https://predictfox.com/trumpcard/assets/uploads/subcategory/1613028617cricket.svg","sub1category_background":"https://predictfox.com/trumpcard/assets/uploads/subcategory/1613048400crickrtrules.png","sub1category_audio":"https://predictfox.com/trumpcard/assets/uploads/subcategory/1613028617Somebody-Like-You_15_SHK013501.mp3","sub1category_details":[{"sub2category_name":"IPL","sub2category_icon":"https://predictfox.com/trumpcard/assets/uploads/subsubcategory/161294089216129408921612940892crickrtrules.png","sub2category_details":[{"sub3category_name":"1991-2000","sub3category_icon":"https://predictfox.com/trumpcard/assets/uploads/subsubsubcategory/1612957351badminton.svg"},{"sub3category_name":"2001-2010","sub3category_icon":"https://predictfox.com/trumpcard/assets/uploads/subsubsubcategory/161295438816129543881612954388cricket1.svg"}]}]}]}]
 
 class GameOptionResModel {
   int _status;
@@ -44,34 +44,34 @@ class GameOptionResModel {
 }
 
 /// category_name : "Sports"
-/// category_icon : "https://www.flaticon.com/svg/static/icons/svg/2636/2636890.svg"
-/// subcategory : [{"subcategory_name":"Cricket","subcategory_icon":"https://www.flaticon.com/svg/static/icons/svg/2636/2636890.svg","subcategory_details":[{"cards_to_be_played":["14","22","30"],"gametype_name":"Player vs Player","no_of_player_played":"2"},{"cards_to_be_played":["15","20","25"],"gametype_name":"Player vs Computer","no_of_player_played":"2"},{"cards_to_be_played":["10","12","14"],"gametype_name":"Tournament","no_of_player_played":"2"},{"cards_to_be_played":["20","28","40","75"],"gametype_name":"Player vs Multi Players","no_of_player_played":"4"}]}]
+/// category_icon : "https://predictfox.com/trumpcard/assets/uploads/category/<i class=\"fas fa-icons\"></i>"
+/// category_details : [{"sub1category_name":"Cricket","sub1category_icon":"https://predictfox.com/trumpcard/assets/uploads/subcategory/1613028617cricket.svg","sub1category_background":"https://predictfox.com/trumpcard/assets/uploads/subcategory/1613048400crickrtrules.png","sub1category_audio":"https://predictfox.com/trumpcard/assets/uploads/subcategory/1613028617Somebody-Like-You_15_SHK013501.mp3","sub1category_details":[{"sub2category_name":"IPL","sub2category_icon":"https://predictfox.com/trumpcard/assets/uploads/subsubcategory/161294089216129408921612940892crickrtrules.png","sub2category_details":[{"sub3category_name":"1991-2000","sub3category_icon":"https://predictfox.com/trumpcard/assets/uploads/subsubsubcategory/1612957351badminton.svg"},{"sub3category_name":"2001-2010","sub3category_icon":"https://predictfox.com/trumpcard/assets/uploads/subsubsubcategory/161295438816129543881612954388cricket1.svg"}]}]},{"sub1category_name":"Cricket","sub1category_icon":"https://predictfox.com/trumpcard/assets/uploads/subcategory/1613028617cricket.svg","sub1category_background":"https://predictfox.com/trumpcard/assets/uploads/subcategory/1613048400crickrtrules.png","sub1category_audio":"https://predictfox.com/trumpcard/assets/uploads/subcategory/1613028617Somebody-Like-You_15_SHK013501.mp3","sub1category_details":[{"sub2category_name":"IPL","sub2category_icon":"https://predictfox.com/trumpcard/assets/uploads/subsubcategory/161294089216129408921612940892crickrtrules.png","sub2category_details":[{"sub3category_name":"1991-2000","sub3category_icon":"https://predictfox.com/trumpcard/assets/uploads/subsubsubcategory/1612957351badminton.svg"},{"sub3category_name":"2001-2010","sub3category_icon":"https://predictfox.com/trumpcard/assets/uploads/subsubsubcategory/161295438816129543881612954388cricket1.svg"}]}]},{"sub1category_name":"Cricket","sub1category_icon":"https://predictfox.com/trumpcard/assets/uploads/subcategory/1613028617cricket.svg","sub1category_background":"https://predictfox.com/trumpcard/assets/uploads/subcategory/1613048400crickrtrules.png","sub1category_audio":"https://predictfox.com/trumpcard/assets/uploads/subcategory/1613028617Somebody-Like-You_15_SHK013501.mp3","sub1category_details":[{"sub2category_name":"IPL","sub2category_icon":"https://predictfox.com/trumpcard/assets/uploads/subsubcategory/161294089216129408921612940892crickrtrules.png","sub2category_details":[{"sub3category_name":"1991-2000","sub3category_icon":"https://predictfox.com/trumpcard/assets/uploads/subsubsubcategory/1612957351badminton.svg"},{"sub3category_name":"2001-2010","sub3category_icon":"https://predictfox.com/trumpcard/assets/uploads/subsubsubcategory/161295438816129543881612954388cricket1.svg"}]}]}]
 
 class Response {
   String _categoryName;
   String _categoryIcon;
-  List<Subcategory> _subcategory;
+  List<Category_details> _categoryDetails;
 
   String get categoryName => _categoryName;
   String get categoryIcon => _categoryIcon;
-  List<Subcategory> get subcategory => _subcategory;
+  List<Category_details> get categoryDetails => _categoryDetails;
 
   Response({
       String categoryName, 
       String categoryIcon, 
-      List<Subcategory> subcategory}){
+      List<Category_details> categoryDetails}){
     _categoryName = categoryName;
     _categoryIcon = categoryIcon;
-    _subcategory = subcategory;
+    _categoryDetails = categoryDetails;
 }
 
   Response.fromJson(dynamic json) {
     _categoryName = json["category_name"];
     _categoryIcon = json["category_icon"];
-    if (json["subcategory"] != null) {
-      _subcategory = [];
-      json["subcategory"].forEach((v) {
-        _subcategory.add(Subcategory.fromJson(v));
+    if (json["category_details"] != null) {
+      _categoryDetails = [];
+      json["category_details"].forEach((v) {
+        _categoryDetails.add(Category_details.fromJson(v));
       });
     }
   }
@@ -80,92 +80,144 @@ class Response {
     var map = <String, dynamic>{};
     map["category_name"] = _categoryName;
     map["category_icon"] = _categoryIcon;
-    if (_subcategory != null) {
-      map["subcategory"] = _subcategory.map((v) => v.toJson()).toList();
+    if (_categoryDetails != null) {
+      map["category_details"] = _categoryDetails.map((v) => v.toJson()).toList();
     }
     return map;
   }
 
 }
 
-/// subcategory_name : "Cricket"
-/// subcategory_icon : "https://www.flaticon.com/svg/static/icons/svg/2636/2636890.svg"
-/// subcategory_details : [{"cards_to_be_played":["14","22","30"],"gametype_name":"Player vs Player","no_of_player_played":"2"},{"cards_to_be_played":["15","20","25"],"gametype_name":"Player vs Computer","no_of_player_played":"2"},{"cards_to_be_played":["10","12","14"],"gametype_name":"Tournament","no_of_player_played":"2"},{"cards_to_be_played":["20","28","40","75"],"gametype_name":"Player vs Multi Players","no_of_player_played":"4"}]
+/// sub1category_name : "Cricket"
+/// sub1category_icon : "https://predictfox.com/trumpcard/assets/uploads/subcategory/1613028617cricket.svg"
+/// sub1category_background : "https://predictfox.com/trumpcard/assets/uploads/subcategory/1613048400crickrtrules.png"
+/// sub1category_audio : "https://predictfox.com/trumpcard/assets/uploads/subcategory/1613028617Somebody-Like-You_15_SHK013501.mp3"
+/// sub1category_details : [{"sub2category_name":"IPL","sub2category_icon":"https://predictfox.com/trumpcard/assets/uploads/subsubcategory/161294089216129408921612940892crickrtrules.png","sub2category_details":[{"sub3category_name":"1991-2000","sub3category_icon":"https://predictfox.com/trumpcard/assets/uploads/subsubsubcategory/1612957351badminton.svg"},{"sub3category_name":"2001-2010","sub3category_icon":"https://predictfox.com/trumpcard/assets/uploads/subsubsubcategory/161295438816129543881612954388cricket1.svg"}]}]
 
-class Subcategory {
-  String _subcategoryName;
-  String _subcategoryIcon;
-  List<Subcategory_details> _subcategoryDetails;
+class Category_details {
+  String _sub1categoryName;
+  String _sub1categoryIcon;
+  String _sub1categoryBackground;
+  String _sub1categoryAudio;
+  List<Sub1category_details> _sub1categoryDetails;
 
-  String get subcategoryName => _subcategoryName;
-  String get subcategoryIcon => _subcategoryIcon;
-  List<Subcategory_details> get subcategoryDetails => _subcategoryDetails;
+  String get sub1categoryName => _sub1categoryName;
+  String get sub1categoryIcon => _sub1categoryIcon;
+  String get sub1categoryBackground => _sub1categoryBackground;
+  String get sub1categoryAudio => _sub1categoryAudio;
+  List<Sub1category_details> get sub1categoryDetails => _sub1categoryDetails;
 
-  Subcategory({
-      String subcategoryName, 
-      String subcategoryIcon, 
-      List<Subcategory_details> subcategoryDetails}){
-    _subcategoryName = subcategoryName;
-    _subcategoryIcon = subcategoryIcon;
-    _subcategoryDetails = subcategoryDetails;
+  Category_details({
+      String sub1categoryName, 
+      String sub1categoryIcon, 
+      String sub1categoryBackground, 
+      String sub1categoryAudio, 
+      List<Sub1category_details> sub1categoryDetails}){
+    _sub1categoryName = sub1categoryName;
+    _sub1categoryIcon = sub1categoryIcon;
+    _sub1categoryBackground = sub1categoryBackground;
+    _sub1categoryAudio = sub1categoryAudio;
+    _sub1categoryDetails = sub1categoryDetails;
 }
 
-  Subcategory.fromJson(dynamic json) {
-    _subcategoryName = json["subcategory_name"];
-    _subcategoryIcon = json["subcategory_icon"];
-    if (json["subcategory_details"] != null) {
-      _subcategoryDetails = [];
-      json["subcategory_details"].forEach((v) {
-        _subcategoryDetails.add(Subcategory_details.fromJson(v));
+  Category_details.fromJson(dynamic json) {
+    _sub1categoryName = json["sub1category_name"];
+    _sub1categoryIcon = json["sub1category_icon"];
+    _sub1categoryBackground = json["sub1category_background"];
+    _sub1categoryAudio = json["sub1category_audio"];
+    if (json["sub1category_details"] != null) {
+      _sub1categoryDetails = [];
+      json["sub1category_details"].forEach((v) {
+        _sub1categoryDetails.add(Sub1category_details.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
     var map = <String, dynamic>{};
-    map["subcategory_name"] = _subcategoryName;
-    map["subcategory_icon"] = _subcategoryIcon;
-    if (_subcategoryDetails != null) {
-      map["subcategory_details"] = _subcategoryDetails.map((v) => v.toJson()).toList();
+    map["sub1category_name"] = _sub1categoryName;
+    map["sub1category_icon"] = _sub1categoryIcon;
+    map["sub1category_background"] = _sub1categoryBackground;
+    map["sub1category_audio"] = _sub1categoryAudio;
+    if (_sub1categoryDetails != null) {
+      map["sub1category_details"] = _sub1categoryDetails.map((v) => v.toJson()).toList();
     }
     return map;
   }
 
 }
 
-/// cards_to_be_played : ["14","22","30"]
-/// gametype_name : "Player vs Player"
-/// no_of_player_played : "2"
+/// sub2category_name : "IPL"
+/// sub2category_icon : "https://predictfox.com/trumpcard/assets/uploads/subsubcategory/161294089216129408921612940892crickrtrules.png"
+/// sub2category_details : [{"sub3category_name":"1991-2000","sub3category_icon":"https://predictfox.com/trumpcard/assets/uploads/subsubsubcategory/1612957351badminton.svg"},{"sub3category_name":"2001-2010","sub3category_icon":"https://predictfox.com/trumpcard/assets/uploads/subsubsubcategory/161295438816129543881612954388cricket1.svg"}]
 
-class Subcategory_details {
-  List<String> _cardsToBePlayed;
-  String _gametypeName;
-  String _noOfPlayerPlayed;
+class Sub1category_details {
+  String _sub2categoryName;
+  String _sub2categoryIcon;
+  List<Sub2category_details> _sub2categoryDetails;
 
-  List<String> get cardsToBePlayed => _cardsToBePlayed;
-  String get gametypeName => _gametypeName;
-  String get noOfPlayerPlayed => _noOfPlayerPlayed;
+  String get sub2categoryName => _sub2categoryName;
+  String get sub2categoryIcon => _sub2categoryIcon;
+  List<Sub2category_details> get sub2categoryDetails => _sub2categoryDetails;
 
-  Subcategory_details({
-      List<String> cardsToBePlayed, 
-      String gametypeName, 
-      String noOfPlayerPlayed}){
-    _cardsToBePlayed = cardsToBePlayed;
-    _gametypeName = gametypeName;
-    _noOfPlayerPlayed = noOfPlayerPlayed;
+  Sub1category_details({
+      String sub2categoryName, 
+      String sub2categoryIcon, 
+      List<Sub2category_details> sub2categoryDetails}){
+    _sub2categoryName = sub2categoryName;
+    _sub2categoryIcon = sub2categoryIcon;
+    _sub2categoryDetails = sub2categoryDetails;
 }
 
-  Subcategory_details.fromJson(dynamic json) {
-    _cardsToBePlayed = json["cards_to_be_played"] != null ? json["cards_to_be_played"].cast<String>() : [];
-    _gametypeName = json["gametype_name"];
-    _noOfPlayerPlayed = json["no_of_player_played"];
+  Sub1category_details.fromJson(dynamic json) {
+    _sub2categoryName = json["sub2category_name"];
+    _sub2categoryIcon = json["sub2category_icon"];
+    if (json["sub2category_details"] != null) {
+      _sub2categoryDetails = [];
+      json["sub2category_details"].forEach((v) {
+        _sub2categoryDetails.add(Sub2category_details.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
     var map = <String, dynamic>{};
-    map["cards_to_be_played"] = _cardsToBePlayed;
-    map["gametype_name"] = _gametypeName;
-    map["no_of_player_played"] = _noOfPlayerPlayed;
+    map["sub2category_name"] = _sub2categoryName;
+    map["sub2category_icon"] = _sub2categoryIcon;
+    if (_sub2categoryDetails != null) {
+      map["sub2category_details"] = _sub2categoryDetails.map((v) => v.toJson()).toList();
+    }
+    return map;
+  }
+
+}
+
+/// sub3category_name : "1991-2000"
+/// sub3category_icon : "https://predictfox.com/trumpcard/assets/uploads/subsubsubcategory/1612957351badminton.svg"
+
+class Sub2category_details {
+  String _sub3categoryName;
+  String _sub3categoryIcon;
+
+  String get sub3categoryName => _sub3categoryName;
+  String get sub3categoryIcon => _sub3categoryIcon;
+
+  Sub2category_details({
+      String sub3categoryName, 
+      String sub3categoryIcon}){
+    _sub3categoryName = sub3categoryName;
+    _sub3categoryIcon = sub3categoryIcon;
+}
+
+  Sub2category_details.fromJson(dynamic json) {
+    _sub3categoryName = json["sub3category_name"];
+    _sub3categoryIcon = json["sub3category_icon"];
+  }
+
+  Map<String, dynamic> toJson() {
+    var map = <String, dynamic>{};
+    map["sub3category_name"] = _sub3categoryName;
+    map["sub3category_icon"] = _sub3categoryIcon;
     return map;
   }
 

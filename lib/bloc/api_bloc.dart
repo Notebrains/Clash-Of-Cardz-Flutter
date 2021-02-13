@@ -1,5 +1,6 @@
 import 'package:rxdart/rxdart.dart';
 import 'package:trump_card_game/model/responses/cards_res_model.dart';
+import 'package:trump_card_game/model/responses/cms_res_model.dart';
 import 'package:trump_card_game/model/responses/friends_res_model.dart';
 import 'package:trump_card_game/model/responses/game_option_res_model.dart';
 import 'package:trump_card_game/model/responses/login_res_model.dart';
@@ -117,6 +118,15 @@ class ApiBloc {
     _saveGameResultResFetcher.sink.add(model);
   }
 
+  //cms page
+  final _cmsFetcher = PublishSubject<CmsResModel>();
+  Stream<CmsResModel> get cmsResModel => _cmsFetcher.stream;
+
+  fetchCmsRes(String xApiKey, String slug) async {
+    CmsResModel model = await _repository.fetchCmsApi(xApiKey, slug);
+    _cmsFetcher.sink.add(model);
+  }
+
   dispose() {
     //Close the api fetcher
     _loginResFetcher.close();
@@ -129,6 +139,7 @@ class ApiBloc {
     _matchMakingResFetcher.close();
     _matchReqToFriendFetcher.close();
     _saveGameResultResFetcher.close();
+    _cmsFetcher.close();
   }
 }
 

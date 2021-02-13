@@ -577,59 +577,7 @@ class Gameplay extends StatelessWidget {
   void showWinDialog(BuildContext context, bool isWon, String lottieFileName, String message,
       String photoUrl, int animHideTime) async {
 
-    BuildContext dialogContext;
-    showDialog(
-      context: context,
-      barrierDismissible: true,
-      useSafeArea: true,
-      builder: (BuildContext context) {
-        dialogContext = context;
-        return Dialog(
-          backgroundColor: Colors.transparent,
-          child: FadeInUp(
-            child: Stack(
-              children: <Widget>[
-                Center(
-                  child:
-                      Lottie.asset('assets/animations/lottiefiles/$lottieFileName', height: 290, width: 290, repeat: false, animate: true),
-                ),
-                Center(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      ClipOval(
-                        child: FadeInImage.assetNetwork(
-                          placeholder: isWon ? 'assets/icons/png/circle-avator-default-img.png' : '',
-                          image: photoUrl ?? '',
-                          fit: BoxFit.fill,
-                          width: 65,
-                          height: 65,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          message,
-                          textAlign: TextAlign.start,
-                          style: TextStyle(
-                              fontSize: 13,
-                              fontStyle: FontStyle.normal,
-                              fontFamily: 'neuropol_x_rg',
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            preferences: AnimationPreferences(duration: const Duration(milliseconds: 800), autoPlay: AnimationPlayStates.Forward),
-          ),
-        );
-      },
-    );
+    BuildContext dialogContext = showWinLossIncludeDialog(context, isWon, lottieFileName, message, photoUrl, animHideTime);
 
     try {
       //adding data in match result status list and
@@ -704,24 +652,7 @@ class Gameplay extends StatelessWidget {
   }
 
   void showTimesUpDialog(BuildContext context, bool isP1Won, GamePlayStatesModel statesModel) {
-    BuildContext dialogContext;
-    showDialog(
-      context: context,
-      barrierDismissible: true,
-      useSafeArea: true,
-      builder: (BuildContext context) {
-        dialogContext = context;
-        return Dialog(
-          backgroundColor: Colors.transparent,
-          child: FadeInUp(
-            child: Center(
-              child: Lottie.asset('assets/animations/lottiefiles/times-up.json', height: 290, width: 290, repeat: false, animate: true),
-            ),
-            preferences: AnimationPreferences(duration: const Duration(milliseconds: 800), autoPlay: AnimationPlayStates.Forward),
-          ),
-        );
-      },
-    );
+    BuildContext dialogContext = showTimesUpIncludeDialog(context);
 
     Timer(Duration(milliseconds: 3000), () {
       Navigator.pop(dialogContext);

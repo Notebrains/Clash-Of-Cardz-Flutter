@@ -220,9 +220,9 @@ void sendNotificationToOtherPlayerByApi(BuildContext context, String categoryNam
       subcategoryName: subcategoryName,
       gameType: 'play with friends',
       cardsToPlay: cardsToPlay,
-      friendId: '',
-      friendName: '',
-      friendImage: '',
+      friendId: friendId,
+      friendName: friendName,
+      friendImage: friendName,
       joinedPlayerType: 'joinedAsPlayer',
     ),
   );

@@ -1,52 +1,43 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:trump_card_game/helper/exten_fun/common_fun.dart';
 import 'package:trump_card_game/model/responses/game_option_res_model.dart';
 import 'package:trump_card_game/ui/screens/game_option_3.dart';
-import 'package:trump_card_game/ui/widgets/include_screens/include_drawer_play_with_friends.dart';
-import 'package:trump_card_game/ui/widgets/libraries/blurry_container.dart';
 import 'package:trump_card_game/ui/widgets/libraries/colorize.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 import 'package:trump_card_game/ui/widgets/libraries/shimmer.dart';
 
 
 class GameOptionTwo extends StatefulWidget {
-  final String categoryName;
-  final String subcategoryName;
+  final String gameCat1;
+  final String gameCat2;
 
-  const GameOptionTwo({Key key, this.categoryName, this.subcategoryName}) : super(key: key);
+  const GameOptionTwo({Key key, this.gameCat1, this.gameCat2}) : super(key: key);
 
   @override
-  _GameOptionTwoState createState() => _GameOptionTwoState(categoryName, subcategoryName);
+  _GameOptionTwoState createState() => _GameOptionTwoState();
 }
 
 class _GameOptionTwoState extends State<GameOptionTwo> {
-  _GameOptionTwoState(String categoryName, String subcategoryName);
-
-  String categoryName = '';
-  String subcategoryName = '';
 
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
-  List<Subcategory_details> subcategoryDetails = [];
-  List<String> cardsToBePlayed = [];
+  List<Sub1category_details> subCat3List = [];
+  List<Sub2category_details> subCat4List = [];
+  List<Sub2category_details> subCat4EmptyList = [];
 
-  String gameType = '';
-  String cardsToPlay = '';
+  String gameCat3 = '';
 
-  void gameMoreOptState(List<String> cardsToBePlayed) {
+  void gameMoreOptState(List<Sub2category_details> subCat4List) {
     setState(() {
-      this.cardsToBePlayed.clear();
-      this.cardsToBePlayed.addAll(cardsToBePlayed);
-      buildSecondList(cardsToBePlayed);
-      //print("---- subcategoryDetails.length " + subcategoryDetails.length.toString());
-      //print("---- cardsToBePlayed.length 2 " + cardsToBePlayed.length.toString());
+      this.subCat4EmptyList.clear();
+      this.subCat4EmptyList.addAll(subCat4List);
+      buildSecondList(subCat4EmptyList);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    subcategoryDetails = ModalRoute.of(context).settings.arguments;
+    subCat3List = ModalRoute.of(context).settings.arguments;
 
     return WillPopScope(
       onWillPop: () async => false,
@@ -79,10 +70,6 @@ class _GameOptionTwoState extends State<GameOptionTwo> {
                   ),
                 ),
               ),
-
-              //change here
-              //building friend list ui in drawer
-              friendList(context, widget.categoryName, widget.subcategoryName, '14'),
             ],
           ),
         ),
@@ -99,7 +86,7 @@ class _GameOptionTwoState extends State<GameOptionTwo> {
                 alignment: Alignment.center,
                 child: ColorizeAnimatedTextKit(
                   onTap: () {
-                    onTapAudio('button');
+                    //onTapAudio('button');
                     //print("Tap Event");
                   },
                   text: ["CLASH OF CARDZ"],
@@ -130,14 +117,14 @@ class _GameOptionTwoState extends State<GameOptionTwo> {
                       child: buildFirstList(),
                     ),
                     Container(
-                      height: cardsToBePlayed.length * 80.0,
+                      height: subCat4EmptyList.length * 80.0,
                       width: 1.5,
                       color: Colors.indigo,
                       margin: const EdgeInsets.only(top: 0.0, bottom: 0.0),
                     ),
                     Expanded(
                       flex: 4,
-                      child: buildSecondList(cardsToBePlayed),
+                      child: buildSecondList(subCat4List),
                     ),
                   ],
                 ),
@@ -150,14 +137,12 @@ class _GameOptionTwoState extends State<GameOptionTwo> {
   }
 
   Widget buildFirstList() {
-    //final List<String> listData1 = <String>['Player vs Player', 'Play With Friend', 'Play With Random', 'Tournament', 'Play With Computer'];
-    //print('subcategoryDetails.length----' + subcategoryDetails.length.toString());
-
-    if (subcategoryDetails.length > 0) {
+    //print('subCat3List.length----' + subCat3List.length.toString());
+    if (subCat3List.length > 0) {
       return ListView.builder(
         physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
         padding: EdgeInsets.fromLTRB(5.0, 33.0, 16.0, 5.0),
-        itemCount: subcategoryDetails.length,
+        itemCount: subCat3List.length,
         shrinkWrap: true,
         itemBuilder: (context, index) {
           return BounceInRight(
@@ -191,7 +176,10 @@ class _GameOptionTwoState extends State<GameOptionTwo> {
                       ),
                       child: Pulse(
                         child: CircleAvatar(
-                          child: Image.asset('assets/icons/png/img_sports.png'),
+                          child: FadeInImage.assetNetwork(
+                            placeholder: 'assets/icons/png/img_sports.png',
+                            image: subCat3List[index].sub2categoryIcon??'',
+                          ),
                           //backgroundColor: Colors.black38,
                         ),
                         preferences: AnimationPreferences(
@@ -205,7 +193,7 @@ class _GameOptionTwoState extends State<GameOptionTwo> {
                         baseColor: Colors.black54,
                         highlightColor: Colors.orangeAccent,
                         child: Text(
-                          subcategoryDetails[index].gametypeName,
+                          subCat3List[index].sub2categoryName,
                           style: TextStyle( fontSize: 22, fontFamily: 'neuropol_x_rg', fontWeight: FontWeight.bold),
                         ),
                       ),
@@ -213,14 +201,14 @@ class _GameOptionTwoState extends State<GameOptionTwo> {
                   ],
                 ),
                 onTap: () {
-                  onTapAudio('button');
-                  print('-----game type name: ${subcategoryDetails[index].gametypeName}');
-                  if (subcategoryDetails[index].gametypeName == 'Player vs Multi Players') {
+                  //onTapAudio('button');
+                  print('-----game type name: ${subCat3List[index].sub2categoryName}');
+                  if (subCat3List[index].sub2categoryName == 'ALL PLAYERS') {
                     alertDialogForPlayerType();
                   } else {
-                    gameType = subcategoryDetails[index].gametypeName;
-                    buildSecondList(subcategoryDetails[index].cardsToBePlayed);
-                    gameMoreOptState(subcategoryDetails[index].cardsToBePlayed);
+                    gameCat3 = subCat3List[index].sub2categoryName;
+                    buildSecondList(subCat3List[index].sub2categoryDetails);
+                    gameMoreOptState(subCat3List[index].sub2categoryDetails);
                   }
                 },
               ),
@@ -233,12 +221,12 @@ class _GameOptionTwoState extends State<GameOptionTwo> {
       return Container();
   }
 
-  Widget buildSecondList(List<String> cardsToBePlayed) {
-    if (cardsToBePlayed.length > 0) {
+  Widget buildSecondList(List<Sub2category_details> subCat4List) {
+    if (subCat4EmptyList.length > 0) {
       return ListView.builder(
         physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
         padding: EdgeInsets.fromLTRB(5.0, 33.0, 16.0, 5.0),
-        itemCount: cardsToBePlayed.length,
+        itemCount: subCat4EmptyList.length,
         shrinkWrap: true,
         itemBuilder: (context, index) {
           return SlideInLeft(
@@ -271,7 +259,10 @@ class _GameOptionTwoState extends State<GameOptionTwo> {
                         ],
                       ),
                       child: CircleAvatar(
-                        child: Image.asset('assets/icons/png/img_sports.png'),
+                        child: FadeInImage.assetNetwork(
+                          placeholder: 'assets/icons/png/img_sports.png',
+                          image: subCat4EmptyList[index].sub3categoryIcon??'',
+                        ),
                       ),
                     ),
                     Padding(
@@ -280,7 +271,7 @@ class _GameOptionTwoState extends State<GameOptionTwo> {
                         baseColor: Colors.black54,
                         highlightColor: Colors.orangeAccent,
                         child: Text(
-                          '${cardsToBePlayed[index]} cards',
+                          subCat4EmptyList[index].sub3categoryName,
                           style: TextStyle(fontSize: 22, fontFamily: 'neuropol_x_rg', fontWeight: FontWeight.bold),
                         ),
                       ),
@@ -290,16 +281,11 @@ class _GameOptionTwoState extends State<GameOptionTwo> {
               ),
 
               onTap: () {
-                onTapAudio('button');
+                //onTapAudio('button');
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => GameOptionThree(categoryName: 'sports', subcategoryName: 'cricket'),
-                    // Pass the arguments as part of the RouteSettings. The
-                    // DetailScreen reads the arguments from these settings.
-                    settings: RouteSettings(
-                      arguments: subcategoryDetails,
-                    ),
+                    builder: (context) => GameOptionThree(gameCat1: widget.gameCat1, gameCat2: widget.gameCat2, gameCat3: gameCat3, gameCat4: subCat4EmptyList[index].sub3categoryName,),
                   ),
                 );
               },
@@ -321,7 +307,7 @@ class _GameOptionTwoState extends State<GameOptionTwo> {
             child: AlertDialog(
               backgroundColor: Colors.white38,
               title: Text('Choose One',
-                style: TextStyle(fontSize: 28, color: Colors.white, fontFamily: 'neuropol_x_rg', fontWeight: FontWeight.bold),),
+                style: TextStyle(fontSize: 26, color: Colors.white, fontFamily: 'neuropol_x_rg', fontWeight: FontWeight.bold),),
               content: Container(
                 width: 250,
                 child: ListView.builder(
@@ -336,7 +322,7 @@ class _GameOptionTwoState extends State<GameOptionTwo> {
                         borderRadius: BorderRadius.all(Radius.circular(6)),
                       ),
                       child: GestureDetector(
-                        child: Text('batsman',
+                        child: Text(index== 0? 'Batsman' : 'Bowler',
                           style: TextStyle(fontSize: 22, color: Colors.white, fontFamily: 'montserrat', fontWeight: FontWeight.bold),),
                         onTap: (){
                           print('---- $index');

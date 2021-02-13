@@ -5,7 +5,6 @@ import 'package:trump_card_game/ui/screens/statistics.dart';
 import 'package:trump_card_game/ui/widgets/views/view_widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_animator/flutter_animator.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 
 class IncludeProfile extends StatelessWidget {
   ProfileResModel data;

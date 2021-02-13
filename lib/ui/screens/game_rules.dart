@@ -3,22 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:trump_card_game/bloc/api_bloc.dart';
 import 'package:trump_card_game/helper/exten_fun/base_application_fun.dart';
 import 'package:trump_card_game/helper/exten_fun/common_fun.dart';
-import 'package:trump_card_game/model/responses/profile_res_model.dart';
+import 'package:trump_card_game/model/responses/cms_res_model.dart';
 import 'package:trump_card_game/ui/widgets/custom/frosted_glass.dart';
 
-List<String> imgList = [
-  'https://urbanmatter.com/chicago/wp-content/uploads/2020/04/Switch_RingFitAdventure_1200x675.jpg',
-  'https://images.crazygames.com/basketball-legends-2020/20200916082052/basketball-legends-2020-cover?auto=format,compress&q=100&cs=strip',
-  'https://assets.pokemon.com/assets//cms2/img/trading-card-game/_tiles/how-to-play/tcg-how-to-play-169.jpg',
-  'https://www.cbc.ca/kids/images/soccerhero_play.png',
-  'https://www.taminggaming.com/cms/graphics/screen_shot_2242.png',
-  'https://thumbs.videogamer.com/duniaEO8faz37xybe7XcfB6g8no=/960x540/smart/https://s.videogamer.com/meta/9535/945ce33b-43f2-493a-8b30-71e9f2e0eef4_3532583-screen_shot_2019-05-10_at_2.01.24_pm.jpg',
-  'https://is1-ssl.mzstatic.com/image/thumb/Purple71/v4/bf/16/01/bf160198-18a6-2eb1-54fb-798ca4d3d9f1/mzl.itlosrgt.png/1080x800bb.jpg',
-];
+List<String> imgList = [];
 
 class GameRule extends StatefulWidget {
-
   GameRule({this.xApiKey, this.memberId});
+
   final String xApiKey;
   final String memberId;
 
@@ -41,7 +33,7 @@ class _GameRuleState extends State<GameRule> {
   Widget build(BuildContext context) {
     this.context = context;
     setScreenOrientationToLandscape();
-    apiBloc.fetchProfileRes('ZGHrDz4prqsu4BcApPaQYaGgq', "MEM000001");
+    apiBloc.fetchCmsRes(widget.xApiKey, 'about-us');
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Container(
@@ -52,10 +44,10 @@ class _GameRuleState extends State<GameRule> {
           ),
         ),
         child: StreamBuilder(
-          stream: apiBloc.profileRes,
-          builder: (context, AsyncSnapshot<ProfileResModel> snapshot) {
-            if (snapshot.hasData && snapshot.data.response.length > 0) {
-              return buildUI();
+          stream: apiBloc.cmsResModel,
+          builder: (context, AsyncSnapshot<CmsResModel> snapshot) {
+            if (snapshot.hasData) {
+              return buildUI(snapshot.data.response);
             } else if (!snapshot.hasData) {
               return frostedGlassWithProgressBarWidget(context);
             } else
@@ -73,64 +65,59 @@ class _GameRuleState extends State<GameRule> {
             child: Container(
               margin: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 16.0),
               child: ClipRRect(
-                  borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                  child: Stack(
-                    children: <Widget>[
-                      /*Image.network(
-                  item,
-                  fit: BoxFit.fill,
-                  width: double.infinity
-              ),*/
-
-                      FadeInImage.assetNetwork(
-                        fit: BoxFit.fill,
-                        placeholder: 'assets/animations/gifs/loading_text.gif',
-                        image: item??'',
-                        width: double.infinity - 60,
-                      ),
-                      Positioned(
-                        bottom: 0.0,
-                        left: 0.0,
-                        right: 0.0,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [Color.fromARGB(200, 0, 0, 0), Color.fromARGB(0, 0, 0, 0)],
-                              begin: Alignment.bottomCenter,
-                              end: Alignment.topCenter,
-                            ),
+                borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                child: Stack(
+                  children: <Widget>[
+                    FadeInImage.assetNetwork(
+                      fit: BoxFit.fill,
+                      placeholder: 'assets/animations/gifs/loading_text.gif',
+                      image: item ?? '',
+                      width: double.infinity - 60,
+                    ),
+                    Positioned(
+                      bottom: 0.0,
+                      left: 0.0,
+                      right: 0.0,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [Color.fromARGB(200, 0, 0, 0), Color.fromARGB(0, 0, 0, 0)],
+                            begin: Alignment.bottomCenter,
+                            end: Alignment.topCenter,
                           ),
-                          padding: EdgeInsets.symmetric(vertical: 3.0, horizontal: 3.0),
-                          child: Padding(
-                            padding: const EdgeInsets.all(5.0),
-                            child: Text(
-                              '${imgList.indexOf(item) + 1}. How to play the game',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18.0,
-                              ),
+                        ),
+                        padding: EdgeInsets.symmetric(vertical: 3.0, horizontal: 3.0),
+                        child: Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: Text(
+                            '${imgList.indexOf(item) + 1}',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18.0,
                             ),
                           ),
                         ),
                       ),
-                    ],
-                  )),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ))
       .toList();
 
-  Widget buildUI() {
+  Widget buildUI(Response response) {
+    for(int i =0 ; i< response.cmsMeta.length; i++){
+      imgList.add(response.cmsMeta[i].image);
+    }
+
     return SingleChildScrollView(
       child: Column(
         children: <Widget>[
-          /*SizedBox(
-            height: 16,
-          ),*/
           CarouselSlider(
             items: imageSliders,
-            options:
-                CarouselOptions(viewportFraction: 1.0, enlargeCenterPage: true, height: MediaQuery.of(context).size.height - 68),
+            options: CarouselOptions(viewportFraction: 1.0, enlargeCenterPage: true, height: MediaQuery.of(context).size.height - 68),
             carouselController: _controller,
           ),
           Padding(
@@ -156,15 +143,15 @@ class _GameRuleState extends State<GameRule> {
                     ),
                   ),
                 ),
-                ...Iterable<int>.generate(imgList.length).map(
+                ...Iterable<int>.generate(response.cmsMeta.length).map(
                   (int pageIndex) => Flexible(
                     child: Container(
-                        width: 40,
-                        height: 40,
-                        alignment: Alignment.center,
-                        child: new SizedBox(
-                            child: FloatingActionButton(
-                              tooltip: 'Next',
+                      width: 40,
+                      height: 40,
+                      alignment: Alignment.center,
+                      child: new SizedBox(
+                        child: FloatingActionButton(
+                          tooltip: 'Next',
                           backgroundColor: Colors.grey[300],
                           child: Text(
                             "${pageIndex + 1}",
@@ -180,9 +167,12 @@ class _GameRuleState extends State<GameRule> {
                             onTapAudio('button');
                             _controller.animateToPage(pageIndex);
                           },
-                        ))),
+                        ),
+                      ),
+                    ),
                   ),
                 ),
+
                 Container(
                   margin: EdgeInsets.fromLTRB(50, 0, 50, 0),
                   alignment: Alignment.center,

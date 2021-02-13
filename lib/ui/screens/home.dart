@@ -220,7 +220,7 @@ class _MyHomePageState extends State<HomeScreen> {
                                 //change here
                                 Navigator.push(
                                     context,
-                                    CupertinoPageRoute(builder: (BuildContext context) => Cards()));
+                                    CupertinoPageRoute(builder: (BuildContext context) => Cards(xApiKey: widget.xApiKey, memberId: widget.memberId,)));
                               },
                             ),
                             preferences:
@@ -289,7 +289,7 @@ class _MyHomePageState extends State<HomeScreen> {
                               ),
                               onPressed: () {
                                 onTapAudio('button');
-                                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => AboutScreen()));
+                                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => AboutScreen(widget.xApiKey)));
                               },
                             ),
                             preferences:

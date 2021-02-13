@@ -19,7 +19,6 @@ import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 import 'dart:async';
-
 import 'package:lottie/lottie.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -88,6 +87,21 @@ class _LogInState extends State<LogIn> {
     }, onLaunch: (Map<String, dynamic> message) async {
       print('firebase noti: on launch $message');
       //setState(() => _message = message["notification"]["title"]);
+    });
+
+    _firebaseMessaging.requestNotificationPermissions(
+        const IosNotificationSettings(
+            sound: true, badge: true, alert: true, provisional: true));
+    _firebaseMessaging.onIosSettingsRegistered
+        .listen((IosNotificationSettings settings) {
+      print("Settings registered: $settings");
+    });
+
+    _firebaseMessaging.getToken().then((String token) {
+      assert(token != null);
+      setState(() {
+        //_homeScreenText = "Push Messaging token: $token";
+      });
     });
   }
 

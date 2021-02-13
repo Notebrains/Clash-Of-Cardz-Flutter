@@ -1,4 +1,5 @@
 import 'package:trump_card_game/model/responses/cards_res_model.dart';
+import 'package:trump_card_game/model/responses/cms_res_model.dart';
 import 'package:trump_card_game/model/responses/friends_res_model.dart';
 import 'package:trump_card_game/model/responses/game_option_res_model.dart';
 import 'package:trump_card_game/model/responses/login_res_model.dart';
@@ -44,4 +45,7 @@ class Repository {
 
   Future<SaveGameResultResModel> fetchSaveGameResultApi(String xApiKey, Map<String, Object> requestBody) =>
       appApiProvider.fetchSaveGameResultApi(xApiKey, requestBody);
+
+  Future<CmsResModel> fetchCmsApi(String xApiKey, String slug,) =>
+      appApiProvider.fetchCmsApi(xApiKey, slug);
 }

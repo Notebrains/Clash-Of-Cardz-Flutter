@@ -19,26 +19,26 @@ import 'login.dart';
 
 class GameOptionThree extends StatefulWidget {
 
-  final String categoryName;
-  final String subcategoryName;
-  const GameOptionThree ({ Key key, this.categoryName, this.subcategoryName}): super(key: key);
+  final String gameCat1;
+  final String gameCat2;
+  final String gameCat3;
+  final String gameCat4;
+  const GameOptionThree ({ Key key, this.gameCat1, this.gameCat2, this.gameCat3, this.gameCat4}): super(key: key);
 
   @override
-  _GameOptionThreeState createState() => _GameOptionThreeState(categoryName, subcategoryName);
+  _GameOptionThreeState createState() => _GameOptionThreeState();
 }
 
 class _GameOptionThreeState extends State<GameOptionThree> {
 
-  _GameOptionThreeState(String categoryName, String subcategoryName);
-  String categoryName = '';
-  String subcategoryName = '';
-
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
-  List<Subcategory_details> subcategoryDetails = [];
-  List<String> cardsToBePlayed = [];
 
-  String gameType = '';
+  List<String> cardToPlayLists = ['14', '22', '30',];
+  List<String> gamePlayTypeLists = ['vs Player','vs Friends','vs Computer'];
+  List<String> gamePlayTypeEmptyList = [];
+
   String cardsToPlay = '';
+  String gaPlayType = '';
   String xApiKey = '';
   String p1FullName = '';
   String p1MemberId = '';
@@ -51,23 +51,18 @@ class _GameOptionThreeState extends State<GameOptionThree> {
   }
 
 
-  void gameMoreOptState(List<String> cardsToBePlayed) {
+  void gameMoreOptState(List<String> gamePlayTypeLists) {
     setState(() {
-      this.cardsToBePlayed.clear();
-      this.cardsToBePlayed.addAll(cardsToBePlayed);
-      buildSecondList(cardsToBePlayed);
-      //print("---- subcategoryDetails.length " + subcategoryDetails.length.toString());
+      gamePlayTypeEmptyList.clear();
+      gamePlayTypeEmptyList.addAll(gamePlayTypeLists);
+      buildSecondList(gamePlayTypeEmptyList);
+      //print("---- cardToPlayLists.length " + cardToPlayLists.length.toString());
       //print("---- cardsToBePlayed.length 2 " + cardsToBePlayed.length.toString());
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    subcategoryDetails = ModalRoute
-        .of(context)
-        .settings
-        .arguments;
-
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
@@ -102,7 +97,11 @@ class _GameOptionThreeState extends State<GameOptionThree> {
 
               //change here
               //building friend list ui in drawer
-              friendList(context, widget.categoryName, widget.subcategoryName, '14'),
+
+              friendList(context, widget.gameCat1, widget.gameCat2, gaPlayType),
+
+              //gaPlayType.isNotEmpty? friendList(context, widget.categoryName, widget.subcategoryName, gaPlayType):
+              //showToastWithReturnWidget(context, 'Please Select No Of Cards To Play'),
             ],
           ),
         ),
@@ -147,19 +146,19 @@ class _GameOptionThreeState extends State<GameOptionThree> {
                   children: [
 
                     Expanded(
-                      flex: 7,
+                      flex: 4,
                       child: buildFirstList(),
                     ),
 
                     Container(
-                      height: cardsToBePlayed.length* 80.0,
+                      height: gamePlayTypeLists.length* 80.0,
                       width: 1.5,
                       color: Colors.indigo,
                       margin: const EdgeInsets.only(top: 0.0, bottom: 0.0),
                     ),
                     Expanded(
-                      flex: 4,
-                      child: buildSecondList(cardsToBePlayed),
+                      flex: 5,
+                      child: buildSecondList(gamePlayTypeEmptyList),
                     ),
 
                     Expanded(
@@ -182,8 +181,8 @@ class _GameOptionThreeState extends State<GameOptionThree> {
                                       color: Colors.white,
                                     ),
                                     onPressed: () {
-                                      apiBloc.fetchFriendsRes('ZGHrDz4prqsu4BcApPaQYaGgq', 'MEM000001');
-                                      _drawerKey.currentState.openDrawer(); // open drawer
+                                      //apiBloc.fetchFriendsRes('ZGHrDz4prqsu4BcApPaQYaGgq', 'MEM000001');
+                                      //_drawerKey.currentState.openDrawer(); // open drawer
                                     },
                                   ),
                                   decoration: Views.boxDecorationWidgetForIconWithBgColor(Colors.teal[400], 4.0, Colors.grey, 5.0, 5.0, 3.0),
@@ -253,13 +252,13 @@ class _GameOptionThreeState extends State<GameOptionThree> {
 
   Widget buildFirstList() {
     //final List<String> listData1 = <String>['Player vs Player', 'Play With Friend', 'Play With Random', 'Tournament', 'Play With Computer'];
-    //print('subcategoryDetails.length----' + subcategoryDetails.length.toString());
+    //print('cardToPlayLists.length----' + cardToPlayLists.length.toString());
 
-    if(subcategoryDetails.length >0){
+    if(cardToPlayLists.length >0){
       return ListView.builder(
         physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
         padding: EdgeInsets.fromLTRB(5.0, 33.0, 16.0, 5.0),
-        itemCount: subcategoryDetails.length,
+        itemCount: cardToPlayLists.length,
         shrinkWrap: true,
         itemBuilder: (context, index) {
           return BounceInRight(
@@ -301,8 +300,7 @@ class _GameOptionThreeState extends State<GameOptionThree> {
                       child: Shimmer.fromColors(
                         baseColor: Colors.black54,
                         highlightColor: Colors.orangeAccent,
-                        child: Text(
-                          subcategoryDetails[index].gametypeName,
+                        child: Text('${cardToPlayLists[index]} cards',
                           style: TextStyle(
                               fontSize: 22,
                               fontFamily: 'neuropol_x_rg',
@@ -313,11 +311,10 @@ class _GameOptionThreeState extends State<GameOptionThree> {
                     ),
                   ],
                 ),
-
                 onTap: () {
-                  gameType = subcategoryDetails[index].gametypeName;
-                  buildSecondList(subcategoryDetails[index].cardsToBePlayed);
-                  gameMoreOptState(subcategoryDetails[index].cardsToBePlayed);
+                  cardsToPlay = cardToPlayLists[index];
+                  buildSecondList(gamePlayTypeLists);
+                  gameMoreOptState(gamePlayTypeLists);
 
                   onTapAudio('button');
                 },
@@ -332,12 +329,12 @@ class _GameOptionThreeState extends State<GameOptionThree> {
     } else return Container();
   }
 
-  Widget buildSecondList(List<String> cardsToBePlayed) {
-    if (cardsToBePlayed.length > 0) {
+  Widget buildSecondList(List<String> gamePlayTypeLists) {
+    if (gamePlayTypeLists.length > 0) {
       return ListView.builder(
         physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-        padding: EdgeInsets.fromLTRB(5.0, 33.0, 16.0, 5.0),
-        itemCount: cardsToBePlayed.length,
+        padding: EdgeInsets.fromLTRB(12.0, 33.0, 16.0, 5.0),
+        itemCount: gamePlayTypeLists.length,
         shrinkWrap: true,
         itemBuilder: (context, index) {
           return SlideInLeft(
@@ -379,7 +376,7 @@ class _GameOptionThreeState extends State<GameOptionThree> {
                         baseColor: Colors.black54,
                         highlightColor: Colors.orangeAccent,
                         child: Text(
-                          '${cardsToBePlayed[index]} cards',
+                          '${gamePlayTypeLists[index]}',
                           style: TextStyle(
                               fontSize: 22,
                               fontFamily: 'neuropol_x_rg',
@@ -392,19 +389,22 @@ class _GameOptionThreeState extends State<GameOptionThree> {
                 ),
               ),
               onTap: (){
-                if(gameType == 'Player vs Computer'){
+                if(cardsToPlay == 'vs Computer'){
                   Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Pvp(p1Name: p1FullName, p1Id: p1MemberId,
-                    p1Image: p1Photo, p2Name: 'Computer', p2Id: 'COMP00005', p2Image: Constants.imgUrlComputer, categoryName: widget.categoryName,
-                    subcategoryName: widget.subcategoryName, gameType: gameType, cardsToPlay: cardsToBePlayed[index],),
+                    p1Image: p1Photo, p2Name: 'Computer', p2Id: 'COMP00005', p2Image: Constants.imgUrlComputer, categoryName: widget.gameCat1,
+                    subcategoryName: widget.gameCat2, cardsToPlay: cardsToPlay, gameType:  gamePlayTypeLists[index],),
                   ));
+                } else if(cardsToPlay == 'vs Friends'){
+                  apiBloc.fetchFriendsRes('ZGHrDz4prqsu4BcApPaQYaGgq', 'MEM000001');
+                  _drawerKey.currentState.openDrawer(); // open drawer
                 } else {
                   showDialog(
                     context: context,
                     builder: (_) => IncludeSearchingForPlayer(
-                      categoryName: widget.categoryName,
-                      subcategoryName: widget.subcategoryName,
-                      gameType: gameType,
-                      cardsToPlay: cardsToBePlayed[index],
+                      categoryName: widget.gameCat1,
+                      subcategoryName: widget.gameCat2,
+                      gameType: gamePlayTypeLists[index],
+                      cardsToPlay: cardsToPlay, //change
                       xApiKey: xApiKey,
                       p1FullName: p1FullName,
                       p1MemberId: p1MemberId,

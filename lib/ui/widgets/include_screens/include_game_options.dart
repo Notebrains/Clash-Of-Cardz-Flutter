@@ -18,8 +18,8 @@ class IncludeGameOption extends StatefulWidget {
 class _IncludeGameOptionState extends State<IncludeGameOption> {
   var isSecondListVisible = false;
   var isThirdListVisible = false;
-  List<Subcategory> subcategory = [];
-  List<Subcategory_details> subcategoryDetails = [];
+  List<Category_details> subcategory = [];
+  List<Sub1category_details> subcategoryDetails = [];
   String categoryName = '';
 
 
@@ -108,7 +108,10 @@ class _IncludeGameOptionState extends State<IncludeGameOption> {
                         borderRadius: BorderRadius.all(Radius.circular(35)),
                       ),
                       child: CircleAvatar(
-                        child: Image.asset('assets/icons/png/img_sports.png'),
+                        child: FadeInImage.assetNetwork(
+                          placeholder: 'assets/icons/png/img_sports.png',
+                          image: data.response[index].categoryIcon??'',
+                        ),
                       ),
                     ),
                     preferences: AnimationPreferences(
@@ -138,7 +141,7 @@ class _IncludeGameOptionState extends State<IncludeGameOption> {
                 //print('Clicked on first screen');
                 subcategoryDetails.clear();
                 categoryName = data.response[index].categoryName;
-                buildSecondList(data.response[index].subcategory);
+                buildSecondList(data.response[index].categoryDetails);
                 //print('subcategory.length----' + data.response[index].subcategory.length.toString());
                 _includeGameOptState();
 
@@ -154,7 +157,7 @@ class _IncludeGameOptionState extends State<IncludeGameOption> {
     );
   }
 
-  Widget buildSecondList(List<Subcategory> subcategoryList) {
+  Widget buildSecondList(List<Category_details> subcategoryList) {
     //final List<String> listData1 = <String>['Cricket', 'Football', 'Tennis', 'Basketball', 'Racing'];
     subcategory = List.from(subcategoryList);
 
@@ -196,7 +199,10 @@ class _IncludeGameOptionState extends State<IncludeGameOption> {
                         borderRadius: BorderRadius.all(Radius.circular(35)),
                       ),
                       child: CircleAvatar(
-                        child: Image.asset('assets/icons/png/img_sports.png'),
+                        child: FadeInImage.assetNetwork(
+                          placeholder: 'assets/icons/png/img_sports.png',
+                          image: subcategory[index].sub1categoryIcon??'',
+                        ),
                       ),
                     ),
 
@@ -206,7 +212,7 @@ class _IncludeGameOptionState extends State<IncludeGameOption> {
                         baseColor: Colors.black54,
                         highlightColor: Colors.orangeAccent,
                         child: Text(
-                          subcategory[index].subcategoryName,
+                          subcategory[index].sub1categoryName,
                           style: TextStyle(
                               fontSize: 30,
                               fontFamily: 'neuropol_x_rg',
@@ -223,10 +229,10 @@ class _IncludeGameOptionState extends State<IncludeGameOption> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => GameOptionThree(categoryName: categoryName, subcategoryName: subcategory[index].subcategoryName),
+                    builder: (context) => GameOptionTwo(gameCat1: categoryName, gameCat2: subcategory[index].sub1categoryName),
                     // Pass the arguments as part of the RouteSettings. The
                     // DetailScreen reads the arguments from these settings.
-                    settings: RouteSettings(arguments: subcategory[index].subcategoryDetails,),
+                    settings: RouteSettings(arguments: subcategory[index].sub1categoryDetails,),
                   ),
                 );
               },
