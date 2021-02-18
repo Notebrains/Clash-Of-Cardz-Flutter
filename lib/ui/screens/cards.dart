@@ -1,13 +1,11 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:trump_card_game/bloc/api_bloc.dart';
-import 'package:trump_card_game/helper/exten_fun/base_application_fun.dart';
-import 'package:trump_card_game/helper/exten_fun/common_fun.dart';
-import 'package:trump_card_game/model/responses/cms_res_model.dart';
-import 'package:trump_card_game/ui/widgets/custom/card_shape_background.dart';
-import 'package:trump_card_game/ui/widgets/custom/frosted_glass.dart';
-import 'package:lottie/lottie.dart';
-import 'package:trump_card_game/ui/widgets/libraries/colorize.dart';
+import 'package:clash_of_cardz_flutter/bloc/api_bloc.dart';
+import 'package:clash_of_cardz_flutter/helper/exten_fun/base_application_fun.dart';
+import 'package:clash_of_cardz_flutter/helper/exten_fun/common_fun.dart';
+import 'package:clash_of_cardz_flutter/model/responses/cms_res_model.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/custom/card_shape_background.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/custom/frosted_glass.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/libraries/colorize.dart';
 
 class Cards extends StatelessWidget {
   Cards({this.xApiKey, this.memberId});
@@ -20,30 +18,30 @@ class Cards extends StatelessWidget {
   Widget build(BuildContext context) {
     this.context = context;
     setScreenOrientationToLandscape();
-    apiBloc.fetchCmsRes(xApiKey, 'about-us');
+    apiBloc.fetchCmsRes(xApiKey, 'games');
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: Container(
-        decoration: new BoxDecoration(
-          image: new DecorationImage(
-            image: new AssetImage("assets/images/bg_img13.png"),
-            fit: BoxFit.cover,
-          ),
-        ),
-        child: StreamBuilder(
-          stream: apiBloc.cmsResModel,
-          builder: (context, AsyncSnapshot<CmsResModel> snapshot) {
-            if (snapshot.hasData) {
-              return buildUI(snapshot.data.response);
-            } else if (!snapshot.hasData) {
-              return frostedGlassWithProgressBarWidget(context);
-            } else
-              return Center(
-                child: Text("No Data Found", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 30)),
-              );
-          },
-        ),
+      body: StreamBuilder(
+        stream: apiBloc.cmsResModel,
+        builder: (context, AsyncSnapshot<CmsResModel> snapshot) {
+          if (snapshot.hasData) {
+            return Container(
+                decoration: new BoxDecoration(
+                  image: new DecorationImage(
+                    image: AssetImage("assets/images/bg_img13.png"),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                child: buildUI(snapshot.data.response),
+            );
+          } else if (!snapshot.hasData) {
+            return frostedGlassWithProgressBarWidget(context);
+          } else
+            return Center(
+              child: Text("No Data Found", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 30)),
+            );
+        },
       ),
     );
   }
@@ -140,46 +138,42 @@ class Cards extends StatelessWidget {
                           child: Padding(
                             padding: const EdgeInsets.only(right: 10),
                             //response.cmsMeta[index].
-                            child: Lottie.asset('assets/animations/lottiefiles/confused_robot-bot-3d.json', width: 250, height: 290),
+                            //child: Lottie.asset('assets/animations/lottiefiles/confused_robot-bot-3d.json', width: 250, height: 290),
+                            child: Image.network(response.cmsMeta[index].image, width: 250, height: 290),
                           )
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 99, right: 16, bottom: 16),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: <Widget>[
-                            Hero(
-                              tag: "Cricket}",
-                              child: Material(
-                                color: Colors.transparent,
-                                child: Container(
-                                  child: ColorizeAnimatedTextKit(
-                                    onTap: () {
-                                      //print("Tap Event");
-                                    },
-                                    text: [response.cmsMeta[index].title],
-                                    textStyle: TextStyle(
-                                        fontSize: 30.0,
-                                        fontStyle: FontStyle.normal,
-                                        fontFamily: 'Rapier'
-                                    ),
-                                    colors: [
-                                      Colors.black54,
-                                      Colors.white60,
-                                      Colors.black54,
-                                    ],
-                                    textAlign: TextAlign.center,
-                                    alignment: AlignmentDirectional.center,
-                                    // or Alignment.topLeft
-                                    isRepeatingAnimation: true,
-                                    repeatForever: true,
-                                    speed: Duration(milliseconds: 200),
-                                  ),
-                                ),
+
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Material(
+                          color: Colors.transparent,
+                          child: Container(
+                            alignment: Alignment.bottomCenter,
+                            margin: EdgeInsets.only(bottom: 20, left: 20),
+                            child: ColorizeAnimatedTextKit(
+                              onTap: () {
+                                //print("Tap Event");
+                              },
+                              text: [response.cmsMeta[index].title],
+                              textStyle: TextStyle(
+                                letterSpacing: 1,
+                                  fontSize: 30.0,
+                                  fontStyle: FontStyle.normal,
+                                  fontFamily: 'Rapier'
                               ),
+                              colors: [
+                                Colors.black54,
+                                Colors.white60,
+                                Colors.black54,
+                              ],
+                              textAlign: TextAlign.center,
+                              alignment: AlignmentDirectional.center,
+                              // or Alignment.topLeft
+                              isRepeatingAnimation: true,
+                              repeatForever: true,
+                              speed: Duration(milliseconds: 200),
                             ),
-                          ],
+                          ),
                         ),
                       ),
                     ],

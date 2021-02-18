@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:trump_card_game/bloc/api_bloc.dart';
-import 'package:trump_card_game/helper/constantvalues/constants.dart';
-import 'package:trump_card_game/helper/exten_fun/base_application_fun.dart';
-import 'package:trump_card_game/helper/exten_fun/common_fun.dart';
-import 'package:trump_card_game/model/responses/cms_res_model.dart';
-import 'package:trump_card_game/model/responses/statistics_res_model.dart';
-import 'package:trump_card_game/ui/widgets/custom/frosted_glass.dart';
+import 'package:clash_of_cardz_flutter/bloc/api_bloc.dart';
+import 'package:clash_of_cardz_flutter/helper/constantvalues/constants.dart';
+import 'package:clash_of_cardz_flutter/helper/exten_fun/base_application_fun.dart';
+import 'package:clash_of_cardz_flutter/helper/exten_fun/common_fun.dart';
+import 'package:clash_of_cardz_flutter/model/responses/cms_res_model.dart';
+import 'package:clash_of_cardz_flutter/model/responses/statistics_res_model.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/custom/frosted_glass.dart';
 
 class AboutScreen extends StatelessWidget{
   String xApiKey = '';
@@ -36,7 +36,7 @@ class AboutScreen extends StatelessWidget{
                     Container(
                       padding: EdgeInsets.all(16),
                       child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
+                          scrollDirection: Axis.vertical,
                           itemCount: snapshot.data.response.cmsMeta.length,
                           itemBuilder: (context, index) {
                             return Container(
@@ -46,7 +46,7 @@ class AboutScreen extends StatelessWidget{
                                 children: [
                                   Text(snapshot.data.response.cmsMeta[index].title, style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),),
                                   Image.network(snapshot.data.response.cmsMeta[index].image),
-                                  Text(snapshot.data.response.cmsMeta[index].title, style: TextStyle(color: Colors.black, fontSize: 14, fontWeight: FontWeight.bold),),
+                                  Text(parseHtmlString(snapshot.data.response.cmsMeta[index].content), style: TextStyle(color: Colors.black, fontSize: 14, fontWeight: FontWeight.bold),),
                                   SizedBox(height: 16),
                                 ],
                               ),
@@ -55,19 +55,19 @@ class AboutScreen extends StatelessWidget{
                     ),
 
                     Container(
-                      margin: EdgeInsets.fromLTRB(0, 0, 16, 16),
+                      margin: EdgeInsets.fromLTRB(16, 16, 0, 0, ),
                       child: Align(
-                        alignment: AlignmentDirectional.bottomEnd,
+                        alignment: AlignmentDirectional.topStart,
                         child: FloatingActionButton(
                           tooltip: 'Back to previous screen',
-                          backgroundColor: Colors.grey[400],
+                          backgroundColor: Colors.deepOrangeAccent,
                           child: Icon(
                             Icons.arrow_back,
-                            color: Colors.black,
+                            color: Colors.white,
                           ),
                           onPressed: () {
                             onTapAudio('button');
-                            Navigator.pop(context);
+                            Navigator.of(context, rootNavigator: true).pop(context);
                           },
                         ),
                       ),

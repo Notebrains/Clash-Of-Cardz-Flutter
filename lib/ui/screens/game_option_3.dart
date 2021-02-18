@@ -1,24 +1,24 @@
+import 'package:clash_of_cardz_flutter/helper/exten_fun/base_application_fun.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:trump_card_game/bloc/api_bloc.dart';
-import 'package:trump_card_game/helper/constantvalues/constants.dart';
-import 'package:trump_card_game/helper/exten_fun/common_fun.dart';
-import 'package:trump_card_game/helper/shared_preference_data.dart';
-import 'package:trump_card_game/model/responses/game_option_res_model.dart';
-import 'package:trump_card_game/ui/screens/autoplay.dart';
-import 'package:trump_card_game/ui/screens/pvp.dart';
-import 'package:trump_card_game/ui/widgets/include_screens/include_drawer_play_with_friends.dart';
-import 'package:trump_card_game/ui/widgets/include_screens/include_searching_players.dart';
-import 'package:trump_card_game/ui/widgets/libraries/colorize.dart';
-import 'package:trump_card_game/ui/widgets/libraries/shimmer.dart';
-import 'package:trump_card_game/ui/widgets/views/view_widgets.dart';
+import 'package:clash_of_cardz_flutter/bloc/api_bloc.dart';
+import 'package:clash_of_cardz_flutter/helper/constantvalues/constants.dart';
+import 'package:clash_of_cardz_flutter/helper/exten_fun/common_fun.dart';
+import 'package:clash_of_cardz_flutter/helper/shared_preference_data.dart';
+import 'package:clash_of_cardz_flutter/model/responses/game_option_res_model.dart';
+import 'package:clash_of_cardz_flutter/ui/screens/autoplay.dart';
+import 'package:clash_of_cardz_flutter/ui/screens/pvp.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/include_screens/include_drawer_play_with_friends.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/include_screens/include_searching_players.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/libraries/colorize.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/libraries/shimmer.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/views/view_widgets.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 
 import 'login.dart';
 
 class GameOptionThree extends StatefulWidget {
-
   final String gameCat1;
   final String gameCat2;
   final String gameCat3;
@@ -35,10 +35,13 @@ class _GameOptionThreeState extends State<GameOptionThree> {
 
   List<String> cardToPlayLists = ['14', '22', '30',];
   List<String> gamePlayTypeLists = ['vs Player','vs Friends','vs Computer'];
+  List<String> cardToPlayEmptyList = [];
   List<String> gamePlayTypeEmptyList = [];
+  List<Card_type> playerTypeList = [];
 
+  String playerType = '';
   String cardsToPlay = '';
-  String gaPlayType = '';
+  String gamePlayType = '';
   String xApiKey = '';
   String p1FullName = '';
   String p1MemberId = '';
@@ -50,19 +53,10 @@ class _GameOptionThreeState extends State<GameOptionThree> {
     retrieveSharedPrefData();
   }
 
-
-  void gameMoreOptState(List<String> gamePlayTypeLists) {
-    setState(() {
-      gamePlayTypeEmptyList.clear();
-      gamePlayTypeEmptyList.addAll(gamePlayTypeLists);
-      buildSecondList(gamePlayTypeEmptyList);
-      //print("---- cardToPlayLists.length " + cardToPlayLists.length.toString());
-      //print("---- cardsToBePlayed.length 2 " + cardsToBePlayed.length.toString());
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
+    playerTypeList = ModalRoute.of(context).settings.arguments;
+
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
@@ -81,7 +75,7 @@ class _GameOptionThreeState extends State<GameOptionThree> {
                         'Friends',
                         textAlign: TextAlign.start,
                         style: TextStyle(
-                          fontSize: 22,
+                          fontSize: 20,
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
                           fontFamily: 'neuropol_x_rg',
@@ -98,9 +92,9 @@ class _GameOptionThreeState extends State<GameOptionThree> {
               //change here
               //building friend list ui in drawer
 
-              friendList(context, widget.gameCat1, widget.gameCat2, gaPlayType),
+              friendList(context, widget.gameCat1, widget.gameCat2,  widget.gameCat3,  widget.gameCat4, gamePlayType),
 
-              //gaPlayType.isNotEmpty? friendList(context, widget.categoryName, widget.subcategoryName, gaPlayType):
+              //gamePlayType.isNotEmpty? friendList(context, widget.categoryName, widget.subcategoryName, gamePlayType):
               //showToastWithReturnWidget(context, 'Please Select No Of Cards To Play'),
             ],
           ),
@@ -144,25 +138,34 @@ class _GameOptionThreeState extends State<GameOptionThree> {
                 padding: const EdgeInsets.only(bottom: 16),
                 child: Row(
                   children: [
-
-                    Expanded(
-                      flex: 4,
-                      child: buildFirstList(),
+                    Container(
+                      width: getScreenWidth(context)/3.6,
+                      child: buildPlayerTypeList(),
                     ),
 
                     Container(
-                      height: gamePlayTypeLists.length* 80.0,
+                      height: cardToPlayEmptyList.length* 80.0,
                       width: 1.5,
                       color: Colors.indigo,
-                      margin: const EdgeInsets.only(top: 0.0, bottom: 0.0),
                     ),
-                    Expanded(
-                      flex: 5,
+
+                    Container(
+                      width: getScreenWidth(context)/3.8,
+                      child: buildFirstList(cardToPlayEmptyList),
+                    ),
+
+                    Container(
+                      height: gamePlayTypeEmptyList.length* 80.0,
+                      width: 1.5,
+                      color: Colors.indigo,
+                    ),
+                    Container(
+                      width: getScreenWidth(context)/2.8,
                       child: buildSecondList(gamePlayTypeEmptyList),
                     ),
 
-                    Expanded(
-                      flex: 1,
+                    Container(
+                      width: getScreenWidth(context)/11,
                       child: Container(
                         //height: 260,
                         width: 50,
@@ -249,16 +252,12 @@ class _GameOptionThreeState extends State<GameOptionThree> {
     );
   }
 
-
-  Widget buildFirstList() {
-    //final List<String> listData1 = <String>['Player vs Player', 'Play With Friend', 'Play With Random', 'Tournament', 'Play With Computer'];
-    //print('cardToPlayLists.length----' + cardToPlayLists.length.toString());
-
-    if(cardToPlayLists.length >0){
+  Widget buildPlayerTypeList() {
+    if(playerTypeList.length >0){
       return ListView.builder(
         physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-        padding: EdgeInsets.fromLTRB(5.0, 33.0, 16.0, 5.0),
-        itemCount: cardToPlayLists.length,
+        padding: EdgeInsets.fromLTRB(0.0, 33.0, 0.0, 5.0),
+        itemCount: playerTypeList.length,
         shrinkWrap: true,
         itemBuilder: (context, index) {
           return BounceInRight(
@@ -267,19 +266,19 @@ class _GameOptionThreeState extends State<GameOptionThree> {
                 borderRadius: BorderRadius.all(Radius.circular(36)),
               ),
               width: double.infinity,
-              margin: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+              margin: EdgeInsets.symmetric(vertical: 8, horizontal: 5),
               child: GestureDetector(
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Container(
-                      width: 60,
-                      height: 60,
+                      width: 40,
+                      height: 40,
                       decoration: BoxDecoration(
                         color: Colors.transparent,
                         border: Border.all(
                           color: Colors.grey[350],
-                          width: 5,
+                          width: 3,
                         ),
                         borderRadius: BorderRadius.all(Radius.circular(35)),
                         boxShadow: <BoxShadow>[
@@ -296,13 +295,99 @@ class _GameOptionThreeState extends State<GameOptionThree> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(8, 16, 0, 2),
+                      padding: const EdgeInsets.fromLTRB(5, 8, 0, 2),
+                      child: Shimmer.fromColors(
+                        baseColor: Colors.black54,
+                        highlightColor: Colors.orangeAccent,
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: SizedBox(
+                            child: Text(playerTypeList[index].type,
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  fontFamily: 'neuropol_x_rg',
+                                  fontWeight: FontWeight.bold
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                onTap: () {
+                  playerType = playerTypeList[index].type;
+                  setState(() {
+                    cardToPlayEmptyList.clear();
+                    cardToPlayEmptyList.addAll(cardToPlayLists);
+
+                    //to hide 3rd list
+                    gamePlayTypeEmptyList.clear();
+                  });
+
+                  //onTapAudio('button');
+                },
+              ),
+            ),
+            preferences: AnimationPreferences(
+                duration: const Duration(milliseconds: 1000),
+                autoPlay: AnimationPlayStates.Forward),
+          );
+        },
+      );
+    } else return Container();
+  }
+
+  Widget buildFirstList(List<String> cardToPlayLists) {
+    if(cardToPlayLists.length >0){
+      return ListView.builder(
+        physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+        padding: EdgeInsets.fromLTRB(0.0, 33.0, 0.0, 5.0),
+        itemCount: cardToPlayLists.length,
+        shrinkWrap: true,
+        itemBuilder: (context, index) {
+          return BounceInRight(
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(36)),
+              ),
+              width: double.infinity,
+              margin: EdgeInsets.symmetric(vertical: 8, horizontal: 5),
+              child: GestureDetector(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Container(
+                      width: 40,
+                      height: 40,
+                      decoration: BoxDecoration(
+                        color: Colors.transparent,
+                        border: Border.all(
+                          color: Colors.grey[350],
+                          width: 3,
+                        ),
+                        borderRadius: BorderRadius.all(Radius.circular(35)),
+                        boxShadow: <BoxShadow>[
+                          BoxShadow(
+                            color: Color(0x60000000),
+                            blurRadius: 12.0,
+                            offset: Offset(0.0, 12.0),
+                          ),
+                        ],
+                      ),
+                      child: CircleAvatar(
+                        child: Image.asset('assets/icons/png/img_sports.png'),
+                        //backgroundColor: Colors.black38,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(5, 8, 0, 2),
                       child: Shimmer.fromColors(
                         baseColor: Colors.black54,
                         highlightColor: Colors.orangeAccent,
                         child: Text('${cardToPlayLists[index]} cards',
                           style: TextStyle(
-                              fontSize: 22,
+                              fontSize: 18,
                               fontFamily: 'neuropol_x_rg',
                               fontWeight: FontWeight.bold
                           ),
@@ -313,10 +398,12 @@ class _GameOptionThreeState extends State<GameOptionThree> {
                 ),
                 onTap: () {
                   cardsToPlay = cardToPlayLists[index];
-                  buildSecondList(gamePlayTypeLists);
-                  gameMoreOptState(gamePlayTypeLists);
+                  setState(() {
+                    gamePlayTypeEmptyList.clear();
+                    gamePlayTypeEmptyList.addAll(gamePlayTypeLists);
+                  });
 
-                  onTapAudio('button');
+                 // onTapAudio('button');
                 },
               ),
             ),
@@ -333,7 +420,7 @@ class _GameOptionThreeState extends State<GameOptionThree> {
     if (gamePlayTypeLists.length > 0) {
       return ListView.builder(
         physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-        padding: EdgeInsets.fromLTRB(12.0, 33.0, 16.0, 5.0),
+        padding: EdgeInsets.fromLTRB(5.0, 33.0, 0.0, 5.0),
         itemCount: gamePlayTypeLists.length,
         shrinkWrap: true,
         itemBuilder: (context, index) {
@@ -344,18 +431,18 @@ class _GameOptionThreeState extends State<GameOptionThree> {
                   borderRadius: BorderRadius.all(Radius.circular(36)),
                 ),
                 width: double.infinity,
-                margin: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                margin: EdgeInsets.symmetric(vertical: 8, horizontal: 5),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Container(
-                      width: 60,
-                      height: 60,
+                      width: 40,
+                      height: 40,
                       decoration: BoxDecoration(
                         color: Colors.transparent,
                         border: Border.all(
                           color: Colors.grey[350],
-                          width: 5,
+                          width: 3,
                         ),
                         borderRadius: BorderRadius.all(Radius.circular(35)),
                         boxShadow: <BoxShadow>[
@@ -371,14 +458,14 @@ class _GameOptionThreeState extends State<GameOptionThree> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(8, 16, 0, 2),
+                      padding: const EdgeInsets.fromLTRB(8, 8, 0, 2),
                       child: Shimmer.fromColors(
                         baseColor: Colors.black54,
                         highlightColor: Colors.orangeAccent,
                         child: Text(
                           '${gamePlayTypeLists[index]}',
                           style: TextStyle(
-                              fontSize: 22,
+                              fontSize: 18,
                               fontFamily: 'neuropol_x_rg',
                               fontWeight: FontWeight.bold
                           ),
@@ -389,20 +476,26 @@ class _GameOptionThreeState extends State<GameOptionThree> {
                 ),
               ),
               onTap: (){
-                if(cardsToPlay == 'vs Computer'){
-                  Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Pvp(p1Name: p1FullName, p1Id: p1MemberId,
-                    p1Image: p1Photo, p2Name: 'Computer', p2Id: 'COMP00005', p2Image: Constants.imgUrlComputer, categoryName: widget.gameCat1,
-                    subcategoryName: widget.gameCat2, cardsToPlay: cardsToPlay, gameType:  gamePlayTypeLists[index],),
+                print('----game op: ${widget.gameCat1} , ${widget.gameCat2} , ${widget.gameCat3}, ${widget.gameCat4}');
+
+                if(gamePlayTypeLists[index] == 'vs Computer'){
+                  Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Pvp(xApiKey:xApiKey , p1Name: p1FullName, p1Id: p1MemberId,
+                    p1Image: p1Photo, p2Name: 'Computer', p2Id: 'COMP00005', p2Image: Constants.imgUrlComputer, gameCat1: widget.gameCat1,
+                    gameCat2: widget.gameCat2, gameCat3: widget.gameCat3, gameCat4: widget.gameCat4, cardsToPlay: cardsToPlay, playerType: playerType,
+                    gameType: gamePlayTypeLists[index],),
                   ));
-                } else if(cardsToPlay == 'vs Friends'){
-                  apiBloc.fetchFriendsRes('ZGHrDz4prqsu4BcApPaQYaGgq', 'MEM000001');
+                } else if(gamePlayTypeLists[index] == 'vs Friends'){
+                  apiBloc.fetchFriendsRes(xApiKey, p1MemberId);
                   _drawerKey.currentState.openDrawer(); // open drawer
                 } else {
                   showDialog(
                     context: context,
                     builder: (_) => IncludeSearchingForPlayer(
-                      categoryName: widget.gameCat1,
-                      subcategoryName: widget.gameCat2,
+                      gameCat1: widget.gameCat1,
+                      gameCat2: widget.gameCat2,
+                      gameCat3: widget.gameCat3,
+                      gameCat4: widget.gameCat4,
+                      playerType: playerType,
                       gameType: gamePlayTypeLists[index],
                       cardsToPlay: cardsToPlay, //change
                       xApiKey: xApiKey,

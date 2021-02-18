@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:trump_card_game/bloc/api_bloc.dart';
-import 'package:trump_card_game/model/responses/statistics_res_model.dart';
-import 'package:trump_card_game/ui/widgets/custom/frosted_glass.dart';
-import 'package:trump_card_game/ui/widgets/include_screens/include_statistics_screen.dart';
+import 'package:clash_of_cardz_flutter/bloc/api_bloc.dart';
+import 'package:clash_of_cardz_flutter/model/responses/statistics_res_model.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/custom/frosted_glass.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/include_screens/include_statistics_screen.dart';
 
 class Statistics extends StatelessWidget {
   String xApiKey;

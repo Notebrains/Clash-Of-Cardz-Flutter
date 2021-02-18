@@ -1,6 +1,6 @@
 /// status : 1
 /// message : "Data fetched succesfully"
-/// response : [{"category_name":"Sports","category_icon":"https://predictfox.com/trumpcard/assets/uploads/category/<i class=\"fas fa-icons\"></i>","category_details":[{"sub1category_name":"Cricket","sub1category_icon":"https://predictfox.com/trumpcard/assets/uploads/subcategory/1613028617cricket.svg","sub1category_background":"https://predictfox.com/trumpcard/assets/uploads/subcategory/1613048400crickrtrules.png","sub1category_audio":"https://predictfox.com/trumpcard/assets/uploads/subcategory/1613028617Somebody-Like-You_15_SHK013501.mp3","sub1category_details":[{"sub2category_name":"IPL","sub2category_icon":"https://predictfox.com/trumpcard/assets/uploads/subsubcategory/161294089216129408921612940892crickrtrules.png","sub2category_details":[{"sub3category_name":"1991-2000","sub3category_icon":"https://predictfox.com/trumpcard/assets/uploads/subsubsubcategory/1612957351badminton.svg"},{"sub3category_name":"2001-2010","sub3category_icon":"https://predictfox.com/trumpcard/assets/uploads/subsubsubcategory/161295438816129543881612954388cricket1.svg"}]}]},{"sub1category_name":"Cricket","sub1category_icon":"https://predictfox.com/trumpcard/assets/uploads/subcategory/1613028617cricket.svg","sub1category_background":"https://predictfox.com/trumpcard/assets/uploads/subcategory/1613048400crickrtrules.png","sub1category_audio":"https://predictfox.com/trumpcard/assets/uploads/subcategory/1613028617Somebody-Like-You_15_SHK013501.mp3","sub1category_details":[{"sub2category_name":"IPL","sub2category_icon":"https://predictfox.com/trumpcard/assets/uploads/subsubcategory/161294089216129408921612940892crickrtrules.png","sub2category_details":[{"sub3category_name":"1991-2000","sub3category_icon":"https://predictfox.com/trumpcard/assets/uploads/subsubsubcategory/1612957351badminton.svg"},{"sub3category_name":"2001-2010","sub3category_icon":"https://predictfox.com/trumpcard/assets/uploads/subsubsubcategory/161295438816129543881612954388cricket1.svg"}]}]},{"sub1category_name":"Cricket","sub1category_icon":"https://predictfox.com/trumpcard/assets/uploads/subcategory/1613028617cricket.svg","sub1category_background":"https://predictfox.com/trumpcard/assets/uploads/subcategory/1613048400crickrtrules.png","sub1category_audio":"https://predictfox.com/trumpcard/assets/uploads/subcategory/1613028617Somebody-Like-You_15_SHK013501.mp3","sub1category_details":[{"sub2category_name":"IPL","sub2category_icon":"https://predictfox.com/trumpcard/assets/uploads/subsubcategory/161294089216129408921612940892crickrtrules.png","sub2category_details":[{"sub3category_name":"1991-2000","sub3category_icon":"https://predictfox.com/trumpcard/assets/uploads/subsubsubcategory/1612957351badminton.svg"},{"sub3category_name":"2001-2010","sub3category_icon":"https://predictfox.com/trumpcard/assets/uploads/subsubsubcategory/161295438816129543881612954388cricket1.svg"}]}]}]}]
+/// response : [{"category_name":"Sports","category_icon":"https://predictfox.com/trumpcard/assets/uploads/category/<i class=\"fas fa-icons\"></i>","category_details":[{"sub1category_name":"Cricket","sub1category_icon":"https://predictfox.com/trumpcard/assets/uploads/subcategory/1613028617cricket.svg","sub1category_background":"https://predictfox.com/trumpcard/assets/uploads/subcategory/1613048400crickrtrules.png","sub1category_audio":"https://predictfox.com/trumpcard/assets/uploads/subcategory/1613028617Somebody-Like-You_15_SHK013501.mp3","sub1category_details":[{"sub2category_name":"ALL PLAYERS","sub2category_icon":"https://predictfox.com/trumpcard/assets/uploads/subsubcategory/161294089216129408921612940892cricket.svg","sub2category_details":[{"sub3category_name":"1991-2000","sub3category_icon":"https://predictfox.com/trumpcard/assets/uploads/subsubsubcategory/161355371716135537171613553717game.png","card_type":[{"type":"BOWLER"},{"type":"BATSMEN"}]},{"sub3category_name":"2001-2010","sub3category_icon":"https://predictfox.com/trumpcard/assets/uploads/subsubsubcategory/161355371716135537171613553717game1.png","card_type":[{"type":"BOWLER"},{"type":"BATSMEN"}]}]},{"sub2category_name":"IPL","sub2category_icon":"https://predictfox.com/trumpcard/assets/uploads/subsubcategory/161294089216129408921612940892crickrtrules.png","sub2category_details":[{"sub3category_name":"1991-2000","sub3category_icon":"https://predictfox.com/trumpcard/assets/uploads/subsubsubcategory/1613553533game.png","card_type":[{"type":"BOWLER"},{"type":"BATSMEN"}]},{"sub3category_name":"2001-2010","sub3category_icon":"https://predictfox.com/trumpcard/assets/uploads/subsubsubcategory/161295438816129543881612954388cricket1.svg","card_type":[{"type":"BOWLER"},{"type":"BATSMEN"}]}]}]},{"sub1category_name":"Badminton","sub1category_icon":"https://predictfox.com/trumpcard/assets/uploads/subcategory/1613029477badminton.svg","sub1category_background":"https://predictfox.com/trumpcard/assets/uploads/subcategory/1613029477footballrules.jpg","sub1category_audio":"https://predictfox.com/trumpcard/assets/uploads/subcategory/1613029477Somebody-Like-You_15_SHK013501.mp3","sub1category_details":[{"sub2category_name":"ALL TIME PLAYER","sub2category_icon":"https://predictfox.com/trumpcard/assets/uploads/subsubcategory/1612956779badminton.svg","sub2category_details":[]}]},{"sub1category_name":"Football","sub1category_icon":"https://predictfox.com/trumpcard/assets/uploads/subcategory/1613049333football-ball.svg","sub1category_background":"https://predictfox.com/trumpcard/assets/uploads/subcategory/1613049333footballrules.jpg","sub1category_audio":"https://predictfox.com/trumpcard/assets/uploads/subcategory/1613049333Somebody-Like-You_15_SHK013501.mp3","sub1category_details":[]},{"sub1category_name":"formula 1","sub1category_icon":"https://predictfox.com/trumpcard/assets/uploads/subcategory/1613032646racing-car.svg","sub1category_background":"https://predictfox.com/trumpcard/assets/uploads/subcategory/1613032646footballrules.jpg","sub1category_audio":"https://predictfox.com/trumpcard/assets/uploads/subcategory/161303261916130326191613032619Somebody-Like-You_15_SHK013501.mp3","sub1category_details":[]}]},{"category_name":"TEST","category_icon":"https://predictfox.com/trumpcard/assets/uploads/category/<i class=\"fas fa-icons\"></i>","category_details":[{"sub1category_name":"testing","sub1category_icon":"https://predictfox.com/trumpcard/assets/uploads/subcategory/161304963616130496361613049636crickrtrules.png","sub1category_background":"https://predictfox.com/trumpcard/assets/uploads/subcategory/161304963616130496361613049636index.jpeg","sub1category_audio":"https://predictfox.com/trumpcard/assets/uploads/subcategory/161304963616130496361613049636Somebody-Like-You_15_SHK013501.mp3","sub1category_details":[{"sub2category_name":"tst","sub2category_icon":"https://predictfox.com/trumpcard/assets/uploads/subsubcategory/161305027416130502741613050274cricket.svg","sub2category_details":[{"sub3category_name":"skjdfkjsdfhjkdhf","sub3category_icon":"https://predictfox.com/trumpcard/assets/uploads/subsubsubcategory/161305047816130504781613050478football-ball.svg","card_type":[]}]},{"sub2category_name":"tcjuhsdfljhcv","sub2category_icon":"https://predictfox.com/trumpcard/assets/uploads/subsubcategory/161305034616130503461613050346badminton.svg","sub2category_details":[]}]}]}]
 
 class GameOptionResModel {
   int _status;
@@ -45,7 +45,7 @@ class GameOptionResModel {
 
 /// category_name : "Sports"
 /// category_icon : "https://predictfox.com/trumpcard/assets/uploads/category/<i class=\"fas fa-icons\"></i>"
-/// category_details : [{"sub1category_name":"Cricket","sub1category_icon":"https://predictfox.com/trumpcard/assets/uploads/subcategory/1613028617cricket.svg","sub1category_background":"https://predictfox.com/trumpcard/assets/uploads/subcategory/1613048400crickrtrules.png","sub1category_audio":"https://predictfox.com/trumpcard/assets/uploads/subcategory/1613028617Somebody-Like-You_15_SHK013501.mp3","sub1category_details":[{"sub2category_name":"IPL","sub2category_icon":"https://predictfox.com/trumpcard/assets/uploads/subsubcategory/161294089216129408921612940892crickrtrules.png","sub2category_details":[{"sub3category_name":"1991-2000","sub3category_icon":"https://predictfox.com/trumpcard/assets/uploads/subsubsubcategory/1612957351badminton.svg"},{"sub3category_name":"2001-2010","sub3category_icon":"https://predictfox.com/trumpcard/assets/uploads/subsubsubcategory/161295438816129543881612954388cricket1.svg"}]}]},{"sub1category_name":"Cricket","sub1category_icon":"https://predictfox.com/trumpcard/assets/uploads/subcategory/1613028617cricket.svg","sub1category_background":"https://predictfox.com/trumpcard/assets/uploads/subcategory/1613048400crickrtrules.png","sub1category_audio":"https://predictfox.com/trumpcard/assets/uploads/subcategory/1613028617Somebody-Like-You_15_SHK013501.mp3","sub1category_details":[{"sub2category_name":"IPL","sub2category_icon":"https://predictfox.com/trumpcard/assets/uploads/subsubcategory/161294089216129408921612940892crickrtrules.png","sub2category_details":[{"sub3category_name":"1991-2000","sub3category_icon":"https://predictfox.com/trumpcard/assets/uploads/subsubsubcategory/1612957351badminton.svg"},{"sub3category_name":"2001-2010","sub3category_icon":"https://predictfox.com/trumpcard/assets/uploads/subsubsubcategory/161295438816129543881612954388cricket1.svg"}]}]},{"sub1category_name":"Cricket","sub1category_icon":"https://predictfox.com/trumpcard/assets/uploads/subcategory/1613028617cricket.svg","sub1category_background":"https://predictfox.com/trumpcard/assets/uploads/subcategory/1613048400crickrtrules.png","sub1category_audio":"https://predictfox.com/trumpcard/assets/uploads/subcategory/1613028617Somebody-Like-You_15_SHK013501.mp3","sub1category_details":[{"sub2category_name":"IPL","sub2category_icon":"https://predictfox.com/trumpcard/assets/uploads/subsubcategory/161294089216129408921612940892crickrtrules.png","sub2category_details":[{"sub3category_name":"1991-2000","sub3category_icon":"https://predictfox.com/trumpcard/assets/uploads/subsubsubcategory/1612957351badminton.svg"},{"sub3category_name":"2001-2010","sub3category_icon":"https://predictfox.com/trumpcard/assets/uploads/subsubsubcategory/161295438816129543881612954388cricket1.svg"}]}]}]
+/// category_details : [{"sub1category_name":"Cricket","sub1category_icon":"https://predictfox.com/trumpcard/assets/uploads/subcategory/1613028617cricket.svg","sub1category_background":"https://predictfox.com/trumpcard/assets/uploads/subcategory/1613048400crickrtrules.png","sub1category_audio":"https://predictfox.com/trumpcard/assets/uploads/subcategory/1613028617Somebody-Like-You_15_SHK013501.mp3","sub1category_details":[{"sub2category_name":"ALL PLAYERS","sub2category_icon":"https://predictfox.com/trumpcard/assets/uploads/subsubcategory/161294089216129408921612940892cricket.svg","sub2category_details":[{"sub3category_name":"1991-2000","sub3category_icon":"https://predictfox.com/trumpcard/assets/uploads/subsubsubcategory/161355371716135537171613553717game.png","card_type":[{"type":"BOWLER"},{"type":"BATSMEN"}]},{"sub3category_name":"2001-2010","sub3category_icon":"https://predictfox.com/trumpcard/assets/uploads/subsubsubcategory/161355371716135537171613553717game1.png","card_type":[{"type":"BOWLER"},{"type":"BATSMEN"}]}]},{"sub2category_name":"IPL","sub2category_icon":"https://predictfox.com/trumpcard/assets/uploads/subsubcategory/161294089216129408921612940892crickrtrules.png","sub2category_details":[{"sub3category_name":"1991-2000","sub3category_icon":"https://predictfox.com/trumpcard/assets/uploads/subsubsubcategory/1613553533game.png","card_type":[{"type":"BOWLER"},{"type":"BATSMEN"}]},{"sub3category_name":"2001-2010","sub3category_icon":"https://predictfox.com/trumpcard/assets/uploads/subsubsubcategory/161295438816129543881612954388cricket1.svg","card_type":[{"type":"BOWLER"},{"type":"BATSMEN"}]}]}]},{"sub1category_name":"Badminton","sub1category_icon":"https://predictfox.com/trumpcard/assets/uploads/subcategory/1613029477badminton.svg","sub1category_background":"https://predictfox.com/trumpcard/assets/uploads/subcategory/1613029477footballrules.jpg","sub1category_audio":"https://predictfox.com/trumpcard/assets/uploads/subcategory/1613029477Somebody-Like-You_15_SHK013501.mp3","sub1category_details":[{"sub2category_name":"ALL TIME PLAYER","sub2category_icon":"https://predictfox.com/trumpcard/assets/uploads/subsubcategory/1612956779badminton.svg","sub2category_details":[]}]},{"sub1category_name":"Football","sub1category_icon":"https://predictfox.com/trumpcard/assets/uploads/subcategory/1613049333football-ball.svg","sub1category_background":"https://predictfox.com/trumpcard/assets/uploads/subcategory/1613049333footballrules.jpg","sub1category_audio":"https://predictfox.com/trumpcard/assets/uploads/subcategory/1613049333Somebody-Like-You_15_SHK013501.mp3","sub1category_details":[]},{"sub1category_name":"formula 1","sub1category_icon":"https://predictfox.com/trumpcard/assets/uploads/subcategory/1613032646racing-car.svg","sub1category_background":"https://predictfox.com/trumpcard/assets/uploads/subcategory/1613032646footballrules.jpg","sub1category_audio":"https://predictfox.com/trumpcard/assets/uploads/subcategory/161303261916130326191613032619Somebody-Like-You_15_SHK013501.mp3","sub1category_details":[]}]
 
 class Response {
   String _categoryName;
@@ -92,7 +92,7 @@ class Response {
 /// sub1category_icon : "https://predictfox.com/trumpcard/assets/uploads/subcategory/1613028617cricket.svg"
 /// sub1category_background : "https://predictfox.com/trumpcard/assets/uploads/subcategory/1613048400crickrtrules.png"
 /// sub1category_audio : "https://predictfox.com/trumpcard/assets/uploads/subcategory/1613028617Somebody-Like-You_15_SHK013501.mp3"
-/// sub1category_details : [{"sub2category_name":"IPL","sub2category_icon":"https://predictfox.com/trumpcard/assets/uploads/subsubcategory/161294089216129408921612940892crickrtrules.png","sub2category_details":[{"sub3category_name":"1991-2000","sub3category_icon":"https://predictfox.com/trumpcard/assets/uploads/subsubsubcategory/1612957351badminton.svg"},{"sub3category_name":"2001-2010","sub3category_icon":"https://predictfox.com/trumpcard/assets/uploads/subsubsubcategory/161295438816129543881612954388cricket1.svg"}]}]
+/// sub1category_details : [{"sub2category_name":"ALL PLAYERS","sub2category_icon":"https://predictfox.com/trumpcard/assets/uploads/subsubcategory/161294089216129408921612940892cricket.svg","sub2category_details":[{"sub3category_name":"1991-2000","sub3category_icon":"https://predictfox.com/trumpcard/assets/uploads/subsubsubcategory/161355371716135537171613553717game.png","card_type":[{"type":"BOWLER"},{"type":"BATSMEN"}]},{"sub3category_name":"2001-2010","sub3category_icon":"https://predictfox.com/trumpcard/assets/uploads/subsubsubcategory/161355371716135537171613553717game1.png","card_type":[{"type":"BOWLER"},{"type":"BATSMEN"}]}]},{"sub2category_name":"IPL","sub2category_icon":"https://predictfox.com/trumpcard/assets/uploads/subsubcategory/161294089216129408921612940892crickrtrules.png","sub2category_details":[{"sub3category_name":"1991-2000","sub3category_icon":"https://predictfox.com/trumpcard/assets/uploads/subsubsubcategory/1613553533game.png","card_type":[{"type":"BOWLER"},{"type":"BATSMEN"}]},{"sub3category_name":"2001-2010","sub3category_icon":"https://predictfox.com/trumpcard/assets/uploads/subsubsubcategory/161295438816129543881612954388cricket1.svg","card_type":[{"type":"BOWLER"},{"type":"BATSMEN"}]}]}]
 
 class Category_details {
   String _sub1categoryName;
@@ -147,9 +147,9 @@ class Category_details {
 
 }
 
-/// sub2category_name : "IPL"
-/// sub2category_icon : "https://predictfox.com/trumpcard/assets/uploads/subsubcategory/161294089216129408921612940892crickrtrules.png"
-/// sub2category_details : [{"sub3category_name":"1991-2000","sub3category_icon":"https://predictfox.com/trumpcard/assets/uploads/subsubsubcategory/1612957351badminton.svg"},{"sub3category_name":"2001-2010","sub3category_icon":"https://predictfox.com/trumpcard/assets/uploads/subsubsubcategory/161295438816129543881612954388cricket1.svg"}]
+/// sub2category_name : "ALL PLAYERS"
+/// sub2category_icon : "https://predictfox.com/trumpcard/assets/uploads/subsubcategory/161294089216129408921612940892cricket.svg"
+/// sub2category_details : [{"sub3category_name":"1991-2000","sub3category_icon":"https://predictfox.com/trumpcard/assets/uploads/subsubsubcategory/161355371716135537171613553717game.png","card_type":[{"type":"BOWLER"},{"type":"BATSMEN"}]},{"sub3category_name":"2001-2010","sub3category_icon":"https://predictfox.com/trumpcard/assets/uploads/subsubsubcategory/161355371716135537171613553717game1.png","card_type":[{"type":"BOWLER"},{"type":"BATSMEN"}]}]
 
 class Sub1category_details {
   String _sub2categoryName;
@@ -193,31 +193,69 @@ class Sub1category_details {
 }
 
 /// sub3category_name : "1991-2000"
-/// sub3category_icon : "https://predictfox.com/trumpcard/assets/uploads/subsubsubcategory/1612957351badminton.svg"
+/// sub3category_icon : "https://predictfox.com/trumpcard/assets/uploads/subsubsubcategory/161355371716135537171613553717game.png"
+/// card_type : [{"type":"BOWLER"},{"type":"BATSMEN"}]
 
 class Sub2category_details {
   String _sub3categoryName;
   String _sub3categoryIcon;
+  List<Card_type> _cardType;
 
   String get sub3categoryName => _sub3categoryName;
   String get sub3categoryIcon => _sub3categoryIcon;
+  List<Card_type> get cardType => _cardType;
 
   Sub2category_details({
       String sub3categoryName, 
-      String sub3categoryIcon}){
+      String sub3categoryIcon, 
+      List<Card_type> cardType}){
     _sub3categoryName = sub3categoryName;
     _sub3categoryIcon = sub3categoryIcon;
+    _cardType = cardType;
 }
 
   Sub2category_details.fromJson(dynamic json) {
     _sub3categoryName = json["sub3category_name"];
     _sub3categoryIcon = json["sub3category_icon"];
+    if (json["card_type"] != null) {
+      _cardType = [];
+      json["card_type"].forEach((v) {
+        _cardType.add(Card_type.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
     var map = <String, dynamic>{};
     map["sub3category_name"] = _sub3categoryName;
     map["sub3category_icon"] = _sub3categoryIcon;
+    if (_cardType != null) {
+      map["card_type"] = _cardType.map((v) => v.toJson()).toList();
+    }
+    return map;
+  }
+
+}
+
+/// type : "BOWLER"
+
+class Card_type {
+  String _type;
+
+  String get type => _type;
+
+  Card_type({
+      String type}){
+    _type = type;
+}
+
+  Card_type.fromJson(dynamic json) {
+    _type = json["type"];
+  }
+
+  Map<String, dynamic> toJson() {
+    var map = <String, dynamic>{};
+    map["type"] = _type;
     return map;
   }
 

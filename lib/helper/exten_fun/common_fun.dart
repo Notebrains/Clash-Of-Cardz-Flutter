@@ -20,9 +20,7 @@ playUrlAudio(String url) async {
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:trump_card_game/ui/widgets/libraries/flutter_toast.dart';
-import 'package:audioplayers/audio_cache.dart';
-import 'package:audioplayers/audioplayers.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/libraries/flutter_toast.dart';
 
 import '../shared_preference_data.dart';
 
@@ -64,7 +62,7 @@ Widget showToastWithReturnWidget(BuildContext context, String message){
 void onTapAudio(String audioType) async{
   SharedPreferenceHelper().getSfxOnOffState().then((isSFXOn) {
     if (isSFXOn) {
-      //AudioPlayer instance;
+     /* //AudioPlayer instance;
       AudioCache audioCache = AudioCache(prefix: "assets/audios/", fixedPlayer: AudioPlayer()..setReleaseMode(ReleaseMode.STOP));
       switch(audioType) {
         case "click": {audioCache.play("Mouse-Click-03-c-FesliyanStudios.com.mp3");}
@@ -112,7 +110,7 @@ void onTapAudio(String audioType) async{
         default: {
           audioCache.play('sfx-caughtball.mp3'); }
         break;
-      }
+      }*/
     }
   });
 }

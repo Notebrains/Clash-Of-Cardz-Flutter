@@ -1,10 +1,10 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:trump_card_game/bloc/api_bloc.dart';
-import 'package:trump_card_game/helper/exten_fun/base_application_fun.dart';
-import 'package:trump_card_game/helper/exten_fun/common_fun.dart';
-import 'package:trump_card_game/model/responses/cms_res_model.dart';
-import 'package:trump_card_game/ui/widgets/custom/frosted_glass.dart';
+import 'package:clash_of_cardz_flutter/bloc/api_bloc.dart';
+import 'package:clash_of_cardz_flutter/helper/exten_fun/base_application_fun.dart';
+import 'package:clash_of_cardz_flutter/helper/exten_fun/common_fun.dart';
+import 'package:clash_of_cardz_flutter/model/responses/cms_res_model.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/custom/frosted_glass.dart';
 
 List<String> imgList = [];
 
@@ -73,32 +73,6 @@ class _GameRuleState extends State<GameRule> {
                       placeholder: 'assets/animations/gifs/loading_text.gif',
                       image: item ?? '',
                       width: double.infinity - 60,
-                    ),
-                    Positioned(
-                      bottom: 0.0,
-                      left: 0.0,
-                      right: 0.0,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [Color.fromARGB(200, 0, 0, 0), Color.fromARGB(0, 0, 0, 0)],
-                            begin: Alignment.bottomCenter,
-                            end: Alignment.topCenter,
-                          ),
-                        ),
-                        padding: EdgeInsets.symmetric(vertical: 3.0, horizontal: 3.0),
-                        child: Padding(
-                          padding: const EdgeInsets.all(5.0),
-                          child: Text(
-                            '${imgList.indexOf(item) + 1}',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 18.0,
-                            ),
-                          ),
-                        ),
-                      ),
                     ),
                   ],
                 ),

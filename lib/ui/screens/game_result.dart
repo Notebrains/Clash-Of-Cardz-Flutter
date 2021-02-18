@@ -1,16 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:trump_card_game/bloc/api_bloc.dart';
-import 'package:trump_card_game/helper/exten_fun/base_application_fun.dart';
-import 'package:trump_card_game/helper/exten_fun/common_fun.dart';
-import 'package:trump_card_game/helper/shared_preference_data.dart';
-import 'package:trump_card_game/ui/screens/home.dart';
+import 'package:clash_of_cardz_flutter/bloc/api_bloc.dart';
+import 'package:clash_of_cardz_flutter/helper/exten_fun/base_application_fun.dart';
+import 'package:clash_of_cardz_flutter/helper/exten_fun/common_fun.dart';
+import 'package:clash_of_cardz_flutter/helper/shared_preference_data.dart';
+import 'package:clash_of_cardz_flutter/ui/screens/home.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lottie/lottie.dart';
 import 'package:flutter_animator/flutter_animator.dart';
-import 'package:trump_card_game/model/responses/save_game_result_res_model.dart';
-import 'package:trump_card_game/model/responses/game_result_api_body.dart';
-import 'package:trump_card_game/ui/widgets/custom/snackbar.dart';
+import 'package:clash_of_cardz_flutter/model/responses/save_game_result_res_model.dart';
 
 import 'game_option.dart';
 
@@ -312,7 +310,6 @@ class GameResult extends StatelessWidget {
       loss: isP1Won? '0':'1',
       points: winnerPoints,
     );*/
-
 
      apiBloc.fetchSaveGameResultRes('ZGHrDz4prqsu4BcApPaQYaGgq', requestBody);
 

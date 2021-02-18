@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:clash_of_cardz_flutter/bloc/api_bloc.dart';
+import 'package:clash_of_cardz_flutter/model/responses/cms_res_model.dart';
+
+import 'frosted_glass.dart';
 
 class CarouselAutoSlider extends StatefulWidget {
-  CarouselAutoSlider() : super();
-
-  final String title = "Carousel Demo";
+  final String xApiKey;
+  const CarouselAutoSlider({Key key, this.xApiKey}) : super(key: key);
 
   @override
   CarouselAutoSliderState createState() => CarouselAutoSliderState();
@@ -12,7 +15,6 @@ class CarouselAutoSlider extends StatefulWidget {
 
 class CarouselAutoSliderState extends State<CarouselAutoSlider> {
   CarouselSlider carouselSlider;
-  int _current = 0;
   List imgList = [
     'assets/images/img_card_demo.png',
     'assets/images/img_card_demo.png',
@@ -33,42 +35,25 @@ class CarouselAutoSliderState extends State<CarouselAutoSlider> {
   @override
   Widget build(BuildContext context) {
     return CarouselSlider(
-        options: CarouselOptions(
-          height: 300.0,
-          aspectRatio: 16/9,
-          viewportFraction: 0.8,
-          initialPage: 0,
-          enableInfiniteScroll: true,
-          reverse: false,
-          autoPlay: true,
-          autoPlayInterval: Duration(seconds: 4),
-          autoPlayAnimationDuration: Duration(milliseconds: 4000),
-          pauseAutoPlayOnTouch: true,
-          autoPlayCurve: Curves.fastOutSlowIn,
-          enlargeCenterPage: true,
-          onPageChanged: (index, reason) {
-            setState(() {
-              _current = index;
-            });
-          },
-          scrollDirection: Axis.horizontal,
-        ),
+      options: CarouselOptions(
+        height: 300.0,
+        aspectRatio: 16/9,
+        viewportFraction: 0.8,
+        initialPage: 0,
+        enableInfiniteScroll: true,
+        reverse: false,
+        autoPlay: true,
+        autoPlayInterval: Duration(seconds: 4),
+        autoPlayAnimationDuration: Duration(milliseconds: 4000),
+        pauseAutoPlayOnTouch: true,
+        autoPlayCurve: Curves.fastOutSlowIn,
+        enlargeCenterPage: true,
+        onPageChanged: (index, reason) {
 
-      /*height: 300.0,
-      initialPage: 0,
-      enlargeCenterPage: true,
-      autoPlay: true,
-      reverse: false,
-      enableInfiniteScroll: true,
-      autoPlayInterval: Duration(seconds: 4),
-      autoPlayAnimationDuration: Duration(milliseconds: 4000),
-      pauseAutoPlayOnTouch: Duration(seconds: 10),
-      scrollDirection: Axis.horizontal,
-      onPageChanged: (index) {
-        setState(() {
-          _current = index;
-        });
-      },*/
+        },
+        scrollDirection: Axis.horizontal,
+      ),
+
       items: imgList.map((imgUrl) {
         return Builder(
           builder: (BuildContext context) {
@@ -78,7 +63,7 @@ class CarouselAutoSliderState extends State<CarouselAutoSlider> {
               decoration: BoxDecoration(
                 color: Colors.deepOrange,
                 image: new DecorationImage(
-                  image: new AssetImage(imgUrl),
+                  image: AssetImage(imgUrl),
                   fit: BoxFit.fill,
                 ),
                 borderRadius: BorderRadius.all(Radius.circular(5.0)),

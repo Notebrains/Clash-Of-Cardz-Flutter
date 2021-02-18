@@ -1,13 +1,14 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:trump_card_game/helper/exten_fun/base_application_fun.dart';
-import 'package:trump_card_game/helper/globals.dart';
-import 'package:trump_card_game/helper/shared_preference_data.dart';
-import 'package:trump_card_game/ui/screens/home.dart';
-import 'package:trump_card_game/ui/screens/login.dart';
-import 'package:trump_card_game/ui/widgets/custom/horizontal_progress_indicator.dart';
-import 'package:trump_card_game/ui/widgets/libraries/animated_text_kit/animated_text_kit.dart';
+import 'package:clash_of_cardz_flutter/helper/exten_fun/base_application_fun.dart';
+import 'package:clash_of_cardz_flutter/helper/globals.dart';
+import 'package:clash_of_cardz_flutter/helper/shared_preference_data.dart';
+import 'package:clash_of_cardz_flutter/ui/screens/home.dart';
+import 'package:clash_of_cardz_flutter/ui/screens/login.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/custom/horizontal_progress_indicator.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/libraries/animated_text_kit/animated_text_kit.dart';
 import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
 
@@ -143,10 +144,20 @@ class _SplashScreenState extends State<SplashScreen> with WidgetsBindingObserver
   }
 
   void playMusic() async {
-    musicCache = AudioCache(prefix: "assets/audios/");
-    instance = await musicCache.loop("bg_mixkit-too-cool-too-crazy.mp3");
+    try {
+      if (Platform.isIOS) {
+        if (musicCache.fixedPlayer != null) {
+          musicCache.fixedPlayer.startHeadlessService();
+        }
+        instance.startHeadlessService();
+      }
+      musicCache = AudioCache(prefix: "assets/audios/");
+      instance = await musicCache.loop("bg_mixkit-too-cool-too-crazy.mp3", mode: PlayerMode.LOW_LATENCY);
 
-    Globals.setAudioPlayerInstance(instance);
+      Globals.setAudioPlayerInstance(instance);
+    } catch (e) {
+      print(e);
+    }
   }
 
 }

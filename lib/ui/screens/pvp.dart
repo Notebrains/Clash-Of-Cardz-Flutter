@@ -2,36 +2,44 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:trump_card_game/helper/constantvalues/constants.dart';
-import 'package:trump_card_game/helper/exten_fun/base_application_fun.dart';
-import 'package:trump_card_game/helper/exten_fun/common_fun.dart';
-import 'package:trump_card_game/ui/screens/autoplay.dart';
-import 'package:trump_card_game/ui/screens/gameplay.dart';
+import 'package:clash_of_cardz_flutter/helper/constantvalues/constants.dart';
+import 'package:clash_of_cardz_flutter/helper/exten_fun/base_application_fun.dart';
+import 'package:clash_of_cardz_flutter/helper/exten_fun/common_fun.dart';
+import 'package:clash_of_cardz_flutter/ui/screens/autoplay.dart';
+import 'package:clash_of_cardz_flutter/ui/screens/gameplay.dart';
 import 'package:flutter_animator/flutter_animator.dart';
-import 'package:trump_card_game/ui/widgets/libraries/colorize.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/libraries/colorize.dart';
 import 'package:shape_of_view/shape_of_view.dart';
 
 class Pvp extends StatefulWidget {
+  final String xApiKey;
   final String p1Name;
   final String p1Id;
   final String p1Image;
   final String p2Name;
   final String p2Id;
   final String p2Image;
-  final String categoryName;
-  final String subcategoryName;
+  final String gameCat1;
+  final String gameCat2;
+  final String gameCat3;
+  final String gameCat4;
+  final String playerType;
   final String gameType;
   final String cardsToPlay;
 
   Pvp({
+    this.xApiKey,
     this.p1Name,
     this.p1Id,
     this.p1Image,
     this.p2Name,
     this.p2Id,
     this.p2Image,
-    this.categoryName,
-    this.subcategoryName,
+    this.gameCat1,
+    this.gameCat2,
+    this.gameCat3,
+    this.gameCat4,
+    this.playerType,
     this.gameType,
     this.cardsToPlay,
   });
@@ -54,13 +62,14 @@ class _PvpState extends State<Pvp> {
 
   @override
   Widget build(BuildContext context) {
+    //print('----game cats pvp: ${widget.gameCat1} , ${widget.gameCat2} , ${widget.gameCat3}, ${widget.gameCat4}');
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         body: Container(
-          decoration: new BoxDecoration(
-            image: new DecorationImage(
-              image: new AssetImage("assets/images/bg-vs-4.jpg"),
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/images/bg-vs-4.jpg"),
               fit: BoxFit.cover,
             ),
           ),
@@ -171,7 +180,6 @@ class _PvpState extends State<Pvp> {
                   ],
                 ),
               ),
-
               //openGamePlayPage(),
             ],
           ),
@@ -185,22 +193,31 @@ class _PvpState extends State<Pvp> {
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
-              builder: (context) => widget.p2Image != Constants.imgUrlComputer? Gameplay(
+              builder: (context) => widget.p2Image != Constants.imgUrlComputer?
+              Gameplay(
+                xApiKey: widget.xApiKey,
                 p1FullName: widget.p1Name,
                 p1MemberId: widget.p1Id,
                 p1Photo: widget.p1Image,
                 p2Name: widget.p2Name,
                 p2MemberId: widget.p2Id,
                 p2Image: widget.p2Image,
-                categoryName: widget.categoryName,
-                subcategoryName: widget.subcategoryName,
+                gameCat1: widget.gameCat1,
+                gameCat2: widget.gameCat2,
+                gameCat3: widget.gameCat3,
+                gameCat4: widget.gameCat4,
+                playerType: widget.playerType,
                 gameType: widget.gameType,
                 cardsToPlay: widget.cardsToPlay,
               ): AutoPlay(
-                categoryName: widget.categoryName,
-                subcategoryName: widget.subcategoryName,
-                gameType: widget.gameType,
-                cardToPlay: widget.cardsToPlay,
+                  xApiKey: widget.xApiKey,
+                  gameCat1: widget.gameCat1,
+                  gameCat2: widget.gameCat2,
+                  gameCat3: widget.gameCat3,
+                  gameCat4: widget.gameCat4,
+                  playerType: widget.playerType,
+                  gameType: widget.gameType,
+                  cardToPlay: widget.cardsToPlay,
               ),
           ),
           ModalRoute.withName("/Gameplay")

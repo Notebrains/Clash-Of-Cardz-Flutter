@@ -1,12 +1,11 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:trump_card_game/model/responses/game_option_res_model.dart';
-import 'package:trump_card_game/ui/screens/game_option_3.dart';
-import 'package:trump_card_game/ui/widgets/libraries/colorize.dart';
+import 'package:clash_of_cardz_flutter/helper/exten_fun/common_fun.dart';
+import 'package:clash_of_cardz_flutter/model/responses/game_option_res_model.dart';
+import 'package:clash_of_cardz_flutter/ui/screens/game_option_3.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/libraries/colorize.dart';
 import 'package:flutter_animator/flutter_animator.dart';
-import 'package:trump_card_game/ui/widgets/libraries/shimmer.dart';
-
+import 'package:clash_of_cardz_flutter/ui/widgets/libraries/shimmer.dart';
 
 class GameOptionTwo extends StatefulWidget {
   final String gameCat1;
@@ -19,7 +18,6 @@ class GameOptionTwo extends StatefulWidget {
 }
 
 class _GameOptionTwoState extends State<GameOptionTwo> {
-
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
   List<Sub1category_details> subCat3List = [];
   List<Sub2category_details> subCat4List = [];
@@ -113,7 +111,7 @@ class _GameOptionTwoState extends State<GameOptionTwo> {
                 child: Row(
                   children: [
                     Expanded(
-                      flex: 7,
+                      flex: 5,
                       child: buildFirstList(),
                     ),
                     Container(
@@ -127,6 +125,26 @@ class _GameOptionTwoState extends State<GameOptionTwo> {
                       child: buildSecondList(subCat4List),
                     ),
                   ],
+                ),
+              ),
+
+              Container(
+                margin: EdgeInsets.fromLTRB(0, 0, 16, 16),
+                child: Align(
+                  alignment: AlignmentDirectional.bottomEnd,
+                  child: FloatingActionButton(
+                    mini: true,
+                    tooltip: 'Back to previous screen',
+                    backgroundColor: Colors.grey[400],
+                    child: Icon(
+                      Icons.arrow_back,
+                      color: Colors.black,
+                    ),
+                    onPressed: () {
+                      onTapAudio('button');
+                      Navigator.pop(context);
+                    },
+                  ),
                 ),
               ),
             ],
@@ -202,14 +220,9 @@ class _GameOptionTwoState extends State<GameOptionTwo> {
                 ),
                 onTap: () {
                   //onTapAudio('button');
-                  print('-----game type name: ${subCat3List[index].sub2categoryName}');
-                  if (subCat3List[index].sub2categoryName == 'ALL PLAYERS') {
-                    alertDialogForPlayerType();
-                  } else {
-                    gameCat3 = subCat3List[index].sub2categoryName;
-                    buildSecondList(subCat3List[index].sub2categoryDetails);
-                    gameMoreOptState(subCat3List[index].sub2categoryDetails);
-                  }
+                  gameCat3 = subCat3List[index].sub2categoryName;
+                  buildSecondList(subCat3List[index].sub2categoryDetails);
+                  gameMoreOptState(subCat3List[index].sub2categoryDetails);
                 },
               ),
             ),
@@ -286,6 +299,7 @@ class _GameOptionTwoState extends State<GameOptionTwo> {
                   context,
                   MaterialPageRoute(
                     builder: (context) => GameOptionThree(gameCat1: widget.gameCat1, gameCat2: widget.gameCat2, gameCat3: gameCat3, gameCat4: subCat4EmptyList[index].sub3categoryName,),
+                    settings: RouteSettings(arguments: subCat4EmptyList[index].cardType,),
                   ),
                 );
               },

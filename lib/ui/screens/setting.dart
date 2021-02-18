@@ -1,9 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:trump_card_game/helper/exten_fun/base_application_fun.dart';
-import 'package:trump_card_game/helper/exten_fun/common_fun.dart';
-import 'package:trump_card_game/helper/globals.dart';
-import 'package:trump_card_game/helper/shared_preference_data.dart';
+import 'package:clash_of_cardz_flutter/helper/exten_fun/base_application_fun.dart';
+import 'package:clash_of_cardz_flutter/helper/exten_fun/common_fun.dart';
+import 'package:clash_of_cardz_flutter/helper/globals.dart';
+import 'package:clash_of_cardz_flutter/helper/shared_preference_data.dart';
 import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'login.dart';
@@ -323,7 +325,7 @@ class _SettingState extends State<Setting> {
                         ),
                       ),
                       preferences:
-                          AnimationPreferences(duration: const Duration(milliseconds: 2000), autoPlay: AnimationPlayStates.Forward),
+                      AnimationPreferences(duration: const Duration(milliseconds: 2000), autoPlay: AnimationPlayStates.Forward),
                     ),
                   ],
                 ),
@@ -339,7 +341,15 @@ class _SettingState extends State<Setting> {
     try {
       SharedPreferenceHelper().saveMusicOnOffState(isMusicOn);
       if (isMusicOn && Globals.getAudioPlayerInstance() == null) {
-        AudioPlayer instance = await AudioCache(prefix: "assets/audios/").loop("bg_mixkit-too-cool-too-crazy.mp3");
+        AudioCache audioCache;
+        AudioPlayer instance;
+        if (Platform.isIOS) {
+          if (audioCache.fixedPlayer != null) {
+            audioCache.fixedPlayer.startHeadlessService();
+          }
+          instance.startHeadlessService();
+        }
+        instance = await AudioCache(prefix: "assets/audios/").loop("bg_mixkit-too-cool-too-crazy.mp3", mode: PlayerMode.LOW_LATENCY);
         Globals.setAudioPlayerInstance(instance);
       } else if (!isMusicOn && Globals.getAudioPlayerInstance() != null) {
         await Globals.getAudioPlayerInstance().pause();

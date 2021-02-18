@@ -1,18 +1,20 @@
+import 'package:clash_of_cardz_flutter/webservices/firebase_files/notificationHelper.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:trump_card_game/bloc/api_bloc.dart';
-import 'package:trump_card_game/helper/exten_fun/common_fun.dart';
-import 'package:trump_card_game/helper/shared_preference_data.dart';
-import 'package:trump_card_game/model/responses/login_res_model.dart';
-import 'package:trump_card_game/ui/screens/home.dart';
-import 'package:trump_card_game/ui/screens/pvp.dart';
-import 'package:trump_card_game/ui/widgets/animations/spring_button.dart';
-import 'package:trump_card_game/ui/widgets/custom/carousel_auto_slider.dart';
-import 'package:trump_card_game/ui/widgets/custom/frosted_glass.dart';
-import 'package:trump_card_game/ui/widgets/include_screens/include_waiting_for_friend.dart';
-import 'package:trump_card_game/ui/widgets/libraries/animated_text_kit/animated_text_kit.dart';
+import 'package:clash_of_cardz_flutter/bloc/api_bloc.dart';
+import 'package:clash_of_cardz_flutter/helper/exten_fun/common_fun.dart';
+import 'package:clash_of_cardz_flutter/helper/shared_preference_data.dart';
+import 'package:clash_of_cardz_flutter/model/responses/login_res_model.dart';
+import 'package:clash_of_cardz_flutter/ui/screens/home.dart';
+import 'package:clash_of_cardz_flutter/ui/screens/pvp.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/animations/spring_button.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/custom/carousel_auto_slider.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/include_screens/include_waiting_for_friend.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/libraries/animated_text_kit/animated_text_kit.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
@@ -20,9 +22,11 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 import 'dart:async';
 import 'package:lottie/lottie.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:bot_toast/bot_toast.dart';
+
+
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+FlutterLocalNotificationsPlugin();
+NotificationAppLaunchDetails notificationAppLaunchDetails;
 
 
 class LogIn extends StatefulWidget {
@@ -35,6 +39,7 @@ class LogIn extends StatefulWidget {
 class _LogInState extends State<LogIn> {
   var loggedIn = false;
   var context;
+
   String firebaseToken = '';
 
 
@@ -58,12 +63,14 @@ class _LogInState extends State<LogIn> {
     _register();
     getMessage();
 
+    //initLocalNotification();
+
     //local notification
     var initializationSettingsAndroid =
-    AndroidInitializationSettings('notification_big_img');
+    AndroidInitializationSettings('ic_notification');
     var initializationSettingsIOs = IOSInitializationSettings();
     var initSettings = InitializationSettings(
-        android: initializationSettingsAndroid, iOS: initializationSettingsIOs);
+        initializationSettingsAndroid, initializationSettingsIOs);
 
     flutterLocalNotificationsPlugin.initialize(initSettings,
         onSelectNotification: onSelectNotification);
@@ -75,11 +82,7 @@ class _LogInState extends State<LogIn> {
           print('firebase noti: on message $message');
           //setState(() => _message = message["notification"]["title"]);
 
-          SharedPreferenceHelper().getNotificationOnOffState().then((isNotificationOn) => {
-            if (isNotificationOn) {
-              showBigPictureNotification(),
-            }
-          });
+          showBigPictureNotification();
 
         }, onResume: (Map<String, dynamic> message) async {
       print('firebase noti: on resume $message');
@@ -105,14 +108,42 @@ class _LogInState extends State<LogIn> {
     });
   }
 
-  ///////local notification
+  //change text
+  Future<void> showBigPictureNotification() async {
+    var bigPictureStyleInformation = BigPictureStyleInformation(
+        DrawableResourceAndroidBitmap("ic_notification"),
+        largeIcon: DrawableResourceAndroidBitmap("ic_notification"),
+        contentTitle: 'Clash Of Cardz',
+        htmlFormatContentTitle: true,
+        summaryText: 'Your friend request to play match. Play Now',
+        htmlFormatSummaryText: true);
+    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+        'big text channel id',
+        'big text channel name',
+        'big text channel description',
+        styleInformation: bigPictureStyleInformation);
+    var iOSPlatformChannelSpecifics = new IOSNotificationDetails();
+    var platformChannelSpecifics =
+    NotificationDetails(androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
+    await flutterLocalNotificationsPlugin.show(
+        0,
+        'big text title',
+        'silent body',
+        platformChannelSpecifics,
+        payload: 'Default_Sound');
+  }
+
+///////local notification
   Future onSelectNotification(String payload) async {
     showDialog(
       context: context,
       builder: (_) => IncludeWaitingForFriend(
-        categoryName: 'Sports',
-        subcategoryName: 'Cricket',
+        gameCat1: 'Sports',// change here
+        gameCat2: 'Cricket',
+        gameCat3: 'IPL',
+        gameCat4: '1990-2000',
         gameType: 'play with friends',
+        playerType: 'Batsman',
         cardsToPlay: '14',
         friendId: 'MEM00001',
         friendName: 'Rex',
@@ -122,14 +153,48 @@ class _LogInState extends State<LogIn> {
     );
   }
 
+  //perform action on notification click
+  //change here
+  _performActionOnNotification(Map<String, dynamic> message) async {
+    showDialog(
+      context: context,
+      builder: (_) => IncludeWaitingForFriend(
+        gameCat1: 'Sports',// change here
+        gameCat2: 'Cricket',
+        gameCat3: 'IPL',
+        gameCat4: '1990-2000',
+        gameType: 'play with friends',
+        playerType: 'Batsman',
+        cardsToPlay: '14',
+        friendId: 'MEM00001',
+        friendName: 'Rex',
+        friendImage: 'https://predictfox.com/trumpcard/assets/uploads/carddetails/16086354135.png',
+        joinedPlayerType: 'joinedAsFriend',
+      ),
+    );
+  }
+
+
+  void getFirebaseToken() async{
+    firebaseToken = await FirebaseMessaging().getToken();
+    print('----firebaseToken $firebaseToken');
+  }
+
+/*  void initLocalNotification() async{
+    WidgetsFlutterBinding.ensureInitialized();
+    notificationAppLaunchDetails =
+    await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
+    await initNotifications(flutterLocalNotificationsPlugin);
+    requestIOSPermissions(flutterLocalNotificationsPlugin);
+
+  }*/
+
   @override
   Widget build(BuildContext context) {
     Firebase.initializeApp();
     this.context = context;
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      builder: BotToastInit(),
-      navigatorObservers: [BotToastNavigatorObserver()],
       home: Scaffold(
         resizeToAvoidBottomInset: false,
         body: Container(
@@ -216,18 +281,18 @@ class _LogInState extends State<LogIn> {
                                               'Google     ',
                                               textAlign: TextAlign.center,
                                               style: TextStyle(
-                                                fontSize: 15.0,
-                                                fontStyle: FontStyle.normal,
-                                                fontFamily: 'montserrat',
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.bold
+                                                  fontSize: 15.0,
+                                                  fontStyle: FontStyle.normal,
+                                                  fontFamily: 'montserrat',
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold
                                               ),
                                             ),
                                           ),
 
                                           IconButton(
                                             icon: SvgPicture.asset('assets/icons/svg/google-plus.svg',
-                                              color: Colors.white),
+                                                color: Colors.white),
                                             onPressed: () {
                                               onTapAudio('button');},
                                           ),
@@ -282,10 +347,10 @@ class _LogInState extends State<LogIn> {
                                               'Facebook',
                                               textAlign: TextAlign.center,
                                               style: TextStyle(
-                                                fontSize: 15.0,
-                                                fontStyle: FontStyle.normal,
-                                                fontFamily: 'montserrat',
-                                                color: Colors.white,
+                                                  fontSize: 15.0,
+                                                  fontStyle: FontStyle.normal,
+                                                  fontFamily: 'montserrat',
+                                                  color: Colors.white,
                                                   fontWeight: FontWeight.bold
                                               ),
                                             ),
@@ -386,7 +451,7 @@ class _LogInState extends State<LogIn> {
                   child: FadeInRightBig(
                     child: Container(
                       margin: EdgeInsets.fromLTRB(80, 0, 80, 0),
-                      child: CarouselAutoSlider(),
+                      child: CarouselAutoSlider(xApiKey: '56005600',),
                     ),
                     preferences:
                     AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
@@ -435,7 +500,7 @@ class _LogInState extends State<LogIn> {
           return 1;
         } else
           print("--------");
-          return 0;
+        return 0;
         break;
 
       case "G":
@@ -446,7 +511,6 @@ class _LogInState extends State<LogIn> {
           final googleAuthCred = GoogleAuthProvider.credential(
               idToken: googleAuth.idToken, accessToken: googleAuth.accessToken);
           UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(googleAuthCred);
-
 
           print("----G User : " + userCredential.user.displayName);
           print("----G uid : " + userCredential.user.uid);
@@ -486,43 +550,17 @@ class _LogInState extends State<LogIn> {
 
   Future<GoogleSignInAccount> _handleGoogleSignIn() async {
     GoogleSignIn googleSignIn = GoogleSignIn(
-        scopes: ['email', 'https://www.googleapis.com/auth/contacts.readonly']);
+        scopes: ['email', 'https://www.googleapis.com/auth/contacts.readonly',]);
     GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
     return googleSignInAccount;
   }
 
   void loginByServer(BuildContext context, String name, String email, String socialId, String image, String memberId) async{
-    
+
     apiBloc.fetchLoginRes(name, email, socialId, image, firebaseToken, memberId);
 
     loginUserByDialog(context);
   }
-
-
-  Future<void> showBigPictureNotification() async {
-    var bigPictureStyleInformation = BigPictureStyleInformation(
-        DrawableResourceAndroidBitmap("notification_big_img"),
-        largeIcon: DrawableResourceAndroidBitmap("notification_big_img"),
-        contentTitle: 'Clash Of Cardz',
-        htmlFormatContentTitle: true,
-        summaryText: 'Your friend request to play match. Play Now',
-        htmlFormatSummaryText: true);
-    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-        'big text channel id',
-        'big text channel name',
-        'big text channel description',
-        styleInformation: bigPictureStyleInformation);
-    var iOSPlatformChannelSpecifics = new IOSNotificationDetails();
-    var platformChannelSpecifics =
-    NotificationDetails(android: androidPlatformChannelSpecifics, iOS: iOSPlatformChannelSpecifics);
-    await flutterLocalNotificationsPlugin.show(
-        0,
-        'big text title',
-        'silent body',
-        platformChannelSpecifics,
-        payload: 'Default_Sound');
-  }
-
 
   void loginUserByDialog(BuildContext context) async{
     showDialog(
@@ -561,7 +599,7 @@ class _LogInState extends State<LogIn> {
                     } else if (!snapshot.hasData) {
                       return Container();
                     } else return Center(
-                        child: Text("No Data Found", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 30)),);
+                      child: Text("No Data Found", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 30)),);
                   }),
             ],
           ),
@@ -569,6 +607,7 @@ class _LogInState extends State<LogIn> {
       },
     );
   }
+
 }
 
 

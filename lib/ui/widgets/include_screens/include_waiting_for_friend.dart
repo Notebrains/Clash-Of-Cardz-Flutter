@@ -5,26 +5,41 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:trump_card_game/helper/exten_fun/base_application_fun.dart';
-import 'package:trump_card_game/helper/shared_preference_data.dart';
-import 'package:trump_card_game/model/arguments/firebase_player_details_model.dart';
-import 'package:trump_card_game/ui/screens/pvp.dart';
-import 'package:trump_card_game/ui/screens/home.dart';
+import 'package:clash_of_cardz_flutter/helper/exten_fun/base_application_fun.dart';
+import 'package:clash_of_cardz_flutter/helper/shared_preference_data.dart';
+import 'package:clash_of_cardz_flutter/model/arguments/firebase_player_details_model.dart';
+import 'package:clash_of_cardz_flutter/ui/screens/pvp.dart';
+import 'package:clash_of_cardz_flutter/ui/screens/home.dart';
 import 'dart:io' show Platform;
 
-import 'package:trump_card_game/ui/widgets/libraries/flutter_toast.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/libraries/flutter_toast.dart';
 
 class IncludeWaitingForFriend extends StatefulWidget {
-  final String categoryName;
-  final String subcategoryName;
+  final String gameCat1;
+  final String gameCat2;
+  final String gameCat3;
+  final String gameCat4;
   final String gameType;
+  final String playerType;
   final String cardsToPlay;
   final String friendId;
   final String friendName;
   final String friendImage;
   final String joinedPlayerType;
 
-  const IncludeWaitingForFriend({Key key, this.categoryName, this.subcategoryName, this.gameType, this.cardsToPlay, this.friendId, this.friendName, this.friendImage, this.joinedPlayerType}) : super(key: key);
+  const IncludeWaitingForFriend(
+      {Key key,
+    this.gameCat1,
+    this.gameCat2,
+    this.gameCat3,
+    this.gameCat4,
+    this.gameType,
+    this.playerType,
+    this.cardsToPlay,
+    this.friendId,
+    this.friendName,
+    this.friendImage,
+    this.joinedPlayerType}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => IncludeWaitingForFriendState();
@@ -263,8 +278,11 @@ class IncludeWaitingForFriendState extends State<IncludeWaitingForFriend> with S
         'image': photo,
         'userId': memberId,
         'joinedUserType': widget.joinedPlayerType,
-        'category': widget.categoryName,
-        'subCategory': widget.subcategoryName,
+        'gameCat1': widget.gameCat1,
+        'gameCat2': widget.gameCat2,
+        'gameCat3': widget.gameCat3,
+        'gameCat4': widget.gameCat4,
+        'playerType': widget.playerType,
         'gameType': widget.gameType,
         'cardCount': widget.cardsToPlay,
       });
@@ -277,8 +295,11 @@ class IncludeWaitingForFriendState extends State<IncludeWaitingForFriend> with S
         'image': widget.friendImage,
         'userId': widget.friendId,
         'joinedUserType': widget.joinedPlayerType,
-        'category': widget.categoryName,
-        'subCategory': widget.subcategoryName,
+        'gameCat1': widget.gameCat1,
+        'gameCat2': widget.gameCat2,
+        'gameCat3': widget.gameCat3,
+        'gameCat4': widget.gameCat4,
+        'playerType': widget.playerType,
         'gameType': widget.gameType,
         'cardCount': widget.cardsToPlay,
       });
@@ -317,8 +338,13 @@ class IncludeWaitingForFriendState extends State<IncludeWaitingForFriend> with S
       context,
       CupertinoPageRoute(
         builder: (context) =>
-            Pvp(p1Name: fullName, p1Id: memberId, p1Image: photo, p2Name: player2Name, p2Id: player2Id, p2Image: player2Image,
-              categoryName: widget.categoryName, subcategoryName: widget.subcategoryName, gameType: widget.gameType,
+            Pvp(xApiKey: xApiKey, p1Name: fullName, p1Id: memberId, p1Image: photo, p2Name: player2Name, p2Id: player2Id, p2Image: player2Image,
+              gameCat1: widget.gameCat1,
+              gameCat2: widget.gameCat2,
+              gameCat3: widget.gameCat3,
+              gameCat4: widget.gameCat4,
+              playerType: widget.playerType,
+              gameType: widget.gameType,
               cardsToPlay: widget.cardsToPlay,)
       ),
     ).then((value) => Navigator.of(context).pop());

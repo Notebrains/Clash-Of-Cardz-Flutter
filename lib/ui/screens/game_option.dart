@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:trump_card_game/helper/exten_fun/common_fun.dart';
-import 'package:trump_card_game/ui/widgets/include_screens/include_game_options.dart';
-import 'package:trump_card_game/ui/widgets/libraries/animated_text_kit/animated_text_kit.dart';
+import 'package:clash_of_cardz_flutter/helper/exten_fun/common_fun.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/include_screens/include_game_options.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/libraries/animated_text_kit/animated_text_kit.dart';
 
 class GameOption extends StatelessWidget {
   @override

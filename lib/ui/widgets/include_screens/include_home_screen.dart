@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:trump_card_game/helper/shared_preference_data.dart';
-import 'package:trump_card_game/model/responses/profile_res_model.dart';
+import 'package:clash_of_cardz_flutter/helper/shared_preference_data.dart';
+import 'package:clash_of_cardz_flutter/model/responses/profile_res_model.dart';
 import 'package:flutter_animator/flutter_animator.dart';
-import 'package:trump_card_game/ui/widgets/libraries/shimmer.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/libraries/shimmer.dart';
 
 Widget buildHomeScreenPlayerInfo(ProfileResModel model, String xApiKey){
 
@@ -33,11 +33,11 @@ Widget buildHomeScreenPlayerInfo(ProfileResModel model, String xApiKey){
                           highlightColor: Colors.orangeAccent,
                           child: Text(model.response[0].fullname??'',
                               style: TextStyle(
+                                fontFamily: 'montserrat',
                                   color: Colors.white,
-                                  fontWeight: FontWeight.w900)
+                                  fontWeight: FontWeight.bold)
                           ),
                         ),
-
 
                         decoration: new BoxDecoration(
                           borderRadius:

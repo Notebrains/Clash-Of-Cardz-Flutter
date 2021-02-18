@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_offline/flutter_offline.dart';
-import 'package:trump_card_game/ui/widgets/custom/check_internet_connection.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/custom/check_internet_connection.dart';
 
 class InternetConnection extends StatelessWidget {
   @override

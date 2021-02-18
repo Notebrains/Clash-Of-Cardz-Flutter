@@ -1,5 +1,5 @@
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:trump_card_game/model/arguments/shared_pref_user_model.dart';
+import 'package:clash_of_cardz_flutter/model/arguments/shared_pref_user_model.dart';
 
 class SharedPreferenceHelper {
   void readLogInUserData() async {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:trump_card_game/model/responses/statistics_res_model.dart';
-import 'package:trump_card_game/ui/widgets/libraries/animated_text_kit/animated_text_kit.dart';
+import 'package:clash_of_cardz_flutter/model/responses/statistics_res_model.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/libraries/animated_text_kit/animated_text_kit.dart';
 
 Column buildStatisticsScreen(StatisticsResModel model) {
   return Column(

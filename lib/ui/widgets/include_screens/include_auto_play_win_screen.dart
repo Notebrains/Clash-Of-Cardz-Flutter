@@ -5,14 +5,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 import 'package:shape_of_view/shape_of_view.dart';
-import 'package:trump_card_game/helper/exten_fun/base_application_fun.dart';
-import 'package:trump_card_game/model/responses/cards_res_model.dart';
-import 'package:trump_card_game/ui/widgets/animations/spring_button.dart';
-import 'package:trump_card_game/ui/widgets/libraries/animated_text_kit/wavy.dart';
-import 'package:trump_card_game/ui/widgets/libraries/avatar_glow.dart';
-import 'package:trump_card_game/ui/widgets/libraries/f_dotted_line.dart';
-import 'package:trump_card_game/ui/widgets/libraries/flip_card.dart';
-import 'package:trump_card_game/ui/widgets/libraries/shimmer.dart';
+import 'package:clash_of_cardz_flutter/helper/exten_fun/base_application_fun.dart';
+import 'package:clash_of_cardz_flutter/model/responses/cards_res_model.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/animations/spring_button.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/libraries/animated_text_kit/wavy.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/libraries/avatar_glow.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/libraries/f_dotted_line.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/libraries/flip_card.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/libraries/shimmer.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 void showBothCardsDialog(BuildContext context, List<Cards> cards, int indexOfSelectedCard, int indexOfCardDeck, bool isMatchEnded, bool isWon, {
@@ -46,119 +46,121 @@ Function(bool isPlayAgainClicked) onClickActionOnPlayAgain,
                         child: new Center(
                           child: Container(
                             //width: getScreenWidth(context) - 400,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Container(
-                                  height: getScreenHeight(context) / 1.5,
-                                  child: Center(
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: [
-                                        Container(
-                                          width: 215,
-                                          height: 310,
-                                          margin: EdgeInsets.only(right: 12),
-                                          child: RotateInDownRight(
-                                            child: buildCard1(
-                                              context,
-                                              cards,
-                                              indexOfCardDeck,
-                                              indexOfSelectedCard,
-                                              isWon,
-                                              onClickActionOnP1GameplayCard:
-                                                  (int indexOfP1Card, String attributeTitle, String attributeValue, String winBasis, String winPoints) =>
-                                              {
+                            child: SingleChildScrollView(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    height: getScreenHeight(context) / 1.5,
+                                    child: Center(
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          Container(
+                                            width: 215,
+                                            height: 310,
+                                            margin: EdgeInsets.only(right: 12),
+                                            child: RotateInDownRight(
+                                              child: buildCard1(
+                                                context,
+                                                cards,
+                                                indexOfCardDeck,
+                                                indexOfSelectedCard,
+                                                isWon,
+                                                onClickActionOnP1GameplayCard:
+                                                    (int indexOfP1Card, String attributeTitle, String attributeValue, String winBasis, String winPoints) =>
+                                                {
 
-                                              },
+                                                },
+                                              ),
+                                              preferences: AnimationPreferences(
+                                                  duration: const Duration(milliseconds: 1500),
+                                                  autoPlay: AnimationPlayStates.Forward),
                                             ),
-                                            preferences: AnimationPreferences(
-                                                duration: const Duration(milliseconds: 1500),
-                                                autoPlay: AnimationPlayStates.Forward),
                                           ),
-                                        ),
 
-                                        HeartBeat(
-                                          child: AvatarGlow(
-                                            endRadius: 90,
-                                            glowColor: Colors.lightBlueAccent,
-                                            child: Container(
-                                              width: 130,
-                                              child: Center(
-                                                child: Image.asset('assets/icons/png/vs2.png'),
+                                          HeartBeat(
+                                            child: AvatarGlow(
+                                              endRadius: 90,
+                                              glowColor: Colors.lightBlueAccent,
+                                              child: Container(
+                                                width: 130,
+                                                child: Center(
+                                                  child: Image.asset('assets/icons/png/vs2.png'),
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                          preferences: AnimationPreferences(
-                                              duration: const Duration(milliseconds: 2000),
-                                              autoPlay: AnimationPlayStates.Loop),
-                                        ),
-
-                                        Container(
-                                          width: 220,
-                                          height: 315,
-                                          child: RollIn(
-                                            child: buildCard2(
-                                              context,
-                                              indexOfSelectedCard,
-                                              indexOfCardDeck,
-                                              cards,
-                                              isWon,
-                                              onClickActionOnP2GameplayCard: (bool isWon, int winPoint) =>
-                                              {
-                                              },
-                                            ),
                                             preferences: AnimationPreferences(
-                                                duration: const Duration(milliseconds: 1500),
-                                                autoPlay: AnimationPlayStates.Forward),
+                                                duration: const Duration(milliseconds: 2000),
+                                                autoPlay: AnimationPlayStates.Loop),
                                           ),
-                                        ),
 
-                                      ],
-                                    ),
-                                  ),
-                                ),
-
-                                Pulse(
-                                  child:  Container(
-                                    margin: EdgeInsets.only(top: 16),
-                                    child: MaterialButton(
-                                      padding: EdgeInsets.fromLTRB(0.0, 2.0, 0.0, 0.0),
-                                      splashColor: Colors.grey,
-                                      child: Container(
-                                        width: 220,
-                                        height: 50,
-                                        decoration: BoxDecoration(
-                                          image: DecorationImage(image: AssetImage('assets/icons/png/bg_button.png'), fit: BoxFit.fill),
-                                        ),
-                                        child: Container(
-                                          alignment: Alignment.center,
-                                          padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 12.0),
-                                          child: Text(
-                                            isMatchEnded ? 'Match Ended' : "Play Next Card",
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                                fontSize: 14,
-                                                fontStyle: FontStyle.normal,
-                                                fontFamily: 'neuropol_x_rg',
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.black87),
+                                          Container(
+                                            width: 220,
+                                            height: 315,
+                                            child: RollIn(
+                                              child: buildCard2(
+                                                context,
+                                                indexOfSelectedCard,
+                                                indexOfCardDeck,
+                                                cards,
+                                                isWon,
+                                                onClickActionOnP2GameplayCard: (bool isWon, int winPoint) =>
+                                                {
+                                                },
+                                              ),
+                                              preferences: AnimationPreferences(
+                                                  duration: const Duration(milliseconds: 1500),
+                                                  autoPlay: AnimationPlayStates.Forward),
+                                            ),
                                           ),
-                                        ),
+
+                                        ],
                                       ),
-                                      // ),
-                                      onPressed: () {
-                                        onClickActionOnPlayAgain(isMatchEnded);
-                                        Navigator.of(context).pop();
-                                      },
                                     ),
                                   ),
-                                  preferences:
-                                  AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Loop),
-                                ),
-                              ],
+
+                                  Pulse(
+                                    child:  Container(
+                                      margin: EdgeInsets.only(top: 16),
+                                      child: MaterialButton(
+                                        padding: EdgeInsets.fromLTRB(0.0, 2.0, 0.0, 0.0),
+                                        splashColor: Colors.grey,
+                                        child: Container(
+                                          width: 220,
+                                          height: 50,
+                                          decoration: BoxDecoration(
+                                            image: DecorationImage(image: AssetImage('assets/icons/png/bg_button.png'), fit: BoxFit.fill),
+                                          ),
+                                          child: Container(
+                                            alignment: Alignment.center,
+                                            padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 12.0),
+                                            child: Text(
+                                              isMatchEnded ? 'Match Ended' : "Play Next Card",
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                  fontSize: 14,
+                                                  fontStyle: FontStyle.normal,
+                                                  fontFamily: 'neuropol_x_rg',
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.black87),
+                                            ),
+                                          ),
+                                        ),
+                                        // ),
+                                        onPressed: () {
+                                          onClickActionOnPlayAgain(isMatchEnded);
+                                          Navigator.of(context).pop();
+                                        },
+                                      ),
+                                    ),
+                                    preferences:
+                                    AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Loop),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),

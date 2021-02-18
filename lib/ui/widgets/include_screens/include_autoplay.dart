@@ -1,14 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:trump_card_game/helper/constantvalues/constants.dart';
-import 'package:trump_card_game/helper/shared_preference_data.dart';
-import 'package:trump_card_game/model/responses/cards_res_model.dart';
-import 'package:trump_card_game/model/responses/game_option_res_model.dart';
-import 'package:trump_card_game/model/state_managements/autoplay_states_model.dart';
-import 'package:trump_card_game/ui/screens/game_result.dart';
-import 'package:trump_card_game/ui/screens/login.dart';
-import 'package:trump_card_game/ui/widgets/views/view_widgets.dart';
+import 'package:clash_of_cardz_flutter/helper/constantvalues/constants.dart';
+import 'package:clash_of_cardz_flutter/helper/shared_preference_data.dart';
+import 'package:clash_of_cardz_flutter/model/responses/cards_res_model.dart';
+import 'package:clash_of_cardz_flutter/model/responses/game_option_res_model.dart';
+import 'package:clash_of_cardz_flutter/model/state_managements/autoplay_states_model.dart';
+import 'package:clash_of_cardz_flutter/ui/screens/game_result.dart';
+import 'package:clash_of_cardz_flutter/ui/screens/login.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/views/view_widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 

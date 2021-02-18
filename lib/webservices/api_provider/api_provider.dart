@@ -2,17 +2,17 @@ import 'dart:convert';
 import 'package:http/http.dart' show Client;
 import 'dart:async';
 import 'package:http/http.dart' as http;
-import 'package:trump_card_game/helper/constantvalues/api_constants.dart';
-import 'package:trump_card_game/model/responses/cards_res_model.dart';
-import 'package:trump_card_game/model/responses/cms_res_model.dart';
-import 'package:trump_card_game/model/responses/friends_res_model.dart';
-import 'package:trump_card_game/model/responses/game_option_res_model.dart';
-import 'package:trump_card_game/model/responses/login_res_model.dart';
-import 'package:trump_card_game/model/responses/match_making_res_model.dart';
-import 'package:trump_card_game/model/responses/profile_res_model.dart';
-import 'package:trump_card_game/model/responses/statistics_res_model.dart';
-import 'package:trump_card_game/model/responses/leaderboard_res_model.dart';
-import 'package:trump_card_game/model/responses/save_game_result_res_model.dart';
+import 'package:clash_of_cardz_flutter/helper/constantvalues/api_constants.dart';
+import 'package:clash_of_cardz_flutter/model/responses/cards_res_model.dart';
+import 'package:clash_of_cardz_flutter/model/responses/cms_res_model.dart';
+import 'package:clash_of_cardz_flutter/model/responses/friends_res_model.dart';
+import 'package:clash_of_cardz_flutter/model/responses/game_option_res_model.dart';
+import 'package:clash_of_cardz_flutter/model/responses/login_res_model.dart';
+import 'package:clash_of_cardz_flutter/model/responses/match_making_res_model.dart';
+import 'package:clash_of_cardz_flutter/model/responses/profile_res_model.dart';
+import 'package:clash_of_cardz_flutter/model/responses/statistics_res_model.dart';
+import 'package:clash_of_cardz_flutter/model/responses/leaderboard_res_model.dart';
+import 'package:clash_of_cardz_flutter/model/responses/save_game_result_res_model.dart';
 
 
 class ApiProvider {
@@ -180,16 +180,28 @@ class ApiProvider {
     }
   }
 
-  Future<CardsResModel> fetchCardsToPlayApi(String xApiKey, String subCatagory, String catagory, String playerCount, String cardCount) async {
+  Future<CardsResModel> fetchCardsToPlayApi(
+      String xApiKey,
+      String catagory,
+      String subCatagory,
+      String subsubcatagory,
+      String subsubsubcatagory,
+      String cardCount,
+      String gameId,
+      String cardType,
+      ) async {
     Map<String, String> headers = {
       "Content-Type": 'application/x-www-form-urlencoded',
       'x-api-key': xApiKey};
 
     var requestBody = {
-      'sub_catagory': subCatagory,
       'catagory': catagory,
-      'player_count': playerCount,
+      'sub_catagory': subCatagory,
+      'subsubcatagory': subsubcatagory,
+      'subsubsubcatagory': subsubsubcatagory,
       'cardcount': cardCount,
+      'game_id': gameId,
+      'cardtype': cardType,
     };
 
     http.Response response = await http.post(

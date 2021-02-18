@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 import 'package:lottie/lottie.dart';
 import 'package:shape_of_view/shape_of_view.dart';
-import 'package:trump_card_game/helper/constantvalues/constants.dart';
-import 'package:trump_card_game/helper/exten_fun/base_application_fun.dart';
-import 'package:trump_card_game/model/responses/cards_res_model.dart';
-import 'package:trump_card_game/ui/widgets/libraries/animated_text_kit/wavy.dart';
-import 'package:trump_card_game/ui/widgets/libraries/f_dotted_line.dart';
-import 'package:trump_card_game/ui/widgets/libraries/flip_card.dart';
-import 'package:trump_card_game/ui/widgets/libraries/flutter_toast.dart';
-import 'package:trump_card_game/ui/widgets/libraries/shimmer.dart';
+import 'package:clash_of_cardz_flutter/helper/constantvalues/constants.dart';
+import 'package:clash_of_cardz_flutter/helper/exten_fun/base_application_fun.dart';
+import 'package:clash_of_cardz_flutter/model/responses/cards_res_model.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/libraries/animated_text_kit/wavy.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/libraries/f_dotted_line.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/libraries/flip_card.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/libraries/flutter_toast.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/libraries/shimmer.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 Widget buildPlayerOneCard(

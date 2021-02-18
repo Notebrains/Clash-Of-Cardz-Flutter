@@ -4,23 +4,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:trump_card_game/bloc/api_bloc.dart';
-import 'package:trump_card_game/helper/exten_fun/common_fun.dart';
-import 'package:trump_card_game/helper/shared_preference_data.dart';
-import 'package:trump_card_game/model/responses/profile_res_model.dart';
-import 'package:trump_card_game/ui/screens/about.dart';
-import 'package:trump_card_game/ui/screens/game_rules.dart';
-import 'package:trump_card_game/ui/screens/gameplay.dart';
-import 'package:trump_card_game/ui/screens/leaderboard.dart';
-import 'package:trump_card_game/ui/screens/login.dart';
-import 'package:trump_card_game/ui/screens/profile.dart';
-import 'package:trump_card_game/ui/screens/setting.dart';
-import 'package:trump_card_game/ui/screens/statistics.dart';
-import 'package:trump_card_game/ui/widgets/custom/carousel_auto_slider.dart';
-import 'package:trump_card_game/ui/widgets/include_screens/include_home_screen.dart';
-import 'package:trump_card_game/ui/widgets/libraries/giffy_dialog/giffy_dialog.dart';
-import 'package:trump_card_game/ui/widgets/libraries/share_package.dart';
-import 'package:trump_card_game/ui/widgets/views/view_widgets.dart';
+import 'package:share/share.dart';
+import 'package:clash_of_cardz_flutter/bloc/api_bloc.dart';
+import 'package:clash_of_cardz_flutter/helper/exten_fun/common_fun.dart';
+import 'package:clash_of_cardz_flutter/helper/shared_preference_data.dart';
+import 'package:clash_of_cardz_flutter/model/responses/profile_res_model.dart';
+import 'package:clash_of_cardz_flutter/ui/screens/about.dart';
+import 'package:clash_of_cardz_flutter/ui/screens/game_rules.dart';
+import 'package:clash_of_cardz_flutter/ui/screens/gameplay.dart';
+import 'package:clash_of_cardz_flutter/ui/screens/leaderboard.dart';
+import 'package:clash_of_cardz_flutter/ui/screens/login.dart';
+import 'package:clash_of_cardz_flutter/ui/screens/profile.dart';
+import 'package:clash_of_cardz_flutter/ui/screens/setting.dart';
+import 'package:clash_of_cardz_flutter/ui/screens/statistics.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/custom/carousel_auto_slider.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/include_screens/include_home_screen.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/libraries/giffy_dialog/giffy_dialog.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/views/view_widgets.dart';
 
 import 'cards.dart';
 import 'game_option.dart';
@@ -49,361 +49,356 @@ class _MyHomePageState extends State<HomeScreen> {
 
     fetchProfileData();
 
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: WillPopScope(
-        onWillPop: () async => false,
-        child: Scaffold(
-          resizeToAvoidBottomInset: false,
-          body: Container(
-            decoration: new BoxDecoration(
-              image: new DecorationImage(
-                image: new AssetImage("assets/images/bg_img3.png"),
-                fit: BoxFit.cover,
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      body: Container(
+        decoration: new BoxDecoration(
+          image: new DecorationImage(
+            image: new AssetImage("assets/images/bg_img3.png"),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Container(
+              height: 65,
+              child: StreamBuilder(
+                stream: apiBloc.profileRes,
+                builder: (context, AsyncSnapshot<ProfileResModel> snapshot) {
+                  if (snapshot.hasData) {
+                    savePlayerInfoIntoPref(snapshot.data);
+                    return buildHomeScreenPlayerInfo(snapshot.data, widget.xApiKey);
+                  }
+                  return Center();
+                },
               ),
             ),
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Container(
-                  height: 65,
-                  child: StreamBuilder(
-                    stream: apiBloc.profileRes,
-                    builder: (context, AsyncSnapshot<ProfileResModel> snapshot) {
-                      if (snapshot.hasData) {
-                        savePlayerInfoIntoPref(snapshot.data);
-                        return buildHomeScreenPlayerInfo(snapshot.data, widget.xApiKey);
-                      }
-                      return Center();
-                    },
+
+            Row(
+              children: <Widget>[
+                Expanded(
+                  flex: 2,
+                  child: SlideInLeft(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          width: 40,
+                          height: 40,
+                          margin: EdgeInsets.all(5),
+                          child: IconButton(
+                            icon: Image.asset('assets/icons/png/ic_setting.png', color: Colors.white,),
+                            onPressed: () {
+                              onTapAudio('icon');
+                              bool isNotifiOn;
+                              SharedPreferenceHelper().getNotificationOnOffState().then((isNotificationOn) => {
+                                isNotifiOn =isNotificationOn,
+                              });
+                              bool isSfxOn;
+                              SharedPreferenceHelper().getSfxOnOffState().then((isSFXOn) => {
+                                isSfxOn = isSFXOn,
+                              });
+
+                              SharedPreferenceHelper().getMusicOnOffState().then((isMusicOn) => {
+                                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Setting(isMusicOn, isNotifiOn, isSfxOn, widget.memberId))),
+                              });
+                            },
+                          ),
+                          decoration:
+                          Views.boxDecorationWidgetForIconWithBgColor(Colors.black, 4.0, Colors.grey, 5.0, 5.0, 3.0),
+                        ),
+
+                        Container(
+                          width: 40,
+                          height: 40,
+                          margin: EdgeInsets.all(5),
+                          child: IconButton(
+                            icon: Image.asset('assets/icons/png/share.png'),
+                            onPressed: () {
+                              onTapAudio('icon');
+                              //_onShare(context, [], Constants.shareTxt, Constants.appName);
+                              urlFileShare();
+                            },
+                          ),
+                          decoration:
+                          Views.boxDecorationWidgetForIconWithBgColor(Colors.greenAccent[700], 4.0, Colors.grey, 5.0, 5.0, 3.0),
+                        ),
+
+                        Container(
+                            width: 40,
+                            height: 40,
+                            margin: EdgeInsets.all(5),
+                            child: IconButton(
+                              splashColor: Colors.white,
+                              icon: SvgPicture.asset('assets/icons/svg/logout.svg'),
+                              onPressed: () {
+                                onTapAudio('icon');
+                                SharedPreferenceHelper().clearPrefData();
+                                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => LogIn()));
+                              },
+                            ),
+                            decoration:
+                            Views.boxDecorationWidgetForIconWithBgColor(Colors.redAccent, 4.0, Colors.grey, 5.0, 5.0, 3.0)),
+                      ],
+                    ),
+                    preferences:
+                    AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
+                  ),
+                ),
+                Expanded(
+                  flex: 10,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      //login button
+                      FadeInDown(
+                        child: MaterialButton(
+                          splashColor: Colors.grey,
+                          child: Container(
+                            width: 220,
+                            height: 50,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(image: AssetImage('assets/icons/png/bg_button.png'), fit: BoxFit.fill),
+                            ),
+                            child: Container(
+                              alignment: Alignment.center,
+                              padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 12.0),
+                              child: Text(
+                                "PLAY",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    fontStyle: FontStyle.normal,
+                                    fontFamily: 'neuropol_x_rg',
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black87),
+                              ),
+                            ),
+                          ),
+                          onPressed: () {
+                            onTapAudio('button');
+                            //Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => GameOption()));
+                            Navigator.push(context, CupertinoPageRoute(builder: (BuildContext context) => GameOption()));
+                          },
+                        ),
+                        preferences:
+                        AnimationPreferences(duration: const Duration(milliseconds: 1000), autoPlay: AnimationPlayStates.Forward),
+                      ),
+
+                      FadeInLeft(
+                        child: MaterialButton(
+                          padding: EdgeInsets.fromLTRB(0.0, 2.0, 0.0, 0.0),
+                          splashColor: Colors.grey,
+                          child: Container(
+                            width: 220,
+                            height: 50,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(image: AssetImage('assets/icons/png/bg_button.png'), fit: BoxFit.fill),
+                            ),
+                            child: Container(
+                              alignment: Alignment.center,
+                              padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 12.0),
+                              child: Text(
+                                "CARDS",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    fontStyle: FontStyle.normal,
+                                    fontFamily: 'neuropol_x_rg',
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black87),
+                              ),
+                            ),
+                          ),
+                          onPressed: () {
+                            onTapAudio('button');
+                            //change here
+                            Navigator.push(
+                                context,
+                                CupertinoPageRoute(builder: (BuildContext context) => Cards(xApiKey: widget.xApiKey, memberId: widget.memberId,)));
+                          },
+                        ),
+                        preferences:
+                        AnimationPreferences(duration: const Duration(milliseconds: 1000), autoPlay: AnimationPlayStates.Forward),
+                      ),
+
+                      FadeInRight(
+                        child: MaterialButton(
+                          padding: EdgeInsets.fromLTRB(0.0, 2.0, 0.0, 0.0),
+                          splashColor: Colors.grey,
+                          child: Container(
+                            width: 220,
+                            height: 50,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(image: AssetImage('assets/icons/png/bg_button.png'), fit: BoxFit.fill),
+                            ),
+                            child: Container(
+                              alignment: Alignment.center,
+                              padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 12.0),
+                              child: Text(
+                                "GAME RULES",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    fontStyle: FontStyle.normal,
+                                    fontFamily: 'neuropol_x_rg',
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black87),
+                              ),
+                            ),
+                          ),
+                          // ),
+                          onPressed: () {
+                            onTapAudio('button');
+                            Navigator.push(context, MaterialPageRoute(
+                                builder: (BuildContext context) => GameRule(xApiKey: widget.xApiKey, memberId: widget.memberId,)));
+                          },
+                        ),
+                        preferences:
+                        AnimationPreferences(duration: const Duration(milliseconds: 1000), autoPlay: AnimationPlayStates.Forward),
+                      ),
+                      FadeInUp(
+                        child: MaterialButton(
+                          padding: EdgeInsets.fromLTRB(0.0, 2.0, 0.0, 0.0),
+                          splashColor: Colors.grey,
+                          child: Container(
+                            width: 220,
+                            height: 50,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(image: AssetImage('assets/icons/png/bg_button.png'), fit: BoxFit.fill),
+                            ),
+                            child: Container(
+                              alignment: Alignment.center,
+                              padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 12.0),
+                              child: Text(
+                                "ABOUT",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    fontStyle: FontStyle.normal,
+                                    fontFamily: 'neuropol_x_rg',
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black87),
+                              ),
+                            ),
+                          ),
+                          onPressed: () {
+                            onTapAudio('button');
+                            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => AboutScreen(widget.xApiKey)));
+                          },
+                        ),
+                        preferences:
+                        AnimationPreferences(duration: const Duration(milliseconds: 1000), autoPlay: AnimationPlayStates.Forward),
+                      ),
+                      FadeInUpBig(
+                        child: MaterialButton(
+                          padding: EdgeInsets.fromLTRB(0.0, 2.0, 0.0, 0.0),
+                          splashColor: Colors.grey,
+                          child: Container(
+                            width: 220,
+                            height: 50,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(image: AssetImage('assets/icons/png/bg_button.png'), fit: BoxFit.fill),
+                            ),
+                            child: Container(
+                              alignment: Alignment.center,
+                              padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 12.0),
+                              child: Text(
+                                "QUIT",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    fontStyle: FontStyle.normal,
+                                    fontFamily: 'neuropol_x_rg',
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black87),
+                              ),
+                            ),
+                          ),
+                          // ),
+                          onPressed: () {
+                            onTapAudio('button');
+                            showExitDialog();
+                          },
+                        ),
+                        preferences:
+                        AnimationPreferences(duration: const Duration(milliseconds: 1000), autoPlay: AnimationPlayStates.Forward),
+                      ),
+                    ],
                   ),
                 ),
 
-                Row(
-                  children: <Widget>[
-                    Expanded(
-                      flex: 2,
-                      child: SlideInLeft(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              width: 40,
-                              height: 40,
-                              margin: EdgeInsets.all(5),
-                              child: IconButton(
-                                icon: Image.asset('assets/icons/png/ic_setting.png', color: Colors.white,),
-                                onPressed: () {
-                                  onTapAudio('icon');
-                                  bool isNotifiOn;
-                                  SharedPreferenceHelper().getNotificationOnOffState().then((isNotificationOn) => {
-                                    isNotifiOn =isNotificationOn,
-                                  });
-                                  bool isSfxOn;
-                                  SharedPreferenceHelper().getSfxOnOffState().then((isSFXOn) => {
-                                    isSfxOn = isSFXOn,
-                                  });
-
-                                  SharedPreferenceHelper().getMusicOnOffState().then((isMusicOn) => {
-                                    Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Setting(isMusicOn, isNotifiOn, isSfxOn, widget.memberId))),
-                                  });
-                                },
-                              ),
-                              decoration:
-                              Views.boxDecorationWidgetForIconWithBgColor(Colors.black, 4.0, Colors.grey, 5.0, 5.0, 3.0),
-                            ),
-
-                            Container(
-                              width: 40,
-                              height: 40,
-                              margin: EdgeInsets.all(5),
-                              child: IconButton(
-                                icon: Image.asset('assets/icons/png/share.png'),
-                                onPressed: () {
-                                  onTapAudio('icon');
-                                  //_onShare(context, [], Constants.shareTxt, Constants.appName);
-                                  urlFileShare();
-                                },
-                              ),
-                              decoration:
-                              Views.boxDecorationWidgetForIconWithBgColor(Colors.greenAccent[700], 4.0, Colors.grey, 5.0, 5.0, 3.0),
-                            ),
-
-                            Container(
-                                width: 40,
-                                height: 40,
-                                margin: EdgeInsets.all(5),
-                                child: IconButton(
-                                  splashColor: Colors.white,
-                                  icon: SvgPicture.asset('assets/icons/svg/logout.svg'),
-                                  onPressed: () {
-                                    onTapAudio('icon');
-                                    SharedPreferenceHelper().clearPrefData();
-                                    Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => LogIn()));
-                                  },
-                                ),
-                                decoration:
-                                Views.boxDecorationWidgetForIconWithBgColor(Colors.redAccent, 4.0, Colors.grey, 5.0, 5.0, 3.0)),
-                          ],
+                Expanded(
+                  flex: 10,
+                  child: ZoomIn(
+                    child: Container(
+                      margin: EdgeInsets.fromLTRB(40, 0, 40, 0),
+                      child: CarouselAutoSlider(xApiKey: '56005600'),
+                    ),
+                    preferences:
+                    AnimationPreferences(duration: const Duration(milliseconds: 2000), autoPlay: AnimationPlayStates.Forward),
+                  ),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: SlideInRight(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          width: 40,
+                          height: 40,
+                          margin: EdgeInsets.all(5),
+                          child: IconButton(
+                            icon: SvgPicture.asset('assets/icons/svg/stage.svg', color: Colors.white,),
+                            onPressed: () {
+                              onTapAudio('icon');
+                              Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Leaderboard()));
+                            },
+                          ),
+                          decoration:
+                          Views.boxDecorationWidgetForIconWithBgColor(Colors.amber[700], 4.0, Colors.grey, 5.0, 5.0, 3.0),
                         ),
-                        preferences:
-                        AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 10,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          //login button
-                          FadeInDown(
-                            child: MaterialButton(
-                              splashColor: Colors.grey,
-                              child: Container(
-                                width: 220,
-                                height: 50,
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(image: AssetImage('assets/icons/png/bg_button.png'), fit: BoxFit.fill),
-                                ),
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 12.0),
-                                  child: Text(
-                                    "PLAY",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontStyle: FontStyle.normal,
-                                        fontFamily: 'neuropol_x_rg',
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black87),
-                                  ),
-                                ),
-                              ),
-                              onPressed: () {
-                                onTapAudio('button');
-                                //Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => GameOption()));
-                                Navigator.push(context, CupertinoPageRoute(builder: (BuildContext context) => GameOption()));
-                              },
-                            ),
-                            preferences:
-                            AnimationPreferences(duration: const Duration(milliseconds: 1000), autoPlay: AnimationPlayStates.Forward),
+                        Container(
+                          width: 40,
+                          height: 40,
+                          margin: EdgeInsets.all(5),
+                          child: IconButton(
+                            icon: Image.asset('assets/icons/png/ic_statistic_whites.png'),
+                            onPressed: () {
+                              onTapAudio('icon');
+                              Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Statistics(widget.xApiKey, widget.memberId)));
+                            },
                           ),
-
-                          FadeInLeft(
-                            child: MaterialButton(
-                              padding: EdgeInsets.fromLTRB(0.0, 2.0, 0.0, 0.0),
-                              splashColor: Colors.grey,
-                              child: Container(
-                                width: 220,
-                                height: 50,
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(image: AssetImage('assets/icons/png/bg_button.png'), fit: BoxFit.fill),
-                                ),
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 12.0),
-                                  child: Text(
-                                    "CARDS",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontStyle: FontStyle.normal,
-                                        fontFamily: 'neuropol_x_rg',
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black87),
-                                  ),
-                                ),
-                              ),
-                              onPressed: () {
-                                onTapAudio('button');
-                                //change here
-                                Navigator.push(
-                                    context,
-                                    CupertinoPageRoute(builder: (BuildContext context) => Cards(xApiKey: widget.xApiKey, memberId: widget.memberId,)));
-                              },
-                            ),
-                            preferences:
-                            AnimationPreferences(duration: const Duration(milliseconds: 1000), autoPlay: AnimationPlayStates.Forward),
-                          ),
-
-                          FadeInRight(
-                            child: MaterialButton(
-                              padding: EdgeInsets.fromLTRB(0.0, 2.0, 0.0, 0.0),
-                              splashColor: Colors.grey,
-                              child: Container(
-                                width: 220,
-                                height: 50,
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(image: AssetImage('assets/icons/png/bg_button.png'), fit: BoxFit.fill),
-                                ),
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 12.0),
-                                  child: Text(
-                                    "GAME RULES",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontStyle: FontStyle.normal,
-                                        fontFamily: 'neuropol_x_rg',
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black87),
-                                  ),
-                                ),
-                              ),
-                              // ),
-                              onPressed: () {
-                                onTapAudio('button');
-                                Navigator.push(context, MaterialPageRoute(
-                                    builder: (BuildContext context) => GameRule(xApiKey: widget.xApiKey, memberId: widget.memberId,)));
-                              },
-                            ),
-                            preferences:
-                            AnimationPreferences(duration: const Duration(milliseconds: 1000), autoPlay: AnimationPlayStates.Forward),
-                          ),
-                          FadeInUp(
-                            child: MaterialButton(
-                              padding: EdgeInsets.fromLTRB(0.0, 2.0, 0.0, 0.0),
-                              splashColor: Colors.grey,
-                              child: Container(
-                                width: 220,
-                                height: 50,
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(image: AssetImage('assets/icons/png/bg_button.png'), fit: BoxFit.fill),
-                                ),
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 12.0),
-                                  child: Text(
-                                    "ABOUT",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontStyle: FontStyle.normal,
-                                        fontFamily: 'neuropol_x_rg',
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black87),
-                                  ),
-                                ),
-                              ),
-                              onPressed: () {
-                                onTapAudio('button');
-                                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => AboutScreen(widget.xApiKey)));
-                              },
-                            ),
-                            preferences:
-                            AnimationPreferences(duration: const Duration(milliseconds: 1000), autoPlay: AnimationPlayStates.Forward),
-                          ),
-                          FadeInUpBig(
-                            child: MaterialButton(
-                              padding: EdgeInsets.fromLTRB(0.0, 2.0, 0.0, 0.0),
-                              splashColor: Colors.grey,
-                              child: Container(
-                                width: 220,
-                                height: 50,
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(image: AssetImage('assets/icons/png/bg_button.png'), fit: BoxFit.fill),
-                                ),
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 12.0),
-                                  child: Text(
-                                    "QUIT",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontStyle: FontStyle.normal,
-                                        fontFamily: 'neuropol_x_rg',
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black87),
-                                  ),
-                                ),
-                              ),
-                              // ),
-                              onPressed: () {
-                                onTapAudio('button');
-                                showExitDialog();
-                              },
-                            ),
-                            preferences:
-                            AnimationPreferences(duration: const Duration(milliseconds: 1000), autoPlay: AnimationPlayStates.Forward),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      flex: 10,
-                      child: ZoomIn(
-                        child: Container(
-                          margin: EdgeInsets.fromLTRB(40, 0, 40, 0),
-                          child: CarouselAutoSlider(),
+                          decoration:
+                          Views.boxDecorationWidgetForIconWithBgColor(Colors.cyan, 4.0, Colors.grey, 5.0, 5.0, 3.0),
                         ),
-                        preferences:
-                        AnimationPreferences(duration: const Duration(milliseconds: 2000), autoPlay: AnimationPlayStates.Forward),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 2,
-                      child: SlideInRight(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              width: 40,
-                              height: 40,
-                              margin: EdgeInsets.all(5),
-                              child: IconButton(
-                                icon: SvgPicture.asset('assets/icons/svg/stage.svg', color: Colors.white,),
-                                onPressed: () {
-                                  onTapAudio('icon');
-                                  Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Leaderboard()));
-                                },
-                              ),
-                              decoration:
-                              Views.boxDecorationWidgetForIconWithBgColor(Colors.amber[700], 4.0, Colors.grey, 5.0, 5.0, 3.0),
-                            ),
-                            Container(
-                              width: 40,
-                              height: 40,
-                              margin: EdgeInsets.all(5),
-                              child: IconButton(
-                                icon: Image.asset('assets/icons/png/ic_statistic_whites.png'),
-                                onPressed: () {
-                                  onTapAudio('icon');
-                                  Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Statistics(widget.xApiKey, widget.memberId)));
-                                },
-                              ),
-                              decoration:
-                              Views.boxDecorationWidgetForIconWithBgColor(Colors.cyan, 4.0, Colors.grey, 5.0, 5.0, 3.0),
-                            ),
 
-                            Container(
-                              width: 40,
-                              height: 40,
-                              margin: EdgeInsets.all(5),
-                              child: IconButton(
-                                icon: SvgPicture.asset('assets/icons/svg/user.svg', color: Colors.white,),
-                                onPressed: () {
-                                  onTapAudio('icon');
-                                  Navigator.push(context, MaterialPageRoute(
-                                      builder: (BuildContext context) => Profile(xApiKey: widget.xApiKey, memberId: widget.memberId,)));
-                                },
-                              ),
-                              decoration:
-                              Views.boxDecorationWidgetForIconWithBgColor(Colors.black54, 4.0, Colors.grey, 5.0, 5.0, 3.0),
-                            ),
-                          ],
+                        Container(
+                          width: 40,
+                          height: 40,
+                          margin: EdgeInsets.all(5),
+                          child: IconButton(
+                            icon: SvgPicture.asset('assets/icons/svg/user.svg', color: Colors.white,),
+                            onPressed: () {
+                              onTapAudio('icon');
+                              Navigator.push(context, MaterialPageRoute(
+                                  builder: (BuildContext context) => Profile(xApiKey: widget.xApiKey, memberId: widget.memberId,)));
+                            },
+                          ),
+                          decoration:
+                          Views.boxDecorationWidgetForIconWithBgColor(Colors.black54, 4.0, Colors.grey, 5.0, 5.0, 3.0),
                         ),
-                        preferences:
-                        AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
-                      ),
+                      ],
                     ),
-                  ],
+                    preferences:
+                    AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
+                  ),
                 ),
               ],
             ),
-          ),
+          ],
         ),
       ),
     );

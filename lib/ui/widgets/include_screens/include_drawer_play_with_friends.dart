@@ -3,23 +3,23 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:trump_card_game/bloc/api_bloc.dart';
-import 'package:trump_card_game/helper/exten_fun/base_application_fun.dart';
-import 'package:trump_card_game/model/responses/friends_res_model.dart';
-import 'package:trump_card_game/model/responses/match_making_res_model.dart';
-import 'package:trump_card_game/ui/screens/gameplay.dart';
+import 'package:clash_of_cardz_flutter/bloc/api_bloc.dart';
+import 'package:clash_of_cardz_flutter/helper/exten_fun/base_application_fun.dart';
+import 'package:clash_of_cardz_flutter/model/responses/friends_res_model.dart';
+import 'package:clash_of_cardz_flutter/model/responses/match_making_res_model.dart';
+import 'package:clash_of_cardz_flutter/ui/screens/gameplay.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 import 'package:lottie/lottie.dart';
-import 'package:trump_card_game/ui/widgets/include_screens/include_waiting_for_friend.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/include_screens/include_waiting_for_friend.dart';
 
 import 'include_searching_players.dart';
 
-Widget friendList(BuildContext context, String categoryName, String subcategoryName, String cardsToPlay) {
+Widget friendList(BuildContext context, String gameCat1, String gameCat2, String gameCat3, String gameCat4, String cardsToPlay) {
   return StreamBuilder(
     stream: apiBloc.friendsRes,
     builder: (context, AsyncSnapshot<FriendsResModel> snapshot) {
       if (snapshot.hasData) {
-        return searchableUsersWidget(context, snapshot.data, categoryName, subcategoryName, '14');
+        return searchableUsersWidget(context, snapshot.data, gameCat1, gameCat2, gameCat3, gameCat4, '14');
       } else if (snapshot.hasError) {
         return Text(snapshot.error.toString());
       }
@@ -38,7 +38,7 @@ Widget friendList(BuildContext context, String categoryName, String subcategoryN
   );
 }
 
-Widget searchableUsersWidget(BuildContext context, FriendsResModel data, String categoryName, String subcategoryName, String cardsToPlay) {
+Widget searchableUsersWidget(BuildContext context, FriendsResModel data, String gameCat1, String gameCat2, String gameCat3, String gameCat4, String cardsToPlay) {
   List<Response> dataList = data.response;
 
   ValueNotifier<List<Response>> filtered = ValueNotifier<List<Response>>([]);
@@ -122,8 +122,10 @@ Widget searchableUsersWidget(BuildContext context, FriendsResModel data, String 
 
                               sendNotificationToOtherPlayerByApi(
                                 context,
-                                categoryName,
-                                subcategoryName,
+                                gameCat1,
+                                gameCat2,
+                                gameCat3,
+                                gameCat4,
                                 '14',
                                 dataList[index].freindId,
                                 dataList[index].fullname,
@@ -212,13 +214,16 @@ Widget searchableUsersWidget(BuildContext context, FriendsResModel data, String 
   );
 }
 
-void sendNotificationToOtherPlayerByApi(BuildContext context, String categoryName, String subcategoryName, String cardsToPlay, friendId, friendName, friendImage) {
+void sendNotificationToOtherPlayerByApi(BuildContext context, String gameCat1, String gameCat2, String gameCat3, String gameCat4,  String cardsToPlay, friendId, friendName, friendImage) {
   showDialog(
     context: context,
     builder: (_) => IncludeWaitingForFriend(
-      categoryName: categoryName,
-      subcategoryName: subcategoryName,
+      gameCat1: gameCat1,
+      gameCat2: gameCat2,
+      gameCat3: gameCat3,
+      gameCat4: gameCat4,
       gameType: 'play with friends',
+      playerType: 'Batsman',
       cardsToPlay: cardsToPlay,
       friendId: friendId,
       friendName: friendName,

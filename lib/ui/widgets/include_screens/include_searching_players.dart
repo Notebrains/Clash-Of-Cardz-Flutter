@@ -5,22 +5,25 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:trump_card_game/helper/constantvalues/constants.dart';
-import 'package:trump_card_game/helper/exten_fun/base_application_fun.dart';
-import 'package:trump_card_game/helper/exten_fun/common_fun.dart';
-import 'package:trump_card_game/helper/shared_preference_data.dart';
-import 'package:trump_card_game/model/arguments/firebase_player_details_model.dart';
-import 'package:trump_card_game/ui/screens/gameplay.dart';
-import 'package:trump_card_game/ui/screens/home.dart';
-import 'package:trump_card_game/ui/screens/pvp.dart';
-import 'package:trump_card_game/ui/widgets/custom/frosted_glass.dart';
+import 'package:clash_of_cardz_flutter/helper/constantvalues/constants.dart';
+import 'package:clash_of_cardz_flutter/helper/exten_fun/base_application_fun.dart';
+import 'package:clash_of_cardz_flutter/helper/exten_fun/common_fun.dart';
+import 'package:clash_of_cardz_flutter/helper/shared_preference_data.dart';
+import 'package:clash_of_cardz_flutter/model/arguments/firebase_player_details_model.dart';
+import 'package:clash_of_cardz_flutter/ui/screens/gameplay.dart';
+import 'package:clash_of_cardz_flutter/ui/screens/home.dart';
+import 'package:clash_of_cardz_flutter/ui/screens/pvp.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/custom/frosted_glass.dart';
 import 'dart:io' show Platform;
 
-import 'package:trump_card_game/ui/widgets/libraries/flutter_toast.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/libraries/flutter_toast.dart';
 
 class IncludeSearchingForPlayer extends StatefulWidget {
-  final String categoryName;
-  final String subcategoryName;
+  final String gameCat1;
+  final String gameCat2;
+  final String gameCat3;
+  final String gameCat4;
+  final String playerType;
   final String gameType;
   final String cardsToPlay;
   final String xApiKey;
@@ -28,7 +31,18 @@ class IncludeSearchingForPlayer extends StatefulWidget {
   final String p1MemberId;
   final String p1Photo;
 
-  const IncludeSearchingForPlayer({Key key, this.categoryName, this.subcategoryName, this.gameType, this.cardsToPlay, this.xApiKey, this.p1FullName, this.p1MemberId, this.p1Photo}) : super(key: key);
+  const IncludeSearchingForPlayer({Key key,
+    this.gameCat1,
+    this.gameCat2,
+    this.gameCat3,
+    this.gameCat4,
+    this.playerType,
+    this.gameType,
+    this.cardsToPlay,
+    this.xApiKey,
+    this.p1FullName,
+    this.p1MemberId,
+    this.p1Photo}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => IncludeSearchingForPlayerState();
@@ -77,6 +91,8 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForPlayer> wi
 
   @override
   Widget build(BuildContext context) {
+    print('----game cats searching player 1: ${widget.gameCat1} , ${widget.gameCat2} , ${widget.gameCat3}, ${widget.gameCat4},'
+        ' ${widget.gameType}, ${widget.playerType}, ${widget.cardsToPlay}');
     return Center(
       child: Material(
         color: Colors.transparent,
@@ -201,9 +217,11 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForPlayer> wi
           print('Player Details List: { key: $playerDetailsKey, value: $playerDetailsValue}');
           print('Fb ***: ${playerDetailsValue['userId']}');
 
-
-          if (playerDetailsValue.containsValue(widget.categoryName) &&
-              playerDetailsValue.containsValue(widget.subcategoryName) &&
+          if (playerDetailsValue.containsValue(widget.gameCat1) &&
+              playerDetailsValue.containsValue(widget.gameCat2) &&
+              playerDetailsValue.containsValue(widget.gameCat3) &&
+              playerDetailsValue.containsValue(widget.gameCat4) &&
+              playerDetailsValue.containsValue(widget.playerType) &&
               playerDetailsValue.containsValue(widget.gameType) &&
               playerDetailsValue.containsValue(widget.cardsToPlay) &&
               !fbJoinedPlayerList.contains(playerDetailsValue['userId'])) {
@@ -234,8 +252,11 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForPlayer> wi
         'image': widget.p1Photo,
         'userId': widget.p1MemberId,
         'joinedUserType': 'host',
-        'category': widget.categoryName,
-        'subCategory': widget.subcategoryName,
+        'gameCat1': widget.gameCat1,
+        'gameCat2': widget.gameCat2,
+        'gameCat3': widget.gameCat3,
+        'gameCat4': widget.gameCat4,
+        'playerType': widget.playerType,
         'gameType': widget.gameType,
         'cardCount': widget.cardsToPlay,
       });
@@ -258,11 +279,14 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForPlayer> wi
   void listeningToFirebaseDataUpdate() {
     playerDetailsSubscription = _playerDetailsRef.limitToFirst(1).onChildAdded.listen((Event event) {
       //print('--------- joinedUserType ${event.snapshot.value['joinedUserType']}');
-      print('-----onChildAdded:  ${event.snapshot.key}');
+      //print('-----onChildAdded:  ${event.snapshot.key}');
 
       String playerDetailsKey = event.snapshot.key;
-      String category = event.snapshot.value['category'];
-      String subCategory = event.snapshot.value['subCategory'];
+      String gameCat1 = event.snapshot.value['gameCat1'];
+      String gameCat2 = event.snapshot.value['gameCat2'];
+      String gameCat3 = event.snapshot.value['gameCat3'];
+      String gameCat4 = event.snapshot.value['gameCat4'];
+      String playerType = event.snapshot.value['playerType'];
       String cardCount = event.snapshot.value['cardCount'];
       String gameType = event.snapshot.value['gameType'];
       String firebasePlayerName = event.snapshot.value['playerName'];
@@ -270,8 +294,11 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForPlayer> wi
       String firebasePlayerImage = event.snapshot.value['image'];
       String joinedUserType = event.snapshot.value['joinedUserType'];
 
-      if (category == widget.categoryName &&
-          subCategory == widget.subcategoryName &&
+      if (gameCat1 == widget.gameCat1 &&
+          gameCat2 == widget.gameCat2 &&
+          gameCat3 == widget.gameCat3 &&
+          gameCat4 == widget.gameCat4 &&
+          playerType == widget.playerType &&
           gameType == widget.gameType &&
           cardCount == widget.cardsToPlay &&
           !fbJoinedPlayerList.contains(firebasePlayerId)
@@ -293,7 +320,7 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForPlayer> wi
   }
 
   void createGameRoom(String p2Id, String p2Name, String p2Image) async{
-    print('-----p2id: $p2Id');
+    //print('-----p2id: $p2Id');
     if (p2Id.isNotEmpty) {
       _gameRoomName = 'gr-${widget.p1MemberId}-$p2Id';
 
@@ -304,8 +331,11 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForPlayer> wi
         'p2Id': p2Id,
         'p2Name': p2Name,
         'p2Image': p2Image,
-        'category': widget.categoryName,
-        'subCategory': widget.subcategoryName,
+        'gameCat1': widget.gameCat1,
+        'gameCat2': widget.gameCat2,
+        'gameCat3': widget.gameCat3,
+        'gameCat4': widget.gameCat4,
+        'playerType': widget.playerType,
         'gameType': widget.gameType,
         'cardCount': widget.cardsToPlay,
       }).then((_) {
@@ -328,8 +358,11 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForPlayer> wi
             event.snapshot.value['p2Name'],
             event.snapshot.value['p2Id'],
             event.snapshot.value['p2Image'],
-            event.snapshot.value['category'],
-            event.snapshot.value['subCategory'],
+            event.snapshot.value['gameCat1'],
+            event.snapshot.value['gameCat2'],
+            event.snapshot.value['gameCat3'],
+            event.snapshot.value['gameCat4'],
+            event.snapshot.value['playerType'],
             event.snapshot.value['gameType'],
             event.snapshot.value['cardCount'],
         );
@@ -357,13 +390,15 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForPlayer> wi
     }
   }
 
-  void openGamePlayPage(String p1Name, String p1Id, String p1Img, String p2Name, String p2Id, String p2Img, String category,
-      String subcategoryName, String gameType, String cardsToPlay) {
+  void openGamePlayPage(String p1Name, String p1Id, String p1Img, String p2Name, String p2Id, String p2Img, String gameCat1, String gameCat2,
+      String gameCat3, String gameCat4, String playerType, String gameType, String cardsToPlay) {
+    print('----game cats searching player 2: ${widget.gameCat1} , ${widget.gameCat2} , ${widget.gameCat3}, ${widget.gameCat4}');
+
     Navigator.push(
       context,
-      CupertinoPageRoute(builder: (context) => Pvp(p1Name: p1Name, p1Id: p1Id, p1Image: p1Img, p2Name: p2Name, p2Id: p2Id, p2Image: p2Img,
-        categoryName: category, subcategoryName: subcategoryName, gameType: gameType, cardsToPlay: cardsToPlay,),),
-    ).then((value) => Navigator.of(context).pop());
+      CupertinoPageRoute(builder: (context) => Pvp(xApiKey: widget.xApiKey, p1Name: p1Name, p1Id: p1Id, p1Image: p1Img, p2Name: p2Name, p2Id: p2Id, p2Image: p2Img,
+        gameCat1: gameCat1, gameCat2: gameCat3, gameCat3: gameCat3, gameCat4: gameCat4, playerType: playerType, gameType: gameType, cardsToPlay: cardsToPlay,),),
+    ).then((value) => Navigator.of(context, rootNavigator: true).pop());
   }
 
   @override

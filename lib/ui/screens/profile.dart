@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:trump_card_game/bloc/api_bloc.dart';
-import 'package:trump_card_game/model/responses/profile_res_model.dart';
-import 'package:trump_card_game/ui/widgets/custom/frosted_glass.dart';
-import 'package:trump_card_game/ui/widgets/include_screens/include_profile.dart';
+import 'package:clash_of_cardz_flutter/bloc/api_bloc.dart';
+import 'package:clash_of_cardz_flutter/model/responses/profile_res_model.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/custom/frosted_glass.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/include_screens/include_profile.dart';
 
 class Profile extends StatelessWidget {
   // This widget is the root of your application.

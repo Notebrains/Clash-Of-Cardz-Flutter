@@ -8,26 +8,18 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:679219523500:android:b657fa1f8376b313095409",
+        "mobilesdk_app_id": "1:679219523500:android:6c3fd4d0c34a28ce095409",
         "android_client_info": {
-          "package_name": "mridaya.game.trump.trump_card_game"
+          "package_name": "com.clash.cardz"
         }
       },
       "oauth_client": [
         {
-          "client_id": "679219523500-17cotgvv05sdr86kkjig7hgbdkphvoi6.apps.googleusercontent.com",
+          "client_id": "679219523500-d7hr767dm96bsjca7k7l1pfd5144ii4d.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "mridaya.game.trump.trump_card_game",
+            "package_name": "com.clash.cardz",
             "certificate_hash": "d53d917c39fd01bdd0c292cd90a7d81ba1396fa2"
-          }
-        },
-        {
-          "client_id": "679219523500-aueeaaj6euc9ln4gvdn51a56bkq1oe9m.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "mridaya.game.trump.trump_card_game",
-            "certificate_hash": "20578022bf19df78d6ddf8bef6b016ca4fd8003e"
           }
         },
         {
@@ -48,10 +40,10 @@
               "client_type": 3
             },
             {
-              "client_id": "679219523500-i10bhbrmqej5prudnfmombhc78v3imjs.apps.googleusercontent.com",
+              "client_id": "679219523500-5m2chobq9a3bu8h6qc24ljt1chjhqg9l.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "mridaya.game.trump.trumpCardGame"
+                "bundle_id": "com.clash.cardz"
               }
             }
           ]

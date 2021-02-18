@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:trump_card_game/helper/constantvalues/constants.dart';
-import 'package:trump_card_game/model/responses/profile_res_model.dart';
-import 'package:trump_card_game/ui/screens/statistics.dart';
-import 'package:trump_card_game/ui/widgets/views/view_widgets.dart';
+import 'package:clash_of_cardz_flutter/helper/constantvalues/constants.dart';
+import 'package:clash_of_cardz_flutter/model/responses/profile_res_model.dart';
+import 'package:clash_of_cardz_flutter/ui/screens/statistics.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/views/view_widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 

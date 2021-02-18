@@ -6,23 +6,23 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:trump_card_game/bloc/api_bloc.dart';
-import 'package:trump_card_game/helper/exten_fun/base_application_fun.dart';
-import 'package:trump_card_game/helper/exten_fun/common_fun.dart';
-import 'package:trump_card_game/helper/shared_preference_data.dart';
+import 'package:clash_of_cardz_flutter/bloc/api_bloc.dart';
+import 'package:clash_of_cardz_flutter/helper/exten_fun/base_application_fun.dart';
+import 'package:clash_of_cardz_flutter/helper/exten_fun/common_fun.dart';
+import 'package:clash_of_cardz_flutter/helper/shared_preference_data.dart';
 import 'package:lottie/lottie.dart';
 import 'package:flutter_animator/flutter_animator.dart';
-import 'package:trump_card_game/ui/widgets/include_screens/include_game_play_dialogs.dart';
-import 'package:trump_card_game/ui/widgets/include_screens/include_game_play_win_screen.dart';
-import 'package:trump_card_game/ui/widgets/libraries/animated_text_kit/wavy.dart';
-import 'package:trump_card_game/model/state_managements/gameplay_states_model.dart';
-import 'package:trump_card_game/ui/widgets/custom/frosted_glass.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/include_screens/include_game_play_dialogs.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/include_screens/include_game_play_win_screen.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/libraries/animated_text_kit/wavy.dart';
+import 'package:clash_of_cardz_flutter/model/state_managements/gameplay_states_model.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/custom/frosted_glass.dart';
 import 'package:provider/provider.dart';
-import 'package:trump_card_game/model/responses/cards_res_model.dart';
-import 'package:trump_card_game/ui/widgets/include_screens/include_game_play_cards.dart';
-import 'package:trump_card_game/ui/widgets/include_screens/include_gameplay.dart';
-import 'package:trump_card_game/ui/widgets/libraries/avatar_glow.dart';
-import 'package:trump_card_game/ui/widgets/libraries/flutter_toast.dart';
+import 'package:clash_of_cardz_flutter/model/responses/cards_res_model.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/include_screens/include_game_play_cards.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/include_screens/include_gameplay.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/libraries/avatar_glow.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/libraries/flutter_toast.dart';
 
 import 'game_result.dart';
 
@@ -33,23 +33,30 @@ class Gameplay extends StatelessWidget {
   String p2Name = '';
   String p2MemberId = '';
   String p2Image = '';
-  String categoryName = '';
-  String subcategoryName = '';
-  String gameType = '';
-  String cardsToPlay = '';
+  final String xApiKey;
+  final String gameCat1;
+  final String gameCat2;
+  final String gameCat3;
+  final String gameCat4;
+  final String playerType;
+  final String gameType;
+  final String cardsToPlay;
 
-  Gameplay({
+  Gameplay ({ Key key,
+    this.xApiKey,
     this.p1FullName,
     this.p1MemberId,
     this.p1Photo,
     this.p2Name,
     this.p2MemberId,
     this.p2Image,
-    this.categoryName,
-    this.subcategoryName,
+    this.gameCat1,
+    this.gameCat2,
+    this.gameCat3,
+    this.gameCat4,
+    this.playerType,
     this.gameType,
-    this.cardsToPlay,
-  });
+    this.cardsToPlay,}): super(key: key);
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   GamePlayStatesModel statesModelGlobal = GamePlayStatesModel();
@@ -95,13 +102,14 @@ class Gameplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('----game cats: $gameCat1 , $gameCat2 , $gameCat2, $gameCat4, $gameType, $cardsToPlay, $playerType');
+
     setScreenOrientationToLandscape();
     //getSavedUserDataFromPref();
     initFirebaseCredentials();
     manageP1AndP2Data();
 
-    //fetchApiData();
-    apiBloc.fetchCardsRes("ZGHrDz4prqsu4BcApPaQYaGgq", 'cricket', 'sports', '2', '14');
+    apiBloc.fetchCardsRes(xApiKey, gameCat1, gameCat2, gameCat3, gameCat4, cardsToPlay, _gameRoomName, playerType,);
     return ChangeNotifierProvider(
       // Initialize the model in the builder. That way, Provider
       // can own GamePlayStatesModel's lifecycle, making sure to call `dispose`
@@ -661,35 +669,30 @@ class Gameplay extends StatelessWidget {
   }
 
   void gotoResultScreen(BuildContext context, bool isP1Won, GamePlayStatesModel statesModel) {
-    isP1Won
-        ? Navigator.push(
+    Navigator.push(
             context,
             CupertinoPageRoute(
-              builder: (context) => GameResult(
+              builder: (context) => isP1Won ?
+              GameResult(
                 winnerName: p1FullName,
                 winnerId: p1MemberId,
                 winnerImage: p1Photo,
                 winnerCoins: "0",
                 winnerPoints: statesModel.player1TotalPoints.toString(),
-                cardType: categoryName,
+                cardType: gameCat1,
                 clashType: '1 vs 1',
                 //static
                 playedCards: cardsToPlay,
                 isP1Won: true,
                 gamePlayType: 'vsPlayer',
-              ),
-            ),
-          )
-        : Navigator.push(
-            context,
-            CupertinoPageRoute(
-              builder: (context) => GameResult(
+              ):
+              GameResult(
                 winnerName: p2Name,
                 winnerId: p2MemberId,
                 winnerImage: p2Image,
                 winnerCoins: "0",
                 winnerPoints: statesModel.player2TotalPoints.toString(),
-                cardType: categoryName,
+                cardType: gameCat1,
                 clashType: '1 vs 1',
                 playedCards: cardsToPlay,
                 isP1Won: false,
@@ -702,11 +705,6 @@ class Gameplay extends StatelessWidget {
     _gameRoomRef.child(_gameRoomName).remove();
     //dispose firebase ref subs
     gamePlaySubscription.cancel();
-  }
-
-  void fetchApiData() async {
-    //apiBloc.fetchCardsRes("ZGHrDz4prqsu4BcApPaQYaGgq", subcategoryName, categoryName, '2', cardsToPlay);
-    await apiBloc.fetchCardsRes("ZGHrDz4prqsu4BcApPaQYaGgq", 'cricket', 'sports', '2', '14');
   }
 
 /*@override
