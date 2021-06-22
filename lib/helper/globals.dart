@@ -1,8 +1,8 @@
-import 'package:audioplayers/audio_cache.dart';
-import 'package:audioplayers/audioplayers.dart';
+//import 'package:audioplayers/audio_cache.dart';
+//import 'package:audioplayers/audioplayers.dart';
 
 class Globals {
-  static AudioPlayer audioPlayerInstance;
+/*  static AudioPlayer audioPlayerInstance;
 
   static AudioPlayer getAudioPlayerInstance() {
     //print('isMusicOn : $isAudioOn');
@@ -12,5 +12,5 @@ class Globals {
   static setAudioPlayerInstance(AudioPlayer instance) {
     audioPlayerInstance = instance;
     getAudioPlayerInstance(); // this can be replaced with any static method
-  }
+  }*/
 }

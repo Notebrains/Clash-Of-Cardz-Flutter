@@ -7,7 +7,7 @@ class Constants{
   static const String imgUrlGame = 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/716758e4-cb26-4afc-9603-5d9a4a25d7b9/dc6ybgi-f0935800-2c5f-42ca-bff0-13d3d961095a.png/v1/fill/w_424,h_466,strp/rules_of_survival_icon_by_kzkasun_dc6ybgi-fullview.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOiIsImlzcyI6InVybjphcHA6Iiwib2JqIjpbW3siaGVpZ2h0IjoiPD00NjYiLCJwYXRoIjoiXC9mXC83MTY3NThlNC1jYjI2LTRhZmMtOTYwMy01ZDlhNGEyNWQ3YjlcL2RjNnliZ2ktZjA5MzU4MDAtMmM1Zi00MmNhLWJmZjAtMTNkM2Q5NjEwOTVhLnBuZyIsIndpZHRoIjoiPD00MjQifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6aW1hZ2Uub3BlcmF0aW9ucyJdfQ.M6eTLPQOThREUnzd0Pz7BtqzphM_ahBhQPsroarrBEQ';
 
   static const String appNameText = '___CLASH OF CARDZ___';
-  static const String shareTxt = 'CLASH OF CARDZ is a highly addictive high score competitive trump card style game. Join the game now and beat others.';
+  static const String shareAndroidTxt = 'CLASH OF CARDZ is a highly addictive high score competitive trump card style game. Join the game now and beat others. Install iOS app from app store and android app from google play store: https://play.google.com/store/apps/details?id=com.clash.cardz&hl=en';
   static const String aboutGameText1 = 'The benefits of play go far beyond fun. True for every group in society. Read on to see how playing cards & board games bring people together.';
   static const String aboutGameText2Header = 'HOW CHILDREN LEARN ABOUT RELATIONSHIPS';
   static const String aboutGameText3 = 'Playing is how children learn from the youngest age. Have you ever seen a baby giggle when you play the easiest game of hide and seek—now you see me, now you don’t? It’s not only adorable: it teaches young brains about the world and the most important people in their lives.';

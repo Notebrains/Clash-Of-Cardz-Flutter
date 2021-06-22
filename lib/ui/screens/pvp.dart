@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:clash_of_cardz_flutter/helper/shared_preference_data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:clash_of_cardz_flutter/helper/constantvalues/constants.dart';
@@ -62,7 +63,8 @@ class _PvpState extends State<Pvp> {
 
   @override
   Widget build(BuildContext context) {
-    //print('----game cats pvp: ${widget.gameCat1} , ${widget.gameCat2} , ${widget.gameCat3}, ${widget.gameCat4}');
+    print(
+        '----game cats pvp: ${widget.gameCat1} , ${widget.gameCat2} , ${widget.gameCat3}, ${widget.gameCat4}, ${widget.playerType}, ${widget.cardsToPlay}, ${widget.gameType}');
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -143,7 +145,9 @@ class _PvpState extends State<Pvp> {
                         child: CircleAvatar(
                           radius: 30,
                           child: FadeInImage.assetNetwork(
-                            placeholder: 'assets/icons/png/circle-avator-default-img.png',
+                            placeholder: widget.p2Image != Constants.imgUrlComputer
+                                ? 'assets/icons/png/circle-avator-default-img.png'
+                                : 'assets/icons/png/chatbots-chat-bot-azul.png',
                             image: widget.p2Image,
                             fit: BoxFit.contain,
                           ),
@@ -190,38 +194,77 @@ class _PvpState extends State<Pvp> {
 
   void openGamePlayPage() async {
     Future.delayed(const Duration(milliseconds: 2500), () {
-      Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(
-              builder: (context) => widget.p2Image != Constants.imgUrlComputer?
-              Gameplay(
-                xApiKey: widget.xApiKey,
-                p1FullName: widget.p1Name,
-                p1MemberId: widget.p1Id,
-                p1Photo: widget.p1Image,
-                p2Name: widget.p2Name,
-                p2MemberId: widget.p2Id,
-                p2Image: widget.p2Image,
-                gameCat1: widget.gameCat1,
-                gameCat2: widget.gameCat2,
-                gameCat3: widget.gameCat3,
-                gameCat4: widget.gameCat4,
-                playerType: widget.playerType,
-                gameType: widget.gameType,
-                cardsToPlay: widget.cardsToPlay,
-              ): AutoPlay(
-                  xApiKey: widget.xApiKey,
-                  gameCat1: widget.gameCat1,
-                  gameCat2: widget.gameCat2,
-                  gameCat3: widget.gameCat3,
-                  gameCat4: widget.gameCat4,
-                  playerType: widget.playerType,
-                  gameType: widget.gameType,
-                  cardToPlay: widget.cardsToPlay,
-              ),
-          ),
-          ModalRoute.withName("/Gameplay")
-      );
+      SharedPreferenceHelper().getUserUserMemberId().then((p1MemberIdPref) => {
+            Future.delayed(const Duration(milliseconds: 2500), () {
+              String gameRoomName = 'gamePlay-${widget.p1Id}-${widget.p2Id}';
+              if (widget.p2Image == Constants.imgUrlComputer) {
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AutoPlay(
+                      xApiKey: widget.xApiKey,
+                      gameCat1: widget.gameCat1,
+                      gameCat2: widget.gameCat2,
+                      gameCat3: widget.gameCat3,
+                      gameCat4: widget.gameCat4,
+                      playerType: widget.playerType,
+                      gameType: widget.gameType,
+                      cardToPlay: widget.cardsToPlay,
+                    ),
+                  ),
+                  ModalRoute.withName("/Gameplay"),
+                );
+              } else if (p1MemberIdPref == widget.p1Id) {
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => Gameplay(
+                            xApiKey: widget.xApiKey,
+                            isPlayAsP1: true,
+                            p1FullName: widget.p1Name,
+                            p1MemberId: widget.p1Id,
+                            p1Photo: widget.p1Image,
+                            p2Name: widget.p2Name,
+                            p2MemberId: widget.p2Id,
+                            p2Image: widget.p2Image,
+                            gameCat1: widget.gameCat1,
+                            gameCat2: widget.gameCat2,
+                            gameCat3: widget.gameCat3,
+                            gameCat4: widget.gameCat4,
+                            playerType: widget.playerType,
+                            gameType: widget.gameType,
+                            cardsToPlay: widget.cardsToPlay,
+                            gameRoomName: gameRoomName,
+                          )),
+                  ModalRoute.withName("/Gameplay"),
+                );
+              } else if (p1MemberIdPref == widget.p2Id) {
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => Gameplay(
+                            xApiKey: widget.xApiKey,
+                            isPlayAsP1: false,
+                            p1FullName: widget.p2Name,
+                            p1MemberId: widget.p2Id,
+                            p1Photo: widget.p2Image,
+                            p2Name: widget.p1Name,
+                            p2MemberId: widget.p1Id,
+                            p2Image: widget.p1Image,
+                            gameCat1: widget.gameCat1,
+                            gameCat2: widget.gameCat2,
+                            gameCat3: widget.gameCat3,
+                            gameCat4: widget.gameCat4,
+                            playerType: widget.playerType,
+                            gameType: widget.gameType,
+                            cardsToPlay: widget.cardsToPlay,
+                            gameRoomName: gameRoomName,
+                          )),
+                  ModalRoute.withName("/Gameplay"),
+                );
+              }
+            }),
+          });
     });
   }
 }

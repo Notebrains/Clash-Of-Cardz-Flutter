@@ -1,4 +1,3 @@
 class MatchMakingResModel{
-  MatchMakingResModel.fromJson(dynamic json) {
-  }
+  MatchMakingResModel.fromJson(dynamic json);
 }

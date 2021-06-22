@@ -5,7 +5,7 @@ class CharacterCardBackgroundClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
     Path clippedPath = Path();
-    double curveDistance = 40;
+    double curveDistance = 16; // Change this to change curve
 
     clippedPath.moveTo(0, size.height * 0.4);
     clippedPath.lineTo(0, size.height - curveDistance);

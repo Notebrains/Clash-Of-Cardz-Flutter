@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'dart:ui';
+import 'package:clash_of_cardz_flutter/bloc/api_bloc.dart';
+import 'package:clash_of_cardz_flutter/model/responses/send_notification_to_friend_res_model.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
@@ -9,7 +11,7 @@ import 'package:clash_of_cardz_flutter/helper/exten_fun/base_application_fun.dar
 import 'package:clash_of_cardz_flutter/helper/shared_preference_data.dart';
 import 'package:clash_of_cardz_flutter/model/arguments/firebase_player_details_model.dart';
 import 'package:clash_of_cardz_flutter/ui/screens/pvp.dart';
-import 'package:clash_of_cardz_flutter/ui/screens/home.dart';
+import 'package:clash_of_cardz_flutter/ui/screens/old_screen/old_home.dart';
 import 'dart:io' show Platform;
 
 import 'package:clash_of_cardz_flutter/ui/widgets/libraries/flutter_toast.dart';
@@ -49,10 +51,8 @@ class IncludeWaitingForFriendState extends State<IncludeWaitingForFriend> with S
   AnimationController controller;
   Animation<double> scaleAnimation;
   List <FirebasePlayerDetailsModel> fbJoinedPlayerList = [];
-
   DatabaseReference _friendDetailsRef;
   StreamSubscription<Event> playerDetailsSubscription;
-
   FirebaseApp firebaseApp;
 
   var xApiKey = '';
@@ -85,8 +85,6 @@ class IncludeWaitingForFriendState extends State<IncludeWaitingForFriend> with S
     });
 
     controller.forward();
-
-
     print('Fb retrieveFirebaseData method called 1');
     retrieveFirebaseData();
 
@@ -150,18 +148,18 @@ class IncludeWaitingForFriendState extends State<IncludeWaitingForFriend> with S
 
 
                                           Toast.show("Player has not joined the match", context, duration: Toast.lengthLong, gravity:  Toast.bottom,
-                                          backgroundColor: Colors.deepOrange,
-                                          textStyle:  TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 20,
-                                            shadows: [
-                                              Shadow(color: Colors.white),
-                                            ],
-                                          ));
+                                              backgroundColor: Colors.deepOrange,
+                                              textStyle:  TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 20,
+                                                shadows: [
+                                                  Shadow(color: Colors.white),
+                                                ],
+                                              ));
 
                                           Navigator.push(
-                                              context, CupertinoPageRoute(builder: (context) => HomeScreen(xApiKey: xApiKey, memberId: memberId,),
+                                            context, CupertinoPageRoute(builder: (context) => OldHomeScreen(xApiKey: xApiKey, memberId: memberId,),
                                           ),
                                           );
                                         },

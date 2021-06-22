@@ -1,4 +1,5 @@
 import 'package:clash_of_cardz_flutter/helper/exten_fun/base_application_fun.dart';
+import 'package:clash_of_cardz_flutter/ui/screens/old_screen/setting.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -7,7 +8,6 @@ import 'package:clash_of_cardz_flutter/helper/constantvalues/constants.dart';
 import 'package:clash_of_cardz_flutter/helper/exten_fun/common_fun.dart';
 import 'package:clash_of_cardz_flutter/helper/shared_preference_data.dart';
 import 'package:clash_of_cardz_flutter/model/responses/game_option_res_model.dart';
-import 'package:clash_of_cardz_flutter/ui/screens/autoplay.dart';
 import 'package:clash_of_cardz_flutter/ui/screens/pvp.dart';
 import 'package:clash_of_cardz_flutter/ui/widgets/include_screens/include_drawer_play_with_friends.dart';
 import 'package:clash_of_cardz_flutter/ui/widgets/include_screens/include_searching_players.dart';
@@ -16,25 +16,29 @@ import 'package:clash_of_cardz_flutter/ui/widgets/libraries/shimmer.dart';
 import 'package:clash_of_cardz_flutter/ui/widgets/views/view_widgets.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 
-import 'login.dart';
+import 'old_screen/old_login.dart';
 
 class GameOptionThree extends StatefulWidget {
   final String gameCat1;
   final String gameCat2;
   final String gameCat3;
   final String gameCat4;
-  const GameOptionThree ({ Key key, this.gameCat1, this.gameCat2, this.gameCat3, this.gameCat4}): super(key: key);
+
+  const GameOptionThree({Key key, this.gameCat1, this.gameCat2, this.gameCat3, this.gameCat4}) : super(key: key);
 
   @override
   _GameOptionThreeState createState() => _GameOptionThreeState();
 }
 
 class _GameOptionThreeState extends State<GameOptionThree> {
-
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
 
-  List<String> cardToPlayLists = ['14', '22', '30',];
-  List<String> gamePlayTypeLists = ['vs Player','vs Friends','vs Computer'];
+  List<String> cardToPlayLists = [
+    '14',
+    '22',
+    '30',
+  ];
+  List<String> gamePlayTypeLists = ['vs Player', 'vs Friends', 'vs Computer'];
   List<String> cardToPlayEmptyList = [];
   List<String> gamePlayTypeEmptyList = [];
   List<Card_type> playerTypeList = [];
@@ -47,6 +51,9 @@ class _GameOptionThreeState extends State<GameOptionThree> {
   String p1MemberId = '';
   String p1Photo = '';
 
+  double screenWidth = 800;
+  double screenHeight = 400;
+
   @override
   void initState() {
     super.initState();
@@ -55,6 +62,8 @@ class _GameOptionThreeState extends State<GameOptionThree> {
 
   @override
   Widget build(BuildContext context) {
+    screenWidth = getScreenWidth(context);
+    screenHeight = getScreenHeight(context);
     playerTypeList = ModalRoute.of(context).settings.arguments;
 
     return WillPopScope(
@@ -89,16 +98,12 @@ class _GameOptionThreeState extends State<GameOptionThree> {
                 ),
               ),
 
-              //change here
               //building friend list ui in drawer
-
-              friendList(context, widget.gameCat1, widget.gameCat2,  widget.gameCat3,  widget.gameCat4, gamePlayType),
-
-              //gamePlayType.isNotEmpty? friendList(context, widget.categoryName, widget.subcategoryName, gamePlayType):
-              //showToastWithReturnWidget(context, 'Please Select No Of Cards To Play'),
+              friendList(context, xApiKey, p1MemberId, widget.gameCat1, widget.gameCat2, widget.gameCat3, widget.gameCat4, gamePlayType, playerType),
             ],
           ),
         ),
+
         body: Container(
           decoration: new BoxDecoration(
             image: new DecorationImage(
@@ -139,33 +144,29 @@ class _GameOptionThreeState extends State<GameOptionThree> {
                 child: Row(
                   children: [
                     Container(
-                      width: getScreenWidth(context)/3.6,
+                      width: screenWidth / 3.6,
                       child: buildPlayerTypeList(),
                     ),
-
                     Container(
-                      height: cardToPlayEmptyList.length* 80.0,
-                      width: 1.5,
-                      color: Colors.indigo,
-                    ),
-
-                    Container(
-                      width: getScreenWidth(context)/3.8,
-                      child: buildFirstList(cardToPlayEmptyList),
-                    ),
-
-                    Container(
-                      height: gamePlayTypeEmptyList.length* 80.0,
+                      height: cardToPlayEmptyList.length * 80.0,
                       width: 1.5,
                       color: Colors.indigo,
                     ),
                     Container(
-                      width: getScreenWidth(context)/2.8,
-                      child: buildSecondList(gamePlayTypeEmptyList),
+                      width: screenWidth / 3.7,
+                      child: build2ndList(cardToPlayEmptyList),
                     ),
-
                     Container(
-                      width: getScreenWidth(context)/11,
+                      height: gamePlayTypeEmptyList.length * 80.0,
+                      width: 1.5,
+                      color: Colors.indigo,
+                    ),
+                    Container(
+                      width: screenWidth / 2.8,
+                      child: build3rdList(gamePlayTypeEmptyList),
+                    ),
+                    Container(
+                      width: screenWidth / 12,
                       child: Container(
                         //height: 260,
                         width: 50,
@@ -180,21 +181,39 @@ class _GameOptionThreeState extends State<GameOptionThree> {
                                   margin: EdgeInsets.all(5),
                                   child: IconButton(
                                     icon: SvgPicture.asset(
-                                      'assets/icons/svg/friends.svg',
+                                      'assets/icons/svg/settings.svg',
                                       color: Colors.white,
                                     ),
                                     onPressed: () {
-                                      //apiBloc.fetchFriendsRes('ZGHrDz4prqsu4BcApPaQYaGgq', 'MEM000001');
-                                      //_drawerKey.currentState.openDrawer(); // open drawer
+                                      bool isNotifiOn;
+                                      SharedPreferenceHelper().getNotificationOnOffState().then((isNotificationOn) => {
+                                            isNotifiOn = isNotificationOn,
+                                          });
+                                      bool isSfxOn;
+                                      SharedPreferenceHelper().getSfxOnOffState().then((isSFXOn) => {
+                                            isSfxOn = isSFXOn,
+                                          });
+
+                                      bool isMusicOn;
+                                      SharedPreferenceHelper().getMusicOnOffState().then((isMusicsOn) => {
+                                        isMusicOn = isMusicsOn,
+                                      });
+
+                                      SharedPreferenceHelper().getUserUserMemberId().then((memberId) => {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (BuildContext context) =>
+                                                        OldSetting(isMusicOn, isNotifiOn, isSfxOn, memberId))),
+                                          });
                                     },
                                   ),
-                                  decoration: Views.boxDecorationWidgetForIconWithBgColor(Colors.teal[400], 4.0, Colors.grey, 5.0, 5.0, 3.0),
+                                  decoration:
+                                      Views.boxDecorationWidgetForIconWithBgColor(Colors.teal[400], 4.0, Colors.grey, 5.0, 5.0, 3.0),
                                 ),
                                 preferences: AnimationPreferences(
-                                    duration: const Duration(milliseconds: 1500),
-                                    autoPlay: AnimationPlayStates.Forward),
+                                    duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
                               ),
-
                               SlideInRight(
                                 child: Container(
                                   width: 40,
@@ -209,13 +228,12 @@ class _GameOptionThreeState extends State<GameOptionThree> {
                                       Navigator.pop(context);
                                     },
                                   ),
-                                  decoration: Views.boxDecorationWidgetForIconWithBgColor(Colors.grey[800], 4.0, Colors.grey, 5.0, 5.0, 3.0),
+                                  decoration:
+                                      Views.boxDecorationWidgetForIconWithBgColor(Colors.grey[800], 4.0, Colors.grey, 5.0, 5.0, 3.0),
                                 ),
                                 preferences: AnimationPreferences(
-                                    duration: const Duration(milliseconds: 1500),
-                                    autoPlay: AnimationPlayStates.Forward),
+                                    duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
                               ),
-
                               SlideInUp(
                                 child: Container(
                                   width: 40,
@@ -234,8 +252,7 @@ class _GameOptionThreeState extends State<GameOptionThree> {
                                   decoration: Views.boxDecorationWidgetForIconWithBgColor(Colors.red[600], 4.0, Colors.grey, 5.0, 5.0, 3.0),
                                 ),
                                 preferences: AnimationPreferences(
-                                    duration: const Duration(milliseconds: 1500),
-                                    autoPlay: AnimationPlayStates.Forward),
+                                    duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
                               ),
                             ],
                           ),
@@ -253,7 +270,7 @@ class _GameOptionThreeState extends State<GameOptionThree> {
   }
 
   Widget buildPlayerTypeList() {
-    if(playerTypeList.length >0){
+    if (playerTypeList.length > 0) {
       return ListView.builder(
         physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
         padding: EdgeInsets.fromLTRB(0.0, 33.0, 0.0, 5.0),
@@ -272,8 +289,8 @@ class _GameOptionThreeState extends State<GameOptionThree> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Container(
-                      width: 40,
-                      height: 40,
+                      width: screenHeight / 9,
+                      height: screenHeight / 9,
                       decoration: BoxDecoration(
                         color: Colors.transparent,
                         border: Border.all(
@@ -299,17 +316,9 @@ class _GameOptionThreeState extends State<GameOptionThree> {
                       child: Shimmer.fromColors(
                         baseColor: Colors.black54,
                         highlightColor: Colors.orangeAccent,
-                        child: FittedBox(
-                          fit: BoxFit.scaleDown,
-                          child: SizedBox(
-                            child: Text(playerTypeList[index].type,
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  fontFamily: 'neuropol_x_rg',
-                                  fontWeight: FontWeight.bold
-                              ),
-                            ),
-                          ),
+                        child: Text(
+                          playerTypeList[index].type,
+                          style: TextStyle(fontSize: screenHeight / 20, fontFamily: 'neuropol_x_rg', fontWeight: FontWeight.bold),
                         ),
                       ),
                     ),
@@ -329,17 +338,16 @@ class _GameOptionThreeState extends State<GameOptionThree> {
                 },
               ),
             ),
-            preferences: AnimationPreferences(
-                duration: const Duration(milliseconds: 1000),
-                autoPlay: AnimationPlayStates.Forward),
+            preferences: AnimationPreferences(duration: const Duration(milliseconds: 1000), autoPlay: AnimationPlayStates.Forward),
           );
         },
       );
-    } else return Container();
+    } else
+      return Container();
   }
 
-  Widget buildFirstList(List<String> cardToPlayLists) {
-    if(cardToPlayLists.length >0){
+  Widget build2ndList(List<String> cardToPlayLists) {
+    if (cardToPlayLists.length > 0) {
       return ListView.builder(
         physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
         padding: EdgeInsets.fromLTRB(0.0, 33.0, 0.0, 5.0),
@@ -358,8 +366,8 @@ class _GameOptionThreeState extends State<GameOptionThree> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Container(
-                      width: 40,
-                      height: 40,
+                      width: screenHeight / 9,
+                      height: screenHeight / 9,
                       decoration: BoxDecoration(
                         color: Colors.transparent,
                         border: Border.all(
@@ -385,12 +393,9 @@ class _GameOptionThreeState extends State<GameOptionThree> {
                       child: Shimmer.fromColors(
                         baseColor: Colors.black54,
                         highlightColor: Colors.orangeAccent,
-                        child: Text('${cardToPlayLists[index]} cards',
-                          style: TextStyle(
-                              fontSize: 18,
-                              fontFamily: 'neuropol_x_rg',
-                              fontWeight: FontWeight.bold
-                          ),
+                        child: Text(
+                          '${cardToPlayLists[index]} cards',
+                          style: TextStyle(fontSize: screenHeight / 20, fontFamily: 'neuropol_x_rg', fontWeight: FontWeight.bold),
                         ),
                       ),
                     ),
@@ -403,20 +408,19 @@ class _GameOptionThreeState extends State<GameOptionThree> {
                     gamePlayTypeEmptyList.addAll(gamePlayTypeLists);
                   });
 
-                 // onTapAudio('button');
+                  // onTapAudio('button');
                 },
               ),
             ),
-            preferences: AnimationPreferences(
-                duration: const Duration(milliseconds: 1000),
-                autoPlay: AnimationPlayStates.Forward),
+            preferences: AnimationPreferences(duration: const Duration(milliseconds: 1000), autoPlay: AnimationPlayStates.Forward),
           );
         },
       );
-    } else return Container();
+    } else
+      return Container();
   }
 
-  Widget buildSecondList(List<String> gamePlayTypeLists) {
+  Widget build3rdList(List<String> gamePlayTypeLists) {
     if (gamePlayTypeLists.length > 0) {
       return ListView.builder(
         physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
@@ -436,8 +440,8 @@ class _GameOptionThreeState extends State<GameOptionThree> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Container(
-                      width: 40,
-                      height: 40,
+                      width: screenHeight / 9,
+                      height: screenHeight / 9,
                       decoration: BoxDecoration(
                         color: Colors.transparent,
                         border: Border.all(
@@ -464,27 +468,38 @@ class _GameOptionThreeState extends State<GameOptionThree> {
                         highlightColor: Colors.orangeAccent,
                         child: Text(
                           '${gamePlayTypeLists[index]}',
-                          style: TextStyle(
-                              fontSize: 18,
-                              fontFamily: 'neuropol_x_rg',
-                              fontWeight: FontWeight.bold
-                          ),
+                          style: TextStyle(fontSize: screenHeight / 20, fontFamily: 'neuropol_x_rg', fontWeight: FontWeight.bold),
                         ),
                       ),
                     ),
                   ],
                 ),
               ),
-              onTap: (){
+              onTap: () {
                 print('----game op: ${widget.gameCat1} , ${widget.gameCat2} , ${widget.gameCat3}, ${widget.gameCat4}');
 
-                if(gamePlayTypeLists[index] == 'vs Computer'){
-                  Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Pvp(xApiKey:xApiKey , p1Name: p1FullName, p1Id: p1MemberId,
-                    p1Image: p1Photo, p2Name: 'Computer', p2Id: 'COMP00005', p2Image: Constants.imgUrlComputer, gameCat1: widget.gameCat1,
-                    gameCat2: widget.gameCat2, gameCat3: widget.gameCat3, gameCat4: widget.gameCat4, cardsToPlay: cardsToPlay, playerType: playerType,
-                    gameType: gamePlayTypeLists[index],),
-                  ));
-                } else if(gamePlayTypeLists[index] == 'vs Friends'){
+                if (gamePlayTypeLists[index] == 'vs Computer') {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (BuildContext context) => Pvp(
+                          xApiKey: xApiKey,
+                          p1Name: p1FullName,
+                          p1Id: p1MemberId,
+                          p1Image: p1Photo,
+                          p2Name: 'Computer',
+                          p2Id: 'COMP00005',
+                          p2Image: Constants.imgUrlComputer,
+                          gameCat1: widget.gameCat1,
+                          gameCat2: widget.gameCat2,
+                          gameCat3: widget.gameCat3,
+                          gameCat4: widget.gameCat4,
+                          cardsToPlay: cardsToPlay,
+                          playerType: playerType,
+                          gameType: gamePlayTypeLists[index],
+                        ),
+                      ));
+                } else if (gamePlayTypeLists[index] == 'vs Friends') {
                   apiBloc.fetchFriendsRes(xApiKey, p1MemberId);
                   _drawerKey.currentState.openDrawer(); // open drawer
                 } else {
@@ -497,7 +512,8 @@ class _GameOptionThreeState extends State<GameOptionThree> {
                       gameCat4: widget.gameCat4,
                       playerType: playerType,
                       gameType: gamePlayTypeLists[index],
-                      cardsToPlay: cardsToPlay, //change
+                      cardsToPlay: cardsToPlay,
+                      //change here
                       xApiKey: xApiKey,
                       p1FullName: p1FullName,
                       p1MemberId: p1MemberId,
@@ -507,9 +523,7 @@ class _GameOptionThreeState extends State<GameOptionThree> {
                 }
               },
             ),
-            preferences: AnimationPreferences(
-                duration: const Duration(milliseconds: 1200),
-                autoPlay: AnimationPlayStates.Forward),
+            preferences: AnimationPreferences(duration: const Duration(milliseconds: 1200), autoPlay: AnimationPlayStates.Forward),
           );
         },
       );
@@ -518,15 +532,13 @@ class _GameOptionThreeState extends State<GameOptionThree> {
     }
   }
 
-
-  void retrieveSharedPrefData(){
+  void retrieveSharedPrefData() {
     SharedPreferenceHelper().getUserSavedData().then((sharedPrefUserProfileModel) => {
-      print('Fb pref ${sharedPrefUserProfileModel.memberId}'),
-
-      xApiKey = sharedPrefUserProfileModel.xApiKey ?? 'NA',
-      p1FullName = sharedPrefUserProfileModel.fullName ?? 'NA',
-      p1MemberId = sharedPrefUserProfileModel.memberId ?? 'NA',
-      p1Photo = sharedPrefUserProfileModel.photo ?? 'NA',
-    });
+          print('Fb pref ${sharedPrefUserProfileModel.memberId}'),
+          xApiKey = sharedPrefUserProfileModel.xApiKey ?? 'NA',
+          p1FullName = sharedPrefUserProfileModel.fullName ?? 'NA',
+          p1MemberId = sharedPrefUserProfileModel.memberId ?? 'NA',
+          p1Photo = sharedPrefUserProfileModel.photo ?? 'NA',
+        });
   }
 }

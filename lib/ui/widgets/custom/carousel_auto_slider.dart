@@ -1,3 +1,4 @@
+import 'package:clash_of_cardz_flutter/helper/exten_fun/base_application_fun.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:clash_of_cardz_flutter/bloc/api_bloc.dart';
@@ -16,12 +17,16 @@ class CarouselAutoSlider extends StatefulWidget {
 class CarouselAutoSliderState extends State<CarouselAutoSlider> {
   CarouselSlider carouselSlider;
   List imgList = [
-    'assets/images/img_card_demo.png',
-    'assets/images/img_card_demo.png',
-    'assets/images/img_card_demo.png',
-    'assets/images/img_card_demo.png',
-    'assets/images/img_card_demo.png',
-    'assets/images/img_card_demo.png',
+    'assets/images/cricket_card.png',
+    'assets/images/cricket_Bowller_card.png',
+    'assets/images/soccer_card.png',
+    'assets/images/formula_one.png',
+    'assets/images/golf.png',
+    'assets/images/moto_gp_card.png',
+    'assets/images/tennis_card.png',
+    'assets/images/wwe_card.png',
+    'assets/images/badminton.png',
+    'assets/images/nascar_card.png',
   ];
 
   List<T> map<T>(List list, Function handler) {
@@ -36,9 +41,9 @@ class CarouselAutoSliderState extends State<CarouselAutoSlider> {
   Widget build(BuildContext context) {
     return CarouselSlider(
       options: CarouselOptions(
-        height: 300.0,
-        aspectRatio: 16/9,
-        viewportFraction: 0.8,
+        height: getScreenHeight(context)/1.35,
+        aspectRatio: 4/3,
+        viewportFraction: 0.6,
         initialPage: 0,
         enableInfiniteScroll: true,
         reverse: false,
@@ -59,21 +64,12 @@ class CarouselAutoSliderState extends State<CarouselAutoSlider> {
           builder: (BuildContext context) {
             return Container(
               width: MediaQuery.of(context).size.width,
-              margin: EdgeInsets.symmetric(horizontal: 5.0),
+              margin: EdgeInsets.all(18),
               decoration: BoxDecoration(
-                color: Colors.deepOrange,
-                image: new DecorationImage(
-                  image: AssetImage(imgUrl),
-                  fit: BoxFit.fill,
-                ),
-                borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                boxShadow: <BoxShadow>[
-                  BoxShadow(
-                    color: Colors.grey,
-                    offset: Offset(4, 4),
-                    blurRadius: 3,
-                  ),
-                ],
+                color: Colors.lightBlueAccent,
+                image: new DecorationImage(image: AssetImage(imgUrl), fit: BoxFit.fill,),
+                borderRadius: BorderRadius.all(Radius.circular(3.0)),
+
               ),
             );
           },

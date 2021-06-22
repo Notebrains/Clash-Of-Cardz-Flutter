@@ -4,7 +4,7 @@ import 'package:clash_of_cardz_flutter/bloc/api_bloc.dart';
 import 'package:clash_of_cardz_flutter/helper/exten_fun/base_application_fun.dart';
 import 'package:clash_of_cardz_flutter/helper/exten_fun/common_fun.dart';
 import 'package:clash_of_cardz_flutter/helper/shared_preference_data.dart';
-import 'package:clash_of_cardz_flutter/ui/screens/home.dart';
+import 'package:clash_of_cardz_flutter/ui/screens/old_screen/old_home.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lottie/lottie.dart';
 import 'package:flutter_animator/flutter_animator.dart';
@@ -13,32 +13,31 @@ import 'package:clash_of_cardz_flutter/model/responses/save_game_result_res_mode
 import 'game_option.dart';
 
 class GameResult extends StatelessWidget {
-  GameResult(
-      {this.winnerName,
-      this.winnerId,
-      this.winnerImage,
-      this.playedCards,
-      this.clashType,
-      this.winnerPoints,
-      this.winnerCoins,
-      this.cardType,
-      this.isP1Won,
-      this.gamePlayType});
+  final String xApiKey;
+  final String p1FullName;
+  final String p1MemberId;
+  final String p1Photo;
+  final String p2Name;
+  final String p2MemberId;
+  final String p2Image;
+  final String gameCat1;
+  final String gameCat2;
+  final String gameCat3;
+  final String gameCat4;
+  final String playerType;
+  final String gameType;
+  final String cardsToPlay;
+  final String p1Point;
+  final String p2Point;
+  final bool areYouWon;
 
-  final String winnerName;
-  final String winnerId;
-  final String winnerImage;
-  final String playedCards;
-  final String clashType;
-  final String winnerPoints;
-  final String winnerCoins;
-  final String cardType;
-  final bool isP1Won;
-  final String gamePlayType;
+  GameResult(this.xApiKey, this.p1FullName, this.p1MemberId, this.p1Photo, this.p2Name, this.p2MemberId, this.p2Image, this.gameCat1,
+      this.gameCat2, this.gameCat3, this.gameCat4, this.playerType, this.gameType, this.cardsToPlay, this.p1Point, this.p2Point, this.areYouWon);
 
   @override
   Widget build(BuildContext context) {
     setScreenOrientationToLandscape();
+    saveGameResultToServer(context);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: WillPopScope(
@@ -48,13 +47,11 @@ class GameResult extends StatelessWidget {
             body: Stack(
               alignment: Alignment.center,
               children: <Widget>[
-
                 Container(
                   width: double.infinity,
                   height: double.infinity,
                   child: Image.asset('assets/images/bg_img13.png', fit: BoxFit.fill),
                 ),
-
                 Stack(
                   alignment: AlignmentDirectional.center,
                   children: [
@@ -64,15 +61,15 @@ class GameResult extends StatelessWidget {
                         child: Pulse(
                           child: Image.asset('assets/images/bg_victory.png', fit: BoxFit.contain),
                           preferences:
-                          AnimationPreferences(duration: const Duration(milliseconds: 5500), autoPlay: AnimationPlayStates.Loop),
+                              AnimationPreferences(duration: const Duration(milliseconds: 5500), autoPlay: AnimationPlayStates.Loop),
                         ),
                       ),
                       preferences:
-                      AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
+                          AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
                     ),
 
                     //Lottie.asset('assets/animations/lottiefiles/confetti-on-transparent-background.json',
-                        //width: double.infinity, height: double.infinity, repeat: true, animate: true, fit: BoxFit.contain),
+                    //width: double.infinity, height: double.infinity, repeat: true, animate: true, fit: BoxFit.contain),
 
                     Lottie.asset('assets/animations/lottiefiles/confetti-on-transparent-background.json',
                         width: double.infinity, height: double.infinity, repeat: true, animate: true, fit: BoxFit.fitWidth, reverse: true),
@@ -90,7 +87,7 @@ class GameResult extends StatelessWidget {
                                 radius: 30,
                                 child: FadeInImage.assetNetwork(
                                   placeholder: 'assets/icons/png/circle-avator-default-img.png',
-                                  image: winnerImage??'',
+                                  image: areYouWon? p1Photo: p2Image,
                                   fit: BoxFit.fill,
                                   width: 65,
                                   height: 65,
@@ -104,8 +101,8 @@ class GameResult extends StatelessWidget {
                         FadeInDownBig(
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Text(winnerName,
-                                style: TextStyle(color: Colors.orangeAccent, fontWeight: FontWeight.w900, fontSize: 18)),
+                            child:
+                                Text(areYouWon? p1FullName: p2Name, style: TextStyle(color: Colors.orangeAccent, fontWeight: FontWeight.w900, fontSize: 18)),
                           ),
                           preferences:
                               AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
@@ -117,18 +114,20 @@ class GameResult extends StatelessWidget {
                             HeartBeat(
                               child: IconButton(
                                 iconSize: 20,
-                                icon: SvgPicture.asset('assets/icons/svg/card_count.svg',
-                                color: Colors.yellow[600],),
+                                icon: SvgPicture.asset(
+                                  'assets/icons/svg/card_count.svg',
+                                  color: Colors.yellow[600],
+                                ),
                                 onPressed: null,
                               ),
-                              preferences: AnimationPreferences(
-                                  duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Loop),
+                              preferences:
+                                  AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Loop),
                             ),
                             FadeInLeftBig(
                               child: Padding(
                                 padding: const EdgeInsets.only(right: 8.0),
                                 child: Text(
-                                  playedCards,
+                                  cardsToPlay,
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                       fontSize: 16,
@@ -138,8 +137,8 @@ class GameResult extends StatelessWidget {
                                       color: Colors.grey[400]),
                                 ),
                               ),
-                              preferences: AnimationPreferences(
-                                  duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
+                              preferences:
+                                  AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
                             ),
                             RubberBand(
                               child: IconButton(
@@ -147,14 +146,14 @@ class GameResult extends StatelessWidget {
                                 icon: SvgPicture.asset('assets/icons/svg/competition.svg'),
                                 onPressed: null,
                               ),
-                              preferences: AnimationPreferences(
-                                  duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Loop),
+                              preferences:
+                                  AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Loop),
                             ),
                             Flip(
                               child: Padding(
                                 padding: const EdgeInsets.only(right: 8.0),
                                 child: Text(
-                                  clashType,
+                                  '1v1',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                       fontSize: 16,
@@ -164,8 +163,8 @@ class GameResult extends StatelessWidget {
                                       color: Colors.grey[400]),
                                 ),
                               ),
-                              preferences: AnimationPreferences(
-                                  duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
+                              preferences:
+                                  AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
                             ),
                             Swing(
                               child: IconButton(
@@ -173,12 +172,12 @@ class GameResult extends StatelessWidget {
                                 icon: SvgPicture.asset('assets/icons/svg/coin.svg'),
                                 onPressed: null,
                               ),
-                              preferences: AnimationPreferences(
-                                  duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Loop),
+                              preferences:
+                                  AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Loop),
                             ),
                             FadeInRightBig(
                               child: Text(
-                                winnerPoints,
+                                areYouWon? p1Point: p2Point,
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                     fontSize: 16,
@@ -187,8 +186,8 @@ class GameResult extends StatelessWidget {
                                     fontWeight: FontWeight.bold,
                                     color: Colors.grey[400]),
                               ),
-                              preferences: AnimationPreferences(
-                                  duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
+                              preferences:
+                                  AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
                             ),
                           ],
                         ),
@@ -225,14 +224,19 @@ class GameResult extends StatelessWidget {
                                   onPressed: () {
                                     onTapAudio('button');
                                     SharedPreferenceHelper().getUserSavedData().then((sharedPrefModel) {
-                                      Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => HomeScreen(xApiKey: sharedPrefModel.xApiKey, memberId: sharedPrefModel.memberId,)));
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (BuildContext context) => OldHomeScreen(
+                                                    xApiKey: sharedPrefModel.xApiKey,
+                                                    memberId: sharedPrefModel.memberId,
+                                                  )));
                                     });
                                   },
                                 ),
-                                preferences: AnimationPreferences(
-                                    duration: const Duration(milliseconds: 2500), autoPlay: AnimationPlayStates.Loop),
+                                preferences:
+                                    AnimationPreferences(duration: const Duration(milliseconds: 2500), autoPlay: AnimationPlayStates.Loop),
                               ),
-
                               Pulse(
                                 child: MaterialButton(
                                   padding: EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 0.0),
@@ -264,8 +268,8 @@ class GameResult extends StatelessWidget {
                                     Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => GameOption()));
                                   },
                                 ),
-                                preferences: AnimationPreferences(
-                                    duration: const Duration(milliseconds: 2500), autoPlay: AnimationPlayStates.Loop),
+                                preferences:
+                                    AnimationPreferences(duration: const Duration(milliseconds: 2500), autoPlay: AnimationPlayStates.Loop),
                               ),
                             ],
                           ),
@@ -276,68 +280,77 @@ class GameResult extends StatelessWidget {
                     ),
                   ],
                 ),
-
-                saveGameResultToServer(),
-          ],
-        )),
+              ],
+            )),
       ),
     );
   }
 
-   Widget saveGameResultToServer() {
-    if (gamePlayType == 'vsPlayer') {
-      //save game result
-    }
+  void saveGameResultToServer(BuildContext context) async {
+    if (gameType != 'vs Computer') {
+      var matchDetails = [
+        {"member_id": p1MemberId, "win": areYouWon ? "1" : '0', "loss": areYouWon ? "0" : '1', "points": p1Point},
+        {"member_id": p2MemberId, "win": areYouWon ? "0" : '1', "loss": areYouWon ? "1" : '0', "points": p2Point}
+      ];
 
-     var requestBody = {
-       'match_result': [{
-         "member_id": "MEM000004",
-         "win": "1",
-         "loss": "0",
-         "points": "550"
-       },
-         { "member_id": "MEM000002",
-           "win": "0",
-           "loss": "1",
-           "points": "0"
-         }],
-       'match_id': '2'
-     };
+      /* // sample of matchDetails body
+    [{     "member_id": "MEM000004",
+            "win": "1",
+            "loss": "0",
+            "points": "550",
 
-    /*GameResultApiBody(
-      memberId: '',
-      win: isP1Won? '1':'0',
-      loss: isP1Won? '0':'1',
-      points: winnerPoints,
+        },{     "member_id": "MEM000002",
+            "win": "0",
+            "loss": "1",
+            "points": "0"
+        }]
+    */
+
+      apiBloc.fetchSaveGameResultRes(xApiKey, matchDetails, gameCat2);
+      /*showDialog(
+      context: context,
+      barrierDismissible: true,
+      useSafeArea: true,
+      builder: (BuildContext context) {
+        return Dialog(
+          backgroundColor: Colors.transparent,
+          child: Stack(
+            children: [
+              ZoomIn(
+                child: Center(
+                  child: Lottie.asset('assets/animations/lottiefiles/sports-loading.json',
+                      height: 350, width: 350, repeat: true, animate: true),
+                ),
+                preferences: AnimationPreferences(duration: const Duration(milliseconds: 800), autoPlay: AnimationPlayStates.Forward),
+              ),
+              StreamBuilder(
+                stream: apiBloc.saveGameResultRes,
+                builder: (context, AsyncSnapshot<SaveGameResultResModel> snapshot) {
+                  if (snapshot.hasData) {
+                    return Container();
+                  } else if (snapshot.hasError) {
+                    return showSnackBar('Could not save game result', context);
+                  }
+                  return Container();
+                },
+              ),
+            ],
+          ),
+        );
+      },
     );*/
 
-     apiBloc.fetchSaveGameResultRes('ZGHrDz4prqsu4BcApPaQYaGgq', requestBody);
-
-    if('' == ''){
-      return StreamBuilder(
-        stream: apiBloc.saveGameResultRes,
-        builder: (context, AsyncSnapshot<SaveGameResultResModel> snapshot) {
-          if (snapshot.hasData) {
-            return Container();
-          } else if (snapshot.hasError) {
-            return showSnackBar('Could not save game result', context);
-          }
-          return Container();
-        },
-      );
-    } else{
-      return Container();
     }
   }
 
-  showSnackBar(String message, BuildContext context){
+  showSnackBar(String message, BuildContext context) {
     final snackBar = SnackBar(
       content: Text(message),
       action: SnackBarAction(
         label: 'Retry',
         onPressed: () {
           onTapAudio('button');
-          saveGameResultToServer();
+          //saveGameResultToServer();
         },
       ),
     );

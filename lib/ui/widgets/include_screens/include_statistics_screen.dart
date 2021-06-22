@@ -1,235 +1,173 @@
+import 'package:clash_of_cardz_flutter/helper/exten_fun/common_fun.dart';
+import 'package:clash_of_cardz_flutter/ui/styles/size_config.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/custom/outlined_btn_gradient_border.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/custom/player_info_back_btn.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/libraries/shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:clash_of_cardz_flutter/model/responses/statistics_res_model.dart';
-import 'package:clash_of_cardz_flutter/ui/widgets/libraries/animated_text_kit/animated_text_kit.dart';
+import 'package:shape_of_view/shape_of_view.dart';
 
-Column buildStatisticsScreen(StatisticsResModel model) {
+Widget buildStatisticsScreen(StatisticsResModel model) {
   return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
+    crossAxisAlignment: CrossAxisAlignment.center,
     children: [
-      Padding(
-        padding: const EdgeInsets.fromLTRB(16.0, 8.0, 8.0, 4.0),
-        child: ColorizeAnimatedTextKit(
-          onTap: () {
-            //print("Tap Event");
-          },
-          text: [
-            "Statistics"
-          ],
-          textStyle: TextStyle(
-              fontSize: 35.0,
-              fontStyle: FontStyle.normal,
-              fontFamily: 'Rapier'
-          ),
-          colors: [
-            Colors.grey[700],
-            Colors.deepOrange,
-            Colors.grey[700],
-          ],
-          textAlign: TextAlign.center,
-          alignment: AlignmentDirectional.center,
-          // or Alignment.topLeft
-          isRepeatingAnimation: true,
-          repeatForever: true,
-          speed: Duration(milliseconds: 1000),
-        ),
-      ),
+      PlayerInfoBackBtn(),
       Expanded(
         child: ListView.builder(
-          physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-          padding: EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 8.0),
+          physics: const BouncingScrollPhysics(),
+          padding: EdgeInsets.all(6),
           itemCount: model.response.length,
           itemBuilder: (context, index) {
             return Container(
-              margin: EdgeInsets.all(5),
-              decoration: new BoxDecoration(
-                gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    stops: [0.1, 0.3, 1],
-                    colors: [Colors.grey[300], Colors.grey[50], Colors.grey[300]]),
-                borderRadius: BorderRadius.all(Radius.circular(5)),
-                boxShadow: <BoxShadow>[
-                  BoxShadow(
-                    color: Colors.grey,
-                    offset: Offset(3, 3),
-                    blurRadius: 3,
-                  ),
-                ],
-              ),
-              child: Column(
-                children: [
-                  Stack(
-                    children: <Widget>[
-                      Align(
-                        alignment: Alignment.center,
-                        child: Container(
-                          alignment: AlignmentDirectional.centerStart,
-                          child: Stack(
-                            children: <Widget>[
-                              Row(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.fromLTRB(12.0, 5, 12, 5),
-                                    child: SvgPicture.asset('assets/icons/svg/victory.svg', width: 22, height: 22),
-                                  ),
-                                  Text(isMatchWon(model.response[index].matchData[0].win) ? 'Victory' : 'Lost',
-                                      style: TextStyle(
-                                          color:
-                                              isMatchWon(model.response[index].matchData[0].win) ? Colors.lightBlue : Colors.red,
-                                          fontSize: 20,
-                                          fontStyle: FontStyle.normal,
-                                          fontFamily: 'Rapier')),
-                                ],
+              margin: EdgeInsets.all(4),
+              child: OutlinedBtnGradientBorder(
+                height: SizeConfig.heightMultiplier * 12,
+                width: 200,
+                onPressed: () {
+                  onTapAudio('button');
+                },
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(12.0, 10, 12, 8),
+                              child: SvgPicture.asset('assets/icons/svg/victory.svg', width: 18, height: 18),
+                            ),
+
+                            Shimmer.fromColors(
+                              baseColor: isMatchWon(model.response[index].matchData[0].win) ? Colors.greenAccent : Colors.orangeAccent,
+                              highlightColor: Colors.lightBlueAccent,
+                              child: Text(
+                                isMatchWon(model.response[index].matchData[0].win) ? 'VICTORY' : 'LOST',
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  fontStyle: FontStyle.normal,
+                                  fontFamily: 'montserrat',
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                      ),
-                      Align(
-                        alignment: Alignment.bottomCenter,
-                        child: Container(
-                          height: 30,
-                          padding: EdgeInsets.only(right: 8),
-                          alignment: AlignmentDirectional.centerEnd,
-                          child: Container(
+
+
+                        Shimmer.fromColors(
+                          baseColor: Colors.cyanAccent,
+                          highlightColor: Colors.lightBlueAccent,
+                          child: Padding(
+                            padding: EdgeInsets.only(right: 8),
                             child: Text(
-                              '${model.response[index].gameCat} - ${model.response[index].noCard} cards',
+                              '${model.response[index].gameCat.toUpperCase()} - ${model.response[index].noCard.toUpperCase()} CARDS',
                               style: TextStyle(
-                                  color: Colors.black54, fontSize: 20, fontStyle: FontStyle.normal, fontFamily: 'Rapier'),
+                                color: Colors.blue[100],
+                                fontSize: 13,
+                                fontStyle: FontStyle.normal,
+                                fontFamily: 'montserrat',
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
                           ),
                         ),
+
+
+                      ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 3),
+                      child: Divider(
+                        color: Colors.lightBlueAccent,
+                        height: 1,
                       ),
-                    ],
-                  ),
-                  Divider(
-                    color: Colors.deepOrange,
-                    height: 1,
-                  ),
-                  Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Align(
-                        alignment: Alignment.center,
-                        child: Container(
-                          alignment: AlignmentDirectional.center,
-                          margin: EdgeInsets.all(5.0),
-                          child: Stack(
-                            children: <Widget>[
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  CircleAvatar(
-                                    radius: 20,
-                                    backgroundImage: NetworkImage(model.response[index].matchData[0].photo),
-                                  ),
-                                  Container(
-                                    alignment: Alignment.center,
-                                    width: 110,
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.fromLTRB(16, 1, 3, 1),
-                                          child: Text(model.response[index].matchData[0].fullname,
-                                              style: TextStyle(color: Colors.black87, fontSize: 14, fontWeight: FontWeight.w900)),
-                                        ),
-                                        Container(
-                                          height: 26,
-                                          padding: const EdgeInsets.fromLTRB(16, 1, 3, 1),
-                                          child: Row(
-                                            children: [
-                                              SvgPicture.asset(
-                                                'assets/icons/svg/coin.svg',
-                                                width: 16,
-                                                height: 16,
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(left: 5),
-                                                child: Text(model.response[index].matchData[0].coins,
-                                                    style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w700)),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
+                    ),
+                    Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              ShapeOfView(
+                                height: 36,
+                                width: 36,
+                                shape: CircleShape(borderColor: Colors.lightBlueAccent, borderWidth: 1),
+                                elevation: 8,
+                                child: FadeInImage.assetNetwork(
+                                  placeholder: 'assets/icons/png/circle-avator-default-img.png',
+                                  image: model.response[index].matchData[0].photo,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(8, 1, 3, 1),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Text(model.response[index].matchData[0].fullname,
+                                        style: TextStyle(color: Colors.blue.shade200, fontSize: 14, fontWeight: FontWeight.normal)),
+
+                                    Text(
+                                      'Earned ${model.response[index].matchData[0].points} coins',
+                                      style: TextStyle(color: Colors.blue.shade50, fontWeight: FontWeight.normal, fontSize: 11,),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ],
                           ),
                         ),
-                      ),
-                      Image.asset(
-                        'assets/icons/png/img_vs.png',
-                        width: 45,
-                        height: 45,
-                        color: Colors.deepOrangeAccent,
-                      ),
-                      Align(
-                        alignment: Alignment.center,
-                        child: Container(
-                          alignment: AlignmentDirectional.center,
-                          margin: EdgeInsets.all(5.0),
-                          child: Stack(
-                            children: <Widget>[
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.start,
+                        Image.asset(
+                          'assets/icons/png/img_vs.png',
+                          width: 35,
+                          height: 35,
+                          color: Colors.orangeAccent,
+                        ),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(0, 5, 8, 5),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
-                                  Container(
-                                    alignment: Alignment.center,
-                                    width: 110,
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.end,
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.fromLTRB(16, 1, 13, 1),
-                                          child: Text(model.response[index].matchData[1].fullname,
-                                              style: TextStyle(color: Colors.black87, fontSize: 14, fontWeight: FontWeight.w900)),
-                                        ),
-                                        Container(
-                                          height: 26,
-                                          padding: const EdgeInsets.fromLTRB(16, 5, 13, 5),
-                                          child: Row(
-                                            crossAxisAlignment: CrossAxisAlignment.end,
-                                            mainAxisAlignment: MainAxisAlignment.end,
-                                            children: [
-                                              SvgPicture.asset(
-                                                'assets/icons/svg/coin.svg',
-                                                width: 16,
-                                                height: 16,
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(left: 5),
-                                                child: Text(model.response[index].matchData[1].coins,
-                                                    style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w700)),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
+                                  Text(model.response[index].matchData[1].fullname,
+                                      textAlign: TextAlign.end,
+                                      style: TextStyle(color: Colors.blue.shade200, fontSize: 14, fontWeight: FontWeight.normal),
                                   ),
-                                  CircleAvatar(
-                                    radius: 20,
-                                    backgroundImage: NetworkImage(model.response[index].matchData[1].photo),
+                                  Text('Earned ${model.response[index].matchData[1].points} point',
+                                      style: TextStyle(color: Colors.blue.shade50, fontWeight: FontWeight.normal, fontSize: 11),
                                   ),
                                 ],
                               ),
-                            ],
-                          ),
+                            ),
+                            ShapeOfView(
+                              height: 36,
+                              width: 36,
+                              shape: CircleShape(borderColor: Colors.orangeAccent, borderWidth: 1),
+                              elevation: 8,
+                              child: FadeInImage.assetNetwork(
+                                placeholder: 'assets/icons/png/circle-avator-default-img.png',
+                                image: model.response[index].matchData[1].photo,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                    ],
-                  ),
-                ],
+                      ],
+                    ),
+                  ],
+                ),
               ),
             );
           },

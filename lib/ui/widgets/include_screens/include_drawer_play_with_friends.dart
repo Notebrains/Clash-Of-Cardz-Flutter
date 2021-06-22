@@ -14,16 +14,27 @@ import 'package:clash_of_cardz_flutter/ui/widgets/include_screens/include_waitin
 
 import 'include_searching_players.dart';
 
-Widget friendList(BuildContext context, String gameCat1, String gameCat2, String gameCat3, String gameCat4, String cardsToPlay) {
+Widget friendList(BuildContext context, String xApiKey, String memberId, String gameCat1, String gameCat2, String gameCat3, String gameCat4, String cardsToPlay, String playerType) {
   return StreamBuilder(
     stream: apiBloc.friendsRes,
     builder: (context, AsyncSnapshot<FriendsResModel> snapshot) {
       if (snapshot.hasData) {
-        return searchableUsersWidget(context, snapshot.data, gameCat1, gameCat2, gameCat3, gameCat4, '14');
+        if (snapshot.data.status != 0) {
+          return searchableUsersWidget(context, snapshot.data, xApiKey, memberId, gameCat1, gameCat2, gameCat3, gameCat4, cardsToPlay, playerType);
+        } else {
+          return Center(
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 100),
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.deepOrangeAccent),
+              ),
+            ),
+          );
+        }
+
       } else if (snapshot.hasError) {
         return Text(snapshot.error.toString());
-      }
-      return Container(
+      } else return Container(
         height: MediaQuery.of(context).size.height,
         color: Colors.grey[600],
         child: Center(
@@ -32,13 +43,14 @@ Widget friendList(BuildContext context, String gameCat1, String gameCat2, String
               child: CircularProgressIndicator(
                 valueColor: AlwaysStoppedAnimation<Color>(Colors.deepOrangeAccent),
               ),
-            )),
+            ),
+        ),
       );
     },
   );
 }
 
-Widget searchableUsersWidget(BuildContext context, FriendsResModel data, String gameCat1, String gameCat2, String gameCat3, String gameCat4, String cardsToPlay) {
+Widget searchableUsersWidget(BuildContext context, FriendsResModel data, String xApiKey, String memberId, String gameCat1, String gameCat2, String gameCat3, String gameCat4, String cardsToPlay, String playerType) {
   List<Response> dataList = data.response;
 
   ValueNotifier<List<Response>> filtered = ValueNotifier<List<Response>>([]);
@@ -111,7 +123,6 @@ Widget searchableUsersWidget(BuildContext context, FriendsResModel data, String 
 
                             onTap: () {
                               //showPlayerSearchingDialog(context);
-
                               /*Navigator.push(context,
                               CupertinoPageRoute(
                                 builder: (context) => new Gameplay(
@@ -122,11 +133,14 @@ Widget searchableUsersWidget(BuildContext context, FriendsResModel data, String 
 
                               sendNotificationToOtherPlayerByApi(
                                 context,
+                                xApiKey,
+                                memberId,
                                 gameCat1,
                                 gameCat2,
                                 gameCat3,
                                 gameCat4,
-                                '14',
+                                cardsToPlay,
+                                playerType,
                                 dataList[index].freindId,
                                 dataList[index].fullname,
                                 dataList[index].photo,
@@ -214,7 +228,13 @@ Widget searchableUsersWidget(BuildContext context, FriendsResModel data, String 
   );
 }
 
-void sendNotificationToOtherPlayerByApi(BuildContext context, String gameCat1, String gameCat2, String gameCat3, String gameCat4,  String cardsToPlay, friendId, friendName, friendImage) {
+void sendNotificationToOtherPlayerByApi(BuildContext context, String xApiKey, String memberId, String gameCat1, String gameCat2, String gameCat3,
+    String gameCat4, String cardsToPlay, String playerType, String friendId, String friendName, String friendImage) {
+  apiBloc.sendNotificationToFriendApi(xApiKey,
+      'Battle with friends',
+      '$friendName request to play match. Play Now',
+      friendId, gameCat1, gameCat2, gameCat3, gameCat4, 'vs Friends', playerType, cardsToPlay, memberId, friendName, friendImage);
+
   showDialog(
     context: context,
     builder: (_) => IncludeWaitingForFriend(
@@ -222,12 +242,12 @@ void sendNotificationToOtherPlayerByApi(BuildContext context, String gameCat1, S
       gameCat2: gameCat2,
       gameCat3: gameCat3,
       gameCat4: gameCat4,
-      gameType: 'play with friends',
-      playerType: 'Batsman',
+      gameType: 'vs Friends',
+      playerType: playerType,
       cardsToPlay: cardsToPlay,
       friendId: friendId,
       friendName: friendName,
-      friendImage: friendName,
+      friendImage: friendImage,
       joinedPlayerType: 'joinedAsPlayer',
     ),
   );

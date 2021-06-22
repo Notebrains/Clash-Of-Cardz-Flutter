@@ -1,3 +1,4 @@
+import 'package:clash_of_cardz_flutter/ui/widgets/custom/no_data_found.dart';
 import 'package:flutter/material.dart';
 import 'package:clash_of_cardz_flutter/bloc/api_bloc.dart';
 import 'package:clash_of_cardz_flutter/model/responses/profile_res_model.dart';
@@ -19,12 +20,7 @@ class Profile extends StatelessWidget {
       home: Scaffold(
         resizeToAvoidBottomInset: false,
         body: Container(
-          decoration: new BoxDecoration(
-            image: new DecorationImage(
-              image: new AssetImage("assets/images/bg_img4.png"),
-              fit: BoxFit.cover,
-            ),
-          ),
+          color: Color(0xFF22425E),
           child: StreamBuilder(
             stream: apiBloc.profileRes,
             builder: (context, AsyncSnapshot<ProfileResModel> snapshot) {
@@ -32,11 +28,7 @@ class Profile extends StatelessWidget {
                 return IncludeProfile(snapshot.data, xApiKey, memberId);
               }  else if (!snapshot.hasData) {
                 return frostedGlassWithProgressBarWidget(context);
-              } else return Center(
-                child: Text("No Data Found",
-                    style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 30)
-                ),
-              );
+              } else return NoDataFound();
             },
           ),
         ),

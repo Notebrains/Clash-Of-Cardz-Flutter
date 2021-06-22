@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'package:clash_of_cardz_flutter/model/responses/NotificationOnOffResModel.dart';
+import 'package:clash_of_cardz_flutter/model/responses/send_notification_to_friend_res_model.dart';
 import 'package:http/http.dart' show Client;
 import 'dart:async';
 import 'package:http/http.dart' as http;
@@ -14,15 +16,11 @@ import 'package:clash_of_cardz_flutter/model/responses/statistics_res_model.dart
 import 'package:clash_of_cardz_flutter/model/responses/leaderboard_res_model.dart';
 import 'package:clash_of_cardz_flutter/model/responses/save_game_result_res_model.dart';
 
-
 class ApiProvider {
   Client client = Client();
 
   Future<LoginResModel> loginApi(String name, String email, String socialId, String image, String deviceToken, String memberId) async {
-
-    Map<String, String> headers = {
-      "Content-Type": 'application/x-www-form-urlencoded',
-      'x-api-key': '56005600'};
+    Map<String, String> headers = {"Content-Type": 'application/x-www-form-urlencoded', 'x-api-key': '56005600'};
 
     var requestBody = {
       'name': name,
@@ -39,7 +37,7 @@ class ApiProvider {
       body: requestBody,
     );
 
-    print( '----Login Res:  ${response.body.toString()}');
+    print('----Login Res:  ${response.body.toString()}');
 
     if (response.statusCode == 200) {
       return LoginResModel.fromJson(json.decode(response.body)); //Return decoded response
@@ -88,9 +86,7 @@ class ApiProvider {
     //print("----" + xApiKey);
     //print("----" + memberId);
 
-    Map<String, String> headers = {
-      "Content-Type": 'application/x-www-form-urlencoded',
-      'x-api-key': xApiKey};
+    Map<String, String> headers = {"Content-Type": 'application/x-www-form-urlencoded', 'x-api-key': xApiKey};
 
     var requestBody = {
       'memberid': memberId,
@@ -116,9 +112,7 @@ class ApiProvider {
   }
 
   Future<FriendsResModel> friendsApi(String xApiKey, String playerId) async {
-    Map<String, String> headers = {
-      "Content-Type": 'application/x-www-form-urlencoded',
-      'x-api-key': xApiKey};
+    Map<String, String> headers = {"Content-Type": 'application/x-www-form-urlencoded', 'x-api-key': xApiKey};
 
     var requestBody = {
       'player_id': playerId,
@@ -158,9 +152,7 @@ class ApiProvider {
   }
 
   Future<ProfileResModel> profileApi(String xApiKey, String memberId) async {
-    Map<String, String> headers = {
-      "Content-Type": 'application/x-www-form-urlencoded',
-      'x-api-key': xApiKey};
+    Map<String, String> headers = {"Content-Type": 'application/x-www-form-urlencoded', 'x-api-key': xApiKey};
 
     var requestBody = {
       'member_id': memberId,
@@ -181,18 +173,16 @@ class ApiProvider {
   }
 
   Future<CardsResModel> fetchCardsToPlayApi(
-      String xApiKey,
-      String catagory,
-      String subCatagory,
-      String subsubcatagory,
-      String subsubsubcatagory,
-      String cardCount,
-      String gameId,
-      String cardType,
-      ) async {
-    Map<String, String> headers = {
-      "Content-Type": 'application/x-www-form-urlencoded',
-      'x-api-key': xApiKey};
+    String xApiKey,
+    String catagory,
+    String subCatagory,
+    String subsubcatagory,
+    String subsubsubcatagory,
+    String cardCount,
+    String gameId,
+    String cardType,
+  ) async {
+    Map<String, String> headers = {"Content-Type": 'application/x-www-form-urlencoded', 'x-api-key': xApiKey};
 
     var requestBody = {
       'catagory': catagory,
@@ -218,33 +208,10 @@ class ApiProvider {
     }
   }
 
-Future<MatchMakingResModel> fetchMatchMakingApi(String xApiKey) async {
-    Map<String, String> headers = {
-      "Content-Type": 'application/x-www-form-urlencoded',
-      'x-api-key': xApiKey};
+  Future<MatchMakingResModel> fetchMatchMakingApi(String xApiKey) async {}
 
-    var requestBody = {
-      '': '',
-    };
-
-    http.Response response = await http.post(
-      UrlConstants.matchMaking,
-      headers: headers,
-      body: requestBody,
-    );
-    print(response.body.toString());
-
-    if (response.statusCode == 200) {
-      return MatchMakingResModel.fromJson(json.decode(response.body)); //Return decoded response
-    } else {
-      throw Exception('Failed to load player profile response');
-    }
-  }
-
-Future<MatchMakingResModel> fetchMatchReqToFriendApi(String xApiKey) async {
-    Map<String, String> headers = {
-      "Content-Type": 'application/x-www-form-urlencoded',
-      'x-api-key': xApiKey};
+  Future<MatchMakingResModel> fetchMatchReqToFriendApi(String xApiKey) async {
+    Map<String, String> headers = {"Content-Type": 'application/x-www-form-urlencoded', 'x-api-key': xApiKey};
 
     var requestBody = {
       '': '',
@@ -264,10 +231,16 @@ Future<MatchMakingResModel> fetchMatchReqToFriendApi(String xApiKey) async {
     }
   }
 
-Future<SaveGameResultResModel> fetchSaveGameResultApi(String xApiKey, Map<String, Object> requestBody) async {
-    Map<String, String> headers = {
-      "Content-Type": 'application/x-www-form-urlencoded',
-      'x-api-key': xApiKey};
+  Future<SaveGameResultResModel> fetchSaveGameResultApi(String xApiKey, List<Map<String, String>> matchDetails, String category) async {
+    Map<String, String> headers = {"Content-Type": 'application/x-www-form-urlencoded', 'x-api-key': xApiKey};
+
+    var requestBody = {
+      'match_result': json.encode(matchDetails),
+      'category': category,
+    };
+
+    print('----- ${json.encode(requestBody)}');
+    print('----- ${requestBody.toString()}');
 
     http.Response response = await http.post(
       UrlConstants.saveMatch,
@@ -275,7 +248,7 @@ Future<SaveGameResultResModel> fetchSaveGameResultApi(String xApiKey, Map<String
       body: requestBody,
     );
 
-    print('Save Game Result Res: ${response.body.toString()}' );
+    print('Save Game Result Res: ${response.body.toString()}');
 
     if (response.statusCode == 200) {
       return SaveGameResultResModel.fromJson(json.decode(response.body)); //Return decoded response
@@ -284,11 +257,8 @@ Future<SaveGameResultResModel> fetchSaveGameResultApi(String xApiKey, Map<String
     }
   }
 
-
   Future<CmsResModel> fetchCmsApi(String xApiKey, String slug) async {
-    Map<String, String> headers = {
-      "Content-Type": 'application/x-www-form-urlencoded',
-      'x-api-key': xApiKey};
+    Map<String, String> headers = {"Content-Type": 'application/x-www-form-urlencoded', 'x-api-key': xApiKey};
 
     var requestBody = {
       'page_slug': slug,
@@ -305,6 +275,64 @@ Future<SaveGameResultResModel> fetchSaveGameResultApi(String xApiKey, Map<String
       return CmsResModel.fromJson(json.decode(response.body)); //Return decoded response
     } else {
       throw Exception('Failed to load cms_game_data response');
+    }
+  }
+
+  Future<NotificationsOnOffResModel> notificationOnOffApi(String xApiKey, String memberId, String onOffValue) async {
+    Map<String, String> headers = {"Content-Type": 'application/x-www-form-urlencoded', 'x-api-key': xApiKey};
+
+    var requestBody = {
+      'id': memberId,
+      'value': onOffValue,
+    };
+
+    http.Response response = await http.post(
+      UrlConstants.notification_on_off,
+      headers: headers,
+      body: requestBody,
+    );
+    print(response.body.toString());
+
+    if (response.statusCode == 200) {
+      return NotificationsOnOffResModel.fromJson(json.decode(response.body)); //Return decoded response
+    } else {
+      throw Exception('Failed to load Notifications On Off response');
+    }
+  }
+
+  Future<SendNotificationToFriendResModel> sendNotificationToFriendApi(String xApiKey, String title, String body,
+      String receiverId, String gameCat1, String gameCat2, String gameCat3, String gameCat4, String gameType, String playerType, String cardsToPlay,
+      String friendId, String friendName, String friendImage) async {
+    Map<String, String> headers = {"Content-Type": 'application/x-www-form-urlencoded', 'x-api-key': xApiKey};
+
+    var requestBody = {
+      'title': title,
+      'body': body,
+      'reciver_id': receiverId, //id of friend
+      'flag': '0',
+      'gameCat1': gameCat1,
+      'gameCat2': gameCat2,
+      'gameCat3': gameCat3,
+      'gameCat4': gameCat4,
+      'gameType': gameType,
+      'playerType': playerType,
+      'cardsToPlay': cardsToPlay,
+      'friendId': friendId, //who is sending match req
+      'friendName': friendName,
+      'friendImage': friendImage,
+    };
+
+    http.Response response = await http.post(
+      UrlConstants.send_notification_to_friend_for_battle,
+      headers: headers,
+      body: requestBody,
+    );
+    print(response.body.toString());
+
+    if (response.statusCode == 200) {
+      return SendNotificationToFriendResModel.fromJson(json.decode(response.body)); //Return decoded response
+    } else {
+      throw Exception('Failed to load Notifications On Off response');
     }
   }
 }

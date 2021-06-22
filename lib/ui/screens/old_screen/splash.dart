@@ -5,12 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:clash_of_cardz_flutter/helper/exten_fun/base_application_fun.dart';
 import 'package:clash_of_cardz_flutter/helper/globals.dart';
 import 'package:clash_of_cardz_flutter/helper/shared_preference_data.dart';
-import 'package:clash_of_cardz_flutter/ui/screens/home.dart';
-import 'package:clash_of_cardz_flutter/ui/screens/login.dart';
+import 'package:clash_of_cardz_flutter/ui/screens/old_screen/old_home.dart';
+import 'package:clash_of_cardz_flutter/ui/screens/old_screen/old_login.dart';
 import 'package:clash_of_cardz_flutter/ui/widgets/custom/horizontal_progress_indicator.dart';
 import 'package:clash_of_cardz_flutter/ui/widgets/libraries/animated_text_kit/animated_text_kit.dart';
-import 'package:audioplayers/audio_cache.dart';
-import 'package:audioplayers/audioplayers.dart';
+
+import '../home.dart';
+//import 'package:audioplayers/audio_cache.dart';
+//import 'package:audioplayers/audioplayers.dart';
 
 
 class SplashScreen extends StatefulWidget {
@@ -25,8 +27,8 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> with WidgetsBindingObserver{
   String _versionName = 'V1.0';
   final splashDelay = 6;
-  static AudioCache musicCache;
-  static AudioPlayer instance;
+  //static AudioCache musicCache;
+  //static AudioPlayer instance;
 
   @override
   void initState() {
@@ -52,7 +54,7 @@ class _SplashScreenState extends State<SplashScreen> with WidgetsBindingObserver
       String memberId = sharedPrefUserProfileModel.memberId ?? 'NA';
 
       if(xApiKey != 'NA' && memberId != 'NA'){
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => HomeScreen(xApiKey: xApiKey, memberId: memberId,)));
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => Home(xApiKey: xApiKey, memberId: memberId,)));
       } else {
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => LogIn()));
       }
@@ -145,7 +147,7 @@ class _SplashScreenState extends State<SplashScreen> with WidgetsBindingObserver
 
   void playMusic() async {
     try {
-      if (Platform.isIOS) {
+      /*if (Platform.isIOS) {
         if (musicCache.fixedPlayer != null) {
           musicCache.fixedPlayer.startHeadlessService();
         }
@@ -154,7 +156,7 @@ class _SplashScreenState extends State<SplashScreen> with WidgetsBindingObserver
       musicCache = AudioCache(prefix: "assets/audios/");
       instance = await musicCache.loop("bg_mixkit-too-cool-too-crazy.mp3", mode: PlayerMode.LOW_LATENCY);
 
-      Globals.setAudioPlayerInstance(instance);
+      Globals.setAudioPlayerInstance(instance);*/
     } catch (e) {
       print(e);
     }

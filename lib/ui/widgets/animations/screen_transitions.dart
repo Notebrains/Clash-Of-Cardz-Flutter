@@ -1,12 +1,12 @@
 
 import 'package:flutter/material.dart';
-import 'package:clash_of_cardz_flutter/ui/screens/home.dart';
+import 'package:clash_of_cardz_flutter/ui/screens/old_screen/old_home.dart';
 
 // how to use it: Navigator.push(context, _pageRouteBuilder());
 PageRouteBuilder _pageRouteBuilder() {
   return PageRouteBuilder(
     pageBuilder: (context, animation, secondaryAnimation) {
-      return HomeScreen();
+      return OldHomeScreen();
     },
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
       // return SlideTransition(

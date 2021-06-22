@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:clash_of_cardz_flutter/helper/shared_preference_data.dart';
 import 'package:clash_of_cardz_flutter/model/responses/profile_res_model.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 import 'package:clash_of_cardz_flutter/ui/widgets/libraries/shimmer.dart';
@@ -9,7 +8,6 @@ Widget buildHomeScreenPlayerInfo(ProfileResModel model, String xApiKey){
   return SlideInDown(
       child: Stack(
         children: <Widget>[
-
           Align(
             alignment: Alignment.center,
             child: Container(
@@ -52,10 +50,8 @@ Widget buildHomeScreenPlayerInfo(ProfileResModel model, String xApiKey){
 
                   CircleAvatar(
                     radius: 25,
-                    child: FadeInImage.assetNetwork(
-                      placeholder: 'assets/icons/png/circle-avator-default-img.png',
-                      image: model.response[0].photo??'',
-                    ),
+                    backgroundColor: Colors.deepOrangeAccent,
+                    backgroundImage: NetworkImage(model.response[0].image),
                   ),
                 ],
               ),
@@ -84,8 +80,9 @@ Widget buildHomeScreenPlayerInfo(ProfileResModel model, String xApiKey){
                         child: Shimmer.fromColors(
                           baseColor: Colors.white,
                           highlightColor: Colors.orangeAccent,
-                          child: Text(model.response[0].coins == ''?'0': model.response[0].coins,
+                          child: Text(model.response[0].points == ''?'0': model.response[0].points,
                               style: TextStyle(
+                                  fontFamily: 'montserrat',
                                   color: Colors.white,
                                   fontWeight: FontWeight.w900)),
                         ),

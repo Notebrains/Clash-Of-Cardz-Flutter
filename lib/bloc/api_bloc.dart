@@ -1,3 +1,5 @@
+import 'package:clash_of_cardz_flutter/model/responses/NotificationOnOffResModel.dart';
+import 'package:clash_of_cardz_flutter/model/responses/send_notification_to_friend_res_model.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:clash_of_cardz_flutter/model/responses/cards_res_model.dart';
 import 'package:clash_of_cardz_flutter/model/responses/cms_res_model.dart';
@@ -120,8 +122,8 @@ class ApiBloc {
 
   Stream<SaveGameResultResModel> get saveGameResultRes => _saveGameResultResFetcher.stream;
 
-  fetchSaveGameResultRes(String xApiKey, Map<String, Object> requestBody) async {
-    SaveGameResultResModel model = await _repository.fetchSaveGameResultApi(xApiKey, requestBody);
+  fetchSaveGameResultRes(String xApiKey, List<Map<String, String>> matchDetails, String category) async {
+    SaveGameResultResModel model = await _repository.fetchSaveGameResultApi(xApiKey, matchDetails, category);
     _saveGameResultResFetcher.sink.add(model);
   }
 
@@ -132,6 +134,28 @@ class ApiBloc {
   fetchCmsRes(String xApiKey, String slug) async {
     CmsResModel model = await _repository.fetchCmsApi(xApiKey, slug);
     _cmsFetcher.sink.add(model);
+  }
+
+  //Notification On Off page
+  final _notificationOnOffFetcher = PublishSubject<NotificationsOnOffResModel>();
+  Stream<NotificationsOnOffResModel> get notificationOnOffResModel => _notificationOnOffFetcher.stream;
+
+  fetchNotificationsOnOffRes(String xApiKey, String memberId, String onOffValue) async {
+    NotificationsOnOffResModel model = await _repository.notificationOnOffApi(xApiKey, memberId, onOffValue);
+    _notificationOnOffFetcher.sink.add(model);
+  }
+
+  //Send Notification to friend for battle page
+  final _sendNotificationToFriendFetcher = PublishSubject<SendNotificationToFriendResModel>();
+  Stream<SendNotificationToFriendResModel> get sendNotificationToFriendResponseModel => _sendNotificationToFriendFetcher.stream;
+
+  sendNotificationToFriendApi(String xApiKey, String title, String body,
+      String receiverId, String gameCat1, String gameCat2, String gameCat3, String gameCat4, String gameType, String playerType, String cardsToPlay,
+      String friendId, String friendName, String friendImage) async {
+    SendNotificationToFriendResModel model = await _repository.sendNotificationToFriendApi(xApiKey, title, body,
+        receiverId, gameCat1, gameCat2, gameCat3, gameCat4, gameType, playerType, cardsToPlay,
+        friendId, friendName, friendImage);
+    _sendNotificationToFriendFetcher.sink.add(model);
   }
 
   dispose() {
@@ -147,6 +171,9 @@ class ApiBloc {
     _matchReqToFriendFetcher.close();
     _saveGameResultResFetcher.close();
     _cmsFetcher.close();
+    _notificationOnOffFetcher.close();
+    _sendNotificationToFriendFetcher.close();
+
   }
 }
 

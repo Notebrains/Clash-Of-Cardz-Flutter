@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/custom/no_data_found.dart';
 import 'package:flutter/material.dart';
 import 'package:clash_of_cardz_flutter/bloc/api_bloc.dart';
 import 'package:clash_of_cardz_flutter/helper/exten_fun/base_application_fun.dart';
@@ -36,26 +37,17 @@ class _GameRuleState extends State<GameRule> {
     apiBloc.fetchCmsRes(widget.xApiKey, 'about-us');
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: Container(
-        decoration: new BoxDecoration(
-          image: new DecorationImage(
-            image: new AssetImage("assets/images/bg_img13.png"),
-            fit: BoxFit.cover,
-          ),
-        ),
-        child: StreamBuilder(
-          stream: apiBloc.cmsResModel,
-          builder: (context, AsyncSnapshot<CmsResModel> snapshot) {
-            if (snapshot.hasData) {
-              return buildUI(snapshot.data.response);
-            } else if (!snapshot.hasData) {
-              return frostedGlassWithProgressBarWidget(context);
-            } else
-              return Center(
-                child: Text("No Data Found", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 30)),
-              );
-          },
-        ),
+      backgroundColor: Color(0xFF364B5A),
+      body: StreamBuilder(
+        stream: apiBloc.cmsResModel,
+        builder: (context, AsyncSnapshot<CmsResModel> snapshot) {
+          if (snapshot.hasData) {
+            return buildUI(snapshot.data.response);
+          } else if (!snapshot.hasData) {
+            return frostedGlassWithProgressBarWidget(context);
+          } else
+            return NoDataFound();
+        },
       ),
     );
   }
@@ -91,7 +83,7 @@ class _GameRuleState extends State<GameRule> {
         children: <Widget>[
           CarouselSlider(
             items: imageSliders,
-            options: CarouselOptions(viewportFraction: 1.0, enlargeCenterPage: true, height: MediaQuery.of(context).size.height - 68),
+            options: CarouselOptions(viewportFraction: 1.0, enlargeCenterPage: true, height: MediaQuery.of(context).size.height - 55),
             carouselController: _controller,
           ),
           Padding(
@@ -102,40 +94,39 @@ class _GameRuleState extends State<GameRule> {
                 Container(
                   margin: EdgeInsets.fromLTRB(40, 0, 40, 0),
                   alignment: Alignment.center,
-                  child: new SizedBox(
-                    child: FloatingActionButton(
-                      tooltip: 'Back to previous screen',
-                      backgroundColor: Colors.grey[300],
-                      child: Icon(
-                        Icons.arrow_back,
-                        color: Colors.black,
-                      ),
-                      onPressed: () {
-                        onTapAudio('button');
-                        _controller.previousPage();
-                      },
+                  child: FloatingActionButton(
+                    mini: true,
+                    tooltip: 'Back to previous screen',
+                    backgroundColor: Colors.cyanAccent,
+                    child: Icon(
+                      Icons.arrow_back,
+                      color: Colors.black,
                     ),
+                    onPressed: () {
+                      onTapAudio('button');
+                      _controller.previousPage();
+                    },
                   ),
                 ),
                 ...Iterable<int>.generate(response.cmsMeta.length).map(
                   (int pageIndex) => Flexible(
                     child: Container(
-                      width: 40,
-                      height: 40,
+                      width: 35,
+                      height: 35,
                       alignment: Alignment.center,
                       child: new SizedBox(
                         child: FloatingActionButton(
                           tooltip: 'Next',
-                          backgroundColor: Colors.grey[300],
+                          backgroundColor: Colors.cyanAccent[200],
                           child: Text(
                             "${pageIndex + 1}",
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                                fontSize: 18,
+                                fontSize: 12,
                                 fontStyle: FontStyle.normal,
                                 fontFamily: 'neuropol_x_rg',
                                 fontWeight: FontWeight.bold,
-                                color: Colors.black54),
+                                color: Colors.black87),
                           ),
                           onPressed: () {
                             onTapAudio('button');
@@ -150,19 +141,18 @@ class _GameRuleState extends State<GameRule> {
                 Container(
                   margin: EdgeInsets.fromLTRB(50, 0, 50, 0),
                   alignment: Alignment.center,
-                  child: new SizedBox(
-                    child: FloatingActionButton(
-                      tooltip: 'Previous',
-                      backgroundColor: Colors.grey[300],
-                      child: Icon(
-                        Icons.arrow_forward,
-                        color: Colors.black,
-                      ),
-                      onPressed: () {
-                        onTapAudio('button');
-                        _controller.nextPage();
-                      },
+                  child: FloatingActionButton(
+                    mini: true,
+                    tooltip: 'Previous',
+                    backgroundColor: Colors.cyanAccent,
+                    child: Icon(
+                      Icons.arrow_forward,
+                      color: Colors.black,
                     ),
+                    onPressed: () {
+                      onTapAudio('button');
+                      _controller.nextPage();
+                    },
                   ),
                 ),
               ],

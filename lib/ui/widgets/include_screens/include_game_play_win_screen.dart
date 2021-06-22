@@ -1,18 +1,11 @@
-import 'dart:async';
 import 'dart:ui';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 import 'package:shape_of_view/shape_of_view.dart';
 import 'package:clash_of_cardz_flutter/helper/exten_fun/base_application_fun.dart';
 import 'package:clash_of_cardz_flutter/model/responses/cards_res_model.dart';
-import 'package:clash_of_cardz_flutter/ui/widgets/animations/spring_button.dart';
-import 'package:clash_of_cardz_flutter/ui/widgets/include_screens/include_game_play_dialogs.dart';
-import 'package:clash_of_cardz_flutter/ui/widgets/libraries/animated_text_kit/wavy.dart';
 import 'package:clash_of_cardz_flutter/ui/widgets/libraries/avatar_glow.dart';
-import 'package:clash_of_cardz_flutter/ui/widgets/libraries/f_dotted_line.dart';
-import 'package:clash_of_cardz_flutter/ui/widgets/libraries/flip_card.dart';
 import 'package:clash_of_cardz_flutter/ui/widgets/libraries/shimmer.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -20,14 +13,12 @@ void showBothCardsDialog(BuildContext context, List<Cards> cards, int indexOfSel
     bool isPlayAsP1,  bool isWon,{
   Function(bool isMatchEnded) onClickActionOnPlayAgain,
 }) async {
-  BuildContext dialogContext;
 
   showDialog(
     context: context,
     barrierDismissible: false,
     useSafeArea: true,
     builder: (BuildContext context) {
-      dialogContext = context;
       return Dialog(
         backgroundColor: Colors.transparent,
         child: ZoomIn(
@@ -65,12 +56,12 @@ void showBothCardsDialog(BuildContext context, List<Cards> cards, int indexOfSel
                                           margin: EdgeInsets.only(right: 12),
                                           child: RotateInDownRight(
                                             child: buildCard1(
-                                              context,
-                                              cards,
-                                              indexOfCardDeck,
-                                              indexOfSelectedCard,
-                                              isPlayAsP1,
-                                              isWon
+                                                context,
+                                                cards,
+                                                indexOfCardDeck,
+                                                indexOfSelectedCard,
+                                                isPlayAsP1,
+                                                isWon
                                             ),
                                             preferences: AnimationPreferences(
                                                 duration: const Duration(milliseconds: 1500),
@@ -112,6 +103,27 @@ void showBothCardsDialog(BuildContext context, List<Cards> cards, int indexOfSel
                                           ),
                                         ),
 
+                                        /* TweenAnimationBuilder<Duration>(
+                                              duration: Duration(minutes: 1),
+                                              tween: Tween(begin: Duration(minutes: 1), end: Duration.zero),
+                                              onEnd: () {
+                                                onClickActionOnPlayAgain(true);
+                                                Navigator.pop(context);
+                                              },
+                                              builder: (BuildContext context, Duration value, Widget child) {
+                                                final minutes = value.inMinutes;
+                                                final seconds = value.inSeconds % 60;
+                                                return Padding(
+                                                  padding: const EdgeInsets.symmetric(vertical: 3),
+                                                  child: RotationTransition(
+                                                    alignment: Alignment.topLeft,
+                                                    turns: new AlwaysStoppedAnimation(90 / 360),
+                                                    child: Text("Play withing $minutes:$seconds seconds",
+                                                        textAlign: TextAlign.center,
+                                                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16)),
+                                                  ),
+                                                );
+                                              }),*/
                                       ],
                                     ),
                                   ),
@@ -154,23 +166,6 @@ void showBothCardsDialog(BuildContext context, List<Cards> cards, int indexOfSel
                                   preferences:
                                   AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Loop),
                                 ),
-
-                                /*TweenAnimationBuilder<Duration>(
-                                    duration: Duration(minutes: 1),
-                                    tween: Tween(begin: Duration(minutes: 1), end: Duration.zero),
-                                    onEnd: () {
-                                      onClickActionOnPlayAgain(true);
-                                      Navigator.pop(context);
-                                    },
-                                    builder: (BuildContext context, Duration value, Widget child) {
-                                      final minutes = value.inMinutes;
-                                      final seconds = value.inSeconds % 60;
-                                      return Padding(
-                                          padding: const EdgeInsets.symmetric(vertical: 3),
-                                          child: Text("Game will end in $minutes:$seconds seconds if player didn't respond",
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16)));
-                                    }),*/
                               ],
                             ),
                           ),
@@ -187,10 +182,6 @@ void showBothCardsDialog(BuildContext context, List<Cards> cards, int indexOfSel
       );
     },
   );
-
-  /*Timer(Duration(milliseconds: 100000000), () {
-    Navigator.pop(dialogContext);
-  });*/
 }
 
 Widget buildCard1(
@@ -375,7 +366,7 @@ Widget buildCard1(
                         child: Text(
                           cardsList[indexOfCardDeck].cardName,
                           style: TextStyle(
-                            fontWeight: FontWeight.w200,
+                            fontWeight: FontWeight.bold,
                             color: Colors.white,
                             fontSize: 16,
                           ),
@@ -483,7 +474,7 @@ Widget buildCard2(
             padding: const EdgeInsets.all(8.0),
             child: FadeInImage.assetNetwork(
                 fit: BoxFit.cover,
-                placeholder: 'assets/images/cricket_2.png',
+                placeholder: 'assets/images/cricket_1.png',
                 image: cardsList[cardListSizeForP2 + indexOfCardDeck].cardImg??'',
                 height: 145,
                 width: 145),
@@ -602,7 +593,7 @@ Widget buildCard2(
                         child: Text(
                           cardsList[cardListSizeForP2 + indexOfCardDeck].cardName,
                           style: TextStyle(
-                            fontWeight: FontWeight.w200,
+                            fontWeight: FontWeight.bold,
                             color: Colors.white,
                             fontSize: 16,
                           ),

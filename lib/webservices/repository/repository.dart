@@ -1,9 +1,11 @@
+import 'package:clash_of_cardz_flutter/model/responses/NotificationOnOffResModel.dart';
 import 'package:clash_of_cardz_flutter/model/responses/cards_res_model.dart';
 import 'package:clash_of_cardz_flutter/model/responses/cms_res_model.dart';
 import 'package:clash_of_cardz_flutter/model/responses/friends_res_model.dart';
 import 'package:clash_of_cardz_flutter/model/responses/game_option_res_model.dart';
 import 'package:clash_of_cardz_flutter/model/responses/login_res_model.dart';
 import 'package:clash_of_cardz_flutter/model/responses/match_making_res_model.dart';
+import 'package:clash_of_cardz_flutter/model/responses/send_notification_to_friend_res_model.dart';
 import 'package:clash_of_cardz_flutter/model/responses/statistics_res_model.dart';
 import 'package:clash_of_cardz_flutter/model/responses/leaderboard_res_model.dart';
 import 'package:clash_of_cardz_flutter/model/responses/profile_res_model.dart';
@@ -50,9 +52,18 @@ class Repository {
   Future<MatchMakingResModel> fetchMatchReqToFriendApi(String xApiKey) =>
       appApiProvider.fetchMatchReqToFriendApi(xApiKey);
 
-  Future<SaveGameResultResModel> fetchSaveGameResultApi(String xApiKey, Map<String, Object> requestBody) =>
-      appApiProvider.fetchSaveGameResultApi(xApiKey, requestBody);
+  Future<SaveGameResultResModel> fetchSaveGameResultApi(String xApiKey,List<Map<String, String>> matchDetails, String category) =>
+      appApiProvider.fetchSaveGameResultApi(xApiKey, matchDetails, category);
 
   Future<CmsResModel> fetchCmsApi(String xApiKey, String slug,) =>
       appApiProvider.fetchCmsApi(xApiKey, slug);
+
+  Future<NotificationsOnOffResModel> notificationOnOffApi(String xApiKey, String memberId, String onOffValue) =>
+      appApiProvider.notificationOnOffApi(xApiKey, memberId, onOffValue);
+
+  Future<SendNotificationToFriendResModel> sendNotificationToFriendApi(String xApiKey, String title, String body,
+      String receiverId, String gameCat1, String gameCat2, String gameCat3, String gameCat4, String gameType, String playerType, String cardsToPlay,
+      String friendId, String friendName, String friendImage) =>
+      appApiProvider.sendNotificationToFriendApi(xApiKey, title, body, receiverId, gameCat1, gameCat2, gameCat3, gameCat4, gameType,
+          playerType, cardsToPlay, friendId, friendName, friendImage);
 }

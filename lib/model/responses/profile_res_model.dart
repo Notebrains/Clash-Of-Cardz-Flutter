@@ -1,3 +1,7 @@
+/// status : 1
+/// message : "Data fetched succesfully"
+/// response : [{"fullname":"Sudeep Panda","memberid":"MEM000031","win":"4","loss":"0","points":"1650","coins":"0","redeem":"0","rank":1,"image":"https://lh3.googleusercontent.com/a-/AOh14GiQee_Qjd4yWuE9NLbiWiKSeMFuvajShP_ooUMIq5w=s96-c","match_played":"46","joined_on":"22nd January,2021"}]
+
 class ProfileResModel {
   int _status;
   String _message;
@@ -39,16 +43,17 @@ class ProfileResModel {
 
 }
 
-/// fullname : "ram"
-/// memberid : "MEM000001"
-/// win : "2"
-/// loss : "2"
-/// points : "250"
+/// fullname : "Sudeep Panda"
+/// memberid : "MEM000031"
+/// win : "4"
+/// loss : "0"
+/// points : "1650"
 /// coins : "0"
 /// redeem : "0"
-/// rank : 2
-/// photo : "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRiO1D51PX-BWFxtKFukrymxo_iSk-5rBu3Fg&usqp=CAU"
-/// match_played : "6"
+/// rank : 1
+/// image : "https://lh3.googleusercontent.com/a-/AOh14GiQee_Qjd4yWuE9NLbiWiKSeMFuvajShP_ooUMIq5w=s96-c"
+/// match_played : "46"
+/// joined_on : "22nd January,2021"
 
 class Response {
   String _fullname;
@@ -59,8 +64,9 @@ class Response {
   String _coins;
   String _redeem;
   int _rank;
-  String _photo;
+  String _image;
   String _matchPlayed;
+  String _joinedOn;
 
   String get fullname => _fullname;
   String get memberid => _memberid;
@@ -70,8 +76,9 @@ class Response {
   String get coins => _coins;
   String get redeem => _redeem;
   int get rank => _rank;
-  String get photo => _photo;
+  String get image => _image;
   String get matchPlayed => _matchPlayed;
+  String get joinedOn => _joinedOn;
 
   Response({
       String fullname, 
@@ -82,8 +89,9 @@ class Response {
       String coins, 
       String redeem, 
       int rank, 
-      String photo, 
-      String matchPlayed}){
+      String image, 
+      String matchPlayed, 
+      String joinedOn}){
     _fullname = fullname;
     _memberid = memberid;
     _win = win;
@@ -92,8 +100,9 @@ class Response {
     _coins = coins;
     _redeem = redeem;
     _rank = rank;
-    _photo = photo;
+    _image = image;
     _matchPlayed = matchPlayed;
+    _joinedOn = joinedOn;
 }
 
   Response.fromJson(dynamic json) {
@@ -105,8 +114,9 @@ class Response {
     _coins = json["coins"];
     _redeem = json["redeem"];
     _rank = json["rank"];
-    _photo = json["photo"];
+    _image = json["image"];
     _matchPlayed = json["match_played"];
+    _joinedOn = json["joined_on"];
   }
 
   Map<String, dynamic> toJson() {
@@ -119,8 +129,9 @@ class Response {
     map["coins"] = _coins;
     map["redeem"] = _redeem;
     map["rank"] = _rank;
-    map["photo"] = _photo;
+    map["image"] = _image;
     map["match_played"] = _matchPlayed;
+    map["joined_on"] = _joinedOn;
     return map;
   }
 

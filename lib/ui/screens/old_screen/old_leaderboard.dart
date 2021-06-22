@@ -1,3 +1,4 @@
+import 'package:clash_of_cardz_flutter/ui/widgets/custom/no_data_found.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:clash_of_cardz_flutter/bloc/api_bloc.dart';
@@ -34,11 +35,7 @@ class Leaderboard extends StatelessWidget {
                 return _buildLeaderboardScreen(snapshot.data);
               } else if (!snapshot.hasData) {
                 return frostedGlassWithProgressBarWidget(context);
-              } else return Center(
-                child: Text("No Data Found",
-                    style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 30)
-                ),
-              );
+              } else return NoDataFound();
               return Center(
                 child: CircularProgressIndicator(
                   valueColor: AlwaysStoppedAnimation<Color>(Colors.deepOrangeAccent),
@@ -175,6 +172,7 @@ class Leaderboard extends StatelessWidget {
                     ),
                     ClipRRect(
                       child: CircleAvatar(
+                        backgroundColor: Colors.greenAccent[700],
                         backgroundImage: NetworkImage(listData[0].photo),
                       ),
                     ),
@@ -216,7 +214,9 @@ class Leaderboard extends StatelessWidget {
                         ),
                         ClipRRect(
                           child: CircleAvatar(
+                            backgroundColor: Colors.cyan[600],
                             backgroundImage: NetworkImage(listData[1].photo),
+
                           ),
                         ),
                       ],
@@ -250,6 +250,7 @@ class Leaderboard extends StatelessWidget {
                         ),
                         ClipRRect(
                           child: CircleAvatar(
+                            backgroundColor: Colors.indigo[900],
                             backgroundImage: NetworkImage(listData[2].photo),
                           ),
                         )
@@ -402,6 +403,7 @@ class Leaderboard extends StatelessWidget {
                         width: 40,
                         height: 40,
                         child: CircleAvatar(
+                          backgroundColor: Colors.deepOrange,
                           backgroundImage: NetworkImage(listData[index].photo),
                         ),
                       ),

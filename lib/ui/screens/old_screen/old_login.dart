@@ -1,3 +1,4 @@
+import 'package:clash_of_cardz_flutter/ui/widgets/custom/no_data_found.dart';
 import 'package:clash_of_cardz_flutter/webservices/firebase_files/notificationHelper.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
@@ -9,7 +10,7 @@ import 'package:clash_of_cardz_flutter/bloc/api_bloc.dart';
 import 'package:clash_of_cardz_flutter/helper/exten_fun/common_fun.dart';
 import 'package:clash_of_cardz_flutter/helper/shared_preference_data.dart';
 import 'package:clash_of_cardz_flutter/model/responses/login_res_model.dart';
-import 'package:clash_of_cardz_flutter/ui/screens/home.dart';
+import 'package:clash_of_cardz_flutter/ui/screens/old_screen/old_home.dart';
 import 'package:clash_of_cardz_flutter/ui/screens/pvp.dart';
 import 'package:clash_of_cardz_flutter/ui/widgets/animations/spring_button.dart';
 import 'package:clash_of_cardz_flutter/ui/widgets/custom/carousel_auto_slider.dart';
@@ -108,7 +109,7 @@ class _LogInState extends State<LogIn> {
     });
   }
 
-  //change text
+  //change here
   Future<void> showBigPictureNotification() async {
     var bigPictureStyleInformation = BigPictureStyleInformation(
         DrawableResourceAndroidBitmap("ic_notification"),
@@ -133,17 +134,17 @@ class _LogInState extends State<LogIn> {
         payload: 'Default_Sound');
   }
 
-///////local notification
+  ///////local notification
   Future onSelectNotification(String payload) async {
     showDialog(
       context: context,
       builder: (_) => IncludeWaitingForFriend(
         gameCat1: 'Sports',// change here
         gameCat2: 'Cricket',
-        gameCat3: 'IPL',
-        gameCat4: '1990-2000',
-        gameType: 'play with friends',
-        playerType: 'Batsman',
+        gameCat3: 'Ipl',
+        gameCat4: '2008-2021',
+        gameType: 'vs friends',
+        playerType: 'Bowler',
         cardsToPlay: '14',
         friendId: 'MEM00001',
         friendName: 'Rex',
@@ -172,12 +173,6 @@ class _LogInState extends State<LogIn> {
         joinedPlayerType: 'joinedAsFriend',
       ),
     );
-  }
-
-
-  void getFirebaseToken() async{
-    firebaseToken = await FirebaseMessaging().getToken();
-    print('----firebaseToken $firebaseToken');
   }
 
 /*  void initLocalNotification() async{
@@ -433,7 +428,8 @@ class _LogInState extends State<LogIn> {
                                     ),
                                   ),
                                   onTap: (){
-                                    Navigator.push(context, CupertinoPageRoute(builder: (context) => Pvp()),);
+                                    //Navigator.push(context, CupertinoPageRoute(builder: (context) => Pvp()),);
+                                    showToast(context, 'Not yet possible to login by Google Play Games');
                                   },
                                 ),
                               ),
@@ -590,7 +586,7 @@ class _LogInState extends State<LogIn> {
 
                         Timer(Duration(milliseconds: 2000), () {
                           SchedulerBinding.instance.addPostFrameCallback((_) {
-                            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => HomeScreen(xApiKey: snapshot.data.responce.xApiKey, memberId: snapshot.data.responce.memberid,)));
+                            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => OldHomeScreen(xApiKey: snapshot.data.responce.xApiKey, memberId: snapshot.data.responce.memberid,)));
                           });
                         });
                       }
@@ -598,8 +594,7 @@ class _LogInState extends State<LogIn> {
                       return Container();
                     } else if (!snapshot.hasData) {
                       return Container();
-                    } else return Center(
-                      child: Text("No Data Found", style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 30)),);
+                    } else return NoDataFound();
                   }),
             ],
           ),
@@ -607,14 +602,12 @@ class _LogInState extends State<LogIn> {
       },
     );
   }
-
 }
-
 
 
 class PageRouteWithAnimation extends CupertinoPageRoute {
   PageRouteWithAnimation()
-      : super(builder: (BuildContext context) => new HomeScreen());
+      : super(builder: (BuildContext context) => new OldHomeScreen());
 
   // OPTIONAL IF YOU WISH TO HAVE SOME EXTRA ANIMATION WHILE ROUTING
   @override
@@ -624,7 +617,7 @@ class PageRouteWithAnimation extends CupertinoPageRoute {
       scale: animation,
       child: new FadeTransition(
         opacity: animation,
-        child: new HomeScreen(),
+        child: new OldHomeScreen(),
       ),
     );
   }

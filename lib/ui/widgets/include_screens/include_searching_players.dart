@@ -11,7 +11,7 @@ import 'package:clash_of_cardz_flutter/helper/exten_fun/common_fun.dart';
 import 'package:clash_of_cardz_flutter/helper/shared_preference_data.dart';
 import 'package:clash_of_cardz_flutter/model/arguments/firebase_player_details_model.dart';
 import 'package:clash_of_cardz_flutter/ui/screens/gameplay.dart';
-import 'package:clash_of_cardz_flutter/ui/screens/home.dart';
+import 'package:clash_of_cardz_flutter/ui/screens/old_screen/old_home.dart';
 import 'package:clash_of_cardz_flutter/ui/screens/pvp.dart';
 import 'package:clash_of_cardz_flutter/ui/widgets/custom/frosted_glass.dart';
 import 'dart:io' show Platform;
@@ -380,7 +380,7 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForPlayer> wi
     if (context != null) {
       Navigator.push(
         context,
-        CupertinoPageRoute(builder: (context) => HomeScreen(xApiKey: widget.xApiKey, memberId: widget.p1MemberId,),),
+        CupertinoPageRoute(builder: (context) => OldHomeScreen(xApiKey: widget.xApiKey, memberId: widget.p1MemberId,),),
       ).then((value) => {
         showToast(context, 'Player not found! Please try again.'),
         //remove first user from firebase if requested player has not joined.
@@ -397,7 +397,7 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForPlayer> wi
     Navigator.push(
       context,
       CupertinoPageRoute(builder: (context) => Pvp(xApiKey: widget.xApiKey, p1Name: p1Name, p1Id: p1Id, p1Image: p1Img, p2Name: p2Name, p2Id: p2Id, p2Image: p2Img,
-        gameCat1: gameCat1, gameCat2: gameCat3, gameCat3: gameCat3, gameCat4: gameCat4, playerType: playerType, gameType: gameType, cardsToPlay: cardsToPlay,),),
+        gameCat1: gameCat1, gameCat2: gameCat2, gameCat3: gameCat3, gameCat4: gameCat4, playerType: playerType, gameType: gameType, cardsToPlay: cardsToPlay,),),
     ).then((value) => Navigator.of(context, rootNavigator: true).pop());
   }
 

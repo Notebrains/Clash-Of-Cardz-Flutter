@@ -1,6 +1,20 @@
 import 'package:flutter/material.dart';
 
 class Views{
+  final kInnerDecoration = BoxDecoration(
+    color: Colors.white,
+    border: Border.all(color: Colors.white),
+    borderRadius: BorderRadius.circular(32),
+  );
+
+  final kGradientBoxDecoration = BoxDecoration(
+    gradient: LinearGradient(colors: [Colors.lightBlue, Colors.cyanAccent]),
+    border: Border.all(
+      //color: kHintColor,
+    ),
+    borderRadius: BorderRadius.circular(32),
+  );
+
   static BoxDecoration boxDecorationWidgetForIconWithBgColor(
       Color boxBackgroundColor,
       double circularRadius,
@@ -34,10 +48,10 @@ class Views{
       BorderRadius.all(Radius.circular(5.0)),
       boxShadow: <BoxShadow>[
         BoxShadow(
-          color: Colors.grey,
-          offset: Offset(4, 4),
-            spreadRadius : 2,
-            blurRadius : 3
+          color: Colors.blue,
+          offset: Offset(1, 1),
+            spreadRadius : 1,
+            blurRadius : 1
         ),
       ],
     );

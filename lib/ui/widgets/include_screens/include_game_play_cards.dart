@@ -440,7 +440,7 @@ Widget buildSecondCard(BuildContext context, int p1SelectedIndexOfAttributeList,
 
               /// add widget
               child: Container(
-                width: 100,
+                width: 90,
                 height: 50,
                 alignment: Alignment.center,
                 child: HeartBeat(
@@ -449,7 +449,7 @@ Widget buildSecondCard(BuildContext context, int p1SelectedIndexOfAttributeList,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontWeight: FontWeight.w200,
-                      color: Colors.white70,
+                      color: Colors.white,
                       fontSize: 13,
                     ),
                   ),

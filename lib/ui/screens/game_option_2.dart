@@ -1,3 +1,4 @@
+import 'package:clash_of_cardz_flutter/helper/exten_fun/base_application_fun.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:clash_of_cardz_flutter/helper/exten_fun/common_fun.dart';
@@ -24,6 +25,7 @@ class _GameOptionTwoState extends State<GameOptionTwo> {
   List<Sub2category_details> subCat4EmptyList = [];
 
   String gameCat3 = '';
+  double screenHeight = 400;
 
   void gameMoreOptState(List<Sub2category_details> subCat4List) {
     setState(() {
@@ -35,6 +37,7 @@ class _GameOptionTwoState extends State<GameOptionTwo> {
 
   @override
   Widget build(BuildContext context) {
+    screenHeight = getScreenHeight(context);
     subCat3List = ModalRoute.of(context).settings.arguments;
 
     return WillPopScope(
@@ -175,8 +178,8 @@ class _GameOptionTwoState extends State<GameOptionTwo> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Container(
-                      width: 60,
-                      height: 60,
+                      width: screenHeight/7,
+                      height: screenHeight/7,
                       decoration: BoxDecoration(
                         color: Colors.transparent,
                         border: Border.all(
@@ -212,7 +215,7 @@ class _GameOptionTwoState extends State<GameOptionTwo> {
                         highlightColor: Colors.orangeAccent,
                         child: Text(
                           subCat3List[index].sub2categoryName,
-                          style: TextStyle( fontSize: 22, fontFamily: 'neuropol_x_rg', fontWeight: FontWeight.bold),
+                          style: TextStyle( fontSize: screenHeight/15, fontFamily: 'neuropol_x_rg', fontWeight: FontWeight.bold),
                         ),
                       ),
                     ),
@@ -254,8 +257,8 @@ class _GameOptionTwoState extends State<GameOptionTwo> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Container(
-                      width: 60,
-                      height: 60,
+                      width: screenHeight/7,
+                      height: screenHeight/7,
                       decoration: BoxDecoration(
                         color: Colors.transparent,
                         border: Border.all(
@@ -285,7 +288,7 @@ class _GameOptionTwoState extends State<GameOptionTwo> {
                         highlightColor: Colors.orangeAccent,
                         child: Text(
                           subCat4EmptyList[index].sub3categoryName,
-                          style: TextStyle(fontSize: 22, fontFamily: 'neuropol_x_rg', fontWeight: FontWeight.bold),
+                          style: TextStyle(fontSize: screenHeight/15, fontFamily: 'neuropol_x_rg', fontWeight: FontWeight.bold),
                         ),
                       ),
                     ),

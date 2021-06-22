@@ -1,9 +1,14 @@
 import 'dart:io' show File, Platform;
+import 'package:clash_of_cardz_flutter/helper/constantvalues/constants.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/custom/btn_left_border_sq.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/custom/ic_svg.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/libraries/avatar_glow.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/libraries/shimmer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animator/flutter_animator.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:shape_of_view/shape_of_view.dart';
 import 'package:share/share.dart';
 import 'package:clash_of_cardz_flutter/bloc/api_bloc.dart';
 import 'package:clash_of_cardz_flutter/helper/exten_fun/common_fun.dart';
@@ -11,89 +16,167 @@ import 'package:clash_of_cardz_flutter/helper/shared_preference_data.dart';
 import 'package:clash_of_cardz_flutter/model/responses/profile_res_model.dart';
 import 'package:clash_of_cardz_flutter/ui/screens/about.dart';
 import 'package:clash_of_cardz_flutter/ui/screens/game_rules.dart';
-import 'package:clash_of_cardz_flutter/ui/screens/gameplay.dart';
-import 'package:clash_of_cardz_flutter/ui/screens/leaderboard.dart';
-import 'package:clash_of_cardz_flutter/ui/screens/login.dart';
+import 'package:clash_of_cardz_flutter/ui/screens/old_screen/old_leaderboard.dart';
 import 'package:clash_of_cardz_flutter/ui/screens/profile.dart';
-import 'package:clash_of_cardz_flutter/ui/screens/setting.dart';
-import 'package:clash_of_cardz_flutter/ui/screens/statistics.dart';
+import 'package:clash_of_cardz_flutter/ui/screens/old_screen/setting.dart';
+import 'package:clash_of_cardz_flutter/ui/screens/old_screen/statistics.dart';
 import 'package:clash_of_cardz_flutter/ui/widgets/custom/carousel_auto_slider.dart';
-import 'package:clash_of_cardz_flutter/ui/widgets/include_screens/include_home_screen.dart';
 import 'package:clash_of_cardz_flutter/ui/widgets/libraries/giffy_dialog/giffy_dialog.dart';
-import 'package:clash_of_cardz_flutter/ui/widgets/views/view_widgets.dart';
-
-import 'cards.dart';
 import 'game_option.dart';
-import 'package:http/http.dart';
-import 'package:path_provider/path_provider.dart';
-import 'dart:async';
-import 'dart:io';
+import 'old_screen/games.dart';
 
+class Home extends StatefulWidget {
+  Home({this.xApiKey, this.memberId});
 
-class HomeScreen extends StatefulWidget {
-
-  HomeScreen({this.xApiKey, this.memberId});
   final String xApiKey;
   final String memberId;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _HomeState createState() => _HomeState();
 }
 
-class _MyHomePageState extends State<HomeScreen> {
-
+class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
-    //print('Home-apiKey ${widget.xApiKey}');
-    //print('Home-memberId ${widget.memberId}');
-
     fetchProfileData();
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: Container(
-        decoration: new BoxDecoration(
-          image: new DecorationImage(
-            image: new AssetImage("assets/images/bg_img3.png"),
-            fit: BoxFit.cover,
-          ),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            Container(
-              height: 65,
-              child: StreamBuilder(
-                stream: apiBloc.profileRes,
-                builder: (context, AsyncSnapshot<ProfileResModel> snapshot) {
-                  if (snapshot.hasData) {
-                    savePlayerInfoIntoPref(snapshot.data);
-                    return buildHomeScreenPlayerInfo(snapshot.data, widget.xApiKey);
-                  }
-                  return Center();
-                },
-              ),
-            ),
-
-            Row(
-              children: <Widget>[
-                Expanded(
-                  flex: 2,
-                  child: SlideInLeft(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
+      backgroundColor:  Color(0xFF364B5A),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            height: 70,
+            color: Color(0xFF2C3E4B),
+            child: StreamBuilder(
+              stream: apiBloc.profileRes,
+              builder: (context, AsyncSnapshot<ProfileResModel> snapshot) {
+                if (snapshot.hasData) {
+                  savePlayerInfoIntoPref(snapshot.data);
+                  return SlideInDown(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Container(
-                          width: 40,
-                          height: 40,
-                          margin: EdgeInsets.all(5),
-                          child: IconButton(
-                            icon: Image.asset('assets/icons/png/ic_setting.png', color: Colors.white,),
-                            onPressed: () {
+                        Padding(
+                          padding: const EdgeInsets.only(left: 26.0),
+                          child: Shimmer.fromColors(
+                            baseColor: Colors.cyanAccent[100],
+                            highlightColor: Colors.lightBlueAccent,
+                            child: Text(snapshot.data.response[0].fullname.toUpperCase() ?? '',
+                                style: TextStyle(fontSize: 22, fontFamily: 'montserrat', color: Colors.white, fontWeight: FontWeight.bold)),
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            HeartBeat(
+                              child: Image.asset(
+                                'assets/icons/png/coins.png',
+                                height: 40,
+                                width: 40,
+                              ),
+                              preferences: AnimationPreferences(duration: const Duration(milliseconds: 2000), autoPlay: AnimationPlayStates.Loop),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(5.0, 8.0, 30.0, 8.0),
+                              child: Shimmer.fromColors(
+                                baseColor: Colors.cyanAccent[100],
+                                highlightColor: Colors.lightBlueAccent,
+                                child: Text(snapshot.data.response[0].coins ?? '0',
+                                    style: TextStyle(
+                                        fontSize: 20, fontFamily: 'montserrat', color: Colors.white, fontWeight: FontWeight.bold)),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(0.0, 8.0, 24.0, 8.0),
+                              child: AvatarGlow(
+                                child: ShapeOfView(
+                                  height: 33,
+                                  width: 33,
+                                  shape: CircleShape(borderColor: Colors.lightBlueAccent, borderWidth: 1),
+                                  elevation: 8,
+                                  child: FadeInImage.assetNetwork(
+                                    placeholder: 'assets/icons/png/circle-avator-default-img.png',
+                                    image: snapshot.data.response[0].image,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                                endRadius: 30,
+                                glowColor: Colors.cyanAccent,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  );
+                }
+                return Container();
+              },
+            ),
+          ),
+          Expanded(
+            child: Row(
+              children: [
+                Expanded(
+                  flex: 1,
+                  child: SlideInLeft(
+                    child: ListView(
+                      children: [
+                        IcSgv(
+                          ic: 'assets/icons/svg/stage.svg',
+                          onClick: () {
+                            onTapAudio('icon');
+                            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Leaderboard()));
+                          },
+                        ),
+
+                        IconButton(
+                          icon: Image.asset(
+                            'assets/icons/png/ic_statistic_whites.png',
+                            height: 25,
+                            width: 25,
+                            color: Colors.white.withOpacity(0.5),
+                          ),
+                          onPressed: () {
+                            onTapAudio('icon');
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (BuildContext context) => Statistics(xApiKey: widget.xApiKey, memberId: widget.memberId,),),);
+                          },
+                        ),
+
+                        IcSgv(
+                          ic: 'assets/icons/svg/user.svg',
+                          onClick: () {
+                            onTapAudio('icon');
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (BuildContext context) => Profile(
+                                  xApiKey: widget.xApiKey,
+                                  memberId: widget.memberId,
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+
+
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8, bottom: 24),
+                          child: InkWell(
+                            child: Icon(
+                              Icons.settings,
+                              size: 28,
+                              color: Colors.white.withOpacity(0.5),
+                            ),
+                            onTap: () {
                               onTapAudio('icon');
                               bool isNotifiOn;
                               SharedPreferenceHelper().getNotificationOnOffState().then((isNotificationOn) => {
-                                isNotifiOn =isNotificationOn,
+                                isNotifiOn = isNotificationOn,
                               });
                               bool isSfxOn;
                               SharedPreferenceHelper().getSfxOnOffState().then((isSFXOn) => {
@@ -101,305 +184,106 @@ class _MyHomePageState extends State<HomeScreen> {
                               });
 
                               SharedPreferenceHelper().getMusicOnOffState().then((isMusicOn) => {
-                                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Setting(isMusicOn, isNotifiOn, isSfxOn, widget.memberId))),
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (BuildContext context) =>
+                                            OldSetting(isMusicOn, isNotifiOn, isSfxOn, widget.memberId))),
                               });
                             },
                           ),
-                          decoration:
-                          Views.boxDecorationWidgetForIconWithBgColor(Colors.black, 4.0, Colors.grey, 5.0, 5.0, 3.0),
                         ),
 
-                        Container(
-                          width: 40,
-                          height: 40,
-                          margin: EdgeInsets.all(5),
-                          child: IconButton(
-                            icon: Image.asset('assets/icons/png/share.png'),
-                            onPressed: () {
-                              onTapAudio('icon');
-                              //_onShare(context, [], Constants.shareTxt, Constants.appName);
-                              urlFileShare();
-                            },
+                        InkWell(
+                          child: Icon(
+                            Icons.share,
+                            size: 25,
+                            color: Colors.white.withOpacity(0.5),
                           ),
-                          decoration:
-                          Views.boxDecorationWidgetForIconWithBgColor(Colors.greenAccent[700], 4.0, Colors.grey, 5.0, 5.0, 3.0),
+                          onTap: () {
+                            onTapAudio('icon');
+                            _onShare(context, Constants.shareAndroidTxt, Constants.appName);
+                            // urlFileShare();
+                          },
                         ),
-
-                        Container(
-                            width: 40,
-                            height: 40,
-                            margin: EdgeInsets.all(5),
-                            child: IconButton(
-                              splashColor: Colors.white,
-                              icon: SvgPicture.asset('assets/icons/svg/logout.svg'),
-                              onPressed: () {
-                                onTapAudio('icon');
-                                SharedPreferenceHelper().clearPrefData();
-                                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => LogIn()));
-                              },
-                            ),
-                            decoration:
-                            Views.boxDecorationWidgetForIconWithBgColor(Colors.redAccent, 4.0, Colors.grey, 5.0, 5.0, 3.0)),
                       ],
                     ),
-                    preferences:
-                    AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
                   ),
                 ),
                 Expanded(
-                  flex: 10,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      //login button
-                      FadeInDown(
-                        child: MaterialButton(
-                          splashColor: Colors.grey,
-                          child: Container(
-                            width: 220,
-                            height: 50,
-                            decoration: BoxDecoration(
-                              image: DecorationImage(image: AssetImage('assets/icons/png/bg_button.png'), fit: BoxFit.fill),
-                            ),
-                            child: Container(
-                              alignment: Alignment.center,
-                              padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 12.0),
-                              child: Text(
-                                "PLAY",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    fontStyle: FontStyle.normal,
-                                    fontFamily: 'neuropol_x_rg',
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black87),
-                              ),
-                            ),
-                          ),
-                          onPressed: () {
+                  flex: 6,
+                  child: Container(
+                    //height: double.maxFinite,
+                    color: Color(0xFF314453),
+                    padding: EdgeInsets.fromLTRB(50, 0, 50, 0),
+                    child: ZoomIn(child: CarouselAutoSlider(xApiKey: '56005600')),
+                  ),
+                ),
+                Expanded(
+                  flex: 3,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 6, bottom: 12, left: 8, right: 6),
+                    child: ListView(
+                      children: [
+                        BtnLeftBorderSq(
+                          text: 'PLAY',
+                          onClick: () {
                             onTapAudio('button');
-                            //Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => GameOption()));
                             Navigator.push(context, CupertinoPageRoute(builder: (BuildContext context) => GameOption()));
                           },
                         ),
-                        preferences:
-                        AnimationPreferences(duration: const Duration(milliseconds: 1000), autoPlay: AnimationPlayStates.Forward),
-                      ),
-
-                      FadeInLeft(
-                        child: MaterialButton(
-                          padding: EdgeInsets.fromLTRB(0.0, 2.0, 0.0, 0.0),
-                          splashColor: Colors.grey,
-                          child: Container(
-                            width: 220,
-                            height: 50,
-                            decoration: BoxDecoration(
-                              image: DecorationImage(image: AssetImage('assets/icons/png/bg_button.png'), fit: BoxFit.fill),
-                            ),
-                            child: Container(
-                              alignment: Alignment.center,
-                              padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 12.0),
-                              child: Text(
-                                "CARDS",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    fontStyle: FontStyle.normal,
-                                    fontFamily: 'neuropol_x_rg',
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black87),
-                              ),
-                            ),
-                          ),
-                          onPressed: () {
+                        BtnLeftBorderSq(
+                          text: 'GAMES',
+                          onClick: () {
                             onTapAudio('button');
-                            //change here
                             Navigator.push(
-                                context,
-                                CupertinoPageRoute(builder: (BuildContext context) => Cards(xApiKey: widget.xApiKey, memberId: widget.memberId,)));
+                              context,
+                              CupertinoPageRoute(
+                                builder: (BuildContext context) => Games(
+                                  xApiKey: widget.xApiKey,
+                                  memberId: widget.memberId,
+                                ),
+                              ),
+                            );
                           },
                         ),
-                        preferences:
-                        AnimationPreferences(duration: const Duration(milliseconds: 1000), autoPlay: AnimationPlayStates.Forward),
-                      ),
-
-                      FadeInRight(
-                        child: MaterialButton(
-                          padding: EdgeInsets.fromLTRB(0.0, 2.0, 0.0, 0.0),
-                          splashColor: Colors.grey,
-                          child: Container(
-                            width: 220,
-                            height: 50,
-                            decoration: BoxDecoration(
-                              image: DecorationImage(image: AssetImage('assets/icons/png/bg_button.png'), fit: BoxFit.fill),
-                            ),
-                            child: Container(
-                              alignment: Alignment.center,
-                              padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 12.0),
-                              child: Text(
-                                "GAME RULES",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    fontStyle: FontStyle.normal,
-                                    fontFamily: 'neuropol_x_rg',
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black87),
-                              ),
-                            ),
-                          ),
-                          // ),
-                          onPressed: () {
+                        BtnLeftBorderSq(
+                          text: 'GAME RULES',
+                          onClick: () {
                             onTapAudio('button');
-                            Navigator.push(context, MaterialPageRoute(
-                                builder: (BuildContext context) => GameRule(xApiKey: widget.xApiKey, memberId: widget.memberId,)));
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (BuildContext context) => GameRule(
+                                  xApiKey: widget.xApiKey,
+                                  memberId: widget.memberId,
+                                ),
+                              ),
+                            );
                           },
                         ),
-                        preferences:
-                        AnimationPreferences(duration: const Duration(milliseconds: 1000), autoPlay: AnimationPlayStates.Forward),
-                      ),
-                      FadeInUp(
-                        child: MaterialButton(
-                          padding: EdgeInsets.fromLTRB(0.0, 2.0, 0.0, 0.0),
-                          splashColor: Colors.grey,
-                          child: Container(
-                            width: 220,
-                            height: 50,
-                            decoration: BoxDecoration(
-                              image: DecorationImage(image: AssetImage('assets/icons/png/bg_button.png'), fit: BoxFit.fill),
-                            ),
-                            child: Container(
-                              alignment: Alignment.center,
-                              padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 12.0),
-                              child: Text(
-                                "ABOUT",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    fontStyle: FontStyle.normal,
-                                    fontFamily: 'neuropol_x_rg',
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black87),
-                              ),
-                            ),
-                          ),
-                          onPressed: () {
+                        BtnLeftBorderSq(
+                          text: 'ABOUT',
+                          onClick: () {
                             onTapAudio('button');
                             Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => AboutScreen(widget.xApiKey)));
                           },
                         ),
-                        preferences:
-                        AnimationPreferences(duration: const Duration(milliseconds: 1000), autoPlay: AnimationPlayStates.Forward),
-                      ),
-                      FadeInUpBig(
-                        child: MaterialButton(
-                          padding: EdgeInsets.fromLTRB(0.0, 2.0, 0.0, 0.0),
-                          splashColor: Colors.grey,
-                          child: Container(
-                            width: 220,
-                            height: 50,
-                            decoration: BoxDecoration(
-                              image: DecorationImage(image: AssetImage('assets/icons/png/bg_button.png'), fit: BoxFit.fill),
-                            ),
-                            child: Container(
-                              alignment: Alignment.center,
-                              padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 12.0),
-                              child: Text(
-                                "QUIT",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    fontStyle: FontStyle.normal,
-                                    fontFamily: 'neuropol_x_rg',
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black87),
-                              ),
-                            ),
-                          ),
-                          // ),
-                          onPressed: () {
+                        BtnLeftBorderSq(
+                          text: 'QUIT',
+                          onClick: () {
                             onTapAudio('button');
                             showExitDialog();
                           },
                         ),
-                        preferences:
-                        AnimationPreferences(duration: const Duration(milliseconds: 1000), autoPlay: AnimationPlayStates.Forward),
-                      ),
-                    ],
-                  ),
-                ),
-
-                Expanded(
-                  flex: 10,
-                  child: ZoomIn(
-                    child: Container(
-                      margin: EdgeInsets.fromLTRB(40, 0, 40, 0),
-                      child: CarouselAutoSlider(xApiKey: '56005600'),
-                    ),
-                    preferences:
-                    AnimationPreferences(duration: const Duration(milliseconds: 2000), autoPlay: AnimationPlayStates.Forward),
-                  ),
-                ),
-                Expanded(
-                  flex: 2,
-                  child: SlideInRight(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          width: 40,
-                          height: 40,
-                          margin: EdgeInsets.all(5),
-                          child: IconButton(
-                            icon: SvgPicture.asset('assets/icons/svg/stage.svg', color: Colors.white,),
-                            onPressed: () {
-                              onTapAudio('icon');
-                              Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Leaderboard()));
-                            },
-                          ),
-                          decoration:
-                          Views.boxDecorationWidgetForIconWithBgColor(Colors.amber[700], 4.0, Colors.grey, 5.0, 5.0, 3.0),
-                        ),
-                        Container(
-                          width: 40,
-                          height: 40,
-                          margin: EdgeInsets.all(5),
-                          child: IconButton(
-                            icon: Image.asset('assets/icons/png/ic_statistic_whites.png'),
-                            onPressed: () {
-                              onTapAudio('icon');
-                              Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Statistics(widget.xApiKey, widget.memberId)));
-                            },
-                          ),
-                          decoration:
-                          Views.boxDecorationWidgetForIconWithBgColor(Colors.cyan, 4.0, Colors.grey, 5.0, 5.0, 3.0),
-                        ),
-
-                        Container(
-                          width: 40,
-                          height: 40,
-                          margin: EdgeInsets.all(5),
-                          child: IconButton(
-                            icon: SvgPicture.asset('assets/icons/svg/user.svg', color: Colors.white,),
-                            onPressed: () {
-                              onTapAudio('icon');
-                              Navigator.push(context, MaterialPageRoute(
-                                  builder: (BuildContext context) => Profile(xApiKey: widget.xApiKey, memberId: widget.memberId,)));
-                            },
-                          ),
-                          decoration:
-                          Views.boxDecorationWidgetForIconWithBgColor(Colors.black54, 4.0, Colors.grey, 5.0, 5.0, 3.0),
-                        ),
                       ],
                     ),
-                    preferences:
-                    AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
                   ),
                 ),
               ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -407,34 +291,33 @@ class _MyHomePageState extends State<HomeScreen> {
   void showExitDialog() {
     showDialog(
       context: context,
-      builder: (_) =>
-          AssetGiffyDialog(
-            image: Image.asset('assets/animations/gifs/exit.gif'),
-            title: Text(
-              'Clash Of Cardz',
-              style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.w600),
-            ),
-            description: Text(
-              'Do you really want to exit the App?',
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w600),
-            ),
-            entryAnimation: EntryAnimation.RIGHT,
-            buttonOkText: Text(
-              'QUIT',
-              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-            ),
-            buttonOkColor: Colors.red,
-            buttonCancelColor: Colors.greenAccent,
-            buttonCancelText: Text(
-              'PLAY',
-              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-            ),
-            onOkButtonPressed: () {
-              onTapAudio('icon');
-              SystemChannels.platform.invokeMethod<void>('SystemNavigator.pop');
-            },
-          ),
+      builder: (_) => AssetGiffyDialog(
+        image: Image.asset('assets/animations/gifs/exit.gif'),
+        title: Text(
+          'Clash Of Cardz',
+          style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.w600),
+        ),
+        description: Text(
+          'Do you really want to exit the App?',
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w600),
+        ),
+        entryAnimation: EntryAnimation.RIGHT,
+        buttonOkText: Text(
+          'QUIT',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
+        buttonOkColor: Colors.red,
+        buttonCancelColor: Colors.greenAccent,
+        buttonCancelText: Text(
+          'PLAY',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
+        onOkButtonPressed: () {
+          onTapAudio('icon');
+          SystemChannels.platform.invokeMethod<void>('SystemNavigator.pop');
+        },
+      ),
     );
   }
 
@@ -444,62 +327,22 @@ class _MyHomePageState extends State<HomeScreen> {
         widget.xApiKey,
         model.response[0].memberid,
         model.response[0].fullname,
-        model.response[0].photo,
+        model.response[0].image,
         model.response[0].points.toString(),
         model.response[0].coins,
         model.response[0].win,
         model.response[0].loss,
         model.response[0].matchPlayed,
         model.response[0].redeem,
-        model.response[0].rank.toString()
-    );
+        model.response[0].rank.toString());
   }
 
-  _onShare(BuildContext context, List<String> imagePaths, String text, String subject) async {
-    // A builder is used to retrieve the context immediately
-    // surrounding the RaisedButton.
-    //
-    // The context's `findRenderObject` returns the first
-    // RenderObject in its descendent tree when it's not
-    // a RenderObjectWidget. The RaisedButton's RenderObject
-    // has its position and size after it's built.
+  _onShare(BuildContext context, String text, String subject) async {
     final RenderBox box = context.findRenderObject();
-
-    if (imagePaths.isNotEmpty) {
-      await Share.shareFiles(imagePaths,
-          text: text,
-          subject: subject,
-          sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size);
-    } else {
-      await Share.share(text,
-          subject: subject,
-          sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size);
-    }
-  }
-
-  Future<Null> urlFileShare() async {
-    final RenderBox box = context.findRenderObject();
-    if (Platform.isAndroid) {
-      var url = 'https://i.ytimg.com/vi/fq4N0hgOWzU/maxresdefault.jpg';
-      var response = await get(url);
-      final documentDirectory = (await getExternalStorageDirectory()).path;
-      File imgFile = new File('$documentDirectory/clashOfCardz.png');
-      imgFile.writeAsBytesSync(response.bodyBytes);
-
-      Share.shareFiles([documentDirectory],
-          subject: 'URL File Share',
-          text: 'Hello, check your share files!',
-          sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size);
-    } else {
-      Share.share('Hello, check your share files!',
-          subject: 'URL File Share',
-          sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size);
-    }
+    await Share.share(text, subject: subject, sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size);
   }
 
   void fetchProfileData() async {
     await apiBloc.fetchProfileRes(widget.xApiKey, widget.memberId);
   }
-
-
 }

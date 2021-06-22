@@ -1,13 +1,9 @@
+import 'package:clash_of_cardz_flutter/ui/screens/old_screen/setting.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:clash_of_cardz_flutter/helper/constantvalues/constants.dart';
 import 'package:clash_of_cardz_flutter/helper/shared_preference_data.dart';
-import 'package:clash_of_cardz_flutter/model/responses/cards_res_model.dart';
-import 'package:clash_of_cardz_flutter/model/responses/game_option_res_model.dart';
 import 'package:clash_of_cardz_flutter/model/state_managements/autoplay_states_model.dart';
-import 'package:clash_of_cardz_flutter/ui/screens/game_result.dart';
-import 'package:clash_of_cardz_flutter/ui/screens/login.dart';
 import 'package:clash_of_cardz_flutter/ui/widgets/views/view_widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_animator/flutter_animator.dart';
@@ -123,6 +119,7 @@ class BuildPlayer1Screen extends StatelessWidget{
               Row(
                 children: [
                   Container(
+                    //width: getScreenWidth(context)/6.4,
                     width: 131,
                     height: 87,
                     alignment: AlignmentDirectional.bottomStart,
@@ -153,50 +150,57 @@ class BuildPlayer1Screen extends StatelessWidget{
                                 color: Colors.white),
                           ),
                         ),
+
                         Row(
                           children: [
                             Container(
                               width: 40,
+                              height: 35,
                               color: Colors.black,
-                              padding: EdgeInsets.all(8),
-                              child: Text(
-                                statesModel.cardCountOnDeck.toString(),
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    fontStyle: FontStyle.normal,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white),
+                              child: Center(
+                                child: Text(
+                                  statesModel.cardCountOnDeck.toString(),
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontStyle: FontStyle.normal,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white),
+                                ),
                               ),
                             ),
                             Container(
                               width: 40,
+                              height: 35,
                               color: Colors.black,
-                              padding: EdgeInsets.all(8),
                               margin:
                               EdgeInsets.fromLTRB(5, 0, 5, 0),
-                              child: Text(
-                                statesModel.player1TotalPoints.toString(),
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    fontStyle: FontStyle.normal,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white),
+                              child: Center(
+                                child: Text(
+                                  statesModel.player1TotalPoints.toString(),
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontStyle: FontStyle.normal,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white),
+                                ),
                               ),
                             ),
                             Container(
                               width: 40,
+                              height: 35,
                               color: Colors.black,
-                              padding: EdgeInsets.all(8),
-                              child: Text(
-                                statesModel.playerOneTrump.toString(),
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    fontStyle: FontStyle.normal,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white),
+                              child: Center(
+                                child: Text(
+                                  statesModel.playerOneTrump.toString(),
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontStyle: FontStyle.normal,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white),
+                                ),
                               ),
                             ),
                           ],
@@ -238,7 +242,7 @@ class BuildPlayer1Screen extends StatelessWidget{
                       ],
                     ),
                   ),
-                  HeadShake(
+                  /*HeadShake(
                     child: Container(
                       width: 35,
                       height: 35,
@@ -255,7 +259,7 @@ class BuildPlayer1Screen extends StatelessWidget{
                     preferences: AnimationPreferences(
                         duration: const Duration(milliseconds: 5500),
                         autoPlay: AnimationPlayStates.Loop),
-                  ),
+                  ),*/
 
                 ],
               ),
@@ -306,18 +310,18 @@ class BuildPlayer1Screen extends StatelessWidget{
                 child: ClipRRect(
                   borderRadius: BorderRadius.all(Radius.circular(5.0)),
                   child: Image.asset(
-                    'assets/images/img_card_demo.png',
+                    'assets/images/bg_card_back.png',
                     width: 55,
                   ),
                 ),
               ),
 
               onTap: (){
-                print('---- card Count 22 $gridListSize');
+                /*print('---- card Count 22 $gridListSize');
                 if(gridListSize > 0){
-                  //context.read<AutoPlayStatesModel>().updateCardCountOnDeck(statesModel.cardCountOnDeck - 1);
-                  //context.read<AutoPlayStatesModel>().updateRebuildDeck(true);
-                }
+                  context.read<AutoPlayStatesModel>().updateCardCountOnDeck(statesModel.cardCountOnDeck - 1);
+                  context.read<AutoPlayStatesModel>().updateRebuildDeck(true);
+                }*/
               },
             ),
             preferences: AnimationPreferences(
@@ -333,11 +337,17 @@ class BuildPlayer1Screen extends StatelessWidget{
 }
 
 class BuildPlayerTwoScreen extends StatelessWidget {
-  int listLength = 0;
+  final int listLength;
+  final String memberId;
+  final Function onPressed;
 
-  BuildPlayerTwoScreen(int length){
-    this.listLength = (length/2).round();
-  }
+  const BuildPlayerTwoScreen({
+    Key key,
+    @required this.listLength,
+    @required this.memberId,
+    @required this.onPressed,
+  }) : super(key: key);
+
 
   @override
   Widget build(BuildContext context) {
@@ -454,19 +464,37 @@ class BuildPlayerTwoScreen extends StatelessWidget {
                               'assets/icons/svg/white-flag.svg',
                               color: Colors.white,
                             ),
-                            onPressed: () {
-                              Navigator.push(context,
-                                CupertinoPageRoute(
-                                  builder: (context) => new GameResult(winnerName: 'Rex Scout', winnerId:'MEM00003', winnerImage: Constants.imgUrlTest, winnerCoins: '200',
-                                    winnerPoints: '12', cardType: 'Cricket', clashType: '1 vs 1', playedCards: '16', isP1Won: true,),
-                                ),
-                              );
-                            },
+                            onPressed: onPressed,
                           ),
                           decoration: Views.boxDecorationWidgetForIconWithBgColor(Colors.teal, 4.0, Colors.grey, 5.0, 5.0, 3.0),
                         ),
 
                         Container(
+                          width: 40,
+                          height: 40,
+                          margin: EdgeInsets.all(5),
+                          child: IconButton(
+                            icon: Image.asset('assets/icons/png/ic_setting.png', color: Colors.white,),
+                            onPressed: () {
+                              //onTapAudio('icon');
+                              bool isNotifiOn;
+                              SharedPreferenceHelper().getNotificationOnOffState().then((isNotificationOn) => {
+                                isNotifiOn =isNotificationOn,
+                              });
+                              bool isSfxOn;
+                              SharedPreferenceHelper().getSfxOnOffState().then((isSFXOn) => {
+                                isSfxOn = isSFXOn,
+                              });
+
+                              SharedPreferenceHelper().getMusicOnOffState().then((isMusicOn) => {
+                                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => OldSetting(isMusicOn, isNotifiOn, isSfxOn, memberId))),
+                              });
+                            },
+                          ),
+                          decoration: Views.boxDecorationWidgetForIconWithBgColor(Colors.black, 4.0, Colors.grey, 5.0, 5.0, 3.0),
+                        ),
+
+                       /* Container(
                           width: 40,
                           height: 40,
                           margin: EdgeInsets.all(5),
@@ -480,9 +508,9 @@ class BuildPlayerTwoScreen extends StatelessWidget {
                             },
                           ),
                           decoration: Views.boxDecorationWidgetForIconWithBgColor(Colors.grey[800], 4.0, Colors.grey, 5.0, 5.0, 3.0),
-                        ),
+                        ),*/
 
-                        Container(
+                        /*Container(
                           width: 40,
                           height: 40,
                           margin: EdgeInsets.all(5),
@@ -497,7 +525,7 @@ class BuildPlayerTwoScreen extends StatelessWidget {
                             },
                           ),
                           decoration: Views.boxDecorationWidgetForIconWithBgColor(Colors.red[600], 4.0, Colors.grey, 5.0, 5.0, 3.0),
-                        ),
+                        ),*/
                       ],
                     ),
                   ),
@@ -546,51 +574,60 @@ class BuildPlayerTwoScreen extends StatelessWidget {
                                 children: [
                                   Container(
                                     width: 40,
+                                    height: 35,
                                     color: Colors.black,
-                                    padding: EdgeInsets.all(8),
-                                    child: Text(
-                                      statesModel.cardCountOnDeck.toString(),
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          fontStyle: FontStyle.normal,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white),
+                                    child: Center(
+                                      child: Text(
+                                        statesModel.cardCountOnDeck.toString(),
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontStyle: FontStyle.normal,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white),
+                                      ),
                                     ),
                                   ),
                                   Container(
                                     width: 40,
+                                    height: 35,
                                     color: Colors.black,
-                                    padding: EdgeInsets.all(8),
                                     margin:
                                     EdgeInsets.fromLTRB(5, 0, 5, 0),
-                                    child: Text(
-                                      statesModel.player2TotalPoints.toString(),
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          fontStyle: FontStyle.normal,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white),
+                                    child: Center(
+                                      child: Text(
+                                        statesModel.player2TotalPoints.toString(),
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontStyle: FontStyle.normal,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white),
+                                      ),
                                     ),
                                   ),
                                   Container(
                                     width: 40,
+                                    height: 35,
                                     color: Colors.black,
-                                    padding: EdgeInsets.all(8),
-                                    child: Text(
-                                      statesModel.playerTwoTrump.toString(),
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          fontStyle: FontStyle.normal,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white),
+                                    child: Center(
+                                      child: Text(
+                                        statesModel.playerTwoTrump.toString(),
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontStyle: FontStyle.normal,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white),
+                                      ),
                                     ),
                                   ),
                                 ],
                               ),
+
                               Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Padding(
                                     padding: const EdgeInsets.all(5.0),

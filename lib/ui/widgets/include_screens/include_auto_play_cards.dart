@@ -75,7 +75,6 @@ Widget buildPlayerOneCard(
     },
     front: Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(8.0)),
         boxShadow: <BoxShadow>[
           BoxShadow(
             color: Color(0x40000000),
@@ -478,7 +477,6 @@ Widget buildPlayerTwoCard(
 
     front: Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(8.0)),
         boxShadow: <BoxShadow>[
           BoxShadow(
             color: Color(0x60000000),
@@ -729,12 +727,15 @@ Widget buildPlayerTwoCard(
                         child: Shimmer.fromColors(
                           baseColor: Colors.white,
                           highlightColor: Colors.grey[400],
-                          child: Text(
-                            cardsList[cardListSizeForP2 + indexOfCardDeck].cardName,
-                            style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              color: Colors.white,
-                              fontSize: 16,
+                          child: FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: Text(
+                              cardsList[cardListSizeForP2 + indexOfCardDeck].cardName,
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                color: Colors.white,
+                                fontSize: 16,
+                              ),
                             ),
                           ),
                         ),

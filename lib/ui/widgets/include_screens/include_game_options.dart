@@ -1,3 +1,5 @@
+import 'package:clash_of_cardz_flutter/helper/exten_fun/base_application_fun.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/custom/no_data_found.dart';
 import 'package:flutter/material.dart';
 import 'package:clash_of_cardz_flutter/bloc/api_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -22,6 +24,7 @@ class _IncludeGameOptionState extends State<IncludeGameOption> {
   List<Sub1category_details> subcategoryDetails = [];
   String categoryName = '';
 
+  double screenHeight = 400;
 
   void _includeGameOptState() {
     setState(() {
@@ -31,6 +34,8 @@ class _IncludeGameOptionState extends State<IncludeGameOption> {
 
   @override
   Widget build(BuildContext context) {
+    screenHeight = getScreenHeight(context);
+
     SharedPreferenceHelper().getUserApiKey().then((xApiKey) => apiBloc.fetchGameOptionRes(xApiKey));
 
     return Row(
@@ -44,11 +49,7 @@ class _IncludeGameOptionState extends State<IncludeGameOption> {
                 return _buildFirstList(snapshot.data);
               } else if (!snapshot.hasData) {
                 return frostedGlassWithProgressBarWidget(context);
-              } else return Center(
-                child: Text("No Data Found",
-                    style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 30)
-                ),
-              );
+              } else return NoDataFound();
             },
           ),
         ),
@@ -89,8 +90,8 @@ class _IncludeGameOptionState extends State<IncludeGameOption> {
                 children: <Widget>[
                   Pulse(
                     child: Container(
-                      width: 60,
-                      height: 60,
+                      width: screenHeight/7,
+                      height: screenHeight/7,
                       decoration: BoxDecoration(
                         color: Colors.transparent,
                         border: Border.all(
@@ -127,7 +128,7 @@ class _IncludeGameOptionState extends State<IncludeGameOption> {
                       child: Text(
                         data.response[index].categoryName,
                         style: TextStyle(
-                            fontSize: 30,
+                            fontSize: screenHeight/15,
                             fontFamily: 'neuropol_x_rg',
                             fontWeight: FontWeight.bold
                         ),
@@ -181,8 +182,8 @@ class _IncludeGameOptionState extends State<IncludeGameOption> {
 
                   children: <Widget>[
                     Container(
-                      width: 60,
-                      height: 60,
+                      width: screenHeight/7,
+                      height: screenHeight/7,
                       decoration: BoxDecoration(
                         color: Colors.transparent,
                         border: Border.all(
@@ -214,7 +215,7 @@ class _IncludeGameOptionState extends State<IncludeGameOption> {
                         child: Text(
                           subcategory[index].sub1categoryName,
                           style: TextStyle(
-                              fontSize: 30,
+                              fontSize: screenHeight/15,
                               fontFamily: 'neuropol_x_rg',
                               fontWeight: FontWeight.bold
                           ),

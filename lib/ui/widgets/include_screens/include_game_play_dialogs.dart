@@ -1,7 +1,9 @@
 
 import 'dart:async';
 
+import 'package:clash_of_cardz_flutter/ui/widgets/libraries/giffy_dialog/giffy_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:lottie/lottie.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 import 'package:clash_of_cardz_flutter/helper/exten_fun/base_application_fun.dart';
@@ -20,8 +22,8 @@ Function(bool isTimeEnded) onTimeEnd,
         Padding(
           padding: const EdgeInsets.only(left: 0.0, top: 0),
           child: TweenAnimationBuilder<Duration>(
-              duration: Duration(minutes: 45),
-              tween: Tween(begin: Duration(minutes: 45), end: Duration.zero),
+              duration: Duration(minutes: 3),
+              tween: Tween(begin: Duration(minutes: 3), end: Duration.zero),
               onEnd: () {
                 onTimeEnd(true);
                 },
@@ -285,4 +287,40 @@ void showWrongSelectionDialog(BuildContext context, String selectedAttrName) {
   Timer(Duration(milliseconds: 1000), () {
     Navigator.pop(dialogContext);
   });
+}
+
+
+void showExitDialog(BuildContext context, {
+  Function() onPressed,
+}) {
+  showDialog(
+    context: context,
+    builder: (_) => AssetGiffyDialog(
+      image: Image.asset('assets/animations/gifs/surrender.gif'),
+      title: Text(
+        'SURRENDER',
+        style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.w600),
+      ),
+      description: Text(
+        'Do you really want to surrender! \n You will loose some points you are about to win.',
+        textAlign: TextAlign.center,
+        style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w600),
+      ),
+      entryAnimation: EntryAnimation.RIGHT,
+      buttonOkText: Text(
+        'YES',
+        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+      ),
+      buttonOkColor: Colors.red,
+      buttonCancelColor: Colors.greenAccent,
+      buttonCancelText: Text(
+        'NO',
+        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+      ),
+      onOkButtonPressed: () {
+        onPressed();
+        //SystemChannels.platform.invokeMethod<void>('SystemNavigator.pop');
+      },
+    ),
+  );
 }

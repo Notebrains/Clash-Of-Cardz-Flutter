@@ -362,7 +362,7 @@ Widget buildCard1(
                         child: Text(
                           cardsList[indexOfCardDeck].cardName,
                           style: TextStyle(
-                            fontWeight: FontWeight.w200,
+                            fontWeight: FontWeight.w600,
                             color: Colors.white,
                             fontSize: 16,
                           ),
@@ -467,7 +467,7 @@ Widget buildCard2(
             padding: const EdgeInsets.all(8.0),
             child: FadeInImage.assetNetwork(
                 fit: BoxFit.cover,
-                placeholder: 'assets/images/cricket_2.png',
+                placeholder: 'assets/images/cricket_1.png',
                 image: cardsList[cardListSizeForP2 + indexOfCardDeck].cardImg??'',
                 height: 145,
                 width: 145),
@@ -585,7 +585,7 @@ Widget buildCard2(
                         child: Text(
                           cardsList[cardListSizeForP2 + indexOfCardDeck].cardName,
                           style: TextStyle(
-                            fontWeight: FontWeight.w200,
+                            fontWeight: FontWeight.w600,
                             color: Colors.white,
                             fontSize: 16,
                           ),
