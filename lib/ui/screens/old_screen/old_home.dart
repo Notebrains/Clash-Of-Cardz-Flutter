@@ -361,7 +361,7 @@ class _MyHomePageState extends State<OldHomeScreen> {
                             ),
                             onPressed: () {
                               onTapAudio('icon');
-                              Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Leaderboard()));
+                              Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => OldLeaderboard()));
                             },
                           ),
                           decoration: Views.boxDecorationWidgetForIconWithBgColor(Colors.amber[700], 4.0, Colors.grey, 5.0, 5.0, 3.0),

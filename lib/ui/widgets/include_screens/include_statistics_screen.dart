@@ -1,7 +1,7 @@
 import 'package:clash_of_cardz_flutter/helper/exten_fun/common_fun.dart';
 import 'package:clash_of_cardz_flutter/ui/styles/size_config.dart';
 import 'package:clash_of_cardz_flutter/ui/widgets/custom/outlined_btn_gradient_border.dart';
-import 'package:clash_of_cardz_flutter/ui/widgets/custom/player_info_back_btn.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/include_screens/player_info_back_btn.dart';
 import 'package:clash_of_cardz_flutter/ui/widgets/libraries/shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -20,10 +20,13 @@ Widget buildStatisticsScreen(StatisticsResModel model) {
           itemCount: model.response.length,
           itemBuilder: (context, index) {
             return Container(
-              margin: EdgeInsets.all(4),
+              margin: EdgeInsets.all(5),
               child: OutlinedBtnGradientBorder(
                 height: SizeConfig.heightMultiplier * 12,
                 width: 200,
+                thickness: 1.5,
+                gradColor1: Colors.lightBlueAccent.withOpacity(0.5),
+                gradColor2: Colors.cyanAccent.withOpacity(0.5),
                 onPressed: () {
                   onTapAudio('button');
                 },

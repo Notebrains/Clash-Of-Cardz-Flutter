@@ -10,39 +10,36 @@ import 'package:clash_of_cardz_flutter/ui/widgets/custom/frosted_glass.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 import 'package:clash_of_cardz_flutter/ui/widgets/libraries/animated_text_kit/animated_text_kit.dart';
 
-class Leaderboard extends StatelessWidget {
+class OldLeaderboard extends StatelessWidget {
    List<Response> listData;
 
   @override
   Widget build(BuildContext context) {
     setScreenOrientationToLandscape();
     apiBloc.fetchLeaderboardRes("ZGHrDz4prqsu4BcApPaQYaGgq");
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        resizeToAvoidBottomInset: false,
-        body: Container(
-          decoration: new BoxDecoration(
-            image: new DecorationImage(
-              image: new AssetImage("assets/images/bg_img11.png"),
-              fit: BoxFit.cover,
-            ),
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      body: Container(
+        decoration: new BoxDecoration(
+          image: new DecorationImage(
+            image: new AssetImage("assets/images/bg_img11.png"),
+            fit: BoxFit.cover,
           ),
-          child: StreamBuilder(
-            stream: apiBloc.leaderboardRes,
-            builder: (context, AsyncSnapshot<LeaderboardResModel> snapshot) {
-              if (snapshot.hasData) {
-                return _buildLeaderboardScreen(snapshot.data);
-              } else if (!snapshot.hasData) {
-                return frostedGlassWithProgressBarWidget(context);
-              } else return NoDataFound();
-              return Center(
-                child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.deepOrangeAccent),
-                ),
-              );
-            },
-          ),
+        ),
+        child: StreamBuilder(
+          stream: apiBloc.leaderboardRes,
+          builder: (context, AsyncSnapshot<LeaderboardResModel> snapshot) {
+            if (snapshot.hasData) {
+              return _buildLeaderboardScreen(snapshot.data);
+            } else if (!snapshot.hasData) {
+              return frostedGlassWithProgressBarWidget(context);
+            } else return NoDataFound();
+            return Center(
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.deepOrangeAccent),
+              ),
+            );
+          },
         ),
       ),
     );
@@ -290,18 +287,15 @@ class Leaderboard extends StatelessWidget {
                       ),
                       Expanded(
                         flex: 5,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            'Point/Name',
-                            textAlign: TextAlign.start,
-                            style: TextStyle(
-                              fontSize: 18.0,
-                              fontStyle: FontStyle.normal,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: 'montserrat',
-                              color: Colors.grey[700],
-                            ),
+                        child: Text(
+                          'Point/Name',
+                          textAlign: TextAlign.start,
+                          style: TextStyle(
+                            fontSize: 18.0,
+                            fontStyle: FontStyle.normal,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'montserrat',
+                            color: Colors.grey[700],
                           ),
                         ),
                       ),

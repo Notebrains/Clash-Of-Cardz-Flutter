@@ -1,5 +1,5 @@
 import 'package:clash_of_cardz_flutter/ui/widgets/custom/no_data_found.dart';
-import 'package:clash_of_cardz_flutter/ui/widgets/custom/player_info_back_btn.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/include_screens/player_info_back_btn.dart';
 import 'package:clash_of_cardz_flutter/ui/widgets/libraries/shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:clash_of_cardz_flutter/bloc/api_bloc.dart';

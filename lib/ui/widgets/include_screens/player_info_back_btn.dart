@@ -8,6 +8,10 @@ import 'package:flutter_animator/flutter_animator.dart';
 import 'package:shape_of_view/shape_of_view.dart';
 
 class PlayerInfoBackBtn extends StatefulWidget{
+  final String pageTitle;
+
+  const PlayerInfoBackBtn({Key key, this.pageTitle}) : super(key: key);
+
   @override
   _PlayerInfoBackBtnState createState() => _PlayerInfoBackBtnState();
 }
@@ -47,7 +51,7 @@ class _PlayerInfoBackBtnState extends State<PlayerInfoBackBtn> {
               IconButton(
                 icon: Icon(
                   Icons.arrow_back,
-                  color: Colors.white,
+                  color: Colors.lightBlueAccent.shade100,
                 ),
                 onPressed: () {
                   onTapAudio('button');
@@ -60,7 +64,7 @@ class _PlayerInfoBackBtnState extends State<PlayerInfoBackBtn> {
                   child: Shimmer.fromColors(
                     baseColor: Colors.cyanAccent[100],
                     highlightColor: Colors.lightBlueAccent,
-                    child: Text(playerName.isNotEmpty? playerName.toUpperCase(): 'CLASH OF CARDZ',
+                    child: Text(widget.pageTitle.isEmpty? playerName.toUpperCase(): widget.pageTitle,
                         style: TextStyle(fontSize: 21, fontFamily: 'montserrat', fontWeight: FontWeight.bold),
                     ),
                   ),

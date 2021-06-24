@@ -23,6 +23,7 @@ import 'package:clash_of_cardz_flutter/ui/screens/old_screen/statistics.dart';
 import 'package:clash_of_cardz_flutter/ui/widgets/custom/carousel_auto_slider.dart';
 import 'package:clash_of_cardz_flutter/ui/widgets/libraries/giffy_dialog/giffy_dialog.dart';
 import 'game_option.dart';
+import 'leaderboard.dart';
 import 'old_screen/games.dart';
 
 class Home extends StatefulWidget {
