@@ -23,23 +23,24 @@ class Leaderboard extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Color(0xFF364B5A),
-      body: Column(
-        children: [
-          PlayerInfoBackBtn(
-            pageTitle: 'LEADERBOARD',
-          ),
-          StreamBuilder(
-            stream: apiBloc.leaderboardRes,
-            builder: (context, AsyncSnapshot<LeaderboardResModel> snapshot) {
-              if (snapshot.hasData) {
-                return _buildUi(snapshot.data);
-              } else if (!snapshot.hasData) {
-                return frostedGlassWithProgressBarWidget(context);
-              } else
-                return NoDataFound();
-            },
-          ),
-        ],
+      body: StreamBuilder(
+        stream: apiBloc.leaderboardRes,
+        builder: (context, AsyncSnapshot<LeaderboardResModel> snapshot) {
+          if (snapshot.hasData) {
+            return Column(
+              children: [
+                PlayerInfoBackBtn(
+                  pageTitle: 'LEADERBOARD',
+                ),
+
+              _buildUi(snapshot.data),
+              ],
+            );
+          } else if (!snapshot.hasData) {
+            return frostedGlassWithProgressBarWidget(context);
+          } else
+            return NoDataFound();
+        },
       ),
     );
   }

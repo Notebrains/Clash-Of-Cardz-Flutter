@@ -43,7 +43,7 @@ class _HomeState extends State<Home> {
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor:  Color(0xFF364B5A),
+      backgroundColor: Color(0xFF364B5A),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -78,7 +78,8 @@ class _HomeState extends State<Home> {
                                 height: 40,
                                 width: 40,
                               ),
-                              preferences: AnimationPreferences(duration: const Duration(milliseconds: 2000), autoPlay: AnimationPlayStates.Loop),
+                              preferences:
+                                  AnimationPreferences(duration: const Duration(milliseconds: 2000), autoPlay: AnimationPlayStates.Loop),
                             ),
                             Padding(
                               padding: EdgeInsets.fromLTRB(5.0, 8.0, 30.0, 8.0),
@@ -90,23 +91,37 @@ class _HomeState extends State<Home> {
                                         fontSize: 20, fontFamily: 'montserrat', color: Colors.white, fontWeight: FontWeight.bold)),
                               ),
                             ),
-                            Padding(
-                              padding: EdgeInsets.fromLTRB(0.0, 8.0, 24.0, 8.0),
-                              child: AvatarGlow(
-                                child: ShapeOfView(
-                                  height: 33,
-                                  width: 33,
-                                  shape: CircleShape(borderColor: Colors.lightBlueAccent, borderWidth: 1),
-                                  elevation: 8,
-                                  child: FadeInImage.assetNetwork(
-                                    placeholder: 'assets/icons/png/circle-avator-default-img.png',
-                                    image: snapshot.data.response[0].image,
-                                    fit: BoxFit.cover,
+                            InkWell(
+                              child: Padding(
+                                padding: EdgeInsets.fromLTRB(0.0, 8.0, 24.0, 8.0),
+                                child: AvatarGlow(
+                                  child: ShapeOfView(
+                                    height: 33,
+                                    width: 33,
+                                    shape: CircleShape(borderColor: Colors.lightBlueAccent, borderWidth: 1),
+                                    elevation: 8,
+                                    child: FadeInImage.assetNetwork(
+                                      placeholder: 'assets/icons/png/circle-avator-default-img.png',
+                                      image: snapshot.data.response[0].image,
+                                      fit: BoxFit.cover,
+                                    ),
                                   ),
+                                  endRadius: 30,
+                                  glowColor: Colors.cyanAccent,
                                 ),
-                                endRadius: 30,
-                                glowColor: Colors.cyanAccent,
                               ),
+                              onTap: () {
+                                onTapAudio('icon');
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (BuildContext context) => Statistics(
+                                      xApiKey: widget.xApiKey,
+                                      memberId: widget.memberId,
+                                    ),
+                                  ),
+                                );
+                              },
                             ),
                           ],
                         ),
@@ -133,7 +148,6 @@ class _HomeState extends State<Home> {
                             Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Leaderboard()));
                           },
                         ),
-
                         IconButton(
                           icon: Image.asset(
                             'assets/icons/png/ic_statistic_whites.png',
@@ -143,11 +157,17 @@ class _HomeState extends State<Home> {
                           ),
                           onPressed: () {
                             onTapAudio('icon');
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (BuildContext context) => Statistics(xApiKey: widget.xApiKey, memberId: widget.memberId,),),);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (BuildContext context) => Statistics(
+                                  xApiKey: widget.xApiKey,
+                                  memberId: widget.memberId,
+                                ),
+                              ),
+                            );
                           },
                         ),
-
                         IcSgv(
                           ic: 'assets/icons/svg/user.svg',
                           onClick: () {
@@ -163,8 +183,6 @@ class _HomeState extends State<Home> {
                             );
                           },
                         ),
-
-
                         Padding(
                           padding: const EdgeInsets.only(top: 8, bottom: 24),
                           child: InkWell(
@@ -177,24 +195,23 @@ class _HomeState extends State<Home> {
                               onTapAudio('icon');
                               bool isNotifiOn;
                               SharedPreferenceHelper().getNotificationOnOffState().then((isNotificationOn) => {
-                                isNotifiOn = isNotificationOn,
-                              });
+                                    isNotifiOn = isNotificationOn,
+                                  });
                               bool isSfxOn;
                               SharedPreferenceHelper().getSfxOnOffState().then((isSFXOn) => {
-                                isSfxOn = isSFXOn,
-                              });
+                                    isSfxOn = isSFXOn,
+                                  });
 
                               SharedPreferenceHelper().getMusicOnOffState().then((isMusicOn) => {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (BuildContext context) =>
-                                            OldSetting(isMusicOn, isNotifiOn, isSfxOn, widget.memberId))),
-                              });
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (BuildContext context) =>
+                                                OldSetting(isMusicOn, isNotifiOn, isSfxOn, widget.memberId))),
+                                  });
                             },
                           ),
                         ),
-
                         InkWell(
                           child: Icon(
                             Icons.share,
@@ -230,7 +247,7 @@ class _HomeState extends State<Home> {
                           text: 'PLAY',
                           onClick: () {
                             onTapAudio('button');
-                            Navigator.push(context, CupertinoPageRoute(builder: (BuildContext context) => GameOption()));
+                            Navigator.push(context, CupertinoPageRoute(builder: (BuildContext context) => GameOption(),),);
                           },
                         ),
                         BtnLeftBorderSq(

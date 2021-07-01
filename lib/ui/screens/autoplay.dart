@@ -95,7 +95,8 @@ class AutoPlay extends StatelessWidget {
                     children: [
                       FadeInImage.assetNetwork(
                         placeholder: 'assets/images/bg_img13.png',
-                        image: snapshot.data.response.subcategoryBackground ?? '',
+                        //image: snapshot.data.response.subcategoryBackground ?? '',
+                        image: '',
                         fit: BoxFit.cover,
                       ),
                       Row(
@@ -197,7 +198,7 @@ class AutoPlay extends StatelessWidget {
                                                   child: Center(
                                                     child: Image.asset(
                                                       'assets/icons/png/img_vs.png',
-                                                      color: Colors.black87,
+                                                      color: Colors.blueGrey,
                                                     ),
                                                   ),
                                                 ),

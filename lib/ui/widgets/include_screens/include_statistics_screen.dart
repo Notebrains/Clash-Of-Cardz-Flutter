@@ -12,7 +12,7 @@ Widget buildStatisticsScreen(StatisticsResModel model) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.center,
     children: [
-      PlayerInfoBackBtn(),
+      PlayerInfoBackBtn(pageTitle: 'STATISTICS',),
       Expanded(
         child: ListView.builder(
           physics: const BouncingScrollPhysics(),

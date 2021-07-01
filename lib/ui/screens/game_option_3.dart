@@ -1,5 +1,7 @@
 import 'package:clash_of_cardz_flutter/helper/exten_fun/base_application_fun.dart';
 import 'package:clash_of_cardz_flutter/ui/screens/old_screen/setting.dart';
+import 'package:clash_of_cardz_flutter/ui/styles/size_config.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/include_screens/player_info_back_btn.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -70,6 +72,7 @@ class _GameOptionThreeState extends State<GameOptionThree> {
       onWillPop: () async => false,
       child: Scaffold(
         resizeToAvoidBottomInset: false,
+        backgroundColor: Color(0xFF364B5A),
         key: _drawerKey, // assign key to Scaffold
         drawer: Drawer(
           child: new ListView(
@@ -87,7 +90,7 @@ class _GameOptionThreeState extends State<GameOptionThree> {
                           fontSize: 20,
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
-                          fontFamily: 'neuropol_x_rg',
+                          fontFamily: 'montserrat',
                         ),
                       ),
                     ],
@@ -104,166 +107,147 @@ class _GameOptionThreeState extends State<GameOptionThree> {
           ),
         ),
 
-        body: Container(
-          decoration: new BoxDecoration(
-            image: new DecorationImage(
-              image: new AssetImage("assets/images/bg_img13.png"),
-              fit: BoxFit.cover,
-            ),
-          ),
-          child: Stack(
-            children: [
-              Container(
-                alignment: Alignment.center,
-                child: ColorizeAnimatedTextKit(
-                  onTap: () {
-                    onTapAudio('button');
-                    //print("Tap Event");
-                  },
-                  text: ["CLASH OF CARDZ"],
-                  textStyle: TextStyle(
-                    fontSize: 55.0,
-                    fontStyle: FontStyle.normal,
-                    fontFamily: 'Rapier',
-                  ),
-                  colors: [
-                    Colors.grey[400],
-                    Colors.grey[500],
-                    Colors.grey[400],
-                  ],
-                  textAlign: TextAlign.center,
-                  alignment: AlignmentDirectional.center,
-                  // or Alignment.topLeft
-                  isRepeatingAnimation: true,
-                  repeatForever: true,
-                  speed: Duration(milliseconds: 1000),
+        body: Stack(
+          children: [
+            PlayerInfoBackBtn(pageTitle: '',),
+
+            Container(
+              margin: EdgeInsets.only(top:  SizeConfig.widthMultiplier * 10),
+              alignment: Alignment.center,
+              child: Shimmer.fromColors(
+                baseColor: Colors.blue[100].withOpacity(0.1),
+                highlightColor: Colors.white.withOpacity(0.13),
+                child: Text(
+                  'CLASH OF CARDZ',
+                  style: TextStyle( fontSize: SizeConfig.widthMultiplier * 14, fontFamily: 'Rapier', fontWeight: FontWeight.normal),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 16),
-                child: Row(
-                  children: [
-                    Container(
-                      width: screenWidth / 3.6,
-                      child: buildPlayerTypeList(),
-                    ),
-                    Container(
-                      height: cardToPlayEmptyList.length * 80.0,
-                      width: 1.5,
-                      color: Colors.indigo,
-                    ),
-                    Container(
-                      width: screenWidth / 3.7,
-                      child: build2ndList(cardToPlayEmptyList),
-                    ),
-                    Container(
-                      height: gamePlayTypeEmptyList.length * 80.0,
-                      width: 1.5,
-                      color: Colors.indigo,
-                    ),
-                    Container(
-                      width: screenWidth / 2.8,
-                      child: build3rdList(gamePlayTypeEmptyList),
-                    ),
-                    Container(
-                      width: screenWidth / 12,
-                      child: Container(
-                        //height: 260,
-                        width: 50,
-                        child: Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SlideInDown(
-                                child: Container(
-                                  width: 40,
-                                  height: 40,
-                                  margin: EdgeInsets.all(5),
-                                  child: IconButton(
-                                    icon: SvgPicture.asset(
-                                      'assets/icons/svg/settings.svg',
-                                      color: Colors.white,
-                                    ),
-                                    onPressed: () {
-                                      bool isNotifiOn;
-                                      SharedPreferenceHelper().getNotificationOnOffState().then((isNotificationOn) => {
-                                            isNotifiOn = isNotificationOn,
-                                          });
-                                      bool isSfxOn;
-                                      SharedPreferenceHelper().getSfxOnOffState().then((isSFXOn) => {
-                                            isSfxOn = isSFXOn,
-                                          });
+            ),
 
-                                      bool isMusicOn;
-                                      SharedPreferenceHelper().getMusicOnOffState().then((isMusicsOn) => {
-                                        isMusicOn = isMusicsOn,
-                                      });
+            Padding(
+              padding: const EdgeInsets.only(bottom: 16),
+              child: Row(
+                children: [
+                  Container(
+                    width: screenWidth / 3.6,
+                    child: buildPlayerTypeList(),
+                  ),
+                  Container(
+                    height: cardToPlayEmptyList.length * 65.0,
+                    width: 1.5,
+                    color: Colors.blueGrey,
+                  ),
+                  Container(
+                    width: screenWidth / 3.7,
+                    child: build2ndList(cardToPlayEmptyList),
+                  ),
+                  Container(
+                    height: gamePlayTypeEmptyList.length * 65.0,
+                    width: 1.5,
+                    color: Colors.blueGrey,
+                  ),
+                  Container(
+                    width: screenWidth / 2.8,
+                    child: build3rdList(gamePlayTypeEmptyList),
+                  ),
+                  Container(
+                    width: screenWidth / 12,
+                    child: Container(
+                      //height: 260,
+                      width: 50,
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SlideInDown(
+                              child: Container(
+                                width: 35,
+                                height: 35,
+                                margin: EdgeInsets.all(5),
+                                child: IconButton(
+                                  icon: SvgPicture.asset(
+                                    'assets/icons/svg/settings.svg',
+                                    color: Colors.white,
+                                  ),
+                                  onPressed: () {
+                                    bool isNotifiOn;
+                                    SharedPreferenceHelper().getNotificationOnOffState().then((isNotificationOn) => {
+                                          isNotifiOn = isNotificationOn,
+                                        });
+                                    bool isSfxOn;
+                                    SharedPreferenceHelper().getSfxOnOffState().then((isSFXOn) => {
+                                          isSfxOn = isSFXOn,
+                                        });
 
-                                      SharedPreferenceHelper().getUserUserMemberId().then((memberId) => {
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (BuildContext context) =>
-                                                        OldSetting(isMusicOn, isNotifiOn, isSfxOn, memberId))),
-                                          });
-                                    },
-                                  ),
-                                  decoration:
-                                      Views.boxDecorationWidgetForIconWithBgColor(Colors.teal[400], 4.0, Colors.grey, 5.0, 5.0, 3.0),
+                                    bool isMusicOn;
+                                    SharedPreferenceHelper().getMusicOnOffState().then((isMusicsOn) => {
+                                      isMusicOn = isMusicsOn,
+                                    });
+
+                                    SharedPreferenceHelper().getUserUserMemberId().then((memberId) => {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (BuildContext context) =>
+                                                      OldSetting(isMusicOn, isNotifiOn, isSfxOn, memberId))),
+                                        });
+                                  },
                                 ),
-                                preferences: AnimationPreferences(
-                                    duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
+                                decoration:
+                                    Views.boxDecorationWidgetForIconWithBgColor(Colors.teal[400], 4.0, Colors.black54, 3.0, 3.0, 2.0),
                               ),
-                              SlideInRight(
-                                child: Container(
-                                  width: 40,
-                                  height: 40,
-                                  margin: EdgeInsets.all(5),
-                                  child: IconButton(
-                                    icon: SvgPicture.asset(
-                                      'assets/icons/svg/back_black.svg',
-                                      color: Colors.white,
-                                    ),
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
+                              preferences: AnimationPreferences(
+                                  duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
+                            ),
+                            SlideInRight(
+                              child: Container(
+                                width: 35,
+                                height: 35,
+                                margin: EdgeInsets.all(5),
+                                child: IconButton(
+                                  icon: SvgPicture.asset(
+                                    'assets/icons/svg/back_black.svg',
+                                    color: Colors.white,
                                   ),
-                                  decoration:
-                                      Views.boxDecorationWidgetForIconWithBgColor(Colors.grey[800], 4.0, Colors.grey, 5.0, 5.0, 3.0),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
                                 ),
-                                preferences: AnimationPreferences(
-                                    duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
+                                decoration:
+                                    Views.boxDecorationWidgetForIconWithBgColor(Colors.grey[800], 4.0, Colors.black54, 3.0, 3.0, 2.0),
                               ),
-                              SlideInUp(
-                                child: Container(
-                                  width: 40,
-                                  height: 40,
-                                  margin: EdgeInsets.all(5),
-                                  child: IconButton(
-                                    icon: SvgPicture.asset(
-                                      'assets/icons/svg/logout.svg',
-                                      color: Colors.white,
-                                    ),
-                                    onPressed: () {
-                                      SharedPreferenceHelper().clearPrefData();
-                                      Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => LogIn()));
-                                    },
+                              preferences: AnimationPreferences(
+                                  duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
+                            ),
+                            SlideInUp(
+                              child: Container(
+                                width: 35,
+                                height: 35,
+                                margin: EdgeInsets.all(5),
+                                child: IconButton(
+                                  icon: SvgPicture.asset(
+                                    'assets/icons/svg/logout.svg',
+                                    color: Colors.white,
                                   ),
-                                  decoration: Views.boxDecorationWidgetForIconWithBgColor(Colors.red[600], 4.0, Colors.grey, 5.0, 5.0, 3.0),
+                                  onPressed: () {
+                                    SharedPreferenceHelper().clearPrefData();
+                                    Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => LogIn()));
+                                  },
                                 ),
-                                preferences: AnimationPreferences(
-                                    duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
+                                decoration: Views.boxDecorationWidgetForIconWithBgColor(Colors.red[600], 4.0, Colors.black54, 3.0, 3.0, 2.0),
                               ),
-                            ],
-                          ),
+                              preferences: AnimationPreferences(
+                                  duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
+                            ),
+                          ],
                         ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -286,7 +270,8 @@ class _GameOptionThreeState extends State<GameOptionThree> {
               margin: EdgeInsets.symmetric(vertical: 8, horizontal: 5),
               child: GestureDetector(
                 child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     Container(
                       width: screenHeight / 9,
@@ -294,8 +279,8 @@ class _GameOptionThreeState extends State<GameOptionThree> {
                       decoration: BoxDecoration(
                         color: Colors.transparent,
                         border: Border.all(
-                          color: Colors.grey[350],
-                          width: 3,
+                          color: Colors.cyanAccent.shade100,
+                          width: 1,
                         ),
                         borderRadius: BorderRadius.all(Radius.circular(35)),
                         boxShadow: <BoxShadow>[
@@ -312,13 +297,13 @@ class _GameOptionThreeState extends State<GameOptionThree> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(5, 8, 0, 2),
+                      padding: const EdgeInsets.only(left: 12),
                       child: Shimmer.fromColors(
-                        baseColor: Colors.black54,
-                        highlightColor: Colors.orangeAccent,
+                        baseColor: Colors.blue[100],
+                        highlightColor: Colors.lightBlueAccent,
                         child: Text(
                           playerTypeList[index].type,
-                          style: TextStyle(fontSize: screenHeight / 20, fontFamily: 'neuropol_x_rg', fontWeight: FontWeight.bold),
+                          style: TextStyle(fontSize: screenHeight / 20, fontFamily: 'montserrat', fontWeight: FontWeight.bold),
                         ),
                       ),
                     ),
@@ -363,7 +348,8 @@ class _GameOptionThreeState extends State<GameOptionThree> {
               margin: EdgeInsets.symmetric(vertical: 8, horizontal: 5),
               child: GestureDetector(
                 child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     Container(
                       width: screenHeight / 9,
@@ -371,8 +357,8 @@ class _GameOptionThreeState extends State<GameOptionThree> {
                       decoration: BoxDecoration(
                         color: Colors.transparent,
                         border: Border.all(
-                          color: Colors.grey[350],
-                          width: 3,
+                          color: Colors.cyanAccent.shade100,
+                          width: 1,
                         ),
                         borderRadius: BorderRadius.all(Radius.circular(35)),
                         boxShadow: <BoxShadow>[
@@ -389,13 +375,13 @@ class _GameOptionThreeState extends State<GameOptionThree> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(5, 8, 0, 2),
+                      padding: const EdgeInsets.only(left: 12),
                       child: Shimmer.fromColors(
-                        baseColor: Colors.black54,
-                        highlightColor: Colors.orangeAccent,
+                        baseColor: Colors.blue[100],
+                        highlightColor: Colors.lightBlueAccent,
                         child: Text(
                           '${cardToPlayLists[index]} cards',
-                          style: TextStyle(fontSize: screenHeight / 20, fontFamily: 'neuropol_x_rg', fontWeight: FontWeight.bold),
+                          style: TextStyle(fontSize: screenHeight / 20, fontFamily: 'montserrat', fontWeight: FontWeight.bold),
                         ),
                       ),
                     ),
@@ -437,7 +423,8 @@ class _GameOptionThreeState extends State<GameOptionThree> {
                 width: double.infinity,
                 margin: EdgeInsets.symmetric(vertical: 8, horizontal: 5),
                 child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     Container(
                       width: screenHeight / 9,
@@ -445,8 +432,8 @@ class _GameOptionThreeState extends State<GameOptionThree> {
                       decoration: BoxDecoration(
                         color: Colors.transparent,
                         border: Border.all(
-                          color: Colors.grey[350],
-                          width: 3,
+                          color: Colors.cyanAccent.shade100,
+                          width: 1,
                         ),
                         borderRadius: BorderRadius.all(Radius.circular(35)),
                         boxShadow: <BoxShadow>[
@@ -462,13 +449,13 @@ class _GameOptionThreeState extends State<GameOptionThree> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(8, 8, 0, 2),
+                      padding: const EdgeInsets.only(left: 12),
                       child: Shimmer.fromColors(
-                        baseColor: Colors.black54,
-                        highlightColor: Colors.orangeAccent,
+                        baseColor: Colors.blue[100],
+                        highlightColor: Colors.lightBlueAccent,
                         child: Text(
                           '${gamePlayTypeLists[index]}',
-                          style: TextStyle(fontSize: screenHeight / 20, fontFamily: 'neuropol_x_rg', fontWeight: FontWeight.bold),
+                          style: TextStyle(fontSize: screenHeight / 20, fontFamily: 'montserrat', fontWeight: FontWeight.bold),
                         ),
                       ),
                     ),

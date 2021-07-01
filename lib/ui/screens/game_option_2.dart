@@ -1,4 +1,6 @@
 import 'package:clash_of_cardz_flutter/helper/exten_fun/base_application_fun.dart';
+import 'package:clash_of_cardz_flutter/ui/styles/size_config.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/include_screens/player_info_back_btn.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:clash_of_cardz_flutter/helper/exten_fun/common_fun.dart';
@@ -44,6 +46,7 @@ class _GameOptionTwoState extends State<GameOptionTwo> {
       onWillPop: () async => false,
       child: Scaffold(
         resizeToAvoidBottomInset: false,
+        backgroundColor: Color(0xFF364B5A),
         key: _drawerKey, // assign key to Scaffold
         drawer: Drawer(
           child: new ListView(
@@ -61,7 +64,7 @@ class _GameOptionTwoState extends State<GameOptionTwo> {
                           fontSize: 22,
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
-                          fontFamily: 'neuropol_x_rg',
+                          fontFamily: 'montserrat',
                         ),
                       ),
                     ],
@@ -74,84 +77,46 @@ class _GameOptionTwoState extends State<GameOptionTwo> {
             ],
           ),
         ),
-        body: Container(
-          decoration: new BoxDecoration(
-            image: new DecorationImage(
-              image: new AssetImage("assets/images/bg_img13.png"),
-              fit: BoxFit.cover,
-            ),
-          ),
-          child: Stack(
-            children: [
-              Container(
-                alignment: Alignment.center,
-                child: ColorizeAnimatedTextKit(
-                  onTap: () {
-                    //onTapAudio('button');
-                    //print("Tap Event");
-                  },
-                  text: ["CLASH OF CARDZ"],
-                  textStyle: TextStyle(
-                    fontSize: 55.0,
-                    fontStyle: FontStyle.normal,
-                    fontFamily: 'Rapier',
-                  ),
-                  colors: [
-                    Colors.grey[400],
-                    Colors.grey[500],
-                    Colors.grey[400],
-                  ],
-                  textAlign: TextAlign.center,
-                  alignment: AlignmentDirectional.center,
-                  // or Alignment.topLeft
-                  isRepeatingAnimation: true,
-                  repeatForever: true,
-                  speed: Duration(milliseconds: 1000),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 16),
-                child: Row(
-                  children: [
-                    Expanded(
-                      flex: 5,
-                      child: buildFirstList(),
-                    ),
-                    Container(
-                      height: subCat4EmptyList.length * 80.0,
-                      width: 1.5,
-                      color: Colors.indigo,
-                      margin: const EdgeInsets.only(top: 0.0, bottom: 0.0),
-                    ),
-                    Expanded(
-                      flex: 4,
-                      child: buildSecondList(subCat4List),
-                    ),
-                  ],
-                ),
-              ),
+        body: Stack(
+          children: [
+            PlayerInfoBackBtn(pageTitle: '',),
 
-              Container(
-                margin: EdgeInsets.fromLTRB(0, 0, 16, 16),
-                child: Align(
-                  alignment: AlignmentDirectional.bottomEnd,
-                  child: FloatingActionButton(
-                    mini: true,
-                    tooltip: 'Back to previous screen',
-                    backgroundColor: Colors.grey[400],
-                    child: Icon(
-                      Icons.arrow_back,
-                      color: Colors.black,
-                    ),
-                    onPressed: () {
-                      onTapAudio('button');
-                      Navigator.pop(context);
-                    },
-                  ),
+            Container(
+              margin: EdgeInsets.only(top:  SizeConfig.widthMultiplier * 10),
+              alignment: Alignment.center,
+              child: Shimmer.fromColors(
+                baseColor: Colors.blue[100].withOpacity(0.1),
+                highlightColor: Colors.white.withOpacity(0.13),
+                child: Text(
+                  'CLASH OF CARDZ',
+                  style: TextStyle( fontSize: SizeConfig.widthMultiplier * 14, fontFamily: 'Rapier', fontWeight: FontWeight.normal),
                 ),
               ),
-            ],
-          ),
+            ),
+
+            Padding(
+              padding: EdgeInsets.only(bottom: 16, top: SizeConfig.heightMultiplier * 8),
+              child: Row(
+                children: [
+                  Expanded(
+                    flex: 5,
+                    child: buildFirstList(),
+                  ),
+                  Container(
+                    height: subCat4EmptyList.length * 65.0,
+                    width: 1.5,
+                    color: Colors.blueGrey,
+                    margin: const EdgeInsets.only(top: 12.0,),
+                  ),
+                  Expanded(
+                    flex: 4,
+                    child: buildSecondList(subCat4List),
+                  ),
+                ],
+              ),
+            ),
+
+          ],
         ),
       ),
     );
@@ -175,16 +140,17 @@ class _GameOptionTwoState extends State<GameOptionTwo> {
               margin: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
               child: GestureDetector(
                 child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     Container(
-                      width: screenHeight/7,
-                      height: screenHeight/7,
+                      width: screenHeight/9,
+                      height: screenHeight/9,
                       decoration: BoxDecoration(
                         color: Colors.transparent,
                         border: Border.all(
-                          color: Colors.grey[350],
-                          width: 5,
+                          color: Colors.cyanAccent.shade100,
+                          width: 1,
                         ),
                         borderRadius: BorderRadius.all(Radius.circular(35)),
                         boxShadow: <BoxShadow>[
@@ -209,13 +175,13 @@ class _GameOptionTwoState extends State<GameOptionTwo> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(8, 16, 0, 2),
+                      padding: const EdgeInsets.only(left: 12),
                       child: Shimmer.fromColors(
-                        baseColor: Colors.black54,
-                        highlightColor: Colors.orangeAccent,
+                        baseColor: Colors.blue[100],
+                        highlightColor: Colors.lightBlueAccent,
                         child: Text(
                           subCat3List[index].sub2categoryName,
-                          style: TextStyle( fontSize: screenHeight/15, fontFamily: 'neuropol_x_rg', fontWeight: FontWeight.bold),
+                          style: TextStyle( fontSize: screenHeight/18, fontFamily: 'montserrat', fontWeight: FontWeight.bold),
                         ),
                       ),
                     ),
@@ -254,16 +220,17 @@ class _GameOptionTwoState extends State<GameOptionTwo> {
                 width: double.infinity,
                 margin: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
                 child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     Container(
-                      width: screenHeight/7,
-                      height: screenHeight/7,
+                      width: screenHeight/9,
+                      height: screenHeight/9,
                       decoration: BoxDecoration(
                         color: Colors.transparent,
                         border: Border.all(
-                          color: Colors.grey[350],
-                          width: 5,
+                          color: Colors.cyanAccent.shade100,
+                          width: 1,
                         ),
                         borderRadius: BorderRadius.all(Radius.circular(35)),
                         boxShadow: <BoxShadow>[
@@ -274,21 +241,26 @@ class _GameOptionTwoState extends State<GameOptionTwo> {
                           ),
                         ],
                       ),
-                      child: CircleAvatar(
-                        child: FadeInImage.assetNetwork(
-                          placeholder: 'assets/icons/png/img_sports.png',
-                          image: subCat4EmptyList[index].sub3categoryIcon??'',
+                      child: Pulse(
+                        child: CircleAvatar(
+                          child: FadeInImage.assetNetwork(
+                            placeholder: 'assets/icons/png/img_sports.png',
+                            image: subCat4EmptyList[index].sub3categoryIcon??'',
+                          ),
                         ),
+                        preferences: AnimationPreferences(
+                            duration: const Duration(milliseconds: 1500),
+                            autoPlay: AnimationPlayStates.Loop),
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(8, 16, 0, 2),
+                      padding: const EdgeInsets.only(left: 12),
                       child: Shimmer.fromColors(
-                        baseColor: Colors.black54,
-                        highlightColor: Colors.orangeAccent,
+                        baseColor: Colors.blue[100],
+                        highlightColor: Colors.lightBlueAccent,
                         child: Text(
                           subCat4EmptyList[index].sub3categoryName,
-                          style: TextStyle(fontSize: screenHeight/15, fontFamily: 'neuropol_x_rg', fontWeight: FontWeight.bold),
+                          style: TextStyle(fontSize: screenHeight/18, fontFamily: 'montserrat', fontWeight: FontWeight.bold),
                         ),
                       ),
                     ),
@@ -354,5 +326,4 @@ class _GameOptionTwoState extends State<GameOptionTwo> {
           );
         });
   }
-
 }

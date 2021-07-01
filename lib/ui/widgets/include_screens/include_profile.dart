@@ -65,25 +65,35 @@ class IncludeProfile extends StatelessWidget {
                       margin: EdgeInsets.only(top: 12, bottom: 12),
                       decoration: Views.boxDecorationWidgetForPngImage(data.response[0].image, 4.0, Colors.lightBlueAccent, 5.0, 5.0, 3.0),
                       child: FadeInImage.assetNetwork(
-                          placeholder: 'assets/icons/png/NoImageFound.png',
-                          image: data.response[0].image??'',
-                          fit: BoxFit.cover,
-                        ),
+                        placeholder: 'assets/icons/png/NoImageFound.png',
+                        image: data.response[0].image ?? '',
+                        fit: BoxFit.cover,
+                      ),
                     ),
 
                     Padding(
                       padding: const EdgeInsets.all(5.0),
                       child: Text(
-                        data.response[0].fullname??'',
+                        data.response[0].fullname ?? '',
                         textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 14.0, fontStyle: FontStyle.normal, fontFamily: 'montserrat', fontWeight: FontWeight.bold, color: Colors.lightBlueAccent),
+                        style: TextStyle(
+                            fontSize: 14.0,
+                            fontStyle: FontStyle.normal,
+                            fontFamily: 'montserrat',
+                            fontWeight: FontWeight.bold,
+                            color: Colors.blue[100]),
                       ),
                     ),
 
                     Text(
                       'Id: ${data.response[0].memberid}',
                       textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 12.0, fontStyle: FontStyle.normal, fontFamily: 'montserrat', fontWeight: FontWeight.normal, color: Colors.lightBlueAccent),
+                      style: TextStyle(
+                          fontSize: 12.0,
+                          fontStyle: FontStyle.normal,
+                          fontFamily: 'montserrat',
+                          fontWeight: FontWeight.normal,
+                          color: Colors.blue[100]),
                     ),
 
                     Padding(
@@ -91,7 +101,8 @@ class IncludeProfile extends StatelessWidget {
                       child: Text(
                         "Playing since\n ${data.response[0].joinedOn}",
                         textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 12.0, fontStyle: FontStyle.normal, fontFamily: 'montserrat', color: Colors.lightBlueAccent),
+                        style:
+                            TextStyle(fontSize: 12.0, fontStyle: FontStyle.normal, fontFamily: 'montserrat', color: Colors.blue[100]),
                       ),
                     ),
 
@@ -105,23 +116,42 @@ class IncludeProfile extends StatelessWidget {
                     ),*/
 
                     //Statistics button
-                    Container(
-                      width: 170,
-                      margin: EdgeInsets.all(5),
-                      padding: EdgeInsets.all(5),
-                      child: RaisedButton(
-                        color: Color(0xFF4A677F),
-                        elevation: 3,
-                        child: const Text('View Statistics', style: TextStyle(fontSize: 16, color: Colors.lightBlueAccent, fontWeight: FontWeight.normal)),
-                        onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Statistics(xApiKey: xApiKey, memberId: memberId,)));
-                        },
+                    InkWell(
+                      child: Container(
+                        width: 170,
+                        margin: EdgeInsets.all(8),
+                        padding: EdgeInsets.all(6),
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                          color: Colors.blue[100],
+                          width: 1,
+                        ),
+                          borderRadius: BorderRadius.circular(25),
+                        ),
+                        child: Text('View Statistics',
+                            style: TextStyle(fontSize: 14, color: Colors.blue[100], fontWeight: FontWeight.normal),),
                       ),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (BuildContext context) => Statistics(
+                              xApiKey: xApiKey,
+                              memberId: memberId,
+                            ),
+                          ),
+                        );
+                      },
                     ),
 
                     IconButton(
-                      iconSize: 30,
-                      icon: SvgPicture.asset('assets/icons/svg/back_black.svg', color: Colors.lightBlueAccent),
+                      icon: SvgPicture.asset(
+                        'assets/icons/svg/back_black.svg',
+                        color: Colors.blue[200],
+                        width: 25,
+                        height: 25,
+                      ),
                       onPressed: () {
                         Navigator.of(context, rootNavigator: true).pop(context);
                       },
@@ -129,13 +159,9 @@ class IncludeProfile extends StatelessWidget {
                   ],
                 ),
               ),
-              preferences:
-              AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
+              preferences: AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
             ),
           ),
-
-
-
           Expanded(
             flex: 1,
             child: SlideInRight(
@@ -162,13 +188,23 @@ class IncludeProfile extends StatelessWidget {
                                 child: Text(
                                   data.response[0].rank.toString(),
                                   textAlign: TextAlign.center,
-                                  style: TextStyle(fontSize: 16.0, fontStyle: FontStyle.normal, fontFamily: 'montserrat', fontWeight: FontWeight.bold, color: Colors.lightBlue),
+                                  style: TextStyle(
+                                      fontSize: 16.0,
+                                      fontStyle: FontStyle.normal,
+                                      fontFamily: 'montserrat',
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.lightBlue),
                                 ),
                               ),
                               Text(
                                 "RANK",
                                 textAlign: TextAlign.center,
-                                style: TextStyle(fontSize: 16.0, fontStyle: FontStyle.normal, fontFamily: 'montserrat', fontWeight: FontWeight.bold, color: Colors.lightBlueAccent),
+                                style: TextStyle(
+                                    fontSize: 16.0,
+                                    fontStyle: FontStyle.normal,
+                                    fontFamily: 'montserrat',
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.lightBlueAccent),
                               ),
                             ],
                           ),
@@ -185,15 +221,25 @@ class IncludeProfile extends StatelessWidget {
                             Padding(
                               padding: const EdgeInsets.all(2.0),
                               child: Text(
-                                data.response[0].points??'',
+                                data.response[0].points ?? '',
                                 textAlign: TextAlign.center,
-                                style: TextStyle(fontSize: 16.0, fontStyle: FontStyle.normal, fontFamily: 'montserrat', fontWeight: FontWeight.bold, color: Colors.lightBlue),
+                                style: TextStyle(
+                                    fontSize: 16.0,
+                                    fontStyle: FontStyle.normal,
+                                    fontFamily: 'montserrat',
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.lightBlue),
                               ),
                             ),
                             Text(
                               "POINTS",
                               textAlign: TextAlign.center,
-                              style: TextStyle(fontSize: 16.0, fontStyle: FontStyle.normal, fontFamily: 'montserrat', fontWeight: FontWeight.bold, color: Colors.lightBlueAccent),
+                              style: TextStyle(
+                                  fontSize: 16.0,
+                                  fontStyle: FontStyle.normal,
+                                  fontFamily: 'montserrat',
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.lightBlueAccent),
                             ),
                           ],
                         ),
@@ -216,15 +262,25 @@ class IncludeProfile extends StatelessWidget {
                             Padding(
                               padding: const EdgeInsets.all(2.0),
                               child: Text(
-                                data.response[0].matchPlayed??'',
+                                data.response[0].matchPlayed ?? '',
                                 textAlign: TextAlign.center,
-                                style: TextStyle(fontSize: 16.0, fontStyle: FontStyle.normal, fontFamily: 'montserrat', fontWeight: FontWeight.bold, color: Colors.lightBlue),
+                                style: TextStyle(
+                                    fontSize: 16.0,
+                                    fontStyle: FontStyle.normal,
+                                    fontFamily: 'montserrat',
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.lightBlue),
                               ),
                             ),
                             Text(
                               "MATCH",
                               textAlign: TextAlign.center,
-                              style: TextStyle(fontSize: 16.0, fontStyle: FontStyle.normal, fontFamily: 'montserrat', fontWeight: FontWeight.bold, color: Colors.lightBlueAccent),
+                              style: TextStyle(
+                                  fontSize: 16.0,
+                                  fontStyle: FontStyle.normal,
+                                  fontFamily: 'montserrat',
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.lightBlueAccent),
                             ),
                           ],
                         ),
@@ -239,15 +295,25 @@ class IncludeProfile extends StatelessWidget {
                             Padding(
                               padding: const EdgeInsets.fromLTRB(45, 0, 45, 0),
                               child: Text(
-                                data.response[0].win??'',
+                                data.response[0].win ?? '',
                                 textAlign: TextAlign.center,
-                                style: TextStyle(fontSize: 16.0, fontStyle: FontStyle.normal, fontFamily: 'montserrat', fontWeight: FontWeight.bold, color: Colors.lightBlue),
+                                style: TextStyle(
+                                    fontSize: 16.0,
+                                    fontStyle: FontStyle.normal,
+                                    fontFamily: 'montserrat',
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.lightBlue),
                               ),
                             ),
                             Text(
                               "WON",
                               textAlign: TextAlign.center,
-                              style: TextStyle(fontSize: 16.0, fontStyle: FontStyle.normal, fontFamily: 'montserrat', fontWeight: FontWeight.bold, color: Colors.lightBlueAccent),
+                              style: TextStyle(
+                                  fontSize: 16.0,
+                                  fontStyle: FontStyle.normal,
+                                  fontFamily: 'montserrat',
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.lightBlueAccent),
                             ),
                           ],
                         ),
@@ -262,15 +328,25 @@ class IncludeProfile extends StatelessWidget {
                             Padding(
                               padding: const EdgeInsets.all(2.0),
                               child: Text(
-                                data.response[0].loss??'',
+                                data.response[0].loss ?? '',
                                 textAlign: TextAlign.center,
-                                style: TextStyle(fontSize: 16.0, fontStyle: FontStyle.normal, fontFamily: 'montserrat', fontWeight: FontWeight.bold, color: Colors.lightBlue),
+                                style: TextStyle(
+                                    fontSize: 16.0,
+                                    fontStyle: FontStyle.normal,
+                                    fontFamily: 'montserrat',
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.lightBlue),
                               ),
                             ),
                             Text(
                               "LOSE",
                               textAlign: TextAlign.center,
-                              style: TextStyle(fontSize: 16.0, fontStyle: FontStyle.normal, fontFamily: 'montserrat', fontWeight: FontWeight.bold, color: Colors.lightBlueAccent),
+                              style: TextStyle(
+                                  fontSize: 16.0,
+                                  fontStyle: FontStyle.normal,
+                                  fontFamily: 'montserrat',
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.lightBlueAccent),
                             ),
                           ],
                         ),
@@ -279,8 +355,7 @@ class IncludeProfile extends StatelessWidget {
                   ),
                 ],
               ),
-              preferences:
-              AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
+              preferences: AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
             ),
           ),
         ],

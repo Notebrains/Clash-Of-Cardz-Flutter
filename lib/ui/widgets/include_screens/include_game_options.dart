@@ -1,4 +1,5 @@
 import 'package:clash_of_cardz_flutter/helper/exten_fun/base_application_fun.dart';
+import 'package:clash_of_cardz_flutter/ui/styles/size_config.dart';
 import 'package:clash_of_cardz_flutter/ui/widgets/custom/no_data_found.dart';
 import 'package:flutter/material.dart';
 import 'package:clash_of_cardz_flutter/bloc/api_bloc.dart';
@@ -35,37 +36,38 @@ class _IncludeGameOptionState extends State<IncludeGameOption> {
   @override
   Widget build(BuildContext context) {
     screenHeight = getScreenHeight(context);
-
     SharedPreferenceHelper().getUserApiKey().then((xApiKey) => apiBloc.fetchGameOptionRes(xApiKey));
 
-    return Row(
-      children: [
-        Expanded(
-          flex: 2,
-          child: StreamBuilder(
-            stream: apiBloc.gameCatRes,
-            builder: (context, AsyncSnapshot<GameOptionResModel> snapshot) {
-              if (snapshot.hasData) {
-                return _buildFirstList(snapshot.data);
-              } else if (!snapshot.hasData) {
-                return frostedGlassWithProgressBarWidget(context);
-              } else return NoDataFound();
-            },
+    return Padding(
+      padding: EdgeInsets.only(top: SizeConfig.heightMultiplier * 8),
+      child: Row(
+        children: [
+          Expanded(
+            flex: 2,
+            child: StreamBuilder(
+              stream: apiBloc.gameCatRes,
+              builder: (context, AsyncSnapshot<GameOptionResModel> snapshot) {
+                if (snapshot.hasData) {
+                  return _buildFirstList(snapshot.data);
+                } else if (!snapshot.hasData) {
+                  return frostedGlassWithProgressBarWidget(context);
+                } else
+                  return NoDataFound();
+              },
+            ),
           ),
-        ),
-
-        Container(
-          height: subcategory.length* 80.0,
-          width: 1.5,
-          color: Colors.indigo,
-          margin: const EdgeInsets.only(left: 16, top: 20.0, bottom: 0.0),
-        ),
-
-        Expanded(
-          flex: 3,
-          child: buildSecondList(subcategory),
-        ),
-      ],
+          Container(
+            height: subcategory.length * 30.0,
+            width: 1.5,
+            color: Colors.blueGrey,
+            margin: const EdgeInsets.only(left: 16, top: 16.0),
+          ),
+          Expanded(
+            flex: 3,
+            child: buildSecondList(subcategory),
+          ),
+        ],
+      ),
     );
   }
 
@@ -86,19 +88,19 @@ class _IncludeGameOptionState extends State<IncludeGameOption> {
           child: SlideInRight(
             child: GestureDetector(
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   Pulse(
                     child: Container(
-                      width: screenHeight/7,
-                      height: screenHeight/7,
+                      width: screenHeight / 9,
+                      height: screenHeight / 9,
                       decoration: BoxDecoration(
                         color: Colors.transparent,
                         border: Border.all(
-                          color: Colors.grey[350],
-                          width: 5,
+                          color: Colors.cyanAccent.shade100,
+                          width: 1,
                         ),
-
                         boxShadow: <BoxShadow>[
                           BoxShadow(
                             color: Color(0x60000000),
@@ -108,36 +110,33 @@ class _IncludeGameOptionState extends State<IncludeGameOption> {
                         ],
                         borderRadius: BorderRadius.all(Radius.circular(35)),
                       ),
-                      child: CircleAvatar(
-                        child: FadeInImage.assetNetwork(
-                          placeholder: 'assets/icons/png/img_sports.png',
-                          image: data.response[index].categoryIcon??'',
+                      child: Pulse(
+                        child: CircleAvatar(
+                          child: FadeInImage.assetNetwork(
+                            placeholder: 'assets/icons/png/img_sports.png',
+                            image: data.response[index].categoryIcon ?? '',
+                          ),
                         ),
+                        preferences: AnimationPreferences(
+                            duration: const Duration(milliseconds: 1500),
+                            autoPlay: AnimationPlayStates.Loop),
                       ),
                     ),
-                    preferences: AnimationPreferences(
-                        duration: const Duration(milliseconds: 1500),
-                        autoPlay: AnimationPlayStates.Loop),
+                    preferences: AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Loop),
                   ),
-
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(8, 8, 0, 2),
+                    padding: const EdgeInsets.only(left: 12),
                     child: Shimmer.fromColors(
-                      baseColor: Colors.black54,
-                      highlightColor: Colors.orangeAccent,
+                      baseColor: Colors.blue[100],
+                      highlightColor: Colors.lightBlueAccent,
                       child: Text(
                         data.response[index].categoryName,
-                        style: TextStyle(
-                            fontSize: screenHeight/15,
-                            fontFamily: 'neuropol_x_rg',
-                            fontWeight: FontWeight.bold
-                        ),
+                        style: TextStyle(fontSize: screenHeight / 18, fontFamily: 'montserrat', fontWeight: FontWeight.bold),
                       ),
                     ),
                   ),
                 ],
               ),
-
               onTap: () {
                 //print('Clicked on first screen');
                 subcategoryDetails.clear();
@@ -145,13 +144,9 @@ class _IncludeGameOptionState extends State<IncludeGameOption> {
                 buildSecondList(data.response[index].categoryDetails);
                 //print('subcategory.length----' + data.response[index].subcategory.length.toString());
                 _includeGameOptState();
-
-
               },
             ),
-            preferences: AnimationPreferences(
-                duration: const Duration(milliseconds: 1000),
-                autoPlay: AnimationPlayStates.Forward),
+            preferences: AnimationPreferences(duration: const Duration(milliseconds: 1000), autoPlay: AnimationPlayStates.Forward),
           ),
         );
       },
@@ -178,17 +173,17 @@ class _IncludeGameOptionState extends State<IncludeGameOption> {
                 width: double.infinity,
                 margin: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
-
                   children: <Widget>[
                     Container(
-                      width: screenHeight/7,
-                      height: screenHeight/7,
+                      width: screenHeight / 9.0,
+                      height: screenHeight / 9.0,
                       decoration: BoxDecoration(
                         color: Colors.transparent,
                         border: Border.all(
-                          color: Colors.grey[350],
-                          width: 5,
+                          color: Colors.cyanAccent.shade100,
+                          width: 1,
                         ),
                         boxShadow: <BoxShadow>[
                           BoxShadow(
@@ -202,45 +197,37 @@ class _IncludeGameOptionState extends State<IncludeGameOption> {
                       child: CircleAvatar(
                         child: FadeInImage.assetNetwork(
                           placeholder: 'assets/icons/png/img_sports.png',
-                          image: subcategory[index].sub1categoryIcon??'',
+                          image: subcategory[index].sub1categoryIcon ?? '',
                         ),
                       ),
                     ),
-
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(8, 8, 0, 2),
+                      padding: const EdgeInsets.only(left: 12),
                       child: Shimmer.fromColors(
-                        baseColor: Colors.black54,
-                        highlightColor: Colors.orangeAccent,
+                        baseColor: Colors.blue[100],
+                        highlightColor: Colors.lightBlueAccent,
                         child: Text(
                           subcategory[index].sub1categoryName,
-                          style: TextStyle(
-                              fontSize: screenHeight/15,
-                              fontFamily: 'neuropol_x_rg',
-                              fontWeight: FontWeight.bold
-                          ),
+                          style: TextStyle(fontSize: screenHeight / 18, fontFamily: 'montserrat', fontWeight: FontWeight.bold),
                         ),
                       ),
                     ),
                   ],
                 ),
               ),
-
               onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => GameOptionTwo(gameCat1: categoryName, gameCat2: subcategory[index].sub1categoryName),
-                    // Pass the arguments as part of the RouteSettings. The
-                    // DetailScreen reads the arguments from these settings.
-                    settings: RouteSettings(arguments: subcategory[index].sub1categoryDetails,),
+                    settings: RouteSettings(
+                      arguments: subcategory[index].sub1categoryDetails,
+                    ),
                   ),
                 );
               },
             ),
-            preferences: AnimationPreferences(
-                duration: const Duration(milliseconds: 500),
-                autoPlay: AnimationPlayStates.Forward),
+            preferences: AnimationPreferences(duration: const Duration(milliseconds: 500), autoPlay: AnimationPlayStates.Forward),
           );
         },
       );
@@ -248,5 +235,4 @@ class _IncludeGameOptionState extends State<IncludeGameOption> {
       return SizedBox();
     }
   }
-
 }

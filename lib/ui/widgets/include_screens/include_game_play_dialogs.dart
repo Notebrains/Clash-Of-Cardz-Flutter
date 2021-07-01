@@ -22,8 +22,8 @@ Function(bool isTimeEnded) onTimeEnd,
         Padding(
           padding: const EdgeInsets.only(left: 0.0, top: 0),
           child: TweenAnimationBuilder<Duration>(
-              duration: Duration(minutes: 3),
-              tween: Tween(begin: Duration(minutes: 3), end: Duration.zero),
+              duration: Duration(minutes: 33),
+              tween: Tween(begin: Duration(minutes: 33), end: Duration.zero),
               onEnd: () {
                 onTimeEnd(true);
                 },
@@ -40,9 +40,9 @@ Function(bool isTimeEnded) onTimeEnd,
                           width: 50,
                           height: 40,
                           decoration: BoxDecoration(
-                            color: Colors.black,
+                            color: Color(0xFF263A47),
                             border: Border.all(
-                              color: Colors.black,
+                              color: Color(0xFF263A47),
                               width: 5,
                             ),
                             borderRadius: BorderRadius.all(Radius.circular(3)),
@@ -79,7 +79,7 @@ Function(bool isTimeEnded) onTimeEnd,
                         width: 20,
                         height: 40,
                         decoration: BoxDecoration(
-                          color: Colors.black,
+                          color: Color(0xFF263A47),
                           borderRadius: BorderRadius.all(Radius.circular(3)),
                           boxShadow: <BoxShadow>[
                             BoxShadow(
@@ -118,9 +118,9 @@ Function(bool isTimeEnded) onTimeEnd,
                           width: 50,
                           height: 40,
                           decoration: BoxDecoration(
-                            color: Colors.black,
+                            color: Color(0xFF263A47),
                             border: Border.all(
-                              color: Colors.black,
+                              color: Color(0xFF263A47),
                               width: 5,
                             ),
                             borderRadius: BorderRadius.all(Radius.circular(3)),
@@ -294,28 +294,29 @@ void showExitDialog(BuildContext context, {
   Function() onPressed,
 }) {
   showDialog(
+    //barrierColor: Color(0xEB20313E),
     context: context,
     builder: (_) => AssetGiffyDialog(
       image: Image.asset('assets/animations/gifs/surrender.gif'),
       title: Text(
         'SURRENDER',
-        style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.w600),
+        style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.w800, fontFamily: 'montserrat', color: Color(0xFF263A47)),
       ),
       description: Text(
         'Do you really want to surrender! \n You will loose some points you are about to win.',
         textAlign: TextAlign.center,
-        style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w600),
+        style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w600, fontFamily: 'montserrat'),
       ),
-      entryAnimation: EntryAnimation.RIGHT,
+      entryAnimation: EntryAnimation.TOP,
       buttonOkText: Text(
         'YES',
-        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontFamily: 'montserrat'),
       ),
-      buttonOkColor: Colors.red,
-      buttonCancelColor: Colors.greenAccent,
+      buttonOkColor: Color(0xFF263A47),
+      buttonCancelColor: Color(0xFF3A5A71),
       buttonCancelText: Text(
         'NO',
-        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontFamily: 'montserrat'),
       ),
       onOkButtonPressed: () {
         onPressed();

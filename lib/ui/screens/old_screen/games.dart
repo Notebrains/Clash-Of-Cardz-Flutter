@@ -32,7 +32,7 @@ class Games extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                PlayerInfoBackBtn(),
+                PlayerInfoBackBtn(pageTitle: '',),
 
                 buildUI(context, snapshot.data.response),
               ],

@@ -33,7 +33,7 @@ class BuildPlayer1Screen extends StatelessWidget{
                 margin: EdgeInsets.all(8.0),
                 alignment: AlignmentDirectional.topStart,
                 decoration: BoxDecoration(
-                  color: Colors.grey[800],
+                  color: Color(0xFF364B5A),
                   borderRadius:
                   BorderRadius.all(Radius.circular(5)),
                   boxShadow: <BoxShadow>[
@@ -62,7 +62,7 @@ class BuildPlayer1Screen extends StatelessWidget{
                       children: [
                         Container(
                           width: 40,
-                          color: Colors.black,
+                          color: Color(0xFF20313E),
                           margin: EdgeInsets.only(left: 5),
                           padding: EdgeInsets.all(8),
                           child: Text(
@@ -78,7 +78,7 @@ class BuildPlayer1Screen extends StatelessWidget{
 
                         Container(
                           width: 5,
-                          color: Colors.black,
+                          color: Color(0xFF20313E),
                           padding: EdgeInsets.only(top: 8, bottom: 8),
                           child: Text(
                             '/',
@@ -93,7 +93,7 @@ class BuildPlayer1Screen extends StatelessWidget{
 
                         Container(
                           width: 40,
-                          color: Colors.black,
+                          color: Color(0xFF20313E),
                           padding: EdgeInsets.all(8),
                           margin: EdgeInsets.only(right: 5),
                           child: Text(
@@ -124,7 +124,7 @@ class BuildPlayer1Screen extends StatelessWidget{
                     height: 87,
                     alignment: AlignmentDirectional.bottomStart,
                     decoration: BoxDecoration(
-                      color: Colors.grey[800],
+                      color: Color(0xFF364B5A),
                       borderRadius:
                       BorderRadius.all(Radius.circular(5)),
                       boxShadow: <BoxShadow>[
@@ -156,7 +156,7 @@ class BuildPlayer1Screen extends StatelessWidget{
                             Container(
                               width: 40,
                               height: 35,
-                              color: Colors.black,
+                              color: Color(0xFF20313E),
                               child: Center(
                                 child: Text(
                                   statesModel.cardCountOnDeck.toString(),
@@ -172,7 +172,7 @@ class BuildPlayer1Screen extends StatelessWidget{
                             Container(
                               width: 40,
                               height: 35,
-                              color: Colors.black,
+                              color: Color(0xFF20313E),
                               margin:
                               EdgeInsets.fromLTRB(5, 0, 5, 0),
                               child: Center(
@@ -190,7 +190,7 @@ class BuildPlayer1Screen extends StatelessWidget{
                             Container(
                               width: 40,
                               height: 35,
-                              color: Colors.black,
+                              color: Color(0xFF20313E),
                               child: Center(
                                 child: Text(
                                   statesModel.playerOneTrump.toString(),
@@ -364,7 +364,7 @@ class BuildPlayerTwoScreen extends StatelessWidget {
                   margin: EdgeInsets.all(8.0),
                   alignment: AlignmentDirectional.topEnd,
                   decoration: BoxDecoration(
-                    color: Colors.grey[800],
+                    color: Color(0xFF364B5A),
                     borderRadius:
                     BorderRadius.all(Radius.circular(5)),
                     boxShadow: <BoxShadow>[
@@ -393,7 +393,7 @@ class BuildPlayerTwoScreen extends StatelessWidget {
                         children: [
                           Container(
                             width: 40,
-                            color: Colors.black,
+                            color: Color(0xFF20313E),
                             margin: EdgeInsets.only(left: 5),
                             padding: EdgeInsets.all(8),
                             child: Text(
@@ -409,7 +409,7 @@ class BuildPlayerTwoScreen extends StatelessWidget {
 
                           Container(
                             width: 5,
-                            color: Colors.black,
+                            color: Color(0xFF20313E),
                             padding: EdgeInsets.only(top: 8, bottom: 8),
                             child: Text(
                               '/',
@@ -424,7 +424,7 @@ class BuildPlayerTwoScreen extends StatelessWidget {
 
                           Container(
                             width: 40,
-                            color: Colors.black,
+                            color: Color(0xFF20313E),
                             padding: EdgeInsets.all(8),
                             margin: EdgeInsets.only(right: 5),
                             child: Text(
@@ -491,7 +491,7 @@ class BuildPlayerTwoScreen extends StatelessWidget {
                               });
                             },
                           ),
-                          decoration: Views.boxDecorationWidgetForIconWithBgColor(Colors.black, 4.0, Colors.grey, 5.0, 5.0, 3.0),
+                          decoration: Views.boxDecorationWidgetForIconWithBgColor(Color(0xFF20313E), 4.0, Colors.grey, 5.0, 5.0, 3.0),
                         ),
 
                        /* Container(
@@ -507,7 +507,7 @@ class BuildPlayerTwoScreen extends StatelessWidget {
                               Navigator.pop(context);
                             },
                           ),
-                          decoration: Views.boxDecorationWidgetForIconWithBgColor(Colors.grey[800], 4.0, Colors.grey, 5.0, 5.0, 3.0),
+                          decoration: Views.boxDecorationWidgetForIconWithBgColor(Color(0xFF364B5A), 4.0, Colors.grey, 5.0, 5.0, 3.0),
                         ),*/
 
                         /*Container(
@@ -544,7 +544,7 @@ class BuildPlayerTwoScreen extends StatelessWidget {
                           height: 87,
                           alignment: AlignmentDirectional.bottomStart,
                           decoration: BoxDecoration(
-                            color: Colors.grey[800],
+                            color: Color(0xFF364B5A),
                             borderRadius:
                             BorderRadius.all(Radius.circular(5)),
                             boxShadow: <BoxShadow>[
@@ -575,7 +575,7 @@ class BuildPlayerTwoScreen extends StatelessWidget {
                                   Container(
                                     width: 40,
                                     height: 35,
-                                    color: Colors.black,
+                                    color: Color(0xFF20313E),
                                     child: Center(
                                       child: Text(
                                         statesModel.cardCountOnDeck.toString(),
@@ -591,7 +591,7 @@ class BuildPlayerTwoScreen extends StatelessWidget {
                                   Container(
                                     width: 40,
                                     height: 35,
-                                    color: Colors.black,
+                                    color: Color(0xFF20313E),
                                     margin:
                                     EdgeInsets.fromLTRB(5, 0, 5, 0),
                                     child: Center(
@@ -609,7 +609,7 @@ class BuildPlayerTwoScreen extends StatelessWidget {
                                   Container(
                                     width: 40,
                                     height: 35,
-                                    color: Colors.black,
+                                    color: Color(0xFF20313E),
                                     child: Center(
                                       child: Text(
                                         statesModel.playerTwoTrump.toString(),

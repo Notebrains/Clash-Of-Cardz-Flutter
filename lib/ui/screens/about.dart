@@ -25,7 +25,7 @@ class AboutScreen extends StatelessWidget{
           if (snapshot.hasData) {
             return Column(
               children: [
-                PlayerInfoBackBtn(),
+                PlayerInfoBackBtn(pageTitle: '',),
 
                 Expanded(
                   child: Container(

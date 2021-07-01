@@ -1,6 +1,7 @@
 import 'package:clash_of_cardz_flutter/helper/constantvalues/constants.dart';
 import 'package:clash_of_cardz_flutter/helper/exten_fun/common_fun.dart';
 import 'package:clash_of_cardz_flutter/helper/shared_preference_data.dart';
+import 'package:clash_of_cardz_flutter/ui/styles/size_config.dart';
 import 'package:clash_of_cardz_flutter/ui/widgets/libraries/avatar_glow.dart';
 import 'package:clash_of_cardz_flutter/ui/widgets/libraries/shimmer.dart';
 import 'package:flutter/material.dart';
@@ -40,7 +41,7 @@ class _PlayerInfoBackBtnState extends State<PlayerInfoBackBtn> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 70,
+      height: SizeConfig.heightMultiplier * 8,
       color: Color(0xFF2C3E4B),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
