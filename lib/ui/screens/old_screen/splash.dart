@@ -6,7 +6,7 @@ import 'package:clash_of_cardz_flutter/helper/exten_fun/base_application_fun.dar
 import 'package:clash_of_cardz_flutter/helper/globals.dart';
 import 'package:clash_of_cardz_flutter/helper/shared_preference_data.dart';
 import 'package:clash_of_cardz_flutter/ui/screens/old_screen/old_home.dart';
-import 'package:clash_of_cardz_flutter/ui/screens/old_screen/old_login.dart';
+import 'package:clash_of_cardz_flutter/ui/screens/login.dart';
 import 'package:clash_of_cardz_flutter/ui/widgets/custom/horizontal_progress_indicator.dart';
 import 'package:clash_of_cardz_flutter/ui/widgets/libraries/animated_text_kit/animated_text_kit.dart';
 
@@ -95,19 +95,18 @@ class _SplashScreenState extends State<SplashScreen> with WidgetsBindingObserver
                                 },
                                 text: [
                                   "CLASH OF CARDZ",
-                                  "LET'S PLAY",
-                                  "CLASH OF CARDZ",
-                                  "ROCK & ROLL",
+                                  //"LET'S PLAY",
+                                  //"CLASH OF CARDZ",
+                                  //"ROCK & ROLL",
                                 ],
                                 textStyle: TextStyle(
                                     fontSize: 60.0,
                                     fontStyle: FontStyle.normal,
                                     fontFamily: 'Rapier'),
                                 colors: [
-                                  Colors.grey[700],
-                                  Colors.amber[400],
-                                  Colors.lightBlue,
-                                  Colors.redAccent,
+                                  Color(0xFF364B5A),
+                                  Colors.blueAccent,
+                                  Colors.cyanAccent[400],
                                 ],
                                 textAlign: TextAlign.center,
                                 alignment: AlignmentDirectional.center,

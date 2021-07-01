@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:ui';
+import 'package:clash_of_cardz_flutter/ui/screens/home.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
@@ -380,7 +381,7 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForPlayer> wi
     if (context != null) {
       Navigator.push(
         context,
-        CupertinoPageRoute(builder: (context) => OldHomeScreen(xApiKey: widget.xApiKey, memberId: widget.p1MemberId,),),
+        CupertinoPageRoute(builder: (context) => Home(xApiKey: widget.xApiKey, memberId: widget.p1MemberId,),),
       ).then((value) => {
         showToast(context, 'Player not found! Please try again.'),
         //remove first user from firebase if requested player has not joined.

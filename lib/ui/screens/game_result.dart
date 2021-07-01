@@ -1,3 +1,5 @@
+import 'package:clash_of_cardz_flutter/ui/screens/home.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/custom/outlined_btn_gradient_border.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:clash_of_cardz_flutter/bloc/api_bloc.dart';
@@ -8,8 +10,6 @@ import 'package:clash_of_cardz_flutter/ui/screens/old_screen/old_home.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lottie/lottie.dart';
 import 'package:flutter_animator/flutter_animator.dart';
-import 'package:clash_of_cardz_flutter/model/responses/save_game_result_res_model.dart';
-
 import 'game_option.dart';
 
 class GameResult extends StatelessWidget {
@@ -44,14 +44,10 @@ class GameResult extends StatelessWidget {
         onWillPop: () async => false,
         child: Scaffold(
             resizeToAvoidBottomInset: false,
+            backgroundColor: Color(0xFF2C3F4B),
             body: Stack(
               alignment: Alignment.center,
               children: <Widget>[
-                Container(
-                  width: double.infinity,
-                  height: double.infinity,
-                  child: Image.asset('assets/images/bg_img13.png', fit: BoxFit.fill),
-                ),
                 Stack(
                   alignment: AlignmentDirectional.center,
                   children: [
@@ -102,7 +98,9 @@ class GameResult extends StatelessWidget {
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child:
-                                Text(areYouWon? p1FullName: p2Name, style: TextStyle(color: Colors.orangeAccent, fontWeight: FontWeight.w900, fontSize: 18)),
+                                Text(areYouWon? p1FullName.toUpperCase(): p2Name.toUpperCase(),
+                                  style: TextStyle(color: Colors.blue[100], fontFamily: 'montserrat',
+                                    fontWeight: FontWeight.w900, fontSize: 18,),),
                           ),
                           preferences:
                               AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
@@ -112,20 +110,18 @@ class GameResult extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             HeartBeat(
-                              child: IconButton(
-                                iconSize: 20,
-                                icon: SvgPicture.asset(
-                                  'assets/icons/svg/card_count.svg',
-                                  color: Colors.yellow[600],
-                                ),
-                                onPressed: null,
+                              child: SvgPicture.asset(
+                                'assets/icons/svg/card_count.svg',
+                                color: Colors.yellow[700],
+                                width: 25,
+                                height: 25,
                               ),
                               preferences:
                                   AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Loop),
                             ),
                             FadeInLeftBig(
                               child: Padding(
-                                padding: const EdgeInsets.only(right: 8.0),
+                                padding: const EdgeInsets.only(right: 16.0, left: 6),
                                 child: Text(
                                   cardsToPlay,
                                   textAlign: TextAlign.center,
@@ -134,24 +130,22 @@ class GameResult extends StatelessWidget {
                                       fontStyle: FontStyle.normal,
                                       fontFamily: 'montserrat',
                                       fontWeight: FontWeight.bold,
-                                      color: Colors.grey[400]),
+                                      color: Colors.blue[100]),
                                 ),
                               ),
                               preferences:
                                   AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
                             ),
                             RubberBand(
-                              child: IconButton(
-                                iconSize: 45,
-                                icon: SvgPicture.asset('assets/icons/svg/competition.svg'),
-                                onPressed: null,
-                              ),
+                              child: SvgPicture.asset('assets/icons/svg/competition.svg',
+                                width: 35,
+                                height: 35,),
                               preferences:
                                   AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Loop),
                             ),
                             Flip(
                               child: Padding(
-                                padding: const EdgeInsets.only(right: 8.0),
+                                padding: const EdgeInsets.only(right: 8.0, left: 8),
                                 child: Text(
                                   '1v1',
                                   textAlign: TextAlign.center,
@@ -160,16 +154,16 @@ class GameResult extends StatelessWidget {
                                       fontStyle: FontStyle.normal,
                                       fontFamily: 'montserrat',
                                       fontWeight: FontWeight.bold,
-                                      color: Colors.grey[400]),
+                                      color: Colors.blue[100]),
                                 ),
                               ),
                               preferences:
                                   AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
                             ),
-                            Swing(
+                            HeartBeat(
                               child: IconButton(
-                                iconSize: 35,
-                                icon: SvgPicture.asset('assets/icons/svg/coin.svg'),
+                                iconSize: 40,
+                                icon: Image.asset('assets/icons/png/coins.png'),
                                 onPressed: null,
                               ),
                               preferences:
@@ -184,7 +178,7 @@ class GameResult extends StatelessWidget {
                                     fontStyle: FontStyle.normal,
                                     fontFamily: 'montserrat',
                                     fontWeight: FontWeight.bold,
-                                    color: Colors.grey[400]),
+                                    color: Colors.blue[100]),
                               ),
                               preferences:
                                   AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
@@ -197,76 +191,58 @@ class GameResult extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Pulse(
-                                child: MaterialButton(
-                                  padding: EdgeInsets.fromLTRB(0.0, 8.0, 10.0, 0.0),
-                                  splashColor: Colors.grey,
-                                  child: Container(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(right: 8, top: 5),
+                                  child: OutlinedBtnGradientBorder(
+                                    onPressed: () {
+                                      onTapAudio('button');
+                                      SharedPreferenceHelper().getUserSavedData().then((sharedPrefModel) {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (BuildContext context) => Home(
+                                                  xApiKey: sharedPrefModel.xApiKey,
+                                                  memberId: sharedPrefModel.memberId,
+                                                )));
+                                      });
+                                    },
+                                    height: 30,
                                     width: 140,
-                                    height: 45,
-                                    decoration: BoxDecoration(
-                                      image: DecorationImage(image: AssetImage('assets/icons/png/bg_button.png'), fit: BoxFit.fill),
-                                    ),
-                                    child: Container(
-                                      alignment: Alignment.center,
-                                      padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 12.0),
-                                      child: Text(
-                                        "Home",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            fontStyle: FontStyle.normal,
-                                            fontFamily: 'montserrat',
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.black87),
-                                      ),
+                                    child:  Text(
+                                      "Home",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontStyle: FontStyle.normal,
+                                          fontFamily: 'montserrat',
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.blue.shade100),
                                     ),
                                   ),
-                                  onPressed: () {
-                                    onTapAudio('button');
-                                    SharedPreferenceHelper().getUserSavedData().then((sharedPrefModel) {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (BuildContext context) => OldHomeScreen(
-                                                    xApiKey: sharedPrefModel.xApiKey,
-                                                    memberId: sharedPrefModel.memberId,
-                                                  )));
-                                    });
-                                  },
                                 ),
                                 preferences:
                                     AnimationPreferences(duration: const Duration(milliseconds: 2500), autoPlay: AnimationPlayStates.Loop),
                               ),
                               Pulse(
-                                child: MaterialButton(
-                                  padding: EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 0.0),
-                                  splashColor: Colors.grey,
-                                  child: Container(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 8, top: 5),
+                                  child: OutlinedBtnGradientBorder(
+                                    onPressed: () {
+                                      Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => GameOption()));
+                                    },
+                                    height: 30,
                                     width: 140,
-                                    height: 45,
-                                    decoration: BoxDecoration(
-                                      image: DecorationImage(image: AssetImage('assets/icons/png/bg_button.png'), fit: BoxFit.fill),
-                                    ),
-                                    child: Container(
-                                      alignment: Alignment.center,
-                                      padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 12.0),
-                                      child: Text(
-                                        "Play Again",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            fontStyle: FontStyle.normal,
-                                            fontFamily: 'montserrat',
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.black87),
-                                      ),
+                                    child:  Text(
+                                      "Play Again",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontStyle: FontStyle.normal,
+                                          fontFamily: 'montserrat',
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.blue.shade100),
                                     ),
                                   ),
-                                  // ),
-                                  onPressed: () {
-                                    onTapAudio('button');
-                                    Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => GameOption()));
-                                  },
                                 ),
                                 preferences:
                                     AnimationPreferences(duration: const Duration(milliseconds: 2500), autoPlay: AnimationPlayStates.Loop),

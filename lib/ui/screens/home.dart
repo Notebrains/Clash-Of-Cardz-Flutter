@@ -24,6 +24,7 @@ import 'package:clash_of_cardz_flutter/ui/widgets/custom/carousel_auto_slider.da
 import 'package:clash_of_cardz_flutter/ui/widgets/libraries/giffy_dialog/giffy_dialog.dart';
 import 'game_option.dart';
 import 'leaderboard.dart';
+import 'login.dart';
 import 'old_screen/games.dart';
 
 class Home extends StatefulWidget {
@@ -184,7 +185,7 @@ class _HomeState extends State<Home> {
                           },
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(top: 8, bottom: 24),
+                          padding: const EdgeInsets.only(top: 8, bottom: 20),
                           child: InkWell(
                             child: Icon(
                               Icons.settings,
@@ -212,6 +213,8 @@ class _HomeState extends State<Home> {
                             },
                           ),
                         ),
+
+
                         InkWell(
                           child: Icon(
                             Icons.share,
@@ -223,6 +226,24 @@ class _HomeState extends State<Home> {
                             _onShare(context, Constants.shareAndroidTxt, Constants.appName);
                             // urlFileShare();
                           },
+                        ),
+
+
+                        Padding(
+                          padding: const EdgeInsets.only(top: 20,),
+                          child: InkWell(
+                            child: Icon(
+                              Icons.logout,
+                              size: 25,
+                              color: Colors.white.withOpacity(0.5),
+                            ),
+                            onTap: () {
+                              onTapAudio('icon');
+                              SharedPreferenceHelper().clearPrefData();
+                              Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => LogIn(),),);
+                              // urlFileShare();
+                            },
+                          ),
                         ),
                       ],
                     ),

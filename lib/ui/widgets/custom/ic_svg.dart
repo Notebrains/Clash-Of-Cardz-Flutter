@@ -15,7 +15,7 @@ class IcSgv extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 10, bottom: 10),
+      padding: const EdgeInsets.only(top: 8, bottom: 8),
       child: IconButton(
         icon: SvgPicture.asset(
           ic,

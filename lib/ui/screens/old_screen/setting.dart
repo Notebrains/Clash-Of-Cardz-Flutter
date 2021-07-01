@@ -8,7 +8,7 @@ import 'package:clash_of_cardz_flutter/helper/globals.dart';
 import 'package:clash_of_cardz_flutter/helper/shared_preference_data.dart';
 //import 'package:audioplayers/audio_cache.dart';
 //import 'package:audioplayers/audioplayers.dart';
-import 'old_login.dart';
+import '../login.dart';
 import 'package:lottie/lottie.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 

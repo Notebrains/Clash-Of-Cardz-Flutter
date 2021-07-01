@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:ui';
 import 'package:clash_of_cardz_flutter/bloc/api_bloc.dart';
 import 'package:clash_of_cardz_flutter/model/responses/send_notification_to_friend_res_model.dart';
+import 'package:clash_of_cardz_flutter/ui/screens/home.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
@@ -159,7 +160,7 @@ class IncludeWaitingForFriendState extends State<IncludeWaitingForFriend> with S
                                               ));
 
                                           Navigator.push(
-                                            context, CupertinoPageRoute(builder: (context) => OldHomeScreen(xApiKey: xApiKey, memberId: memberId,),
+                                            context, CupertinoPageRoute(builder: (context) => Home(xApiKey: xApiKey, memberId: memberId,),
                                           ),
                                           );
                                         },

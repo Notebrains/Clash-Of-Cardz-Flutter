@@ -13,7 +13,7 @@ import 'package:clash_of_cardz_flutter/model/responses/profile_res_model.dart';
 import 'package:clash_of_cardz_flutter/ui/screens/about.dart';
 import 'package:clash_of_cardz_flutter/ui/screens/game_rules.dart';
 import 'package:clash_of_cardz_flutter/ui/screens/old_screen/old_leaderboard.dart';
-import 'package:clash_of_cardz_flutter/ui/screens/old_screen/old_login.dart';
+import 'package:clash_of_cardz_flutter/ui/screens/login.dart';
 import 'package:clash_of_cardz_flutter/ui/screens/profile.dart';
 import 'package:clash_of_cardz_flutter/ui/screens/old_screen/setting.dart';
 import 'package:clash_of_cardz_flutter/ui/screens/old_screen/statistics.dart';

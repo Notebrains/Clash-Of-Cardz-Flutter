@@ -18,7 +18,7 @@ import 'package:clash_of_cardz_flutter/ui/widgets/libraries/shimmer.dart';
 import 'package:clash_of_cardz_flutter/ui/widgets/views/view_widgets.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 
-import 'old_screen/old_login.dart';
+import 'login.dart';
 
 class GameOptionThree extends StatefulWidget {
   final String gameCat1;
@@ -72,31 +72,25 @@ class _GameOptionThreeState extends State<GameOptionThree> {
       onWillPop: () async => false,
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        backgroundColor: Color(0xFF364B5A),
+        backgroundColor: Color(0xFF2A3C49),
         key: _drawerKey, // assign key to Scaffold
         drawer: Drawer(
-          child: new ListView(
+          child: ListView(
             children: <Widget>[
               Container(
                 height: 55,
+                color: Color(0xFF253845),
                 child: DrawerHeader(
                   margin: EdgeInsets.all(0),
-                  child: Column(
-                    children: [
-                      Text(
-                        'Friends',
-                        textAlign: TextAlign.start,
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: 'montserrat',
-                        ),
-                      ),
-                    ],
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.grey[700],
+                  child: Text(
+                    'Friends',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'neuropol_x_rg',
+                    ),
                   ),
                 ),
               ),
@@ -163,7 +157,7 @@ class _GameOptionThreeState extends State<GameOptionThree> {
                               child: Container(
                                 width: 35,
                                 height: 35,
-                                margin: EdgeInsets.all(5),
+                                margin: EdgeInsets.only(bottom: 8),
                                 child: IconButton(
                                   icon: SvgPicture.asset(
                                     'assets/icons/svg/settings.svg',
@@ -199,31 +193,12 @@ class _GameOptionThreeState extends State<GameOptionThree> {
                               preferences: AnimationPreferences(
                                   duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
                             ),
-                            SlideInRight(
-                              child: Container(
-                                width: 35,
-                                height: 35,
-                                margin: EdgeInsets.all(5),
-                                child: IconButton(
-                                  icon: SvgPicture.asset(
-                                    'assets/icons/svg/back_black.svg',
-                                    color: Colors.white,
-                                  ),
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                ),
-                                decoration:
-                                    Views.boxDecorationWidgetForIconWithBgColor(Colors.grey[800], 4.0, Colors.black54, 3.0, 3.0, 2.0),
-                              ),
-                              preferences: AnimationPreferences(
-                                  duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
-                            ),
+
                             SlideInUp(
                               child: Container(
                                 width: 35,
                                 height: 35,
-                                margin: EdgeInsets.all(5),
+                                margin: EdgeInsets.only(top: 8),
                                 child: IconButton(
                                   icon: SvgPicture.asset(
                                     'assets/icons/svg/logout.svg',
