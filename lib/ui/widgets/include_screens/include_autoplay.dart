@@ -1,4 +1,4 @@
-import 'package:clash_of_cardz_flutter/ui/screens/old_screen/setting.dart';
+import 'package:clash_of_cardz_flutter/ui/screens/setting.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -454,7 +454,6 @@ class BuildPlayerTwoScreen extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-
                         Container(
                           width: 40,
                           height: 40,
@@ -477,9 +476,9 @@ class BuildPlayerTwoScreen extends StatelessWidget {
                             icon: Image.asset('assets/icons/png/ic_setting.png', color: Colors.white,),
                             onPressed: () {
                               //onTapAudio('icon');
-                              bool isNotifiOn;
+                              bool isNotifyOn;
                               SharedPreferenceHelper().getNotificationOnOffState().then((isNotificationOn) => {
-                                isNotifiOn =isNotificationOn,
+                                isNotifyOn =isNotificationOn,
                               });
                               bool isSfxOn;
                               SharedPreferenceHelper().getSfxOnOffState().then((isSFXOn) => {
@@ -487,7 +486,9 @@ class BuildPlayerTwoScreen extends StatelessWidget {
                               });
 
                               SharedPreferenceHelper().getMusicOnOffState().then((isMusicOn) => {
-                                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => OldSetting(isMusicOn, isNotifiOn, isSfxOn, memberId))),
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: (BuildContext context) =>
+                                        Setting(isMusicOn, isNotifyOn, isSfxOn, memberId),),),
                               });
                             },
                           ),

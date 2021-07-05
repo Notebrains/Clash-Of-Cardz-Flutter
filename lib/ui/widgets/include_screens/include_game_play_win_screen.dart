@@ -10,7 +10,7 @@ import 'package:clash_of_cardz_flutter/ui/widgets/libraries/shimmer.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 void showBothCardsDialog(BuildContext context, List<Cards> cards, int indexOfSelectedCard, int indexOfCardDeck, bool isMatchEnded,
-    bool isPlayAsP1,  bool isWon,{
+    bool isPlayAsP1,  String isWon,{
   Function(bool isMatchEnded) onClickActionOnPlayAgain,
 }) async {
 
@@ -188,13 +188,14 @@ Widget buildCard1(
     BuildContext context,
     List<Cards> cardsList,
     int indexOfCardDeck,
-    int indexOfSelectedCard, bool isPlayAsP1, bool isWon) {
+    int indexOfSelectedCard,
+    bool isPlayAsP1,
+    String isWon) {
+
+  // P1 and P2 value (attributes, name, image etc) will be opposite to each other
   List<List<Attribute>> cardsAttributeList = [];
-
+  int cardListSize = (cardsList.length / 2).round();
   try {
-    //print('----card list1 length ' + (cardsList.length).toString());
-    int cardListSize = (cardsList.length / 2).round();
-
     if (isPlayAsP1) {
       for (int i = 0; i < cardListSize; i++) {
         cardsAttributeList.add(cardsList[i].attribute);
@@ -245,7 +246,7 @@ Widget buildCard1(
             child: FadeInImage.assetNetwork(
                 fit: BoxFit.cover,
                 placeholder: 'assets/images/cricket_1.png',
-                image: cardsList[indexOfCardDeck].cardImg??'',
+                image: isPlayAsP1 ? cardsList[indexOfCardDeck].cardImg : cardsList[cardListSize + indexOfCardDeck].cardImg,
                 height: 145,
                 width: 145
             ),
@@ -364,7 +365,7 @@ Widget buildCard1(
                         baseColor: Colors.white,
                         highlightColor: Colors.orange[300],
                         child: Text(
-                          cardsList[indexOfCardDeck].cardName,
+                          isPlayAsP1 ? cardsList[indexOfCardDeck].cardName : cardsList[cardListSize + indexOfCardDeck].cardName,
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
@@ -383,7 +384,7 @@ Widget buildCard1(
                         radius: 30,
                         child: FadeInImage.assetNetwork(
                           placeholder: 'assets/icons/png/white-flag.png',
-                          image: cardsList[indexOfCardDeck].flagImage??'',
+                          image: isPlayAsP1 ? cardsList[indexOfCardDeck].flagImage : cardsList[cardListSize + indexOfCardDeck].flagImage,
                         ),
                       ),
                     ),
@@ -398,8 +399,8 @@ Widget buildCard1(
   );
 }
 
-Widget showOrHideWinnerImg(bool isWon) {
-  return isWon? Align(
+Widget showOrHideWinnerImg(String isWon) {
+  return isWon == 'true' ? Align(
     alignment: Alignment.topRight,
     child: Padding(
       padding: const EdgeInsets.all(5),
@@ -415,19 +416,20 @@ Widget showOrHideWinnerImg(bool isWon) {
 
     ),
   ): Container();
-
 }
 
 Widget buildCard2(
     BuildContext context,
     int indexOfSelectedCard,
     int indexOfCardDeck,
-    List<Cards> cardsList, bool isPlayAsP1, bool isWon) {
+    List<Cards> cardsList,
+    bool isPlayAsP1,
+    String isWon) {
 
   List<List<Attribute>> cardsAttributeListOfP2 = [];
   int cardListSizeForP2 = (cardsList.length / 2).round();
   try {
-    if (isPlayAsP1) {
+    if (!isPlayAsP1) {
       for (int i = 0; i < cardListSizeForP2; i++) {
         cardsAttributeListOfP2.add(cardsList[i].attribute);
       }
@@ -475,14 +477,13 @@ Widget buildCard2(
             child: FadeInImage.assetNetwork(
                 fit: BoxFit.cover,
                 placeholder: 'assets/images/cricket_1.png',
-                image: cardsList[cardListSizeForP2 + indexOfCardDeck].cardImg??'',
+                image: isPlayAsP1 ? cardsList[cardListSizeForP2 + indexOfCardDeck].cardImg : cardsList[indexOfCardDeck].cardImg,
                 height: 145,
                 width: 145),
           ),
         ),
 
-
-        showOrHideWinnerImg(isWon? false: true),
+        showOrHideWinnerImg(isWon == 'true' || isWon == 'draw'? 'false': 'true'),
 
         Align(
           alignment: Alignment.bottomCenter,
@@ -591,7 +592,7 @@ Widget buildCard2(
                         baseColor: Colors.white,
                         highlightColor: Colors.orange[800],
                         child: Text(
-                          cardsList[cardListSizeForP2 + indexOfCardDeck].cardName,
+                          isPlayAsP1 ? cardsList[cardListSizeForP2 + indexOfCardDeck].cardName : cardsList[indexOfCardDeck].cardName,
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
@@ -608,7 +609,7 @@ Widget buildCard2(
                         radius: 30,
                         child: FadeInImage.assetNetwork(
                           placeholder: 'assets/icons/png/white-flag.png',
-                          image: cardsList[cardListSizeForP2 + indexOfCardDeck].flagImage??'',
+                          image: isPlayAsP1 ? cardsList[cardListSizeForP2 + indexOfCardDeck].flagImage:  cardsList[indexOfCardDeck].flagImage,
                         ),
                       ),
                     ),

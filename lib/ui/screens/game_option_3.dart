@@ -1,5 +1,5 @@
 import 'package:clash_of_cardz_flutter/helper/exten_fun/base_application_fun.dart';
-import 'package:clash_of_cardz_flutter/ui/screens/old_screen/setting.dart';
+import 'package:clash_of_cardz_flutter/ui/screens/setting.dart';
 import 'package:clash_of_cardz_flutter/ui/styles/size_config.dart';
 import 'package:clash_of_cardz_flutter/ui/widgets/include_screens/player_info_back_btn.dart';
 import 'package:flutter/cupertino.dart';
@@ -183,7 +183,7 @@ class _GameOptionThreeState extends State<GameOptionThree> {
                                               context,
                                               MaterialPageRoute(
                                                   builder: (BuildContext context) =>
-                                                      OldSetting(isMusicOn, isNotifiOn, isSfxOn, memberId))),
+                                                      Setting(isMusicOn, isNotifiOn, isSfxOn, memberId))),
                                         });
                                   },
                                 ),

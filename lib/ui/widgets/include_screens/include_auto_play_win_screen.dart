@@ -15,7 +15,7 @@ import 'package:clash_of_cardz_flutter/ui/widgets/libraries/flip_card.dart';
 import 'package:clash_of_cardz_flutter/ui/widgets/libraries/shimmer.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-void showBothCardsDialog(BuildContext context, List<Cards> cards, int indexOfSelectedCard, int indexOfCardDeck, bool isMatchEnded, bool isWon, {
+void showBothCardsDialog(BuildContext context, List<Cards> cards, int indexOfSelectedCard, int indexOfCardDeck, bool isMatchEnded, String isWon, {
 Function(bool isPlayAgainClicked) onClickActionOnPlayAgain,
 }) {
   BuildContext dialogContext;
@@ -143,7 +143,7 @@ Function(bool isPlayAgainClicked) onClickActionOnPlayAgain,
                                               style: TextStyle(
                                                   fontSize: 14,
                                                   fontStyle: FontStyle.normal,
-                                                  fontFamily: 'neuropol_x_rg',
+                                                  fontFamily: 'montserrat',
                                                   fontWeight: FontWeight.bold,
                                                   color: Colors.black87),
                                             ),
@@ -152,7 +152,7 @@ Function(bool isPlayAgainClicked) onClickActionOnPlayAgain,
                                         // ),
                                         onPressed: () {
                                           onClickActionOnPlayAgain(isMatchEnded);
-                                          Navigator.of(context).pop();
+                                          Navigator.of(context, rootNavigator: true).pop();
                                         },
                                       ),
                                     ),
@@ -187,7 +187,7 @@ Widget buildCard1(
     BuildContext context,
     List<Cards> cardsList,
     int indexOfCardDeck,
-    int indexOfSelectedCard, bool isWon,
+    int indexOfSelectedCard, String isWon,
     {
       Function(int p1SelectedIndexOfAttributeList, String attributeTitle, String attributeValue, String winBasis, String winPoints)
       onClickActionOnP1GameplayCard,
@@ -290,7 +290,7 @@ Widget buildCard1(
                                 style: TextStyle(
                                     fontSize: 10,
                                     fontStyle: FontStyle.normal,
-                                    fontFamily: 'neuropol_x_rg',
+                                    fontFamily: 'montserrat',
                                     fontWeight: FontWeight.bold,
                                     color: Colors.indigo),
                               ),
@@ -324,7 +324,7 @@ Widget buildCard1(
                           style: TextStyle(
                               fontSize: 8,
                               fontStyle: FontStyle.normal,
-                              fontFamily: 'neuropol_x_rg',
+                              fontFamily: 'montserrat',
                               fontWeight: FontWeight.normal,
                               color: Colors.white),
                         ),
@@ -394,8 +394,8 @@ Widget buildCard1(
   );
 }
 
-Widget showOrHideWinnerImg(bool isWon) {
-  return isWon? Align(
+Widget showOrHideWinnerImg(String isWon) {
+  return isWon == 'true'? Align(
     alignment: Alignment.topRight,
     child: Padding(
       padding: const EdgeInsets.all(5),
@@ -419,7 +419,7 @@ Widget buildCard2(
     BuildContext context,
     int indexOfSelectedCard,
     int indexOfCardDeck,
-    List<Cards> cardsList, bool isWon, {
+    List<Cards> cardsList, String isWon, {
       Function(bool isWon, int winPoint) onClickActionOnP2GameplayCard,
     }) {
 
@@ -474,7 +474,7 @@ Widget buildCard2(
           ),
         ),
 
-        showOrHideWinnerImg(isWon? false: true),
+        showOrHideWinnerImg(isWon == 'true' || isWon == 'draw'? 'false': 'true'),
 
         Align(
           alignment: Alignment.bottomCenter,
@@ -512,7 +512,7 @@ Widget buildCard2(
                               style: TextStyle(
                                   fontSize: 10,
                                   fontStyle: FontStyle.normal,
-                                  fontFamily: 'neuropol_x_rg',
+                                  fontFamily: 'montserrat',
                                   fontWeight: FontWeight.bold,
                                   color: Colors.indigo),
                             ),
@@ -546,7 +546,7 @@ Widget buildCard2(
                         style: TextStyle(
                             fontSize: 8,
                             fontStyle: FontStyle.normal,
-                            fontFamily: 'neuropol_x_rg',
+                            fontFamily: 'montserrat',
                             fontWeight: FontWeight.normal,
                             color: Colors.white),
                       ),

@@ -1,3 +1,4 @@
+import 'package:clash_of_cardz_flutter/ui/widgets/custom/txt_inside_doted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 import 'package:shape_of_view/shape_of_view.dart';
@@ -25,10 +26,10 @@ Widget buildCardAsP1(
   GlobalKey<FlipCardState> cardKeyOfPlayerOne = GlobalKey<FlipCardState>();
   List<List<Attribute>> cardsAttributeList = [];
   final ValueNotifier<int> isButtonTappedValueNotify = ValueNotifier<int>(77);
+  int cardListSize = (cardsList.length / 2).round();
 
   try {
-    //print('----card list1 length ' + (cardsList.length).toString());
-    int cardListSize = (cardsList.length / 2).round();
+    print('----card list1 length : $isPlayAsP1 , $indexOfCardDeck');
 
     if (isPlayAsP1) {
       for (int i = 0; i < cardListSize; i++) {
@@ -92,34 +93,8 @@ Widget buildCardAsP1(
               ),
               //child: Image.asset('assets/images/bg_card_back.png', fit: BoxFit.fill),
             ),
-            Center(
-              child: FDottedLine(
-                color: Colors.white,
-                strokeWidth: 2.0,
-                dottedLength: 8.0,
-                space: 3.0,
-                corner: FDottedLineCorner.all(6.0),
 
-                /// add widget
-                child: Container(
-                  width: 140,
-                  height: 80,
-                  alignment: Alignment.center,
-                  child: HeartBeat(
-                    child: Text(
-                      isYourNextTurn ?'TAP TO \nSELECT A CARD': 'PLEASE WAIT...\nUNTIL P-2 SELECT STATS',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w200,
-                        color: Colors.white,
-                        fontSize: 13,
-                      ),
-                    ),
-                    preferences: AnimationPreferences(duration: const Duration(milliseconds: 2500), autoPlay: AnimationPlayStates.Loop),
-                  ),
-                ),
-              ),
-            ),
+            TxtInsideDottedLine(text: isYourNextTurn ?'TAP TO \nSELECT A CARD': 'PLEASE WAIT...\nUNTIL P-2 SELECT STATS', width: 140, height: 80,),
           ],
         ),
         onTap: () {
@@ -174,7 +149,7 @@ Widget buildCardAsP1(
               child: FadeInImage.assetNetwork(
                   fit: BoxFit.cover,
                   placeholder: 'assets/images/cricket_1.png',
-                  image: cardsList[indexOfCardDeck].cardImg??'',
+                  image: isPlayAsP1 ? cardsList[indexOfCardDeck].cardImg : cardsList[cardListSize + indexOfCardDeck].cardImg,
                   height: 135,
                   width: 135),
             ),
@@ -323,7 +298,7 @@ Widget buildCardAsP1(
                           baseColor: Colors.white,
                           highlightColor: Colors.grey[400],
                           child: Text(
-                            cardsList[indexOfCardDeck].cardName,
+                            isPlayAsP1 ? cardsList[indexOfCardDeck].cardName : cardsList[cardListSize + indexOfCardDeck].cardName,
                             style: TextStyle(
                               fontWeight: FontWeight.w600,
                               color: Colors.white,
@@ -341,7 +316,7 @@ Widget buildCardAsP1(
                           radius: 30,
                           child: FadeInImage.assetNetwork(
                             placeholder: 'assets/icons/png/white-flag.png',
-                            image: cardsList[indexOfCardDeck].flagImage??'',
+                            image:  isPlayAsP1 ? cardsList[indexOfCardDeck].flagImage : cardsList[cardListSize + indexOfCardDeck].flagImage,
                           ),
                         ),
                       ),
@@ -357,26 +332,18 @@ Widget buildCardAsP1(
   );
 }
 
-Widget buildSecondCard(BuildContext context, int p1SelectedIndexOfAttributeList, int indexOfCardDeck, List<Cards> cardsList, bool isP1CardFlipped, String p1turnStatus, String p2turnStatus) {
+Widget buildSecondCard(
+    BuildContext context,
+    int p1SelectedIndexOfAttributeList,
+    int indexOfCardDeck,
+    List<Cards> cardsList,
+    bool isP1CardFlipped,
+    String p1turnStatus,
+    String p2turnStatus,
+    bool isPlayAsP1,
+    ) {
   GlobalKey<FlipCardState> cardKeyOfPlayerTwo = GlobalKey<FlipCardState>();
-  List<List<Attribute>> cardsAttributeListOfP2 = [];
-  List<List<Attribute>> cardsAttributeList = [];
   int cardListSizeForP2 = (cardsList.length / 2).round();
-  //int indexOfCardDeckForP2 = cardListSizeForP2 + indexOfCardDeck;
-
-  try {
-    //print('-----flagImage ' + cardsList[cardListSizeForP2 + indexOfCardDeck].flagImage);
-
-    for (int i = 0; i < cardListSizeForP2; i++) {
-      cardsAttributeList.add(cardsList[i].attribute);
-    }
-
-    for (int i = cardListSizeForP2; i < cardsList.length; i++) {
-      cardsAttributeListOfP2.add(cardsList[i].attribute);
-    }
-  } catch (e) {
-    print(e);
-  }
 
   Widget doFlip(bool isP1CardFlipped, GlobalKey<FlipCardState> cardKeyOfPlayerTwo) {
     try {
@@ -412,54 +379,32 @@ Widget buildSecondCard(BuildContext context, int p1SelectedIndexOfAttributeList,
           ),
         ],
       ),
-      child:Stack(
-        children: <Widget>[
-          Container(
-            width: getScreenWidth(context),
-            height: getScreenHeight(context),
-            decoration: new BoxDecoration(
-              gradient: new LinearGradient(
+      child: FadeIn(
+        child: Stack(
+          children: <Widget>[
+            Container(
+              width: getScreenWidth(context),
+              height: getScreenHeight(context),
+              decoration: new BoxDecoration(
+                gradient: new LinearGradient(
                   colors: [
                     Colors.blueAccent,
                     Colors.lightBlue,
                     Colors.lightBlueAccent,
                   ],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,),
-            ),
-            //child: Image.asset('assets/images/bg_card_back.png', fit: BoxFit.fill),
-          ),
-          //isP1CardFlipped? Lottie.asset('assets/animations/lottiefiles/confused_robot-bot-3d.json', width: 130, height: 130):
-          Center(
-            child: FDottedLine(
-              color: Colors.white,
-              strokeWidth: 2.0,
-              dottedLength: 8.0,
-              space: 3.0,
-              corner: FDottedLineCorner.all(6.0),
-
-              /// add widget
-              child: Container(
-                width: 90,
-                height: 50,
-                alignment: Alignment.center,
-                child: HeartBeat(
-                  child: Text(
-                    'P-2 CARD',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontWeight: FontWeight.w200,
-                      color: Colors.white,
-                      fontSize: 13,
-                    ),
-                  ),
-                  preferences: AnimationPreferences(duration: const Duration(milliseconds: 2500), autoPlay: AnimationPlayStates.Loop),
-                ),
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,),
               ),
+              //child: Image.asset('assets/images/bg_card_back.png', fit: BoxFit.fill),
             ),
-          ),
-        ],
+            //isP1CardFlipped? Lottie.asset('assets/animations/lottiefiles/confused_robot-bot-3d.json', width: 130, height: 130):
+
+            TxtInsideDottedLine(text: 'P-2 CARD', width: 90, height: 50,),
+          ],
+        ),
+        preferences: AnimationPreferences(duration: const Duration(milliseconds: 1200), autoPlay: AnimationPlayStates.Forward),
       ),
+
     ),
     back: Container(
       decoration: BoxDecoration(
@@ -491,7 +436,7 @@ Widget buildSecondCard(BuildContext context, int p1SelectedIndexOfAttributeList,
                   radius: 30,
                   child: FadeInImage.assetNetwork(
                     placeholder: 'assets/icons/png/white-flag.png',
-                    image: cardsList[cardListSizeForP2 + indexOfCardDeck].flagImage??'',
+                    image:  isPlayAsP1 ? cardsList[cardListSizeForP2 + indexOfCardDeck].flagImage : cardsList[indexOfCardDeck].flagImage,
                   ),
                 ),
               ),
@@ -509,7 +454,7 @@ Widget buildSecondCard(BuildContext context, int p1SelectedIndexOfAttributeList,
                 child: FadeInImage.assetNetwork(
                     fit: BoxFit.cover,
                     placeholder: 'assets/images/cricket_1.png',
-                    image: cardsList[indexOfCardDeck].cardImg??'',
+                    image: isPlayAsP1 ? cardsList[cardListSizeForP2 + indexOfCardDeck].cardImg : cardsList[indexOfCardDeck].cardImg,
                     height: 135,
                     width: 135),
               ),
@@ -520,7 +465,7 @@ Widget buildSecondCard(BuildContext context, int p1SelectedIndexOfAttributeList,
                   baseColor: Colors.white,
                   highlightColor: Colors.grey[400],
                   child: Text(
-                    cardsList[cardListSizeForP2 + indexOfCardDeck].cardName,
+                    isPlayAsP1 ? cardsList[cardListSizeForP2 + indexOfCardDeck].cardName : cardsList[indexOfCardDeck].cardName,
                     textAlign:TextAlign.center,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,

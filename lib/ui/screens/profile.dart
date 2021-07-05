@@ -15,22 +15,19 @@ class Profile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     apiBloc.fetchProfileRes(xApiKey, memberId);
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        resizeToAvoidBottomInset: false,
-        body: Container(
-          color: Color(0xFF22425E),
-          child: StreamBuilder(
-            stream: apiBloc.profileRes,
-            builder: (context, AsyncSnapshot<ProfileResModel> snapshot) {
-              if (snapshot.hasData && snapshot.data.response.length>0) {
-                return IncludeProfile(snapshot.data, xApiKey, memberId);
-              }  else if (!snapshot.hasData) {
-                return frostedGlassWithProgressBarWidget(context);
-              } else return NoDataFound();
-            },
-          ),
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      body: Container(
+        color: Color(0xFF22425E),
+        child: StreamBuilder(
+          stream: apiBloc.profileRes,
+          builder: (context, AsyncSnapshot<ProfileResModel> snapshot) {
+            if (snapshot.hasData && snapshot.data.response.length>0) {
+              return IncludeProfile(snapshot.data, xApiKey, memberId);
+            }  else if (!snapshot.hasData) {
+              return frostedGlassWithProgressBarWidget(context);
+            } else return NoDataFound();
+          },
         ),
       ),
     );

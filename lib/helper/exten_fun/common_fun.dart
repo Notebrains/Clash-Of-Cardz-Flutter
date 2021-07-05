@@ -24,6 +24,9 @@ import 'package:clash_of_cardz_flutter/ui/widgets/libraries/flutter_toast.dart';
 
 import '../shared_preference_data.dart';
 
+
+String convertStrToDoubleStr(String value) => value.isNotEmpty ? double.parse(value).toStringAsFixed(2).toString(): '0';
+
 String getFirstWordFromText(String txt)
 {
   return (txt+" ").split(" ")[0]; //add " " to string to be sure there is something to split

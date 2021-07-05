@@ -79,85 +79,110 @@ class _GameRuleState extends State<GameRule> {
     }
 
     return SingleChildScrollView(
-      child: Column(
-        children: <Widget>[
-          CarouselSlider(
-            items: imageSliders,
-            options: CarouselOptions(viewportFraction: 1.0, enlargeCenterPage: true, height: MediaQuery.of(context).size.height - 55),
-            carouselController: _controller,
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(12.0, 0, 12.0, 12.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Container(
-                  margin: EdgeInsets.fromLTRB(40, 0, 40, 0),
-                  alignment: Alignment.center,
-                  child: FloatingActionButton(
-                    mini: true,
-                    tooltip: 'Back to previous screen',
-                    backgroundColor: Colors.cyanAccent,
-                    child: Icon(
-                      Icons.arrow_back,
-                      color: Colors.black,
-                    ),
-                    onPressed: () {
-                      onTapAudio('button');
-                      _controller.previousPage();
-                    },
-                  ),
-                ),
-                ...Iterable<int>.generate(response.cmsMeta.length).map(
-                  (int pageIndex) => Flexible(
-                    child: Container(
-                      width: 35,
-                      height: 35,
+      child: Stack(
+        children: [
+          Column(
+            children: <Widget>[
+              CarouselSlider(
+                items: imageSliders,
+                options: CarouselOptions(viewportFraction: 1.0, enlargeCenterPage: true, height: MediaQuery.of(context).size.height - 55),
+                carouselController: _controller,
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(12.0, 0, 12.0, 12.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Container(
+                      margin: EdgeInsets.fromLTRB(40, 0, 40, 0),
                       alignment: Alignment.center,
-                      child: new SizedBox(
-                        child: FloatingActionButton(
-                          tooltip: 'Next',
-                          backgroundColor: Colors.cyanAccent[200],
-                          child: Text(
-                            "${pageIndex + 1}",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontSize: 12,
-                                fontStyle: FontStyle.normal,
-                                fontFamily: 'neuropol_x_rg',
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black87),
+                      child: FloatingActionButton(
+                        mini: true,
+                        tooltip: 'Back to previous screen',
+                        backgroundColor: Colors.cyanAccent,
+                        child: Icon(
+                          Icons.arrow_back,
+                          color: Colors.black,
+                        ),
+                        onPressed: () {
+                          onTapAudio('button');
+                          _controller.previousPage();
+                        },
+                      ),
+                    ),
+                    ...Iterable<int>.generate(response.cmsMeta.length).map(
+                          (int pageIndex) => Flexible(
+                        child: Container(
+                          width: 35,
+                          height: 35,
+                          alignment: Alignment.center,
+                          child: FloatingActionButton(
+                            tooltip: 'Next',
+                            backgroundColor: Colors.cyanAccent[200],
+                            child: Text(
+                              "${pageIndex + 1}",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  fontStyle: FontStyle.normal,
+                                  fontFamily: 'neuropol_x_rg',
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black87,
+                              ),
+                            ),
+                            onPressed: () {
+                              onTapAudio('button');
+                              _controller.animateToPage(pageIndex);
+                            },
                           ),
-                          onPressed: () {
-                            onTapAudio('button');
-                            _controller.animateToPage(pageIndex);
-                          },
                         ),
                       ),
                     ),
-                  ),
-                ),
 
-                Container(
-                  margin: EdgeInsets.fromLTRB(50, 0, 50, 0),
-                  alignment: Alignment.center,
-                  child: FloatingActionButton(
-                    mini: true,
-                    tooltip: 'Previous',
-                    backgroundColor: Colors.cyanAccent,
-                    child: Icon(
-                      Icons.arrow_forward,
-                      color: Colors.black,
+                    Container(
+                      margin: EdgeInsets.fromLTRB(50, 0, 50, 0),
+                      alignment: Alignment.center,
+                      child: FloatingActionButton(
+                        mini: true,
+                        tooltip: 'Previous',
+                        backgroundColor: Colors.cyanAccent,
+                        child: Icon(
+                          Icons.arrow_forward,
+                          color: Colors.black,
+                        ),
+                        onPressed: () {
+                          onTapAudio('button');
+                          _controller.nextPage();
+                        },
+                      ),
                     ),
-                    onPressed: () {
-                      onTapAudio('button');
-                      _controller.nextPage();
-                    },
-                  ),
+                  ],
                 ),
-              ],
+              )
+            ],
+          ),
+
+          Align(
+            alignment: Alignment.topRight,
+            child: Container(
+              width: 30,
+              height: 30,
+              margin: EdgeInsets.all(12),
+              child: FloatingActionButton(
+                mini: true,
+                tooltip: 'Previous',
+                backgroundColor: Colors.orange,
+                child: Icon(
+                  Icons.close,
+                  color: Colors.white,
+                ),
+                onPressed: () {
+                  onTapAudio('button');
+                  Navigator.pop(context);
+                },
+              ),
             ),
-          )
+          ),
         ],
       ),
     );

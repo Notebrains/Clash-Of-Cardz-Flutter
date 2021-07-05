@@ -22,8 +22,8 @@ Function(bool isTimeEnded) onTimeEnd,
         Padding(
           padding: const EdgeInsets.only(left: 0.0, top: 0),
           child: TweenAnimationBuilder<Duration>(
-              duration: Duration(minutes: 33),
-              tween: Tween(begin: Duration(minutes: 33), end: Duration.zero),
+              duration: Duration(minutes: 3),
+              tween: Tween(begin: Duration(minutes: 3), end: Duration.zero),
               onEnd: () {
                 onTimeEnd(true);
                 },
@@ -161,28 +161,7 @@ Function(bool isTimeEnded) onTimeEnd,
   );
 }
 
-BuildContext showTimesUpIncludeDialog(BuildContext context) {
-  BuildContext dialogContext;
-  showDialog(
-    context: context,
-    barrierDismissible: true,
-    useSafeArea: true,
-    builder: (BuildContext context) {
-      dialogContext = context;
-      return Dialog(
-        backgroundColor: Colors.transparent,
-        child: FadeInUp(
-          child: Center(
-            child: Lottie.asset('assets/animations/lottiefiles/times-up.json', height: 290, width: 290, repeat: false, animate: true),
-          ),
-          preferences: AnimationPreferences(duration: const Duration(milliseconds: 800), autoPlay: AnimationPlayStates.Forward),
-        ),
-      );
-    },
-  );
 
-  return dialogContext;
-}
 
 
 BuildContext showWinLossIncludeDialog(BuildContext context, bool isWon, String lottieFileName, String message,

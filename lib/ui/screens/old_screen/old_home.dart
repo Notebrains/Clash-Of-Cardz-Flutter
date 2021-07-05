@@ -15,14 +15,14 @@ import 'package:clash_of_cardz_flutter/ui/screens/game_rules.dart';
 import 'package:clash_of_cardz_flutter/ui/screens/old_screen/old_leaderboard.dart';
 import 'package:clash_of_cardz_flutter/ui/screens/login.dart';
 import 'package:clash_of_cardz_flutter/ui/screens/profile.dart';
-import 'package:clash_of_cardz_flutter/ui/screens/old_screen/setting.dart';
-import 'package:clash_of_cardz_flutter/ui/screens/old_screen/statistics.dart';
+import 'package:clash_of_cardz_flutter/ui/screens/setting.dart';
+import 'package:clash_of_cardz_flutter/ui/screens/statistics.dart';
 import 'package:clash_of_cardz_flutter/ui/widgets/custom/carousel_auto_slider.dart';
 import 'package:clash_of_cardz_flutter/ui/widgets/include_screens/include_home_screen.dart';
 import 'package:clash_of_cardz_flutter/ui/widgets/libraries/giffy_dialog/giffy_dialog.dart';
 import 'package:clash_of_cardz_flutter/ui/widgets/views/view_widgets.dart';
 
-import 'games.dart';
+import '../games.dart';
 import '../game_option.dart';
 
 class OldHomeScreen extends StatefulWidget {
@@ -100,7 +100,7 @@ class _MyHomePageState extends State<OldHomeScreen> {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (BuildContext context) => OldSetting(isMusicOn, isNotifiOn, isSfxOn, widget.memberId))),
+                                            builder: (BuildContext context) => Setting(isMusicOn, isNotifiOn, isSfxOn, widget.memberId))),
                                   });
                             },
                           ),

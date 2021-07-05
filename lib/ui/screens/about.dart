@@ -16,7 +16,6 @@ class AboutScreen extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     apiBloc.fetchCmsRes(xApiKey, 'about-us');
-
     return Scaffold(
       backgroundColor: Color(0xFF364B5A),
       body: StreamBuilder(

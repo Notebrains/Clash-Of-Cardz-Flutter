@@ -9,37 +9,33 @@ import 'package:clash_of_cardz_flutter/ui/widgets/libraries/animated_text_kit/an
 class GameOption extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      builder: (context, child) {
-      return MediaQuery(
-        child: WillPopScope(
-          onWillPop: () async => false,
-          child: Scaffold(
-            resizeToAvoidBottomInset: false,
-            backgroundColor: Color(0xFF364B5A),
-            body: Stack(
-              children: [
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        backgroundColor: Color(0xFF364B5A),
+        body: Stack(
+          children: [
 
-                PlayerInfoBackBtn(pageTitle: '',),
+            PlayerInfoBackBtn(pageTitle: '',),
 
-                Container(
-                  margin: EdgeInsets.only(top:  SizeConfig.widthMultiplier * 10),
-                  alignment: Alignment.center,
-                  child: Shimmer.fromColors(
-                    baseColor: Colors.blue[100].withOpacity(0.1),
-                    highlightColor: Colors.white.withOpacity(0.13),
-                    child: Text(
-                      'CLASH OF CARDZ',
-                      style: TextStyle( fontSize: SizeConfig.widthMultiplier * 14, fontFamily: 'Rapier', fontWeight: FontWeight.normal),
-                    ),
-                  ),
+            Container(
+              margin: EdgeInsets.only(top:  SizeConfig.widthMultiplier * 10),
+              alignment: Alignment.center,
+              child: Shimmer.fromColors(
+                baseColor: Colors.blue[100].withOpacity(0.1),
+                highlightColor: Colors.white.withOpacity(0.13),
+                child: Text(
+                  'CLASH OF CARDZ',
+                  style: TextStyle( fontSize: SizeConfig.widthMultiplier * 14, fontFamily: 'Rapier', fontWeight: FontWeight.normal),
                 ),
+              ),
+            ),
 
 
-                IncludeGameOption(),
+            IncludeGameOption(),
 
-                /*Container(
+            /*Container(
                   margin: EdgeInsets.fromLTRB(0, 0, 16, 16),
                   child: Align(
                     alignment: AlignmentDirectional.bottomEnd,
@@ -58,13 +54,9 @@ class GameOption extends StatelessWidget {
                     ),
                   ),
                 ),*/
-              ],
-            ),
-          ),
+          ],
         ),
-        data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
-      );
-    },
+      ),
     );
   }
 }

@@ -1,16 +1,17 @@
-//import 'package:audioplayers/audio_cache.dart';
-//import 'package:audioplayers/audioplayers.dart';
+
+
+import 'package:gapless_audio_loop/gapless_audio_loop.dart';
 
 class Globals {
-/*  static AudioPlayer audioPlayerInstance;
+  static GaplessAudioLoop audioPlayerInstance;
 
-  static AudioPlayer getAudioPlayerInstance() {
+  static GaplessAudioLoop getAudioPlayerInstance() {
     //print('isMusicOn : $isAudioOn');
     return audioPlayerInstance;
   }
 
-  static setAudioPlayerInstance(AudioPlayer instance) {
+  static setAudioPlayerInstance(GaplessAudioLoop instance) {
     audioPlayerInstance = instance;
     getAudioPlayerInstance(); // this can be replaced with any static method
-  }*/
+  }
 }

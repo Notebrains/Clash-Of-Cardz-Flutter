@@ -21,7 +21,7 @@ class IcSgv extends StatelessWidget {
           ic,
           width: 25,
           height: 25,
-          color: Colors.white.withOpacity(0.5),
+          color: Colors.white.withOpacity(0.7),
         ),
         onPressed: onClick,
       ),

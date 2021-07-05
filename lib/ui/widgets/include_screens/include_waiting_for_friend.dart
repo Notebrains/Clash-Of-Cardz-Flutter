@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:ui';
 import 'package:clash_of_cardz_flutter/bloc/api_bloc.dart';
 import 'package:clash_of_cardz_flutter/model/responses/send_notification_to_friend_res_model.dart';
-import 'package:clash_of_cardz_flutter/ui/screens/home.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,7 +11,7 @@ import 'package:clash_of_cardz_flutter/helper/exten_fun/base_application_fun.dar
 import 'package:clash_of_cardz_flutter/helper/shared_preference_data.dart';
 import 'package:clash_of_cardz_flutter/model/arguments/firebase_player_details_model.dart';
 import 'package:clash_of_cardz_flutter/ui/screens/pvp.dart';
-import 'package:clash_of_cardz_flutter/ui/screens/old_screen/old_home.dart';
+import 'package:clash_of_cardz_flutter/ui/screens/home.dart';
 import 'dart:io' show Platform;
 
 import 'package:clash_of_cardz_flutter/ui/widgets/libraries/flutter_toast.dart';
@@ -193,7 +192,7 @@ class IncludeWaitingForFriendState extends State<IncludeWaitingForFriend> with S
                                   child: Text(
                                     'Waiting for your friend to accept the request',
                                     style: TextStyle(
-                                        color: Colors.white, fontSize: 24, fontFamily: 'neuropol_x_rg', fontWeight: FontWeight.bold),
+                                        color: Colors.white, fontSize: 24, fontFamily: 'montserrat', fontWeight: FontWeight.bold),
                                   ),
                                 ),
                               ),

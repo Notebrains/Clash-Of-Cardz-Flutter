@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:clash_of_cardz_flutter/ui/widgets/custom/txt_inside_doted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 import 'package:lottie/lottie.dart';
@@ -21,11 +22,11 @@ Widget buildPlayerOneCard(
     bool isPlayerTurn,
     String whoIsPlaying,
     int indexOfCardDeckSelectForComputer,
-    { Function(int p1SelectedIndexOfAttributeList, bool isWon, int winPoint, bool isFlipped) onClickActionOnP1AutoPlayCard}) {
+    { Function(int p1SelectedIndexOfAttributeList, String isWon, int winPoint, bool isFlipped) onClickActionOnP1AutoPlayCard}) {
   GlobalKey<FlipCardState> cardKeyOfPlayerOne = GlobalKey<FlipCardState>();
   List<List<Attribute>> cardsAttributeListP1 = [];
   List<List<Attribute>> cardsAttributeListOfP2 = [];
-  bool isPlayer1Won = false;
+  String isPlayer1Won = 'false';
   int p1SelectedAttributeValue = 0;
   int p2SelectedAttributeValue = 0;
   int winPoint = 0;
@@ -51,7 +52,7 @@ Widget buildPlayerOneCard(
     key: cardKeyOfPlayerOne,
     onFlipDone: (status) {
       if (whoIsPlaying == 'player') {
-        onClickActionOnP1AutoPlayCard(0, false, 0, true);
+        onClickActionOnP1AutoPlayCard(0, 'false', 0, true);
       } if (isPlayerTurn && whoIsPlaying == 'computer') {
         p1SelectedAttributeValue = double.parse(cardsAttributeListP1[indexOfCardDeck][indexOfCardDeckSelectForComputer].value).toInt();
         p2SelectedAttributeValue = double.parse(cardsAttributeListOfP2[indexOfCardDeck][indexOfCardDeckSelectForComputer].value).toInt();
@@ -61,10 +62,25 @@ Widget buildPlayerOneCard(
 
         if (p1CardStatsTitle == p2CardStatsTitle) {
           if(cardsAttributeListP1[indexOfCardDeck][indexOfCardDeckSelectForComputer].winBasis == 'Highest Value'){
-            p1SelectedAttributeValue > p2SelectedAttributeValue? isPlayer1Won = true:isPlayer1Won = false;
+            if (p1SelectedAttributeValue > p2SelectedAttributeValue) {
+              isPlayer1Won = 'true';
+            } else if (p1SelectedAttributeValue < p2SelectedAttributeValue) {
+              isPlayer1Won = 'false';
+            } else if (p1SelectedAttributeValue == p2SelectedAttributeValue) {
+              isPlayer1Won = 'draw';
+              winPoint = 0;
+            }
 
           } else if (cardsAttributeListP1[indexOfCardDeck][indexOfCardDeckSelectForComputer].winBasis == 'Lowest Value'){
-            p1SelectedAttributeValue < p2SelectedAttributeValue ? isPlayer1Won = true:isPlayer1Won = false;
+            p1SelectedAttributeValue < p2SelectedAttributeValue ? isPlayer1Won = 'true':isPlayer1Won = 'false';
+
+            if (p1SelectedAttributeValue < p2SelectedAttributeValue) {
+              isPlayer1Won = 'true';
+            } else if (p1SelectedAttributeValue > p2SelectedAttributeValue) {
+              isPlayer1Won = 'false';
+            }  else if (p1SelectedAttributeValue == p2SelectedAttributeValue) {
+              isPlayer1Won = 'draw';
+            }
           }
 
           Future.delayed(Duration(milliseconds: 1200),(){
@@ -101,33 +117,8 @@ Widget buildPlayerOneCard(
               ),
               //child: Image.asset('assets/images/bg_card_back.png', fit: BoxFit.fill),
             ),
-            Center(
-              child: FDottedLine(
-                color: Colors.white,
-                strokeWidth: 2.0,
-                dottedLength: 8.0,
-                space: 3.0,
-                corner: FDottedLineCorner.all(6.0),
 
-                child: Container(
-                  width: 140,
-                  height: 100,
-                  alignment: Alignment.center,
-                  child: HeartBeat(
-                    child: Text(
-                      whoIsPlaying == 'player' ? Constants.p1CardText1 : Constants.p1CardText4,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w200,
-                        color: Colors.white,
-                        fontSize: 12,
-                      ),
-                    ),
-                    preferences: AnimationPreferences(duration: const Duration(milliseconds: 2500), autoPlay: AnimationPlayStates.Loop),
-                  ),
-                ),
-              ),
-            ),
+            TxtInsideDottedLine(text: whoIsPlaying == 'player' ? Constants.p1CardText1 : Constants.p1CardText4, width: 140, height: 100,),
           ],
         ),
         onTap: () {
@@ -288,7 +279,7 @@ Widget buildPlayerOneCard(
                                 p2SelectedAttributeValue = 0;
                                 winPoint = 0;
 
-                                onClickActionOnP1AutoPlayCard(index, false, 0, false);
+                                onClickActionOnP1AutoPlayCard(index, 'false', 0, false);
                               }
                             },
                           ),
@@ -361,13 +352,13 @@ Widget buildPlayerTwoCard(
     int indexOfCardDeckSelectForComputer,
     bool isFlipped,
     bool isP1SelectedStats,{
-      Function(bool isWon, int winPoint) onClickActionOnP2AutoPlayCard,
+      Function(String isWon, int winPoint) onClickActionOnP2AutoPlayCard,
     }) {
 
   GlobalKey<FlipCardState> cardKeyOfPlayerTwo = GlobalKey<FlipCardState>();
   List<List<Attribute>> cardsAttributeListOfP2 = [];
   List<List<Attribute>> cardsAttributeListP1 = [];
-  bool isPlayer1Won = false;
+  String isPlayer1Won = 'false';
   int p1SelectedAttributeValue = 0;
   int p2SelectedAttributeValue = 0;
   int winPoint = 0;
@@ -413,19 +404,25 @@ Widget buildPlayerTwoCard(
       if (p1CardStatsTitle == p2CardStatsTitle) {
         if(cardsAttributeListP1[indexOfCardDeck][p1SelectedIndexOfAttributeList].winBasis == 'Highest Value'){
           if(p1SelectedAttributeValue > p2SelectedAttributeValue){
-            isPlayer1Won = true;
+            isPlayer1Won = 'true';
             winPoint = int.parse(cardsAttributeListP1[indexOfCardDeck][p1SelectedIndexOfAttributeList].winPoints);
+          } else if(p1SelectedAttributeValue == p2SelectedAttributeValue){
+            isPlayer1Won = 'draw';
+            winPoint = 0;
           } else {
-            isPlayer1Won = false;
+            isPlayer1Won = 'false';
             winPoint = int.parse(cardsAttributeListOfP2[indexOfCardDeck][p1SelectedIndexOfAttributeList].winPoints);
           }
 
         } else if (cardsAttributeListP1[indexOfCardDeck][p1SelectedIndexOfAttributeList].winBasis == 'Lowest Value'){
           if(p1SelectedAttributeValue < p2SelectedAttributeValue){
-            isPlayer1Won = true;
+            isPlayer1Won = 'true';
             winPoint = int.parse(cardsAttributeListP1[indexOfCardDeck][p1SelectedIndexOfAttributeList].winPoints);
-          } else {
-            isPlayer1Won = false;
+          } else if(p1SelectedAttributeValue == p2SelectedAttributeValue){
+            isPlayer1Won = 'draw';
+            winPoint = 0;
+          }  else {
+            isPlayer1Won = 'false';
             winPoint = int.parse(cardsAttributeListOfP2[indexOfCardDeck][p1SelectedIndexOfAttributeList].winPoints);
           }
         }
@@ -485,7 +482,7 @@ Widget buildPlayerTwoCard(
           ),
         ],
       ),
-      child: !isFlipped?buildDottedTextViewOfComputerCard(context):
+      child: !isFlipped? buildDottedTextViewOfComputerCard(context):
       FadeIn(
         child:Stack(
           children: [
@@ -777,36 +774,11 @@ Widget buildDottedTextViewOfComputerCard(BuildContext context){
         //child: Image.asset('assets/images/bg_card_back.png', fit: BoxFit.fill),
       ),
 
+
+
       Align(
         alignment: Alignment.center,
-        child: Center(
-          child: FDottedLine(
-            color: Colors.white,
-            strokeWidth: 2.0,
-            dottedLength: 8.0,
-            space: 3.0,
-            corner: FDottedLineCorner.all(6.0),
-
-            /// add widget
-            child: Container(
-              width: 140,
-              height: 80,
-              alignment: Alignment.center,
-              child: HeartBeat(
-                child: Text(
-                  'COMPUTER CARD',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontWeight: FontWeight.w200,
-                    color: Colors.white,
-                    fontSize: 13,
-                  ),
-                ),
-                preferences: AnimationPreferences(duration: const Duration(milliseconds: 2500), autoPlay: AnimationPlayStates.Loop),
-              ),
-            ),
-          ),
-        ),
+        child: TxtInsideDottedLine(text: 'COMPUTER CARD', width: 140, height: 80,),
       ),
     ],
   );

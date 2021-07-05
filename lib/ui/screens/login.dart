@@ -18,6 +18,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_animator/flutter_animator.dart';
+import 'dart:convert';
 import 'dart:async';
 import 'package:lottie/lottie.dart';
 import 'home.dart';
@@ -66,15 +67,54 @@ class _LogInState extends State<LogIn> {
     flutterLocalNotificationsPlugin.initialize(initSettings, onSelectNotification: onSelectNotification);
   }
 
-  void getMessage() {
-    _firebaseMessaging.configure(onMessage: (Map<String, dynamic> message) async {
-      print('firebase noti: on message $message');
-      //setState(() => _message = message["notification"]["title"]);
 
-      showBigPictureNotification();
+  void getMessage() {
+    /*
+    {notification: {title: testing, body: push}, data: {click_action: FLUTTER_NOTIFICATION_CLICK,
+    game_data: {"gameType":"vs friends","friendName":"Rex","gameCat4":"2008-2021","friendId":"MEM00001","playerType":"Bowler",
+    "friendImage":"https:\/\/predictfox.com\/trumpcard\/assets\/uploads\/carddetails\/16086354135.png","gameCat1":"Sports","gameCat2":"Cricket",
+    "gameCat3":"Ipl","cardsToPlay":"14"}}}
+    */
+
+
+    _firebaseMessaging.configure(onMessage: (Map<String, dynamic> message) async {
+      print('firebase noti: on message: $message');
+      var gameNotiData = json.decode(message['data']['game_data']);
+      print('---- ${gameNotiData['friendName']}');
+
+      String jsonDataStr = message['data']['game_data'];
+
+      showBigPictureNotification(jsonDataStr);
+
     }, onResume: (Map<String, dynamic> message) async {
       print('firebase noti: on resume $message');
       //setState(() => _message = message["notification"]["title"]);
+      // (App in background)
+      // From Notification bar when user click notification we get this event.
+      // on this event navigate to a particular page.
+
+      var gameNotiData = json.decode(message['data']['game_data']);
+
+      // Assuming you will create classes to handle JSON data. :)
+      showDialog(
+          context: context,
+          builder: (_) => IncludeWaitingForFriend(
+            gameCat1: gameNotiData['gameCat1'],
+            // change here
+            gameCat2: gameNotiData['gameCat2'],
+            gameCat3: gameNotiData['gameCat3'],
+            gameCat4: gameNotiData['gameCat4'],
+            gameType:  gameNotiData['gameType'],
+            playerType: gameNotiData['playerType'],
+            cardsToPlay: gameNotiData[''],
+            friendId: gameNotiData['friendId'],
+            friendName: gameNotiData['friendName'],
+            friendImage: gameNotiData['friendImage'],
+            joinedPlayerType: 'joinedAsFriend',
+          )
+      );
+
+
     }, onLaunch: (Map<String, dynamic> message) async {
       print('firebase noti: on launch $message');
       //setState(() => _message = message["notification"]["title"]);
@@ -95,7 +135,7 @@ class _LogInState extends State<LogIn> {
   }
 
   //change here
-  Future<void> showBigPictureNotification() async {
+  Future<void> showBigPictureNotification(String jsonDataStr) async {
     var bigPictureStyleInformation = BigPictureStyleInformation(DrawableResourceAndroidBitmap("ic_notification"),
         largeIcon: DrawableResourceAndroidBitmap("ic_notification"),
         contentTitle: 'Clash Of Cardz',
@@ -107,47 +147,28 @@ class _LogInState extends State<LogIn> {
         styleInformation: bigPictureStyleInformation);
     var iOSPlatformChannelSpecifics = new IOSNotificationDetails();
     var platformChannelSpecifics = NotificationDetails(androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
-    await flutterLocalNotificationsPlugin.show(0, 'big text title', 'silent body', platformChannelSpecifics, payload: 'Default_Sound');
+    await flutterLocalNotificationsPlugin.show(0, 'big text title', 'silent body', platformChannelSpecifics, payload: jsonDataStr);
   }
 
   ///////local notification
-  Future onSelectNotification(String payload) async {
+  Future onSelectNotification(String jsonDataStr) async {
+    var gameNotiData = json.decode(jsonDataStr);
+    print('----- $gameNotiData');
+    print('----- ${ gameNotiData['gameCat1']}');
     showDialog(
       context: context,
       builder: (_) => IncludeWaitingForFriend(
-        gameCat1: 'Sports',
+        gameCat1: gameNotiData['gameCat1'],
         // change here
-        gameCat2: 'Cricket',
-        gameCat3: 'Ipl',
-        gameCat4: '2008-2021',
-        gameType: 'vs friends',
-        playerType: 'Bowler',
-        cardsToPlay: '14',
-        friendId: 'MEM00001',
-        friendName: 'Rex',
-        friendImage: 'https://predictfox.com/trumpcard/assets/uploads/carddetails/16086354135.png',
-        joinedPlayerType: 'joinedAsFriend',
-      ),
-    );
-  }
-
-  //perform action on notification click
-  //change here
-  _performActionOnNotification(Map<String, dynamic> message) async {
-    showDialog(
-      context: context,
-      builder: (_) => IncludeWaitingForFriend(
-        gameCat1: 'Sports',
-        // change here
-        gameCat2: 'Cricket',
-        gameCat3: 'IPL',
-        gameCat4: '1990-2000',
-        gameType: 'play with friends',
-        playerType: 'Batsman',
-        cardsToPlay: '14',
-        friendId: 'MEM00001',
-        friendName: 'Rex',
-        friendImage: 'https://predictfox.com/trumpcard/assets/uploads/carddetails/16086354135.png',
+        gameCat2: gameNotiData['gameCat2'],
+        gameCat3: gameNotiData['gameCat3'],
+        gameCat4: gameNotiData['gameCat4'],
+        gameType:  gameNotiData['gameType'],
+        playerType: gameNotiData['playerType'],
+        cardsToPlay: gameNotiData[''],
+        friendId: gameNotiData['friendId'],
+        friendName: gameNotiData['friendName'],
+        friendImage: gameNotiData['friendImage'],
         joinedPlayerType: 'joinedAsFriend',
       ),
     );
@@ -182,7 +203,8 @@ class _LogInState extends State<LogIn> {
                   highlightColor: Colors.lightBlueAccent,
                   child: Text('CLASH OF CARDZ',
                       textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 40, fontFamily: 'Rapier', color: Colors.white, fontWeight: FontWeight.normal)),
+                      style: TextStyle(fontSize: 40, fontFamily: 'Rapier', color: Colors.white, fontWeight: FontWeight.normal),
+                  ),
                 ),
               ),
           ),

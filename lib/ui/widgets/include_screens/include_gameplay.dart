@@ -1,4 +1,4 @@
-import 'package:clash_of_cardz_flutter/ui/screens/old_screen/setting.dart';
+import 'package:clash_of_cardz_flutter/ui/screens/setting.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -479,7 +479,7 @@ class BuildPlayerTwoScreen extends StatelessWidget {
                             });
 
                             SharedPreferenceHelper().getMusicOnOffState().then((isMusicOn) => {
-                              Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => OldSetting(isMusicOn, isNotifiOn, isSfxOn, memberId))),
+                              Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Setting(isMusicOn, isNotifiOn, isSfxOn, memberId))),
                             });
                           },
                         ),

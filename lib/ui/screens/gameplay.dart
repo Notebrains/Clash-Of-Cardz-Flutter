@@ -25,7 +25,7 @@ import 'game_result.dart';
 
 class Gameplay extends StatelessWidget {
   final String xApiKey;
-  bool isPlayAsP1 = false;
+  bool isPlayAsP1;
   final String p1FullName;
   final String p1MemberId;
   final String p1Photo;
@@ -142,9 +142,9 @@ class Gameplay extends StatelessWidget {
                             //width: getScreenWidth(context) - 400,
                             child: Column(
                               children: [
-                                gamePlayTimerUi(_scaffoldKey.currentContext, onTimeEnd: (bool isTimeEnded) => {
+                                gamePlayTimerUi(context, onTimeEnd: (bool isTimeEnded) => {
                                   //print('Timer Ended');
-                                  showTimesUpDialog(_scaffoldKey.currentContext, statesModel)
+                                  showTimesUpDialog(context, statesModel)
                                 },),
 
                                 Container(
@@ -172,7 +172,7 @@ class Gameplay extends StatelessWidget {
                                                 onClickActionOnP1GameplayCard: (int indexOfP1Card, String attributeTitle,
                                                     String attributeValue, String winBasis, String winPoints, bool isFlipped) =>
                                                 {
-                                                  print('----p1c clicked'),
+                                                  //print('----p1c clicked'),
                                                   if (isFlipped && whoIsPlaying == 'p1')
                                                     {
                                                       isP1CardFlipped = isFlipped,
@@ -241,7 +241,8 @@ class Gameplay extends StatelessWidget {
                                                   cards,
                                                   isP1CardFlipped,
                                                   p1TurnStatus,
-                                                  p2TurnStatus
+                                                  p2TurnStatus,
+                                                  isPlayAsP1,
                                               ),
                                               preferences: AnimationPreferences(
                                                   duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
@@ -296,6 +297,7 @@ class Gameplay extends StatelessWidget {
                           ),
                         ),
                       ),
+
                       Expanded(
                         flex: 3,
                         child: BuildPlayerTwoScreen(listLength: (cards.length/2).round(),
@@ -460,32 +462,59 @@ class Gameplay extends StatelessWidget {
               isYourNextTurn = true;
               card1ValueNotify.value +=1;
             }
-            card2ValueNotify.value +=1;
+            //card2ValueNotify.value +=1;
 
           } else if (p1TurnStatus == 'no' && p2TurnStatus == 'yes') {
             indexSelectedByP2 = changeMapData['selectedArrayPos'];
             isYourNextTurn = true;
             whoIsPlaying = 'p2';
-            card2ValueNotify.value +=1;
+            //card2ValueNotify.value +=1;
             card1ValueNotify.value +=1;
 
           } else if (p1TurnStatus == 'yes' && p2TurnStatus == 'yes') {
-            //winBasis and winPints will be same for both player. So I am getting those value when p1 selected first value
-            bool areYouWon = false;
+            // winBasis and winPints will be same for both player. So I am getting those value when p1 selected first value
+            String areYouWon = 'false';
             if (winBasis == 'Highest Value') {
               if(isPlayAsP1){
-                int.parse(p1SelectedAttrValue) > int.parse(p2SelectedAttrValue) ? areYouWon = true : areYouWon = false;
+                if (int.parse(p1SelectedAttrValue) > int.parse(p2SelectedAttrValue)) {
+                  areYouWon = 'true';
+                } else if (int.parse(p1SelectedAttrValue) < int.parse(p2SelectedAttrValue)) {
+                  areYouWon = 'false';
+                } else if (int.parse(p1SelectedAttrValue) == int.parse(p2SelectedAttrValue)) {
+                  areYouWon = 'draw';
+                }
+
                 showWinOrLossDialog(areYouWon);
-              }else {
-                int.parse(p1SelectedAttrValue) > int.parse(p2SelectedAttrValue) ? areYouWon = false : areYouWon = true;
-                showWinOrLossDialog(areYouWon);
+              } else {
+                  if (int.parse(p1SelectedAttrValue) > int.parse(p2SelectedAttrValue)) {
+                    areYouWon = 'false';
+                  } else if (int.parse(p1SelectedAttrValue) < int.parse(p2SelectedAttrValue)) {
+                    areYouWon = 'true';
+                  } else if (int.parse(p1SelectedAttrValue) == int.parse(p2SelectedAttrValue)) {
+                    areYouWon = 'draw';
+                  }
+
+                  showWinOrLossDialog(areYouWon);
               }
             } else if (winBasis == 'Lowest Value') {
               if(isPlayAsP1){
-                int.parse(p1SelectedAttrValue) < int.parse(p2SelectedAttrValue) ? areYouWon = true : areYouWon = false;
+                if (int.parse(p1SelectedAttrValue) > int.parse(p2SelectedAttrValue)) {
+                  areYouWon = 'true';
+                } else if (int.parse(p1SelectedAttrValue) < int.parse(p2SelectedAttrValue)) {
+                  areYouWon = 'false';
+                } else if (int.parse(p1SelectedAttrValue) == int.parse(p2SelectedAttrValue)) {
+                  areYouWon = 'draw';
+                }
                 showWinOrLossDialog(areYouWon);
               }else {
-                int.parse(p1SelectedAttrValue) < int.parse(p2SelectedAttrValue) ? areYouWon = false : areYouWon = true;
+                if (int.parse(p1SelectedAttrValue) > int.parse(p2SelectedAttrValue)) {
+                  areYouWon = 'false';
+                } else if (int.parse(p1SelectedAttrValue) < int.parse(p2SelectedAttrValue)) {
+                  areYouWon = 'true';
+                } else if (int.parse(p1SelectedAttrValue) == int.parse(p2SelectedAttrValue)) {
+                  areYouWon = 'draw';
+                }
+
                 showWinOrLossDialog(areYouWon);
               }
             }
@@ -497,11 +526,13 @@ class Gameplay extends StatelessWidget {
     });
   }
 
-  void showWinOrLossDialog(bool areYouWon) async{
-    if (areYouWon) {
+  void showWinOrLossDialog(String areYouWon) async{
+    if (areYouWon == 'true') {
       showWinDialog(_scaffoldKey.currentContext, areYouWon, 'win-result.json', 'You Won', p1Photo, 4000);
-    } else {
+    } else if(areYouWon == 'false'){
       showWinDialog(_scaffoldKey.currentContext, areYouWon, 'sad-star.json', '\n\n\n\nYou Loose', '', 3500);
+    }  else if(areYouWon == 'draw'){
+      showWinDialog(_scaffoldKey.currentContext, areYouWon, 'sad-star.json', '\n\n\n\nDraw Match', '', 3500);
     }
   }
 
@@ -511,7 +542,7 @@ class Gameplay extends StatelessWidget {
         : SvgPicture.asset('assets/icons/svg/${playerResultStatusList[index]}.svg', height: 25, width: 25);
   }
 
-  void showWinDialog(BuildContext context, bool isWon, String lottieFileName, String message,
+  void showWinDialog(BuildContext context, String isWon, String lottieFileName, String message,
       String photoUrl, int animHideTime) async {
 
     BuildContext dialogContext;
@@ -537,7 +568,7 @@ class Gameplay extends StatelessWidget {
                     children: [
                       ClipOval(
                         child: FadeInImage.assetNetwork(
-                          placeholder: isWon ? 'assets/icons/png/circle-avator-default-img.png' : '',
+                          placeholder: isWon == 'true' ? 'assets/icons/png/circle-avator-default-img.png' : '',
                           image: photoUrl ?? '',
                           fit: BoxFit.fill,
                           width: 65,
@@ -594,23 +625,34 @@ class Gameplay extends StatelessWidget {
 
               print('-----statesModel.cardCountOnDeck: ${statesModelGlobal.cardCountOnDeck}');
 
-              if (isWon) {
+              if (isWon == 'true') {
                 statesModelGlobal.playerOneTrump = statesModelGlobal.playerOneTrump + 1;
                 statesModelGlobal.player1TotalPoints = statesModelGlobal.player1TotalPoints + int.parse(winPoints);
-              } else {
+              } else if (isWon == 'false'){
                 statesModelGlobal.playerTwoTrump = statesModelGlobal.playerOneTrump + 1;
                 statesModelGlobal.player2TotalPoints = statesModelGlobal.player2TotalPoints + int.parse(winPoints);
               }
 
-              showToast(context, isWon ? "Your Turn To Play" : '$p2Name Turn To Play');
-
-              if (isWon) {
+              if (isWon =='true') {
                 isYourNextTurn = true;
                 whoIsPlaying = 'p1';
-              } else {
+                showToast(context, "Your Turn To Play");
+              } else if(isWon =='false'){
                 isYourNextTurn = false;
                 whoIsPlaying = 'p2';
+                showToast(context, '$p2Name Turn To Play');
+              } else if(isWon =='draw'){
+                if (whoIsPlaying == 'p1') {
+                  isYourNextTurn = true;
+                  whoIsPlaying = 'p1';
+                  showToast(context, "Your Turn To Play");
+                } else {
+                  isYourNextTurn = false;
+                  whoIsPlaying = 'p2';
+                  showToast(context, '$p2Name Turn To Play');
+                }
               }
+
               isP1CardFlipped = false;
               indexSelectedByP2 = 55;
 
@@ -642,11 +684,28 @@ class Gameplay extends StatelessWidget {
   }
 
   void showTimesUpDialog(BuildContext context, GamePlayStatesModel statesModel) {
-    BuildContext dialogContext = showTimesUpIncludeDialog(context);
+    BuildContext dialogContext;
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      useSafeArea: true,
+      builder: (BuildContext context) {
+        dialogContext = context;
+        return Dialog(
+          backgroundColor: Colors.transparent,
+          child: FadeInUp(
+            child: Center(
+              child: Lottie.asset('assets/animations/lottiefiles/times-up.json', height: 290, width: 290, repeat: false, animate: true),
+            ),
+            preferences: AnimationPreferences(duration: const Duration(milliseconds: 800), autoPlay: AnimationPlayStates.Forward),
+          ),
+        );
+      },
+    );
 
     Timer(Duration(milliseconds: 3000), () {
       Navigator.pop(dialogContext);
-      gotoResultScreen(context, statesModel, false);
+      gotoResultScreen(_scaffoldKey.currentContext, statesModel, false);
     });
   }
 
@@ -677,8 +736,8 @@ class Gameplay extends StatelessWidget {
                   playerType,
                   gameType,
                   cardsToPlay,
-                  isSurrender? '0' : statesModel.player1TotalPoints.toString(),
-                  isSurrender? '200': statesModel.player2TotalPoints.toString(),
+                  isSurrender? '0' : statesModel.player1TotalPoints.toString(), // change here
+                  statesModel.player2TotalPoints.toString(),
                   areYouWon,
                   )
             ),

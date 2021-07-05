@@ -45,7 +45,7 @@ class BtnLeftBorderSq extends StatelessWidget {
             padding: const EdgeInsets.all(16.0),
             child: Text(
               text,
-              style: TextStyle(color: Colors.white.withOpacity(0.6), fontFamily: 'montserrat', fontWeight: FontWeight.w700,
+              style: TextStyle(color: Colors.white.withOpacity(0.8), fontFamily: 'montserrat', fontWeight: FontWeight.w700,
                   fontSize: 16),
             ),
           ),

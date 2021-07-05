@@ -95,8 +95,7 @@ class AutoPlay extends StatelessWidget {
                     children: [
                       FadeInImage.assetNetwork(
                         placeholder: 'assets/images/bg_img13.png',
-                        //image: snapshot.data.response.subcategoryBackground ?? '',
-                        image: '',
+                        image: snapshot.data.response.subcategoryBackground ?? '',
                         fit: BoxFit.cover,
                       ),
                       Row(
@@ -143,7 +142,7 @@ class AutoPlay extends StatelessWidget {
                                                       whoIsPlaying,
                                                       indexOfCardDeckSelectForComputer,
                                                       onClickActionOnP1AutoPlayCard:
-                                                          (int indexOfP1Card, bool isWon, int winPoint, bool isFlipped) => {
+                                                          (int indexOfP1Card, String isWon, int winPoint, bool isFlipped) => {
                                                         print('----p1c clicked'),
                                                         if (isFlipped && whoIsPlaying == 'player')
                                                           {
@@ -157,22 +156,28 @@ class AutoPlay extends StatelessWidget {
                                                             this.indexOfP1Card = indexOfP1Card,
                                                             if (whoIsPlaying == 'computer')
                                                               {
-                                                                if (isWon)
+                                                                if (isWon == 'true')
                                                                   {
                                                                     onTapAudio('match_win'),
                                                                     playerResultStatusList.add("won"), // "won" is lottie file name
                                                                     //showing lottie anim depending on win or loose
-                                                                    showWinDialog(context, statesModel, isWon, 'win-result.json', 'You Won',
+                                                                    showWinDialog(context, statesModel, 'true', 'win-result.json', 'You Won',
                                                                         p1Photo, 4000, winPoint),
                                                                   }
-                                                                else
-                                                                  {
+                                                                else if(isWon == 'false') {
                                                                     onTapAudio('match_lost'),
                                                                     playerResultStatusList.add("sad"), // "sad" is lottie file name
                                                                     //showing lottie anim depending on win or loose
-                                                                    showWinDialog(context, statesModel, isWon, 'sad-star.json',
+                                                                    showWinDialog(context, statesModel, 'false', 'sad-star.json',
                                                                         '\n\n\n\nYou Loose', '', 3500, winPoint),
-                                                                  },
+                                                                  } else if(isWon == 'draw'){
+
+                                                                  onTapAudio('match_draw'),
+                                                                  playerResultStatusList.add("sad"), // "sad" is lottie file name
+                                                                  //showing lottie anim depending on win or loose
+                                                                  showWinDialog(context, statesModel, 'draw', 'sad-star.json',
+                                                                      '\n\n\n\nDraw Match', '', 3500, winPoint),
+                                                                },
                                                               }
                                                             else
                                                               {
@@ -189,23 +194,23 @@ class AutoPlay extends StatelessWidget {
                                               valueListenable: p1Card1ValueNotify,
                                             ),
 
-                                            HeartBeat(
-                                              child: AvatarGlow(
-                                                endRadius: 27,
-                                                glowColor: Colors.white,
-                                                child: Container(
-                                                  width: 55,
-                                                  child: Center(
-                                                    child: Image.asset(
-                                                      'assets/icons/png/img_vs.png',
-                                                      color: Colors.blueGrey,
-                                                    ),
+                                          HeartBeat(
+                                            child: AvatarGlow(
+                                              endRadius: 27,
+                                              glowColor: Colors.white,
+                                              child: Container(
+                                                width: 55,
+                                                child: Center(
+                                                  child: Image.asset(
+                                                    'assets/icons/png/img_vs.png',
+                                                    color: Colors.blueGrey,
                                                   ),
                                                 ),
                                               ),
-                                              preferences: AnimationPreferences(
-                                                  duration: const Duration(milliseconds: 2000), autoPlay: AnimationPlayStates.Loop),
                                             ),
+                                            preferences: AnimationPreferences(
+                                                duration: const Duration(milliseconds: 2000), autoPlay: AnimationPlayStates.Loop),
+                                          ),
 
                                             ValueListenableBuilder(
                                               builder: (BuildContext context, int value, Widget child) {
@@ -225,25 +230,31 @@ class AutoPlay extends StatelessWidget {
                                                       indexOfCardDeckSelectForComputer,
                                                       isP1CardFlipped,
                                                       isP1SelectedStats,
-                                                      onClickActionOnP2AutoPlayCard: (bool isWon, int winPoint) => {
+                                                      onClickActionOnP2AutoPlayCard: (String isWon, int winPoint) => {
                                                         print('---- p2c data called ${statesModel.isCardOneTouched}, $isWon, $winPoint'),
                                                         if (whoIsPlaying == 'player')
                                                           {
-                                                            if (isWon)
+                                                            if (isWon == 'true')
                                                               {
                                                                 onTapAudio('match_win'),
                                                                 playerResultStatusList.add("won"), // "won" is lottie file name
                                                                 //showing lottie anim depending on win or loose
-                                                                showWinDialog(context, statesModel, isWon, 'win-result.json', 'You Won',
+                                                                showWinDialog(context, statesModel, 'true', 'win-result.json', 'You Won',
                                                                     p1Photo, 4000, winPoint),
-                                                              }
-                                                            else
+                                                              } else if(isWon == 'false')
                                                               {
                                                                 onTapAudio('match_lost'),
                                                                 playerResultStatusList.add("sad"), // "sad" is lottie file name
                                                                 //showing lottie anim depending on win or loose
-                                                                showWinDialog(context, statesModel, isWon, 'sad-star.json',
+                                                                showWinDialog(context, statesModel, 'false', 'sad-star.json',
                                                                     '\n\n\n\nYou Loose', '', 3500, winPoint),
+                                                              }else if(isWon == 'draw')
+                                                              {
+                                                                onTapAudio('match_draw'),
+                                                                playerResultStatusList.add("sad"), // "sad" is lottie file name
+                                                                //showing lottie anim depending on win or loose
+                                                                showWinDialog(context, statesModel, 'isWon', 'sad-star.json',
+                                                                    '\n\n\n\nDraw Match', '', 3500, winPoint),
                                                               },
                                                           }
                                                         else
@@ -271,7 +282,7 @@ class AutoPlay extends StatelessWidget {
                                       child: Container(
                                         alignment: Alignment.center,
                                         padding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 0.0),
-                                        height: 30,
+                                        height: 50,
                                         child: ListView.builder(
                                           physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
                                           scrollDirection: Axis.horizontal,
@@ -331,7 +342,7 @@ class AutoPlay extends StatelessWidget {
         : SvgPicture.asset('assets/icons/svg/${playerResultStatusList[index]}.svg', height: 25, width: 25);
   }
 
-  void showWinDialog(BuildContext context, AutoPlayStatesModel statesModel, bool isWon, String lottieFileName, String message,
+  void showWinDialog(BuildContext context, AutoPlayStatesModel statesModel, String isWon, String lottieFileName, String message,
       String photoUrl, int animHideTime, int winPoint) async {
     BuildContext dialogContext;
     showDialog(
@@ -359,8 +370,8 @@ class AutoPlay extends StatelessWidget {
                     children: [
                       ClipOval(
                         child: FadeInImage.assetNetwork(
-                          placeholder: isWon ? 'assets/icons/png/circle-avator-default-img.png' : '',
-                          image: photoUrl ?? '',
+                          placeholder: isWon == 'true' ? 'assets/icons/png/circle-avator-default-img.png' : '',
+                          image: photoUrl,
                           fit: BoxFit.fill,
                           width: 65,
                           height: 65,
@@ -413,14 +424,12 @@ class AutoPlay extends StatelessWidget {
             print('-----statesModel.player2TotalPoints: ${statesModel.player2TotalPoints} ');
             */
 
-            if (isWon) {
+            if (isWon == 'true') {
               statesModel.playerOneTrump = statesModel.playerOneTrump + 1;
               statesModel.player1TotalPoints = statesModel.player1TotalPoints + winPoint;
-              //print('-----isWon2: ${statesModel.player1TotalPoints} ');
-            } else {
+            } else if(isWon == 'false'){
               statesModel.playerTwoTrump = statesModel.playerOneTrump + 1;
               statesModel.player2TotalPoints = statesModel.player2TotalPoints + winPoint;
-              //print('-----isWon3: ${statesModel.player2TotalPoints} ');
             }
 
             context.read<AutoPlayStatesModel>().updatePlayerScoreboards(
@@ -444,7 +453,7 @@ class AutoPlay extends StatelessWidget {
           }
         });
 
-        if (isWon) {
+        if (isWon == 'true' || isWon == 'draw') {
           whoIsPlaying = 'player';
           isP1CardFlipped = false;
           isP1SelectedStats = false;

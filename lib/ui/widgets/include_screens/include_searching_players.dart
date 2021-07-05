@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:ui';
-import 'package:clash_of_cardz_flutter/ui/screens/home.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,7 +11,7 @@ import 'package:clash_of_cardz_flutter/helper/exten_fun/common_fun.dart';
 import 'package:clash_of_cardz_flutter/helper/shared_preference_data.dart';
 import 'package:clash_of_cardz_flutter/model/arguments/firebase_player_details_model.dart';
 import 'package:clash_of_cardz_flutter/ui/screens/gameplay.dart';
-import 'package:clash_of_cardz_flutter/ui/screens/old_screen/old_home.dart';
+import 'package:clash_of_cardz_flutter/ui/screens/home.dart';
 import 'package:clash_of_cardz_flutter/ui/screens/pvp.dart';
 import 'package:clash_of_cardz_flutter/ui/widgets/custom/frosted_glass.dart';
 import 'dart:io' show Platform;

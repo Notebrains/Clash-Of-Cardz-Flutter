@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:clash_of_cardz_flutter/helper/shared_preference_data.dart';
+import 'package:clash_of_cardz_flutter/ui/styles/size_config.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/libraries/shimmer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:clash_of_cardz_flutter/helper/constantvalues/constants.dart';
@@ -9,7 +11,6 @@ import 'package:clash_of_cardz_flutter/helper/exten_fun/common_fun.dart';
 import 'package:clash_of_cardz_flutter/ui/screens/autoplay.dart';
 import 'package:clash_of_cardz_flutter/ui/screens/gameplay.dart';
 import 'package:flutter_animator/flutter_animator.dart';
-import 'package:clash_of_cardz_flutter/ui/widgets/libraries/colorize.dart';
 import 'package:shape_of_view/shape_of_view.dart';
 
 class Pvp extends StatefulWidget {
@@ -65,128 +66,100 @@ class _PvpState extends State<Pvp> {
   Widget build(BuildContext context) {
     print(
         '----game cats pvp: ${widget.gameCat1} , ${widget.gameCat2} , ${widget.gameCat3}, ${widget.gameCat4}, ${widget.playerType}, ${widget.cardsToPlay}, ${widget.gameType}');
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        body: Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage("assets/images/bg-vs-4.jpg"),
-              fit: BoxFit.cover,
+    return Scaffold(
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/images/bg-vs-4.jpg"),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Expanded(
+              flex: 1,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  BounceInDown(
+                    child: ShapeOfView(
+                      height: SizeConfig.heightMultiplier * 18,
+                      width: SizeConfig.heightMultiplier * 18,
+                      shape: CircleShape(borderColor: Colors.orangeAccent, borderWidth: 5),
+                      elevation: 16,
+                      child: FadeInImage.assetNetwork(
+                        placeholder: 'assets/icons/png/circle-avator-default-img.png',
+                        image: widget.p1Image,
+                        fit: BoxFit.fill,
+                      ),
+                    ),
+                    preferences:
+                    AnimationPreferences(duration: const Duration(milliseconds: 2100), autoPlay: AnimationPlayStates.Forward),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  BounceInLeft(
+                    child: Shimmer.fromColors(
+                      baseColor: Colors.white,
+                      highlightColor: Colors.orangeAccent,
+                      child: Text(widget.p1Name.toUpperCase(),
+                          textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 25, fontFamily: 'montserrat', color: Colors.white, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    preferences:
+                    AnimationPreferences(duration: const Duration(milliseconds: 2200), autoPlay: AnimationPlayStates.Forward),
+                  ),
+                ],
+              ),
             ),
-          ),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Expanded(
-                flex: 1,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    BounceInDown(
-                      child: ShapeOfView(
-                        height: 160,
-                        width: 160,
-                        shape: CircleShape(borderColor: Colors.orangeAccent, borderWidth: 5),
-                        elevation: 16,
-                        child: CircleAvatar(
-                          radius: 30,
-                          child: FadeInImage.assetNetwork(
-                            placeholder: 'assets/icons/png/circle-avator-default-img.png',
-                            image: widget.p1Image,
-                          ),
-                        ),
+            Expanded(
+              flex: 1,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ZoomInRight(
+                    child: ShapeOfView(
+                      height: SizeConfig.heightMultiplier * 18,
+                      width: SizeConfig.heightMultiplier * 18,
+                      shape: CircleShape(borderColor: Colors.lightBlueAccent, borderWidth: 5),
+                      elevation: 12,
+                      child: FadeInImage.assetNetwork(
+                        placeholder: widget.p2Image != Constants.imgUrlComputer
+                            ? 'assets/icons/png/circle-avator-default-img.png'
+                            : 'assets/icons/png/chatbots-chat-bot-azul.png',
+                        image: widget.p2Image,
+                        fit: BoxFit.contain,
                       ),
-                      preferences:
-                          AnimationPreferences(duration: const Duration(milliseconds: 2100), autoPlay: AnimationPlayStates.Forward),
                     ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    BounceInLeft(
-                      child: ColorizeAnimatedTextKit(
-                        onTap: () {
-                          //print("Tap Event");
-                        },
-                        text: [widget.p1Name],
-                        textStyle: TextStyle(fontSize: 30.0, fontStyle: FontStyle.normal, fontFamily: 'Rapier'),
-                        colors: [
-                          Colors.white,
-                          Colors.yellow,
-                          Colors.white,
-                        ],
-                        textAlign: TextAlign.center,
-                        alignment: AlignmentDirectional.center,
-                        // or Alignment.topLeft
-                        isRepeatingAnimation: true,
-                        repeatForever: true,
-                        speed: Duration(milliseconds: 800),
+                    preferences:
+                    AnimationPreferences(duration: const Duration(milliseconds: 2000), autoPlay: AnimationPlayStates.Forward),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  BounceInRight(
+                    child: Shimmer.fromColors(
+                      baseColor: Colors.white,
+                      highlightColor: Colors.lightBlueAccent,
+                      child: Text(widget.p2Name.toUpperCase(),
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 25, fontFamily: 'montserrat', color: Colors.white, fontWeight: FontWeight.bold),
                       ),
-                      preferences:
-                          AnimationPreferences(duration: const Duration(milliseconds: 2200), autoPlay: AnimationPlayStates.Forward),
                     ),
-                  ],
-                ),
+                    preferences:
+                    AnimationPreferences(duration: const Duration(milliseconds: 1800), autoPlay: AnimationPlayStates.Forward),
+                  ),
+                ],
               ),
-              Expanded(
-                flex: 1,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ZoomInRight(
-                      child: ShapeOfView(
-                        height: 160,
-                        width: 160,
-                        shape: CircleShape(borderColor: Colors.lightBlueAccent, borderWidth: 5),
-                        elevation: 12,
-                        child: CircleAvatar(
-                          radius: 30,
-                          child: FadeInImage.assetNetwork(
-                            placeholder: widget.p2Image != Constants.imgUrlComputer
-                                ? 'assets/icons/png/circle-avator-default-img.png'
-                                : 'assets/icons/png/chatbots-chat-bot-azul.png',
-                            image: widget.p2Image,
-                            fit: BoxFit.contain,
-                          ),
-                        ),
-                      ),
-                      preferences:
-                          AnimationPreferences(duration: const Duration(milliseconds: 2000), autoPlay: AnimationPlayStates.Forward),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    BounceInRight(
-                      child: ColorizeAnimatedTextKit(
-                        onTap: () {
-                          //print("Tap Event");
-                        },
-                        text: [widget.p2Name],
-                        textStyle: TextStyle(fontSize: 30.0, fontStyle: FontStyle.normal, fontFamily: 'Rapier'),
-                        colors: [
-                          Colors.white,
-                          Colors.lightBlueAccent,
-                          Colors.white,
-                        ],
-                        textAlign: TextAlign.center,
-                        alignment: AlignmentDirectional.center,
-                        // or Alignment.topLeft
-                        isRepeatingAnimation: true,
-                        repeatForever: true,
-                        speed: Duration(milliseconds: 800),
-                      ),
-                      preferences:
-                          AnimationPreferences(duration: const Duration(milliseconds: 1800), autoPlay: AnimationPlayStates.Forward),
-                    ),
-                  ],
-                ),
-              ),
-              //openGamePlayPage(),
-            ],
-          ),
+            ),
+            //openGamePlayPage(),
+          ],
         ),
       ),
     );

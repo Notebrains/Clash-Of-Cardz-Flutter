@@ -1,7 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:clash_of_cardz_flutter/ui/screens/old_screen/splash.dart';
+import 'package:clash_of_cardz_flutter/ui/screens/splash.dart';
 
+import 'ui/screens/demo/gapless_loop_audio_example.dart';
 import 'ui/styles/size_config.dart';
 import 'ui/styles/themes.dart';
 
@@ -38,4 +39,3 @@ class MyRootApp extends StatelessWidget {
     );
   }
 }
-
