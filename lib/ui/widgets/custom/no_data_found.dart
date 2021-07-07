@@ -9,12 +9,16 @@ class NoDataFound extends StatelessWidget{
       children: [
         Image.asset('assets/images/bg_img13.png', fit:  BoxFit.cover,),
 
-        Lottie.asset('assets/animations/lottiefiles/no-data-found-sad-face.json'),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Lottie.asset('assets/animations/lottiefiles/no-data-found-sad-face.json'),
+        ),
 
-        Center(
-          child: Text("No data found :( \nPlease try again.",
+        Padding(
+          padding: const EdgeInsets.only(top: 80),
+          child: Text("No data found".toUpperCase(),
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white, fontSize: 26, fontFamily: 'neuropol_x_rg', fontWeight: FontWeight.bold)),
+              style: TextStyle(color: Colors.blueGrey, fontSize: 26, fontFamily: 'montserrat', fontWeight: FontWeight.bold),),
         ),
 
       ],

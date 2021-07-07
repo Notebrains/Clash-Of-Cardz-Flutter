@@ -313,11 +313,11 @@ class AutoPlay extends StatelessWidget {
                               builder: (context, statesModel, child) => BuildPlayerTwoScreen(
                                   listLength: (cards.length / 2).round(),
                                   memberId: p1MemberId,
-                                  onPressed: () {
+                                  onPressed: () async {
                                     showExitDialog(context, onPressed: (){
+                                      Navigator.of(context, rootNavigator: true).pop();
                                       gotoResultScreen(context, statesModel, true);
                                     });
-
                                   }),
                             ),
                           ),
@@ -528,7 +528,8 @@ class AutoPlay extends StatelessWidget {
                 isSurrender? '0' : statesModel.player1TotalPoints.toString(),
                 statesModel.player2TotalPoints.toString(), //change here
                 areYouWon,
-              )),
+              ),
+      ),
     );
   }
 

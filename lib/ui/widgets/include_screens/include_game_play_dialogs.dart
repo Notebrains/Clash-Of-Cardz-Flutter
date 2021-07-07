@@ -22,11 +22,9 @@ Function(bool isTimeEnded) onTimeEnd,
         Padding(
           padding: const EdgeInsets.only(left: 0.0, top: 0),
           child: TweenAnimationBuilder<Duration>(
-              duration: Duration(minutes: 3),
-              tween: Tween(begin: Duration(minutes: 3), end: Duration.zero),
-              onEnd: () {
-                onTimeEnd(true);
-                },
+              duration: Duration(minutes: 5),
+              tween: Tween(begin: Duration(minutes: 5), end: Duration.zero),
+              onEnd: () {onTimeEnd(true);},
               builder: (BuildContext context, Duration value, Widget child) {
                 //adding 0 at first if min or sec show in single digit
                 final minutes = (value.inMinutes).toString().padLeft(2, "0");

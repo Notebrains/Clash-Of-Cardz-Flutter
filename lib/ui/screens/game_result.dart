@@ -315,21 +315,4 @@ class GameResult extends StatelessWidget {
 
     }
   }
-
-  showSnackBar(String message, BuildContext context) {
-    final snackBar = SnackBar(
-      content: Text(message),
-      action: SnackBarAction(
-        label: 'Retry',
-        onPressed: () {
-          onTapAudio('button');
-          //saveGameResultToServer();
-        },
-      ),
-    );
-
-    // Find the Scaffold in the widget tree and use
-    // it to show a SnackBar.
-    Scaffold.of(context).showSnackBar(snackBar);
-  }
 }

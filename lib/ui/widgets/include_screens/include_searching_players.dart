@@ -132,8 +132,8 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForPlayer> wi
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     TweenAnimationBuilder<Duration>(
-                                        duration: Duration(minutes: 2),
-                                        tween: Tween(begin: Duration(minutes: 2), end: Duration.zero),
+                                        duration: Duration(minutes: 5),
+                                        tween: Tween(begin: Duration(minutes: 5), end: Duration.zero),
                                         onEnd: () {
                                           try {
                                             print('-----time ended');
@@ -171,7 +171,7 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForPlayer> wi
                                   child: Text(
                                     'Searching for player',
                                     style: TextStyle(
-                                        color: Colors.white, fontSize: 24, fontFamily: 'neuropol_x_rg', fontWeight: FontWeight.bold),
+                                        color: Colors.white, fontSize: 24, fontFamily: 'montserrat', fontWeight: FontWeight.bold),
                                   ),
                                 ),
                               ),

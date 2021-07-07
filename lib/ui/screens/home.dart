@@ -91,7 +91,7 @@ class _HomeState extends State<Home> {
                                 child: Shimmer.fromColors(
                                   baseColor: Colors.cyanAccent[100],
                                   highlightColor: Colors.lightBlueAccent,
-                                  child: Text(snapshot.data.response[0].coins ?? '0',
+                                  child: Text(snapshot.data.response[0].coins,
                                       style: TextStyle(
                                           fontSize: 20, fontFamily: 'montserrat', color: Colors.white, fontWeight: FontWeight.bold)),
                                 ),
@@ -120,9 +120,10 @@ class _HomeState extends State<Home> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (BuildContext context) => Statistics(
-                                        xApiKey: widget.xApiKey,
-                                        memberId: widget.memberId,
+                                      builder: (BuildContext context) =>
+                                          Profile(
+                                            xApiKey: widget.xApiKey,
+                                            memberId: widget.memberId,
                                       ),
                                     ),
                                   );

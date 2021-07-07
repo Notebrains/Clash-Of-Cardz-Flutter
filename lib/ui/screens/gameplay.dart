@@ -85,6 +85,7 @@ class Gameplay extends StatelessWidget {
   bool isYourNextTurn = false;
   bool isP1CardFlipped = false;
   bool isP1SelectedStats = false;
+  String isSurrender = 'false';
   String whoIsPlaying = 'p1'; //Always p1 plays the first turn
 
   //firebase data init
@@ -303,6 +304,7 @@ class Gameplay extends StatelessWidget {
                         child: BuildPlayerTwoScreen(listLength: (cards.length/2).round(),
                           p2Name: p2Name, memberId: p1MemberId, onPressed: (){
                             showExitDialog(_scaffoldKey.currentContext, onPressed: (){
+
                               gotoResultScreen(context, statesModelGlobal, true);
                             });
                           },),
@@ -427,8 +429,9 @@ class Gameplay extends StatelessWidget {
       'p1SelectedAttrValue': p1SelectedAttrValue,
       'p2SelectedAttr': p2SelectedAttr,
       'p2SelectedAttrValue': p2SelectedAttrValue,
+      'isSurrender': isSurrender,
       'winner': winner,
-    }).then((_) {});
+    });
   }
 
   void listeningToFirebaseDataUpdate(String gameRoomName) async {
@@ -437,14 +440,15 @@ class Gameplay extends StatelessWidget {
       if (event.snapshot.key == gameRoomName) {
         var changeMapData = event.snapshot.value;
 
-    /*  print('Gp on data changed ${event.snapshot.key}');
-        print('Gp isP1TurnComplete: ${changeMapData['isP1TurnComplete']}');
-        print('Gp isP2TurnComplete: ${event.snapshot.value['isP2TurnComplete']}');
-        print('Gp p1SelectedAttr: ${event.snapshot.value['p1SelectedAttr']}');
-        print('Gp p1SelectedAttrValue: ${event.snapshot.value['p1SelectedAttrValue']}');
-        print('Gp p2SelectedAttr: ${event.snapshot.value['p2SelectedAttr']}');
-        print('Gp p2SelectedAttrValue: ${event.snapshot.value['p2SelectedAttrValue']}');
-    */
+        /*  print('Gp on data changed ${event.snapshot.key}');
+            print('Gp isP1TurnComplete: ${changeMapData['isP1TurnComplete']}');
+            print('Gp isP2TurnComplete: ${event.snapshot.value['isP2TurnComplete']}');
+            print('Gp p1SelectedAttr: ${event.snapshot.value['p1SelectedAttr']}');
+            print('Gp p1SelectedAttrValue: ${event.snapshot.value['p1SelectedAttrValue']}');
+            print('Gp p2SelectedAttr: ${event.snapshot.value['p2SelectedAttr']}');
+            print('Gp p2SelectedAttrValue: ${event.snapshot.value['p2SelectedAttrValue']}');
+        */
+
         // event.snapshot.value is return map. Below line getting values from map using keys
         p1TurnStatus = changeMapData['isP1TurnComplete'];
         p2TurnStatus = changeMapData['isP2TurnComplete'];
@@ -452,40 +456,42 @@ class Gameplay extends StatelessWidget {
         p1SelectedAttrValue = changeMapData['p1SelectedAttrValue'];
         p2SelectedAttr = changeMapData['p2SelectedAttr'];
         p2SelectedAttrValue = changeMapData['p2SelectedAttrValue'];
+        isSurrender = changeMapData['isSurrender'];
         winner = changeMapData['winner'];
 
         try {
-          if (p1TurnStatus == 'yes' && p2TurnStatus == 'no') {
-            if (!isPlayAsP1) {
+          if (isSurrender  == 'false') {
+            if (p1TurnStatus == 'yes' && p2TurnStatus == 'no') {
+              if (!isPlayAsP1) {
+                indexSelectedByP2 = changeMapData['selectedArrayPos'];
+                whoIsPlaying = 'p2';
+                isYourNextTurn = true;
+                card1ValueNotify.value +=1;
+              }
+              //card2ValueNotify.value +=1;
+
+            } else if (p1TurnStatus == 'no' && p2TurnStatus == 'yes') {
               indexSelectedByP2 = changeMapData['selectedArrayPos'];
-              whoIsPlaying = 'p2';
               isYourNextTurn = true;
+              whoIsPlaying = 'p2';
+              //card2ValueNotify.value +=1;
               card1ValueNotify.value +=1;
-            }
-            //card2ValueNotify.value +=1;
 
-          } else if (p1TurnStatus == 'no' && p2TurnStatus == 'yes') {
-            indexSelectedByP2 = changeMapData['selectedArrayPos'];
-            isYourNextTurn = true;
-            whoIsPlaying = 'p2';
-            //card2ValueNotify.value +=1;
-            card1ValueNotify.value +=1;
+            } else if (p1TurnStatus == 'yes' && p2TurnStatus == 'yes') {
+              // winBasis and winPints will be same for both player. So I am getting those value when p1 selected first value
+              String areYouWon = 'false';
+              if (winBasis == 'Highest Value') {
+                if(isPlayAsP1){
+                  if (int.parse(p1SelectedAttrValue) > int.parse(p2SelectedAttrValue)) {
+                    areYouWon = 'true';
+                  } else if (int.parse(p1SelectedAttrValue) < int.parse(p2SelectedAttrValue)) {
+                    areYouWon = 'false';
+                  } else if (int.parse(p1SelectedAttrValue) == int.parse(p2SelectedAttrValue)) {
+                    areYouWon = 'draw';
+                  }
 
-          } else if (p1TurnStatus == 'yes' && p2TurnStatus == 'yes') {
-            // winBasis and winPints will be same for both player. So I am getting those value when p1 selected first value
-            String areYouWon = 'false';
-            if (winBasis == 'Highest Value') {
-              if(isPlayAsP1){
-                if (int.parse(p1SelectedAttrValue) > int.parse(p2SelectedAttrValue)) {
-                  areYouWon = 'true';
-                } else if (int.parse(p1SelectedAttrValue) < int.parse(p2SelectedAttrValue)) {
-                  areYouWon = 'false';
-                } else if (int.parse(p1SelectedAttrValue) == int.parse(p2SelectedAttrValue)) {
-                  areYouWon = 'draw';
-                }
-
-                showWinOrLossDialog(areYouWon);
-              } else {
+                  showWinOrLossDialog(areYouWon);
+                } else {
                   if (int.parse(p1SelectedAttrValue) > int.parse(p2SelectedAttrValue)) {
                     areYouWon = 'false';
                   } else if (int.parse(p1SelectedAttrValue) < int.parse(p2SelectedAttrValue)) {
@@ -495,29 +501,33 @@ class Gameplay extends StatelessWidget {
                   }
 
                   showWinOrLossDialog(areYouWon);
-              }
-            } else if (winBasis == 'Lowest Value') {
-              if(isPlayAsP1){
-                if (int.parse(p1SelectedAttrValue) > int.parse(p2SelectedAttrValue)) {
-                  areYouWon = 'true';
-                } else if (int.parse(p1SelectedAttrValue) < int.parse(p2SelectedAttrValue)) {
-                  areYouWon = 'false';
-                } else if (int.parse(p1SelectedAttrValue) == int.parse(p2SelectedAttrValue)) {
-                  areYouWon = 'draw';
                 }
-                showWinOrLossDialog(areYouWon);
-              }else {
-                if (int.parse(p1SelectedAttrValue) > int.parse(p2SelectedAttrValue)) {
-                  areYouWon = 'false';
-                } else if (int.parse(p1SelectedAttrValue) < int.parse(p2SelectedAttrValue)) {
-                  areYouWon = 'true';
-                } else if (int.parse(p1SelectedAttrValue) == int.parse(p2SelectedAttrValue)) {
-                  areYouWon = 'draw';
-                }
+              } else if (winBasis == 'Lowest Value') {
+                if(isPlayAsP1){
+                  if (int.parse(p1SelectedAttrValue) > int.parse(p2SelectedAttrValue)) {
+                    areYouWon = 'true';
+                  } else if (int.parse(p1SelectedAttrValue) < int.parse(p2SelectedAttrValue)) {
+                    areYouWon = 'false';
+                  } else if (int.parse(p1SelectedAttrValue) == int.parse(p2SelectedAttrValue)) {
+                    areYouWon = 'draw';
+                  }
+                  showWinOrLossDialog(areYouWon);
+                }else {
+                  if (int.parse(p1SelectedAttrValue) > int.parse(p2SelectedAttrValue)) {
+                    areYouWon = 'false';
+                  } else if (int.parse(p1SelectedAttrValue) < int.parse(p2SelectedAttrValue)) {
+                    areYouWon = 'true';
+                  } else if (int.parse(p1SelectedAttrValue) == int.parse(p2SelectedAttrValue)) {
+                    areYouWon = 'draw';
+                  }
 
-                showWinOrLossDialog(areYouWon);
+                  showWinOrLossDialog(areYouWon);
+                }
               }
             }
+          } else if (isSurrender == 'true') {
+            print('----isSurrender 1: $isSurrender');
+            gotoResultScreen(_scaffoldKey.currentContext, statesModelGlobal, false);
           }
         } catch (e) {
           print(e);
@@ -583,7 +593,7 @@ class Gameplay extends StatelessWidget {
                           style: TextStyle(
                               fontSize: 13,
                               fontStyle: FontStyle.normal,
-                              fontFamily: 'neuropol_x_rg',
+                              fontFamily: 'montserrat',
                               fontWeight: FontWeight.bold,
                               color: Colors.white),
                         ),
@@ -673,7 +683,7 @@ class Gameplay extends StatelessWidget {
             }
 
           } catch(e){
-
+            print(e);
           }
         });
 
@@ -709,12 +719,32 @@ class Gameplay extends StatelessWidget {
     });
   }
 
-  void gotoResultScreen(BuildContext context, GamePlayStatesModel statesModel, bool isSurrender) {
+  void gotoResultScreen(BuildContext context, GamePlayStatesModel statesModel, bool isSurrendered) {
     bool areYouWon = true;
-    if (statesModel.player1TotalPoints > statesModel.player2TotalPoints) {
-      areYouWon = true;
-    } else if(statesModel.player1TotalPoints < statesModel.player2TotalPoints){
+    String p1Points = '0';
+    String p2Points = '0';
+    if (!isSurrendered && isSurrender == 'false') {
+      if (statesModel.player1TotalPoints > statesModel.player2TotalPoints) {
+        areYouWon = true;
+        p1Points = statesModel.player1TotalPoints.toString();
+        p2Points = statesModel.player2TotalPoints.toString();
+      } else if(statesModel.player1TotalPoints < statesModel.player2TotalPoints){
+        areYouWon = false;
+        p1Points = statesModel.player1TotalPoints.toString();
+        p2Points = statesModel.player2TotalPoints.toString();
+      }
+    } else if (isSurrendered) {
+      isSurrender = 'true';
       areYouWon = false;
+
+      p1Points = '0';
+      p2Points = statesModel.player2TotalPoints.toString();
+      updateGamePlayStatusToFirebase();
+
+    } else if (isSurrender == 'true') {
+      areYouWon = true;
+      p1Points = statesModel.player1TotalPoints.toString();
+      p2Points = '0';
     }
 
     Navigator.push(
@@ -722,24 +752,24 @@ class Gameplay extends StatelessWidget {
             CupertinoPageRoute(
               builder: (context) =>
                   GameResult(
-                  xApiKey,
-                  p1FullName,
-                  p1MemberId,
-                  p1Photo,
-                  p2Name,
-                  p2MemberId,
-                  p2Image,
-                  gameCat1,
-                  gameCat2,
-                  gameCat3,
-                  gameCat4,
-                  playerType,
-                  gameType,
-                  cardsToPlay,
-                  isSurrender? '0' : statesModel.player1TotalPoints.toString(), // change here
-                  statesModel.player2TotalPoints.toString(),
-                  areYouWon,
-                  )
+                    xApiKey,
+                    p1FullName,
+                    p1MemberId,
+                    p1Photo,
+                    p2Name,
+                    p2MemberId,
+                    p2Image,
+                    gameCat1,
+                    gameCat2,
+                    gameCat3,
+                    gameCat4,
+                    playerType,
+                    gameType,
+                    cardsToPlay,
+                    p1Points,
+                    p2Points,
+                    areYouWon,
+                  ),
             ),
           );
 
