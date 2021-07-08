@@ -72,7 +72,7 @@ class _GameOptionThreeState extends State<GameOptionThree> {
       onWillPop: () async => false,
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        backgroundColor: Color(0xFF2A3C49),
+        backgroundColor: Color(0xFF364B5A),
         key: _drawerKey, // assign key to Scaffold
         drawer: Drawer(
           child: ListView(

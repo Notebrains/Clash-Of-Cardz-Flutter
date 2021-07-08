@@ -5,7 +5,7 @@ import 'package:clash_of_cardz_flutter/bloc/api_bloc.dart';
 import 'package:clash_of_cardz_flutter/helper/exten_fun/base_application_fun.dart';
 import 'package:clash_of_cardz_flutter/helper/exten_fun/common_fun.dart';
 import 'package:clash_of_cardz_flutter/model/responses/cms_res_model.dart';
-import 'package:clash_of_cardz_flutter/ui/widgets/custom/frosted_glass.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/custom/loading_sports_frosted_glass.dart';
 
 class AboutScreen extends StatelessWidget{
   String xApiKey = '';

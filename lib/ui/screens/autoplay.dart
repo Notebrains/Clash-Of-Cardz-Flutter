@@ -12,7 +12,7 @@ import 'package:clash_of_cardz_flutter/helper/exten_fun/base_application_fun.dar
 import 'package:clash_of_cardz_flutter/helper/exten_fun/common_fun.dart';
 import 'package:clash_of_cardz_flutter/helper/shared_preference_data.dart';
 import 'package:clash_of_cardz_flutter/model/state_managements/autoplay_states_model.dart';
-import 'package:clash_of_cardz_flutter/ui/widgets/custom/frosted_glass.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/custom/loading_sports_frosted_glass.dart';
 import 'package:clash_of_cardz_flutter/ui/widgets/include_screens/include_auto_play_win_screen.dart';
 import 'package:clash_of_cardz_flutter/ui/widgets/include_screens/include_autoplay.dart';
 import 'package:clash_of_cardz_flutter/ui/widgets/include_screens/include_auto_play_cards.dart';
@@ -314,8 +314,7 @@ class AutoPlay extends StatelessWidget {
                                   listLength: (cards.length / 2).round(),
                                   memberId: p1MemberId,
                                   onPressed: () async {
-                                    showExitDialog(context, onPressed: (){
-                                      Navigator.of(context, rootNavigator: true).pop();
+                                    showSurrenderDialog(context, onOkTap:(){
                                       gotoResultScreen(context, statesModel, true);
                                     });
                                   }),

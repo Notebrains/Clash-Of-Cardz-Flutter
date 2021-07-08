@@ -9,7 +9,7 @@ import 'package:clash_of_cardz_flutter/model/responses/game_option_res_model.dar
 import 'package:clash_of_cardz_flutter/ui/screens/autoplay.dart';
 import 'package:clash_of_cardz_flutter/ui/screens/game_option_2.dart';
 import 'package:clash_of_cardz_flutter/ui/screens/game_option_3.dart';
-import 'package:clash_of_cardz_flutter/ui/widgets/custom/frosted_glass.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/custom/loading_sports_frosted_glass.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 import 'package:clash_of_cardz_flutter/ui/widgets/libraries/shimmer.dart';
 

@@ -51,8 +51,9 @@ class _PlayerInfoBackBtnState extends State<PlayerInfoBackBtn> {
             children: [
               IconButton(
                 icon: Icon(
-                  Icons.arrow_back,
-                  color: Colors.lightBlueAccent.shade100,
+                  Icons.backspace_rounded,
+                  color: Colors.lightBlueAccent.shade200,
+                  size: 26,
                 ),
                 onPressed: () {
                   onTapAudio('button');
@@ -61,7 +62,7 @@ class _PlayerInfoBackBtnState extends State<PlayerInfoBackBtn> {
               ),
               SlideInDown(
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 8.0),
+                  padding: const EdgeInsets.only(left: 16.0),
                   child: Shimmer.fromColors(
                     baseColor: Colors.cyanAccent[100],
                     highlightColor: Colors.lightBlueAccent,

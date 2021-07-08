@@ -16,7 +16,7 @@ import 'package:flutter_animator/flutter_animator.dart';
 import 'package:clash_of_cardz_flutter/ui/widgets/include_screens/include_game_play_dialogs.dart';
 import 'package:clash_of_cardz_flutter/ui/widgets/include_screens/include_game_play_win_screen.dart';
 import 'package:clash_of_cardz_flutter/model/state_managements/gameplay_states_model.dart';
-import 'package:clash_of_cardz_flutter/ui/widgets/custom/frosted_glass.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/custom/loading_sports_frosted_glass.dart';
 import 'package:clash_of_cardz_flutter/model/responses/cards_res_model.dart';
 import 'package:clash_of_cardz_flutter/ui/widgets/include_screens/include_game_play_cards.dart';
 import 'package:clash_of_cardz_flutter/ui/widgets/include_screens/include_gameplay.dart';
@@ -85,7 +85,8 @@ class Gameplay extends StatelessWidget {
   bool isYourNextTurn = false;
   bool isP1CardFlipped = false;
   bool isP1SelectedStats = false;
-  String isSurrender = 'false';
+  String isP1Surrender = 'false';
+  String haveISurrendered = 'false';
   String whoIsPlaying = 'p1'; //Always p1 plays the first turn
 
   //firebase data init
@@ -303,9 +304,10 @@ class Gameplay extends StatelessWidget {
                         flex: 3,
                         child: BuildPlayerTwoScreen(listLength: (cards.length/2).round(),
                           p2Name: p2Name, memberId: p1MemberId, onPressed: (){
-                            showExitDialog(_scaffoldKey.currentContext, onPressed: (){
-
-                              gotoResultScreen(context, statesModelGlobal, true);
+                            showSurrenderDialog(context, onOkTap:(){
+                              isP1Surrender = 'true';
+                              haveISurrendered = 'true';
+                              updateGamePlayStatusToFirebase();
                             });
                           },),
                       ),
@@ -429,7 +431,7 @@ class Gameplay extends StatelessWidget {
       'p1SelectedAttrValue': p1SelectedAttrValue,
       'p2SelectedAttr': p2SelectedAttr,
       'p2SelectedAttrValue': p2SelectedAttrValue,
-      'isSurrender': isSurrender,
+      'isP1Surrender': isP1Surrender,
       'winner': winner,
     });
   }
@@ -456,11 +458,11 @@ class Gameplay extends StatelessWidget {
         p1SelectedAttrValue = changeMapData['p1SelectedAttrValue'];
         p2SelectedAttr = changeMapData['p2SelectedAttr'];
         p2SelectedAttrValue = changeMapData['p2SelectedAttrValue'];
-        isSurrender = changeMapData['isSurrender'];
+        isP1Surrender = changeMapData['isP1Surrender'];
         winner = changeMapData['winner'];
 
         try {
-          if (isSurrender  == 'false') {
+          if (isP1Surrender  == 'false' && haveISurrendered  == 'false') {
             if (p1TurnStatus == 'yes' && p2TurnStatus == 'no') {
               if (!isPlayAsP1) {
                 indexSelectedByP2 = changeMapData['selectedArrayPos'];
@@ -525,9 +527,11 @@ class Gameplay extends StatelessWidget {
                 }
               }
             }
-          } else if (isSurrender == 'true') {
-            print('----isSurrender 1: $isSurrender');
-            gotoResultScreen(_scaffoldKey.currentContext, statesModelGlobal, false);
+          } 
+          else if (isP1Surrender == 'true' || haveISurrendered  == 'true') {
+            print('----isP1Surrender: $isP1Surrender, haveISurrendered: $haveISurrendered');
+            showToast(_scaffoldKey.currentContext, '$p2Name surrender');
+            gotoResultScreen(_scaffoldKey.currentContext, statesModelGlobal);
           }
         } catch (e) {
           print(e);
@@ -679,7 +683,7 @@ class Gameplay extends StatelessWidget {
               _scaffoldKey.currentContext.read<GamePlayStatesModel>().updateCardCountOnDeck(statesModelGlobal.cardCountOnDeck - 1);
 
             } else {
-              gotoResultScreen(context, statesModelGlobal, false);
+              gotoResultScreen(context, statesModelGlobal);
             }
 
           } catch(e){
@@ -715,15 +719,16 @@ class Gameplay extends StatelessWidget {
 
     Timer(Duration(milliseconds: 3000), () {
       Navigator.pop(dialogContext);
-      gotoResultScreen(_scaffoldKey.currentContext, statesModel, false);
+      gotoResultScreen(_scaffoldKey.currentContext, statesModel);
     });
   }
 
-  void gotoResultScreen(BuildContext context, GamePlayStatesModel statesModel, bool isSurrendered) {
+  void gotoResultScreen(BuildContext context, GamePlayStatesModel statesModel) {
     bool areYouWon = true;
     String p1Points = '0';
     String p2Points = '0';
-    if (!isSurrendered && isSurrender == 'false') {
+    if (isP1Surrender == 'false' && haveISurrendered == 'false') {
+      print('---- : ${1}');
       if (statesModel.player1TotalPoints > statesModel.player2TotalPoints) {
         areYouWon = true;
         p1Points = statesModel.player1TotalPoints.toString();
@@ -733,48 +738,37 @@ class Gameplay extends StatelessWidget {
         p1Points = statesModel.player1TotalPoints.toString();
         p2Points = statesModel.player2TotalPoints.toString();
       }
-    } else if (isSurrendered) {
-      isSurrender = 'true';
+    } else if (isP1Surrender == 'true' && haveISurrendered == 'true') {
+      print('---- : ${2}');
       areYouWon = false;
-
       p1Points = '0';
       p2Points = statesModel.player2TotalPoints.toString();
-      updateGamePlayStatusToFirebase();
 
-    } else if (isSurrender == 'true') {
+    } else if (isP1Surrender == 'true' && haveISurrendered == 'false') {
       areYouWon = true;
       p1Points = statesModel.player1TotalPoints.toString();
       p2Points = '0';
+      print('---- : ${3}');
     }
+
+    print('---- areYouWon: $areYouWon , isP1Surrender: $isP1Surrender, haveISurrendered: $haveISurrendered, '
+        'player1TotalPoints: ${statesModel.player1TotalPoints.toString()}, player2TotalPoints: ${statesModel.player2TotalPoints.toString()}');
 
     Navigator.push(
             context,
             CupertinoPageRoute(
               builder: (context) =>
                   GameResult(
-                    xApiKey,
-                    p1FullName,
-                    p1MemberId,
-                    p1Photo,
-                    p2Name,
-                    p2MemberId,
-                    p2Image,
-                    gameCat1,
-                    gameCat2,
-                    gameCat3,
-                    gameCat4,
-                    playerType,
-                    gameType,
-                    cardsToPlay,
-                    p1Points,
-                    p2Points,
-                    areYouWon,
+                    xApiKey, p1FullName, p1MemberId, p1Photo, p2Name,
+                    p2MemberId, p2Image, gameCat1, gameCat2,
+                    gameCat3, gameCat4, playerType, gameType,
+                    cardsToPlay, p1Points, p2Points, areYouWon,
                   ),
             ),
           );
 
     //remove game when match is complete
-    _gameRoomRef.child(gameRoomName).remove();
+    //_gameRoomRef.child(gameRoomName).remove();
     //dispose firebase ref subs
     gamePlaySubscription.cancel();
   }

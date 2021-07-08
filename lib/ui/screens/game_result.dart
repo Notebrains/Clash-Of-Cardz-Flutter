@@ -160,7 +160,7 @@ class GameResult extends StatelessWidget {
                           ),
                           HeartBeat(
                             child: IconButton(
-                              iconSize: 40,
+                              iconSize: 45,
                               icon: Image.asset('assets/icons/png/coins.png'),
                               onPressed: null,
                             ),
@@ -201,16 +201,16 @@ class GameResult extends StatelessWidget {
                                               builder: (BuildContext context) => Home(
                                                 xApiKey: sharedPrefModel.xApiKey,
                                                 memberId: sharedPrefModel.memberId,
-                                              )));
+                                              ),),);
                                     });
                                   },
                                   height: 30,
-                                  width: 140,
+                                  width: 120,
                                   child:  Text(
                                     "Home",
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
-                                        fontSize: 16,
+                                        fontSize: 14,
                                         fontStyle: FontStyle.normal,
                                         fontFamily: 'montserrat',
                                         fontWeight: FontWeight.bold,
@@ -229,12 +229,12 @@ class GameResult extends StatelessWidget {
                                     Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => GameOption()));
                                   },
                                   height: 30,
-                                  width: 140,
+                                  width: 120,
                                   child:  Text(
                                     "Play Again",
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
-                                        fontSize: 16,
+                                        fontSize: 14,
                                         fontStyle: FontStyle.normal,
                                         fontFamily: 'montserrat',
                                         fontWeight: FontWeight.bold,

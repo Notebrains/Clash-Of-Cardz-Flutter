@@ -13,7 +13,7 @@ import 'package:clash_of_cardz_flutter/model/arguments/firebase_player_details_m
 import 'package:clash_of_cardz_flutter/ui/screens/gameplay.dart';
 import 'package:clash_of_cardz_flutter/ui/screens/home.dart';
 import 'package:clash_of_cardz_flutter/ui/screens/pvp.dart';
-import 'package:clash_of_cardz_flutter/ui/widgets/custom/frosted_glass.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/custom/loading_sports_frosted_glass.dart';
 import 'dart:io' show Platform;
 
 import 'package:clash_of_cardz_flutter/ui/widgets/libraries/flutter_toast.dart';

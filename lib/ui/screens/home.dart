@@ -2,6 +2,7 @@ import 'dart:io' show File, Platform;
 import 'package:clash_of_cardz_flutter/helper/constantvalues/constants.dart';
 import 'package:clash_of_cardz_flutter/ui/widgets/custom/btn_left_border_sq.dart';
 import 'package:clash_of_cardz_flutter/ui/widgets/custom/ic_svg.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/include_screens/include_game_play_dialogs.dart';
 import 'package:clash_of_cardz_flutter/ui/widgets/libraries/avatar_glow.dart';
 import 'package:clash_of_cardz_flutter/ui/widgets/libraries/shimmer.dart';
 import 'package:flutter/cupertino.dart';
@@ -21,7 +22,6 @@ import 'package:clash_of_cardz_flutter/ui/screens/profile.dart';
 import 'package:clash_of_cardz_flutter/ui/screens/setting.dart';
 import 'package:clash_of_cardz_flutter/ui/screens/statistics.dart';
 import 'package:clash_of_cardz_flutter/ui/widgets/custom/carousel_auto_slider.dart';
-import 'package:clash_of_cardz_flutter/ui/widgets/libraries/giffy_dialog/giffy_dialog.dart';
 import 'game_option.dart';
 import 'leaderboard.dart';
 import 'login.dart';
@@ -317,7 +317,7 @@ class _HomeState extends State<Home> {
                             text: 'QUIT',
                             onClick: () {
                               onTapAudio('button');
-                              showExitDialog();
+                              showGameExitDialog(context);
                             },
                           ),
                         ],
@@ -333,38 +333,6 @@ class _HomeState extends State<Home> {
     );
   }
 
-  void showExitDialog() {
-    showDialog(
-      context: context,
-      builder: (_) => AssetGiffyDialog(
-        image: Image.asset('assets/animations/gifs/exit.gif'),
-        title: Text(
-          'Clash Of Cardz',
-          style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.w800, fontFamily: 'montserrat', color: Color(0xFF263A47)),
-        ),
-        description: Text(
-          'Do you really want to exit the App?',
-          textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w600, fontFamily: 'montserrat'),
-        ),
-        entryAnimation: EntryAnimation.RIGHT,
-        buttonOkText: Text(
-            'QUIT',
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontFamily: 'montserrat'),
-        ),
-        buttonOkColor: Colors.red,
-        buttonCancelColor: Colors.greenAccent[700],
-        buttonCancelText: Text(
-          'CONTINUE',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontFamily: 'montserrat'),
-        ),
-        onOkButtonPressed: () {
-          onTapAudio('icon');
-          SystemChannels.platform.invokeMethod<void>('SystemNavigator.pop');
-        },
-      ),
-    );
-  }
 
   void savePlayerInfoIntoPref(ProfileResModel model) {
     print('-----mem: ${model.response[0].memberid}');

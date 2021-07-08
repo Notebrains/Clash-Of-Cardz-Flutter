@@ -1,18 +1,18 @@
-
 import 'dart:async';
+import 'dart:ui';
 
-import 'package:clash_of_cardz_flutter/ui/widgets/libraries/giffy_dialog/giffy_dialog.dart';
+import 'package:clash_of_cardz_flutter/ui/styles/size_config.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/custom/outlined_btn_gradient_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lottie/lottie.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 import 'package:clash_of_cardz_flutter/helper/exten_fun/base_application_fun.dart';
-import 'package:clash_of_cardz_flutter/model/state_managements/gameplay_states_model.dart';
 
-
-Widget gamePlayTimerUi(BuildContext context, {
-Function(bool isTimeEnded) onTimeEnd,
-}){
+Widget gamePlayTimerUi(
+  BuildContext context, {
+  Function(bool isTimeEnded) onTimeEnd,
+}) {
   return Container(
     height: getScreenHeight(context) / 6.0,
     child: Row(
@@ -24,7 +24,9 @@ Function(bool isTimeEnded) onTimeEnd,
           child: TweenAnimationBuilder<Duration>(
               duration: Duration(minutes: 5),
               tween: Tween(begin: Duration(minutes: 5), end: Duration.zero),
-              onEnd: () {onTimeEnd(true);},
+              onEnd: () {
+                onTimeEnd(true);
+              },
               builder: (BuildContext context, Duration value, Widget child) {
                 //adding 0 at first if min or sec show in single digit
                 final minutes = (value.inMinutes).toString().padLeft(2, "0");
@@ -68,9 +70,8 @@ Function(bool isTimeEnded) onTimeEnd,
                           ),
                         ),
                       ),
-                      preferences: AnimationPreferences(
-                          duration: const Duration(milliseconds: 1500),
-                          autoPlay: AnimationPlayStates.Forward),
+                      preferences:
+                          AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
                     ),
                     SlideInDown(
                       child: Container(
@@ -105,9 +106,8 @@ Function(bool isTimeEnded) onTimeEnd,
                           ),
                         ),
                       ),
-                      preferences: AnimationPreferences(
-                          duration: const Duration(milliseconds: 1500),
-                          autoPlay: AnimationPlayStates.Forward),
+                      preferences:
+                          AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
                     ),
                     SlideInRight(
                       child: Padding(
@@ -146,9 +146,8 @@ Function(bool isTimeEnded) onTimeEnd,
                           ),
                         ),
                       ),
-                      preferences: AnimationPreferences(
-                          duration: const Duration(milliseconds: 1500),
-                          autoPlay: AnimationPlayStates.Forward),
+                      preferences:
+                          AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
                     ),
                   ],
                 );
@@ -159,11 +158,8 @@ Function(bool isTimeEnded) onTimeEnd,
   );
 }
 
-
-
-
-BuildContext showWinLossIncludeDialog(BuildContext context, bool isWon, String lottieFileName, String message,
-    String photoUrl, int animHideTime) {
+BuildContext showWinLossIncludeDialog(
+    BuildContext context, bool isWon, String lottieFileName, String message, String photoUrl, int animHideTime) {
   BuildContext dialogContext;
   showDialog(
     context: context,
@@ -177,8 +173,7 @@ BuildContext showWinLossIncludeDialog(BuildContext context, bool isWon, String l
           child: Stack(
             children: <Widget>[
               Center(
-                child:
-                Lottie.asset('assets/animations/lottiefiles/$lottieFileName', height: 290, width: 290, repeat: false, animate: true),
+                child: Lottie.asset('assets/animations/lottiefiles/$lottieFileName', height: 290, width: 290, repeat: false, animate: true),
               ),
               Center(
                 child: Column(
@@ -236,20 +231,12 @@ void showWrongSelectionDialog(BuildContext context, String selectedAttrName) {
             children: [
               Center(
                 child: Lottie.asset('assets/animations/lottiefiles/cries.json',
-                    width: getScreenWidth(context),
-                    height: getScreenHeight(context) * 0.7,
-                    repeat: true,
-                    animate: true),
+                    width: getScreenWidth(context), height: getScreenHeight(context) * 0.7, repeat: true, animate: true),
               ),
-
               Expanded(
                 child: Text(
                   'Please select attribute $selectedAttrName',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 24,
-                      fontFamily: 'neuropol_x_rg',
-                      fontWeight: FontWeight.bold),
+                  style: TextStyle(color: Colors.white, fontSize: 24, fontFamily: 'neuropol_x_rg', fontWeight: FontWeight.bold),
                 ),
               ),
             ],
@@ -260,45 +247,286 @@ void showWrongSelectionDialog(BuildContext context, String selectedAttrName) {
     },
   );
 
-
   Timer(Duration(milliseconds: 1000), () {
     Navigator.pop(dialogContext);
   });
 }
 
-
-void showExitDialog(BuildContext context, {
-  Function() onPressed,
-}) {
+void showSurrenderDialog(BuildContext context, {Function() onOkTap}) {
   showDialog(
-    //barrierColor: Color(0xEB20313E),
     context: context,
-    builder: (_) => AssetGiffyDialog(
-      image: Image.asset('assets/animations/gifs/surrender.gif'),
-      title: Text(
-        'SURRENDER',
-        style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.w800, fontFamily: 'montserrat', color: Color(0xFF263A47)),
-      ),
-      description: Text(
-        'Do you really want to surrender! \n You will loose some points you are about to win.',
-        textAlign: TextAlign.center,
-        style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w600, fontFamily: 'montserrat'),
-      ),
-      entryAnimation: EntryAnimation.TOP,
-      buttonOkText: Text(
-        'YES',
-        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontFamily: 'montserrat'),
-      ),
-      buttonOkColor: Color(0xFF263A47),
-      buttonCancelColor: Color(0xFF3A5A71),
-      buttonCancelText: Text(
-        'NO',
-        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontFamily: 'montserrat'),
-      ),
-      onOkButtonPressed: () {
-        onPressed();
-        //SystemChannels.platform.invokeMethod<void>('SystemNavigator.pop');
-      },
-    ),
+    barrierDismissible: true,
+    useSafeArea: true,
+    builder: (BuildContext context) {
+      return Dialog(
+        backgroundColor: Colors.transparent,
+        child: ZoomIn(
+          child: Center(
+            child: Container(
+              width: SizeConfig.widthMultiplier * 160,
+              height: SizeConfig.heightMultiplier * 35,
+              child: Stack(
+                children: <Widget>[
+                  ConstrainedBox(
+                    constraints: const BoxConstraints.expand(),
+                  ),
+                  Center(
+                    child: ClipRect(
+                      child: BackdropFilter(
+                        filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
+                        child: Container(
+                          decoration: BoxDecoration(color: Colors.grey.shade400.withOpacity(0.1)),
+                          child: FadeInUp(
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Expanded(
+                                  flex: 2,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(bottom: 40),
+                                    child: Lottie.asset('assets/animations/lottiefiles/minion-surrender.json',
+                                        width: getScreenWidth(context), height: getScreenHeight(context) * 0.6, repeat: true, animate: true),
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 3,
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        'SURRENDER !',
+                                        textAlign: TextAlign.center,
+                                        style:
+                                        TextStyle(color: Colors.white, fontSize: 20, fontFamily: 'montserrat', fontWeight: FontWeight.bold),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 25),
+                                        child: Text(
+                                          'Do you really want to surrender! \n You will loose some points you are about to win.',
+                                          textAlign: TextAlign.center,
+                                          style:
+                                          TextStyle(color: Colors.white, fontSize: 12, fontFamily: 'montserrat', fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+
+
+                                      Row(
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Pulse(
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(right: 12, top: 40),
+                                              child: OutlinedBtnGradientBorder(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+
+                                                },
+                                                height: 25,
+                                                width: 100,
+                                                child:  Text(
+                                                  "CANCEL",
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                      fontSize: 14,
+                                                      fontStyle: FontStyle.normal,
+                                                      fontFamily: 'montserrat',
+                                                      fontWeight: FontWeight.bold,
+                                                      color: Colors.blue.shade100),
+                                                ),
+                                              ),
+                                            ),
+                                            preferences:
+                                            AnimationPreferences(duration: const Duration(milliseconds: 2500), autoPlay: AnimationPlayStates.Loop),
+                                          ),
+                                          Pulse(
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(left: 12, top: 40),
+                                              child: OutlinedBtnGradientBorder(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                  onOkTap();
+                                                },
+                                                height: 25,
+                                                width: 100,
+                                                child:  Text(
+                                                  "YES",
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                      fontSize: 12,
+                                                      fontStyle: FontStyle.normal,
+                                                      fontFamily: 'montserrat',
+                                                      fontWeight: FontWeight.bold,
+                                                      color: Colors.blue.shade100),
+                                                ),
+                                              ),
+                                            ),
+                                            preferences:
+                                            AnimationPreferences(duration: const Duration(milliseconds: 2500), autoPlay: AnimationPlayStates.Loop),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                            preferences:
+                                AnimationPreferences(duration: const Duration(milliseconds: 300), autoPlay: AnimationPlayStates.Forward),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          preferences: AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
+        ),
+      );
+    },
+  );
+}
+
+void showGameExitDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    barrierDismissible: true,
+    useSafeArea: true,
+    builder: (BuildContext context) {
+      return Dialog(
+        backgroundColor: Colors.transparent,
+        child: ZoomIn(
+          child: Center(
+            child: Container(
+              width: SizeConfig.widthMultiplier * 150,
+              height: SizeConfig.heightMultiplier * 30,
+              child: Stack(
+                children: <Widget>[
+                  ConstrainedBox(
+                    constraints: const BoxConstraints.expand(),
+                  ),
+                  Center(
+                    child: ClipRect(
+                      child: BackdropFilter(
+                        filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
+                        child: Container(
+                          decoration: BoxDecoration(color: Color(0xFF364B5A)),
+                          child: FadeInUp(
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Expanded(
+                                  flex: 1,
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    margin: EdgeInsets.all(20),
+                                    color: Colors.grey.shade200.withOpacity(0.1),
+                                    child: Lottie.asset('assets/animations/lottiefiles/no-data-found-sad-face.json', repeat: true, animate: true),
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 1,
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        'Clash Of Cardz',
+                                        textAlign: TextAlign.center,
+                                        style:
+                                        TextStyle(color: Colors.white, fontSize: 24, fontFamily: 'montserrat', fontWeight: FontWeight.bold),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 25),
+                                        child: Text(
+                                          'Do you really want to exit the game?',
+                                          textAlign: TextAlign.center,
+                                          style:
+                                          TextStyle(color: Colors.white, fontSize: 14, fontFamily: 'montserrat', fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+
+
+                                      Row(
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Pulse(
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(right: 12, top: 40),
+                                              child: OutlinedBtnGradientBorder(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+
+                                                },
+                                                height: 25,
+                                                width: 100,
+                                                child:  Text(
+                                                  "Continue",
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                      fontSize: 14,
+                                                      fontStyle: FontStyle.normal,
+                                                      fontFamily: 'montserrat',
+                                                      fontWeight: FontWeight.bold,
+                                                      color: Colors.blue.shade100),
+                                                ),
+                                              ),
+                                            ),
+                                            preferences:
+                                            AnimationPreferences(duration: const Duration(milliseconds: 2500), autoPlay: AnimationPlayStates.Loop),
+                                          ),
+                                          Pulse(
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(left: 12, top: 40),
+                                              child: OutlinedBtnGradientBorder(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                  SystemChannels.platform.invokeMethod<void>('SystemNavigator.pop');
+                                                },
+                                                height: 25,
+                                                width: 100,
+                                                child:  Text(
+                                                  "Quit",
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                      fontSize: 14,
+                                                      fontStyle: FontStyle.normal,
+                                                      fontFamily: 'montserrat',
+                                                      fontWeight: FontWeight.bold,
+                                                      color: Colors.blue.shade100),
+                                                ),
+                                              ),
+                                            ),
+                                            preferences:
+                                            AnimationPreferences(duration: const Duration(milliseconds: 2500), autoPlay: AnimationPlayStates.Loop),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                            preferences:
+                                AnimationPreferences(duration: const Duration(milliseconds: 300), autoPlay: AnimationPlayStates.Forward),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          preferences: AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
+        ),
+      );
+    },
   );
 }

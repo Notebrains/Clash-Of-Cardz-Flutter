@@ -52,7 +52,7 @@ class IncludeSearchingForPlayerState extends State<LottieNoDataFound> with Singl
                           decoration: ShapeDecoration(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0))),
                           child: Column(
                             children: <Widget>[
-                              Lottie.asset('assets/animations/lottiefiles/lottie-empty.json', width: 500, height: 290),
+                              Lottie.asset('assets/animations/lottiefiles/minion-surrender.json'),
                               Expanded(
                                 child: Padding(
                                   padding: const EdgeInsets.only(top: 10.0),

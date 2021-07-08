@@ -5,7 +5,7 @@ import 'package:clash_of_cardz_flutter/bloc/api_bloc.dart';
 import 'package:clash_of_cardz_flutter/helper/exten_fun/base_application_fun.dart';
 import 'package:clash_of_cardz_flutter/helper/exten_fun/common_fun.dart';
 import 'package:clash_of_cardz_flutter/model/responses/cms_res_model.dart';
-import 'package:clash_of_cardz_flutter/ui/widgets/custom/frosted_glass.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/custom/loading_sports_frosted_glass.dart';
 
 List<String> imgList = [];
 
@@ -54,24 +54,22 @@ class _GameRuleState extends State<GameRule> {
 
   List<Widget> imageSliders = imgList
       .map((item) => Container(
-            child: Container(
-              margin: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 16.0),
-              child: ClipRRect(
-                borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                child: Stack(
-                  children: <Widget>[
-                    FadeInImage.assetNetwork(
-                      fit: BoxFit.fill,
-                      placeholder: 'assets/animations/gifs/loading_text.gif',
-                      image: item ?? '',
-                      width: double.infinity - 60,
-                    ),
-                  ],
-                ),
+        margin: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 16.0),
+        child: ClipRRect(
+          borderRadius: BorderRadius.all(Radius.circular(8.0)),
+          child: Stack(
+            children: <Widget>[
+              FadeInImage.assetNetwork(
+                fit: BoxFit.fill,
+                placeholder: 'assets/animations/gifs/loading_text.gif',
+                image: item ?? '',
+                width: double.infinity - 60,
               ),
-            ),
-          ))
-      .toList();
+            ],
+          ),
+        ),
+      ),
+  ).toList();
 
   Widget buildUI(Response response) {
     for(int i =0 ; i< response.cmsMeta.length; i++){

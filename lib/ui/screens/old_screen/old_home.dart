@@ -19,7 +19,6 @@ import 'package:clash_of_cardz_flutter/ui/screens/setting.dart';
 import 'package:clash_of_cardz_flutter/ui/screens/statistics.dart';
 import 'package:clash_of_cardz_flutter/ui/widgets/custom/carousel_auto_slider.dart';
 import 'package:clash_of_cardz_flutter/ui/widgets/include_screens/include_home_screen.dart';
-import 'package:clash_of_cardz_flutter/ui/widgets/libraries/giffy_dialog/giffy_dialog.dart';
 import 'package:clash_of_cardz_flutter/ui/widgets/views/view_widgets.dart';
 
 import '../games.dart';
@@ -323,7 +322,6 @@ class _MyHomePageState extends State<OldHomeScreen> {
                           // ),
                           onPressed: () {
                             onTapAudio('button');
-                            showExitDialog();
                           },
                         ),
                         preferences:
@@ -412,39 +410,6 @@ class _MyHomePageState extends State<OldHomeScreen> {
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  void showExitDialog() {
-    showDialog(
-      context: context,
-      builder: (_) => AssetGiffyDialog(
-        image: Image.asset('assets/animations/gifs/exit.gif'),
-        title: Text(
-          'Clash Of Cardz',
-          style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.w600),
-        ),
-        description: Text(
-          'Do you really want to exit the App?',
-          textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w600),
-        ),
-        entryAnimation: EntryAnimation.RIGHT,
-        buttonOkText: Text(
-          'QUIT',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-        ),
-        buttonOkColor: Colors.red,
-        buttonCancelColor: Colors.greenAccent,
-        buttonCancelText: Text(
-          'PLAY',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-        ),
-        onOkButtonPressed: () {
-          onTapAudio('icon');
-          SystemChannels.platform.invokeMethod<void>('SystemNavigator.pop');
-        },
       ),
     );
   }

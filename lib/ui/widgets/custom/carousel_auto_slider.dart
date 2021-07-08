@@ -4,7 +4,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:clash_of_cardz_flutter/bloc/api_bloc.dart';
 import 'package:clash_of_cardz_flutter/model/responses/cms_res_model.dart';
 
-import 'frosted_glass.dart';
+import 'loading_sports_frosted_glass.dart';
 
 class CarouselAutoSlider extends StatefulWidget {
   final String xApiKey;
@@ -66,7 +66,12 @@ class CarouselAutoSliderState extends State<CarouselAutoSlider> {
               width: MediaQuery.of(context).size.width,
               margin: EdgeInsets.all(18),
               decoration: BoxDecoration(
-                color: Colors.lightBlueAccent,
+                color: Colors.deepOrange,
+                gradient: LinearGradient(
+                  colors: [ Colors.cyan,Colors.lightBlue],
+                  begin: Alignment.topRight,
+                  end: Alignment.bottomLeft,
+                ),
                 image: new DecorationImage(image: AssetImage(imgUrl), fit: BoxFit.fill,),
                 borderRadius: BorderRadius.all(Radius.circular(3.0)),
 
