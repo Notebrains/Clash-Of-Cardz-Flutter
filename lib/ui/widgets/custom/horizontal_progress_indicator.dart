@@ -39,8 +39,8 @@ class _ProgressIndicatorDemoState extends State<HorizontalProgressIndicator>
         child: new Container(
           child:  LinearProgressIndicator(
             value:  animation.value,
-            backgroundColor: Colors.grey[400],
-            valueColor: AlwaysStoppedAnimation<Color>(Colors.cyanAccent[400],),
+            backgroundColor: Colors.white,
+            valueColor: AlwaysStoppedAnimation<Color>(Colors.blueGrey,),
             minHeight: 20,
 
           ),

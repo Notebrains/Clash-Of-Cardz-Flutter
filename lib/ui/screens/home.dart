@@ -91,7 +91,7 @@ class _HomeState extends State<Home> {
                                 child: Shimmer.fromColors(
                                   baseColor: Colors.cyanAccent[100],
                                   highlightColor: Colors.lightBlueAccent,
-                                  child: Text(snapshot.data.response[0].coins,
+                                  child: Text(snapshot.data.response[0].points,
                                       style: TextStyle(
                                           fontSize: 20, fontFamily: 'montserrat', color: Colors.white, fontWeight: FontWeight.bold)),
                                 ),

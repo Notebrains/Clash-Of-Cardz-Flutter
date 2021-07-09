@@ -465,7 +465,7 @@ class BuildPlayerTwoScreen extends StatelessWidget {
                             ),
                             onPressed: onPressed,
                           ),
-                          decoration: Views.boxDecorationWidgetForIconWithBgColor(Colors.teal, 4.0, Colors.grey, 5.0, 5.0, 3.0),
+                          decoration: Views.boxDecorationWidgetForIconWithBgColor(Colors.deepOrange, 4.0, Colors.grey, 5.0, 5.0, 3.0),
                         ),
 
                         Container(
@@ -492,7 +492,7 @@ class BuildPlayerTwoScreen extends StatelessWidget {
                               });
                             },
                           ),
-                          decoration: Views.boxDecorationWidgetForIconWithBgColor(Color(0xFF20313E), 4.0, Colors.grey, 5.0, 5.0, 3.0),
+                          decoration: Views.boxDecorationWidgetForIconWithBgColor(Colors.green[700], 4.0, Colors.grey, 5.0, 5.0, 3.0),
                         ),
 
                        /* Container(

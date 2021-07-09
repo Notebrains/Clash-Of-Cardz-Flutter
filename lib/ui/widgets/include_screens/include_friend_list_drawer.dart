@@ -12,6 +12,7 @@ import 'package:clash_of_cardz_flutter/ui/screens/gameplay.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 import 'package:lottie/lottie.dart';
 import 'package:clash_of_cardz_flutter/ui/widgets/include_screens/include_waiting_for_friend.dart';
+import 'package:shape_of_view/shape_of_view.dart';
 
 import 'include_searching_players.dart';
 
@@ -61,21 +62,18 @@ Widget searchableUsersWidget(BuildContext context, FriendsResModel data, String 
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              Container(
-                                width: 50,
-                                height: 50,
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: Colors.grey,
-                                    width: 3,
-                                  ),
-                                  borderRadius: BorderRadius.all(Radius.circular(35)),
-                                ),
-                                child: CircleAvatar(
-                                  radius: 35,
-                                  backgroundImage: NetworkImage(dataList[index].photo),
+                              ShapeOfView(
+                                height: 45,
+                                width: 45,
+                                shape: CircleShape(borderColor: Colors.cyanAccent, borderWidth: 1.0),
+                                elevation: 8,
+                                child: FadeInImage.assetNetwork(
+                                  placeholder: 'assets/icons/png/circle-avator-default-img.png',
+                                  image: dataList[index].photo,
+                                  fit: BoxFit.cover,
                                 ),
                               ),
+
                               Expanded(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -92,8 +90,8 @@ Widget searchableUsersWidget(BuildContext context, FriendsResModel data, String 
                                       padding: const EdgeInsets.only(left: 8),
                                       child: dataList[index].liveStatus == 1
                                           ? Text('Online',
-                                              style: TextStyle(color: Colors.greenAccent[400], fontSize: 13, letterSpacing: .3))
-                                          : Text('Offline', style: TextStyle(color: Colors.white60, fontSize: 13, letterSpacing: .3)),
+                                              style: TextStyle(color: Colors.cyanAccent, fontSize: 12, letterSpacing: .3))
+                                          : Text('Offline', style: TextStyle(color: Colors.white60, fontSize: 12, letterSpacing: .3)),
                                     ),
                                   ],
                                 ),
@@ -135,13 +133,13 @@ Widget searchableUsersWidget(BuildContext context, FriendsResModel data, String 
           ),
 
           Container(
-            height: 45,
-            margin: EdgeInsets.fromLTRB(12, 2, 12, 5),
+            height: 43,
+            margin: EdgeInsets.fromLTRB(12, 0, 8, 0),
             padding: const EdgeInsets.symmetric(vertical: 1, horizontal: 12),
             decoration: BoxDecoration(
               color: Colors.white.withAlpha(30),
               borderRadius: BorderRadius.all(
-                Radius.circular(10),
+                Radius.circular(6),
               ),
             ),
             child: Row(

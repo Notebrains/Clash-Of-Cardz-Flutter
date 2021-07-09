@@ -107,6 +107,7 @@ Widget buildCardAsP1(
             cardKeyOfPlayerOne.currentState.toggleCard();
           } else {
             EdgeAlert.show(context,
+                backgroundColor: Colors.blueGrey[800],
                 //title: 'Hint',
                 description: 'Please wait for other player turn to play.',
                 gravity: EdgeAlert.TOP,

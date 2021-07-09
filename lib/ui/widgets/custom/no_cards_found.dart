@@ -16,7 +16,7 @@ class NoCardFound extends StatelessWidget{
         Center(
           child: Text("No cards found :( \nPlease try different category.",
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white, fontSize: 26, fontFamily: 'neuropol_x_rg', fontWeight: FontWeight.bold)),
+              style: TextStyle(color: Colors.white, fontSize: 26, fontFamily: 'montserrat', fontWeight: FontWeight.bold)),
         ),
 
       ],

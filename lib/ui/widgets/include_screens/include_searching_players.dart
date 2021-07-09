@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:ui';
+import 'package:clash_of_cardz_flutter/ui/styles/size_config.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
@@ -121,8 +122,8 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForPlayer> wi
                             children: <Widget>[
                               Lottie.asset(
                                 'assets/animations/lottiefiles/sports-loading.json',
-                                width: getScreenWidth(context),
-                                height: getScreenHeight(context) * 0.6,
+                                height: SizeConfig.heightMultiplier * 31,
+                                width: SizeConfig.heightMultiplier * 31,
                               ),
 
                               Container(
@@ -132,15 +133,10 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForPlayer> wi
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     TweenAnimationBuilder<Duration>(
-                                        duration: Duration(minutes: 5),
-                                        tween: Tween(begin: Duration(minutes: 5), end: Duration.zero),
+                                        duration: Duration(minutes: 10),
+                                        tween: Tween(begin: Duration.zero, end: Duration(minutes: 10), ),
                                         onEnd: () {
-                                          try {
-                                            print('-----time ended');
-                                            funAfterNoPlayerFound();
-                                          } catch (e) {
-                                            print(e);
-                                          }
+                                          funAfterNoPlayerFound();
                                         },
                                         builder: (BuildContext context, Duration value, Widget child) {
                                           //adding 0 at first if min or sec show in single digit

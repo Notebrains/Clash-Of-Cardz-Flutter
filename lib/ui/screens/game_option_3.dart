@@ -11,7 +11,7 @@ import 'package:clash_of_cardz_flutter/helper/exten_fun/common_fun.dart';
 import 'package:clash_of_cardz_flutter/helper/shared_preference_data.dart';
 import 'package:clash_of_cardz_flutter/model/responses/game_option_res_model.dart';
 import 'package:clash_of_cardz_flutter/ui/screens/pvp.dart';
-import 'package:clash_of_cardz_flutter/ui/widgets/include_screens/include_drawer_play_with_friends.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/include_screens/include_friend_list_drawer.dart';
 import 'package:clash_of_cardz_flutter/ui/widgets/include_screens/include_searching_players.dart';
 import 'package:clash_of_cardz_flutter/ui/widgets/libraries/colorize.dart';
 import 'package:clash_of_cardz_flutter/ui/widgets/libraries/shimmer.dart';

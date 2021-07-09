@@ -91,7 +91,6 @@ class Gameplay extends StatelessWidget {
 
   //firebase data init
   DatabaseReference _gamePlayRef;
-  DatabaseReference _gameRoomRef;
   StreamSubscription<Event> gamePlaySubscription;
   FirebaseApp firebaseApp;
 
@@ -218,7 +217,7 @@ class Gameplay extends StatelessWidget {
                                             child: Center(
                                               child: Image.asset(
                                                 'assets/icons/png/img_vs.png',
-                                                color: Colors.orange[800],
+                                                color: Colors.blueGrey,
                                               ),
                                             ),
                                           ),
@@ -278,10 +277,8 @@ class Gameplay extends StatelessWidget {
                                                     return Card(
                                                       elevation: 5,
                                                       shadowColor: Colors.lightBlueAccent,
-                                                      color: Colors.white60,
-                                                      child: ClipOval(
-                                                        child: setResultStatus(index),
-                                                      ),
+                                                      color: Colors.blueGrey,
+                                                      child: setResultStatus(index),
                                                     );
                                                   },
                                                 ),
@@ -330,15 +327,17 @@ class Gameplay extends StatelessWidget {
     await Firebase.initializeApp();
     FirebaseDatabase.instance.setPersistenceEnabled(true);
     _gamePlayRef = FirebaseDatabase.instance.reference().child('gamePlay');
-    _gameRoomRef = FirebaseDatabase.instance.reference().child('gameRoom');
 
+    //Removing gameRoom bcoz its not needed after this point
+    FirebaseDatabase.instance.reference().child('gameRoom').child(gameRoomName.replaceAll('gamePlay', 'gr')).remove();
   }
 
   void manageP1AndP2Data() async{
     //if p1 in game room is you then adding game room p1 in your data else
     // if game room p2 is you then adding game room p2 data in your data.
-    print('-----gameRoomName: $gameRoomName');
-    print('-----pref member id: $isPlayAsP1, $p1MemberId, $p2MemberId, $p1FullName');
+    //print('-----Game play Name: $gameRoomName');
+    //print('-----Game room Name: ${gameRoomName.replaceAll('gamePlay', 'gr')}');
+    //print('-----pref member id: $isPlayAsP1, $p1MemberId, $p2MemberId, $p1FullName');
     if (isPlayAsP1) {
       isYourNextTurn = true;
       whoIsPlaying = 'p1';
@@ -466,6 +465,8 @@ class Gameplay extends StatelessWidget {
             if (p1TurnStatus == 'yes' && p2TurnStatus == 'no') {
               if (!isPlayAsP1) {
                 indexSelectedByP2 = changeMapData['selectedArrayPos'];
+
+                print('----11 whoIsPlaying: $whoIsPlaying, isYourNextTurn: $isYourNextTurn');
                 whoIsPlaying = 'p2';
                 isYourNextTurn = true;
                 card1ValueNotify.value +=1;
@@ -474,31 +475,40 @@ class Gameplay extends StatelessWidget {
 
             } else if (p1TurnStatus == 'no' && p2TurnStatus == 'yes') {
               indexSelectedByP2 = changeMapData['selectedArrayPos'];
+
+              //card2ValueNotify.value +=1;
+              print('----22 whoIsPlaying: $whoIsPlaying, isYourNextTurn: $isYourNextTurn');
+              if (whoIsPlaying == 'p2' && !isYourNextTurn) {
+                card1ValueNotify.value +=1;
+              }
+
               isYourNextTurn = true;
               whoIsPlaying = 'p2';
-              //card2ValueNotify.value +=1;
-              card1ValueNotify.value +=1;
 
             } else if (p1TurnStatus == 'yes' && p2TurnStatus == 'yes') {
               // winBasis and winPints will be same for both player. So I am getting those value when p1 selected first value
+
+              double p1CardValue = double.parse(p1SelectedAttrValue);
+              double p2CardValue = double.parse(p2SelectedAttrValue);
+
               String areYouWon = 'false';
               if (winBasis == 'Highest Value') {
                 if(isPlayAsP1){
-                  if (int.parse(p1SelectedAttrValue) > int.parse(p2SelectedAttrValue)) {
+                  if (p1CardValue > p2CardValue) {
                     areYouWon = 'true';
-                  } else if (int.parse(p1SelectedAttrValue) < int.parse(p2SelectedAttrValue)) {
+                  } else if (p1CardValue < p2CardValue) {
                     areYouWon = 'false';
-                  } else if (int.parse(p1SelectedAttrValue) == int.parse(p2SelectedAttrValue)) {
+                  } else if (p1CardValue == p2CardValue) {
                     areYouWon = 'draw';
                   }
 
                   showWinOrLossDialog(areYouWon);
                 } else {
-                  if (int.parse(p1SelectedAttrValue) > int.parse(p2SelectedAttrValue)) {
+                  if (p1CardValue > p2CardValue) {
                     areYouWon = 'false';
-                  } else if (int.parse(p1SelectedAttrValue) < int.parse(p2SelectedAttrValue)) {
+                  } else if (p1CardValue < p2CardValue) {
                     areYouWon = 'true';
-                  } else if (int.parse(p1SelectedAttrValue) == int.parse(p2SelectedAttrValue)) {
+                  } else if (p1CardValue == p2CardValue) {
                     areYouWon = 'draw';
                   }
 
@@ -506,20 +516,20 @@ class Gameplay extends StatelessWidget {
                 }
               } else if (winBasis == 'Lowest Value') {
                 if(isPlayAsP1){
-                  if (int.parse(p1SelectedAttrValue) > int.parse(p2SelectedAttrValue)) {
+                  if (p1CardValue > p2CardValue) {
                     areYouWon = 'true';
-                  } else if (int.parse(p1SelectedAttrValue) < int.parse(p2SelectedAttrValue)) {
+                  } else if (p1CardValue < p2CardValue) {
                     areYouWon = 'false';
-                  } else if (int.parse(p1SelectedAttrValue) == int.parse(p2SelectedAttrValue)) {
+                  } else if (p1CardValue == p2CardValue) {
                     areYouWon = 'draw';
                   }
                   showWinOrLossDialog(areYouWon);
                 }else {
-                  if (int.parse(p1SelectedAttrValue) > int.parse(p2SelectedAttrValue)) {
+                  if (p1CardValue > p2CardValue) {
                     areYouWon = 'false';
-                  } else if (int.parse(p1SelectedAttrValue) < int.parse(p2SelectedAttrValue)) {
+                  } else if (p1CardValue < p2CardValue) {
                     areYouWon = 'true';
-                  } else if (int.parse(p1SelectedAttrValue) == int.parse(p2SelectedAttrValue)) {
+                  } else if (p1CardValue == p2CardValue) {
                     areYouWon = 'draw';
                   }
 
@@ -530,7 +540,7 @@ class Gameplay extends StatelessWidget {
           } 
           else if (isP1Surrender == 'true' || haveISurrendered  == 'true') {
             print('----isP1Surrender: $isP1Surrender, haveISurrendered: $haveISurrendered');
-            showToast(_scaffoldKey.currentContext, '$p2Name surrender');
+            //showToast(_scaffoldKey.currentContext, '$p2Name surrender');
             gotoResultScreen(_scaffoldKey.currentContext, statesModelGlobal);
           }
         } catch (e) {
@@ -683,7 +693,7 @@ class Gameplay extends StatelessWidget {
               _scaffoldKey.currentContext.read<GamePlayStatesModel>().updateCardCountOnDeck(statesModelGlobal.cardCountOnDeck - 1);
 
             } else {
-              gotoResultScreen(context, statesModelGlobal);
+              gotoResultScreen(_scaffoldKey.currentContext, statesModelGlobal);
             }
 
           } catch(e){
@@ -719,7 +729,7 @@ class Gameplay extends StatelessWidget {
 
     Timer(Duration(milliseconds: 3000), () {
       Navigator.pop(dialogContext);
-      gotoResultScreen(_scaffoldKey.currentContext, statesModel);
+      gotoResultScreen(context, statesModel);
     });
   }
 
@@ -735,6 +745,11 @@ class Gameplay extends StatelessWidget {
         p2Points = statesModel.player2TotalPoints.toString();
       } else if(statesModel.player1TotalPoints < statesModel.player2TotalPoints){
         areYouWon = false;
+        p1Points = statesModel.player1TotalPoints.toString();
+        p2Points = statesModel.player2TotalPoints.toString();
+      } else if(statesModel.player1TotalPoints == statesModel.player2TotalPoints){
+        //if both player points are same then wining both player
+        areYouWon = true;
         p1Points = statesModel.player1TotalPoints.toString();
         p2Points = statesModel.player2TotalPoints.toString();
       }
@@ -754,6 +769,13 @@ class Gameplay extends StatelessWidget {
     print('---- areYouWon: $areYouWon , isP1Surrender: $isP1Surrender, haveISurrendered: $haveISurrendered, '
         'player1TotalPoints: ${statesModel.player1TotalPoints.toString()}, player2TotalPoints: ${statesModel.player2TotalPoints.toString()}');
 
+
+
+    //remove game when match is complete
+    //_gameRoomRef.child(gameRoomName).remove();
+    //dispose firebase ref subs
+    gamePlaySubscription.cancel();
+
     Navigator.push(
             context,
             CupertinoPageRoute(
@@ -766,11 +788,6 @@ class Gameplay extends StatelessWidget {
                   ),
             ),
           );
-
-    //remove game when match is complete
-    //_gameRoomRef.child(gameRoomName).remove();
-    //dispose firebase ref subs
-    gamePlaySubscription.cancel();
   }
 
 /*@override

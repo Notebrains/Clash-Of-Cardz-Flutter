@@ -194,7 +194,7 @@ class AutoPlay extends StatelessWidget {
                                               valueListenable: p1Card1ValueNotify,
                                             ),
 
-                                          HeartBeat(
+                                            HeartBeat(
                                             child: AvatarGlow(
                                               endRadius: 27,
                                               glowColor: Colors.white,
@@ -281,8 +281,8 @@ class AutoPlay extends StatelessWidget {
                                     RotateInUpLeft(
                                       child: Container(
                                         alignment: Alignment.center,
-                                        padding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 0.0),
-                                        height: 50,
+                                        padding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 5.0),
+                                        height: 55,
                                         child: ListView.builder(
                                           physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
                                           scrollDirection: Axis.horizontal,
@@ -291,8 +291,9 @@ class AutoPlay extends StatelessWidget {
                                             return Card(
                                               elevation: 5,
                                               shadowColor: Colors.lightBlueAccent,
-                                              color: Colors.white60,
-                                              child: ClipOval(
+                                              color: Colors.blueGrey,
+                                              child: Padding(
+                                                padding: const EdgeInsets.all(3.0),
                                                 child: setResultStatus(index),
                                               ),
                                             );
@@ -307,6 +308,7 @@ class AutoPlay extends StatelessWidget {
                               ),
                             ),
                           ),
+
                           Expanded(
                             flex: 4,
                             child: Consumer<AutoPlayStatesModel>(

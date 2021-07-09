@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:ui';
 import 'package:clash_of_cardz_flutter/bloc/api_bloc.dart';
 import 'package:clash_of_cardz_flutter/model/responses/send_notification_to_friend_res_model.dart';
+import 'package:clash_of_cardz_flutter/ui/styles/size_config.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
@@ -127,8 +128,8 @@ class IncludeWaitingForFriendState extends State<IncludeWaitingForFriend> with S
                             children: <Widget>[
                               Lottie.asset(
                                 'assets/animations/lottiefiles/sports-loading.json',
-                                width: getScreenWidth(context),
-                                height: getScreenHeight(context) * 0.6,
+                                height: SizeConfig.heightMultiplier * 33,
+                                width: SizeConfig.heightMultiplier * 33,
                               ),
 
                               Container(
@@ -138,8 +139,8 @@ class IncludeWaitingForFriendState extends State<IncludeWaitingForFriend> with S
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     TweenAnimationBuilder<Duration>(
-                                        duration: Duration(minutes: 3),
-                                        tween: Tween(begin: Duration(minutes: 3), end: Duration.zero),
+                                        duration: Duration(minutes: 5),
+                                        tween: Tween(end: Duration(minutes: 5), begin: Duration.zero),
                                         onEnd: () {
                                           //print('Timer Ended');
 

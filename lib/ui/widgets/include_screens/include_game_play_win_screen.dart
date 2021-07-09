@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:clash_of_cardz_flutter/ui/widgets/custom/outlined_btn_gradient_border.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animator/flutter_animator.dart';
@@ -102,70 +103,73 @@ void showBothCardsDialog(BuildContext context, List<Cards> cards, int indexOfSel
                                                 autoPlay: AnimationPlayStates.Forward),
                                           ),
                                         ),
-
-                                        /* TweenAnimationBuilder<Duration>(
-                                              duration: Duration(minutes: 1),
-                                              tween: Tween(begin: Duration(minutes: 1), end: Duration.zero),
-                                              onEnd: () {
-                                                onClickActionOnPlayAgain(true);
-                                                Navigator.pop(context);
-                                              },
-                                              builder: (BuildContext context, Duration value, Widget child) {
-                                                final minutes = value.inMinutes;
-                                                final seconds = value.inSeconds % 60;
-                                                return Padding(
-                                                  padding: const EdgeInsets.symmetric(vertical: 3),
-                                                  child: RotationTransition(
-                                                    alignment: Alignment.topLeft,
-                                                    turns: new AlwaysStoppedAnimation(90 / 360),
-                                                    child: Text("Play withing $minutes:$seconds seconds",
-                                                        textAlign: TextAlign.center,
-                                                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16)),
-                                                  ),
-                                                );
-                                              }),*/
                                       ],
                                     ),
                                   ),
                                 ),
 
-                                Pulse(
-                                  child:  Container(
-                                    margin: EdgeInsets.only(top: 16),
-                                    child: MaterialButton(
-                                      padding: EdgeInsets.fromLTRB(0.0, 2.0, 0.0, 0.0),
-                                      splashColor: Colors.grey,
-                                      child: Container(
-                                        width: 220,
-                                        height: 50,
-                                        decoration: BoxDecoration(
-                                          image: DecorationImage(image: AssetImage('assets/icons/png/bg_button.png'), fit: BoxFit.fill),
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 8, top: 16),
+                                  child: OutlinedBtnGradientBorder(
+                                    gradColor1: Colors.deepOrangeAccent,
+                                    gradColor2: Colors.cyan,
+                                    height: 30,
+                                    width: 250,
+                                    thickness: 1,
+                                    child: Row(
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Text(
+                                          isMatchEnded ? 'Match Ended' : "Play Next Card",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              fontStyle: FontStyle.normal,
+                                              fontFamily: 'montserrat',
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.blue.shade50),
                                         ),
-                                        child: Container(
-                                          alignment: Alignment.center,
-                                          padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 12.0),
-                                          child: Text(
-                                            isMatchEnded ? 'Match Ended' : "Play Next Card",
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                                fontSize: 14,
-                                                fontStyle: FontStyle.normal,
-                                                fontFamily: 'neuropol_x_rg',
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.black87),
-                                          ),
-                                        ),
-                                      ),
-                                      // ),
-                                      onPressed: () {
-                                        onClickActionOnPlayAgain(isMatchEnded);
-                                        Navigator.pop(context);
-                                      },
+
+                                        TweenAnimationBuilder<Duration>(
+                                            duration: Duration(seconds: 7),
+                                            tween: Tween(begin: Duration(seconds: 7), end: Duration.zero),
+                                            onEnd: () {
+                                              try {
+                                                onClickActionOnPlayAgain(isMatchEnded);
+                                                Navigator.pop(context);
+                                              } catch (e) {
+                                                print(e);
+                                              }
+                                            },
+                                            builder: (BuildContext context, Duration value, Widget child) {
+                                              //adding 0 at first if min or sec show in single digit
+                                              final minutes = (value.inMinutes).toString().padLeft(2, "0");
+                                              final seconds = (value.inSeconds % 60).toString().padLeft(2, "0");
+                                              return Tada(
+                                                child: Text(
+                                                  '$minutes : $seconds',
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                    color: Colors.green.shade50,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontFamily: 'montserrat',
+                                                    fontSize: 12,
+                                                  ),
+                                                ),
+                                                preferences:
+                                                AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Loop),
+                                              );
+                                            }),
+                                      ],
                                     ),
+                                    onPressed: () {
+                                      onClickActionOnPlayAgain(isMatchEnded);
+                                      Navigator.pop(context);
+                                    },
                                   ),
-                                  preferences:
-                                  AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Loop),
                                 ),
+
                               ],
                             ),
                           ),

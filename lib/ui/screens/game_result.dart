@@ -292,7 +292,7 @@ class GameResult extends StatelessWidget {
               ZoomIn(
                 child: Center(
                   child: Lottie.asset('assets/animations/lottiefiles/sports-loading.json',
-                      height: 350, width: 350, repeat: true, animate: true),
+                      height: 330, width: 330, repeat: true, animate: true),
                 ),
                 preferences: AnimationPreferences(duration: const Duration(milliseconds: 800), autoPlay: AnimationPlayStates.Forward),
               ),

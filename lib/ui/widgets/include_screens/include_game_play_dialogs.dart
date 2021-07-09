@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:ui';
 
+import 'package:clash_of_cardz_flutter/helper/globals.dart';
 import 'package:clash_of_cardz_flutter/ui/styles/size_config.dart';
 import 'package:clash_of_cardz_flutter/ui/widgets/custom/outlined_btn_gradient_border.dart';
 import 'package:flutter/material.dart';
@@ -486,8 +487,15 @@ void showGameExitDialog(BuildContext context) {
                                               padding: const EdgeInsets.only(left: 12, top: 40),
                                               child: OutlinedBtnGradientBorder(
                                                 onPressed: () {
-                                                  Navigator.pop(context);
-                                                  SystemChannels.platform.invokeMethod<void>('SystemNavigator.pop');
+                                                  try {
+                                                    if (Globals.getAudioPlayerInstance() != null) {
+                                                      Globals.getAudioPlayerInstance().stop();
+                                                    }
+                                                    Navigator.pop(context);
+                                                    SystemChannels.platform.invokeMethod<void>('SystemNavigator.pop');
+                                                  } catch (e) {
+                                                    print(e);
+                                                  }
                                                 },
                                                 height: 25,
                                                 width: 100,
