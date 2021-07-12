@@ -7,7 +7,6 @@ import 'package:clash_of_cardz_flutter/ui/widgets/libraries/avatar_glow.dart';
 import 'package:clash_of_cardz_flutter/ui/widgets/libraries/shimmer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 import 'package:shape_of_view/shape_of_view.dart';
 import 'package:share/share.dart';
@@ -17,7 +16,6 @@ import 'package:clash_of_cardz_flutter/helper/shared_preference_data.dart';
 import 'package:clash_of_cardz_flutter/model/responses/profile_res_model.dart';
 import 'package:clash_of_cardz_flutter/ui/screens/about.dart';
 import 'package:clash_of_cardz_flutter/ui/screens/game_rules.dart';
-import 'package:clash_of_cardz_flutter/ui/screens/old_screen/old_leaderboard.dart';
 import 'package:clash_of_cardz_flutter/ui/screens/profile.dart';
 import 'package:clash_of_cardz_flutter/ui/screens/setting.dart';
 import 'package:clash_of_cardz_flutter/ui/screens/statistics.dart';
@@ -155,6 +153,7 @@ class _HomeState extends State<Home> {
                             },
                           ),
                           IconButton(
+                            tooltip: 'Statistics',
                             icon: Image.asset(
                               'assets/icons/png/ic_statistic_whites.png',
                               height: 25,

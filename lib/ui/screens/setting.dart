@@ -1,14 +1,11 @@
 import 'package:clash_of_cardz_flutter/bloc/api_bloc.dart';
 import 'package:clash_of_cardz_flutter/ui/widgets/custom/outlined_btn_gradient_border.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/libraries/gapless_audio_loop.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:clash_of_cardz_flutter/helper/exten_fun/base_application_fun.dart';
 import 'package:clash_of_cardz_flutter/helper/exten_fun/common_fun.dart';
 import 'package:clash_of_cardz_flutter/helper/globals.dart';
 import 'package:clash_of_cardz_flutter/helper/shared_preference_data.dart';
-import 'package:gapless_audio_loop/gapless_audio_loop.dart';
-//import 'package:audioplayers/audio_cache.dart';
-//import 'package:audioplayers/audioplayers.dart';
 import 'login.dart';
 import 'package:lottie/lottie.dart';
 import 'package:flutter_animator/flutter_animator.dart';

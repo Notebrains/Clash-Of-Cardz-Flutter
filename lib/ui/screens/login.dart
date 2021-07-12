@@ -12,7 +12,6 @@ import 'package:clash_of_cardz_flutter/helper/shared_preference_data.dart';
 import 'package:clash_of_cardz_flutter/model/responses/login_res_model.dart';
 import 'package:clash_of_cardz_flutter/ui/widgets/animations/spring_button.dart';
 import 'package:clash_of_cardz_flutter/ui/widgets/custom/carousel_auto_slider.dart';
-import 'package:clash_of_cardz_flutter/ui/widgets/include_screens/include_waiting_for_friend.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
@@ -39,35 +38,22 @@ class _LogInState extends State<LogIn> {
 
   String firebaseToken = '';
 
-  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
-
-  _register() {
-    _firebaseMessaging.getToken().then((token) {
-      this.firebaseToken = token;
-      print('----Firebase Token: $token');
-    });
+  _register() async {
+    firebaseToken = await FirebaseMessaging.instance.getToken();
+    print('----Firebase Token: $firebaseToken');
   }
 
-  //////local notification
-  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  // local notification
+  // FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
   @override
   void initState() {
     super.initState();
     _register();
-    getMessage();
-
-    //initLocalNotification();
-
-    //local notification
-    var initializationSettingsAndroid = AndroidInitializationSettings('ic_notification');
-    var initializationSettingsIOs = IOSInitializationSettings();
-    var initSettings = InitializationSettings(initializationSettingsAndroid, initializationSettingsIOs);
-
-    flutterLocalNotificationsPlugin.initialize(initSettings, onSelectNotification: onSelectNotification);
+    //getMessage();
   }
 
-
+/*
   void getMessage() {
     /*
     {notification: {title: testing, body: push}, data: {click_action: FLUTTER_NOTIFICATION_CLICK,
@@ -75,7 +61,6 @@ class _LogInState extends State<LogIn> {
     "friendImage":"https:\/\/predictfox.com\/trumpcard\/assets\/uploads\/carddetails\/16086354135.png","gameCat1":"Sports","gameCat2":"Cricket",
     "gameCat3":"Ipl","cardsToPlay":"14"}}}
     */
-
 
     _firebaseMessaging.configure(onMessage: (Map<String, dynamic> message) async {
       print('firebase noti: on message: $message');
@@ -85,7 +70,6 @@ class _LogInState extends State<LogIn> {
       String jsonDataStr = message['data']['game_data'];
 
       showBigPictureNotification(jsonDataStr);
-
     }, onResume: (Map<String, dynamic> message) async {
       print('firebase noti: on resume $message');
       //setState(() => _message = message["notification"]["title"]);
@@ -99,38 +83,22 @@ class _LogInState extends State<LogIn> {
       showDialog(
           context: context,
           builder: (_) => IncludeWaitingForFriend(
-            gameCat1: gameNotiData['gameCat1'],
-            // change here
-            gameCat2: gameNotiData['gameCat2'],
-            gameCat3: gameNotiData['gameCat3'],
-            gameCat4: gameNotiData['gameCat4'],
-            gameType:  gameNotiData['gameType'],
-            playerType: gameNotiData['playerType'],
-            cardsToPlay: gameNotiData[''],
-            friendId: gameNotiData['friendId'],
-            friendName: gameNotiData['friendName'],
-            friendImage: gameNotiData['friendImage'],
-            joinedPlayerType: 'joinedAsFriend',
-          )
-      );
-
-
+                gameCat1: gameNotiData['gameCat1'],
+                // change here
+                gameCat2: gameNotiData['gameCat2'],
+                gameCat3: gameNotiData['gameCat3'],
+                gameCat4: gameNotiData['gameCat4'],
+                gameType: gameNotiData['gameType'],
+                playerType: gameNotiData['playerType'],
+                cardsToPlay: gameNotiData[''],
+                friendId: gameNotiData['friendId'],
+                friendName: gameNotiData['friendName'],
+                friendImage: gameNotiData['friendImage'],
+                joinedPlayerType: 'joinedAsFriend',
+              ));
     }, onLaunch: (Map<String, dynamic> message) async {
       print('firebase noti: on launch $message');
       //setState(() => _message = message["notification"]["title"]);
-    });
-
-    _firebaseMessaging
-        .requestNotificationPermissions(const IosNotificationSettings(sound: true, badge: true, alert: true, provisional: true));
-    _firebaseMessaging.onIosSettingsRegistered.listen((IosNotificationSettings settings) {
-      print("Settings registered: $settings");
-    });
-
-    _firebaseMessaging.getToken().then((String token) {
-      assert(token != null);
-      setState(() {
-        //_homeScreenText = "Push Messaging token: $token";
-      });
     });
   }
 
@@ -154,7 +122,7 @@ class _LogInState extends State<LogIn> {
   Future onSelectNotification(String jsonDataStr) async {
     var gameNotiData = json.decode(jsonDataStr);
     print('----- $gameNotiData');
-    print('----- ${ gameNotiData['gameCat1']}');
+    print('----- ${gameNotiData['gameCat1']}');
     showDialog(
       context: context,
       builder: (_) => IncludeWaitingForFriend(
@@ -163,7 +131,7 @@ class _LogInState extends State<LogIn> {
         gameCat2: gameNotiData['gameCat2'],
         gameCat3: gameNotiData['gameCat3'],
         gameCat4: gameNotiData['gameCat4'],
-        gameType:  gameNotiData['gameType'],
+        gameType: gameNotiData['gameType'],
         playerType: gameNotiData['playerType'],
         cardsToPlay: gameNotiData[''],
         friendId: gameNotiData['friendId'],
@@ -174,7 +142,7 @@ class _LogInState extends State<LogIn> {
     );
   }
 
-/*  void initLocalNotification() async{
+ void initLocalNotification() async{
     WidgetsFlutterBinding.ensureInitialized();
     notificationAppLaunchDetails =
     await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
@@ -193,20 +161,21 @@ class _LogInState extends State<LogIn> {
       body: Column(
         children: [
           Container(
-              height: 70,
-              width: double.maxFinite,
-              color: Color(0xFF1A2D3B),
-              alignment: Alignment.center,
-              child: SlideInDown(
-                child: Shimmer.fromColors(
-                  baseColor: Colors.white54,
-                  highlightColor: Colors.lightBlueAccent,
-                  child: Text('CLASH OF CARDZ',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 40, fontFamily: 'Rapier', color: Colors.white, fontWeight: FontWeight.normal),
-                  ),
+            height: 70,
+            width: double.maxFinite,
+            color: Color(0xFF1A2D3B),
+            alignment: Alignment.center,
+            child: SlideInDown(
+              child: Shimmer.fromColors(
+                baseColor: Colors.white54,
+                highlightColor: Colors.lightBlueAccent,
+                child: Text(
+                  'CLASH OF CARDZ',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 40, fontFamily: 'Rapier', color: Colors.white, fontWeight: FontWeight.normal),
                 ),
               ),
+            ),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -407,7 +376,6 @@ class _LogInState extends State<LogIn> {
                   ],
                 ),
               ),
-
               Expanded(
                 child: FadeInRightBig(
                   child: Padding(
@@ -550,12 +518,14 @@ class _LogInState extends State<LogIn> {
                         Timer(Duration(milliseconds: 2000), () {
                           SchedulerBinding.instance.addPostFrameCallback((_) {
                             Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (BuildContext context) => Home(
-                                          xApiKey: snapshot.data.responce.xApiKey,
-                                          memberId: snapshot.data.responce.memberid,
-                                        ),),);
+                              context,
+                              MaterialPageRoute(
+                                builder: (BuildContext context) => Home(
+                                  xApiKey: snapshot.data.responce.xApiKey,
+                                  memberId: snapshot.data.responce.memberid,
+                                ),
+                              ),
+                            );
                           });
                         });
                       }

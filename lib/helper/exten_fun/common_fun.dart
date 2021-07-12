@@ -87,28 +87,28 @@ void onTapAudio(String audioType) async {
       /* //AudioPlayer instance;
       AudioCache audioCache = AudioCache(prefix: "assets/audios/", fixedPlayer: AudioPlayer()..setReleaseMode(ReleaseMode.STOP));
       switch(audioType) {
-        case "click": {audioCache.play("Mouse-Click-03-c-FesliyanStudios.com.mp3");}
+        case "click": {audioCache.play("");}
         break;
 
-        case "button": {audioCache.play("sfx-bat+hit+ball.mp3");}
+        case "button": {audioCache.play("");}
         break;
 
-        case "icon": {audioCache.play('button-33a.mp3'); }
+        case "icon": {audioCache.play(''); }
         break;
 
-        case "pvp_screen": {audioCache.play('sword_sms.mp3');}
+        case "pvp_screen": {audioCache.play('');}
         break;
 
-        case "match_win": { audioCache.play('Ball+Hit+Cheer.mp3'); }
+        case "match_win": { audioCache.play(''); }
         break;
 
-        case "match_lost": { audioCache.play('sfx-crowd-groan.mp3');  }
+        case "match_lost": { audioCache.play('');  }
         break;
 
-        case "game_win": { audioCache.play('Ball+Hit+Cheer.mp3'); }
+        case "game_win": { audioCache.play(''); }
         break;
 
-        case "game_lost": { audioCache.play('sfx-boo2.mp3'); }
+        case "game_lost": { audioCache.play(''); }
         break;
 
         case "a": { }
@@ -130,7 +130,7 @@ void onTapAudio(String audioType) async {
         break;
 
         default: {
-          audioCache.play('sfx-caughtball.mp3'); }
+          audioCache.play(''); }
         break;
       }*/
     }

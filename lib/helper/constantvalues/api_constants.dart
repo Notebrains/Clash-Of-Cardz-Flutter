@@ -1,6 +1,5 @@
 
 class UrlConstants{
-  static const String appName = 'CLASH OF CARDZ';
   static const String _baseUrl = 'https://predictfox.com/trumpcard/api/';
   static const String _baseUrlImage = 'https://predictfox.com/trumpcard/';
 

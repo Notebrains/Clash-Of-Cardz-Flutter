@@ -6,7 +6,6 @@ import 'package:clash_of_cardz_flutter/ui/widgets/libraries/shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:clash_of_cardz_flutter/bloc/api_bloc.dart';
-import 'package:clash_of_cardz_flutter/helper/constantvalues/constants.dart';
 import 'package:clash_of_cardz_flutter/helper/exten_fun/base_application_fun.dart';
 import 'package:clash_of_cardz_flutter/helper/exten_fun/common_fun.dart';
 import 'package:clash_of_cardz_flutter/model/responses/leaderboard_res_model.dart';

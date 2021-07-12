@@ -26,15 +26,10 @@ class _GameRuleState extends State<GameRule> {
   final CarouselController _controller = CarouselController();
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     this.context = context;
     setScreenOrientationToLandscape();
-    apiBloc.fetchCmsRes(widget.xApiKey, 'about-us');
+    apiBloc.fetchCmsRes(widget.xApiKey, 'game-rules');
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Color(0xFF364B5A),
@@ -61,7 +56,7 @@ class _GameRuleState extends State<GameRule> {
             children: <Widget>[
               FadeInImage.assetNetwork(
                 fit: BoxFit.fill,
-                placeholder: 'assets/animations/gifs/loading_text.gif',
+                placeholder: '',
                 image: item ?? '',
                 width: double.infinity - 60,
               ),
@@ -169,10 +164,10 @@ class _GameRuleState extends State<GameRule> {
               child: FloatingActionButton(
                 mini: true,
                 tooltip: 'Previous',
-                backgroundColor: Colors.orange,
+                backgroundColor: Colors.cyanAccent,
                 child: Icon(
                   Icons.close,
-                  color: Colors.white,
+                  color: Colors.black54,
                 ),
                 onPressed: () {
                   onTapAudio('button');

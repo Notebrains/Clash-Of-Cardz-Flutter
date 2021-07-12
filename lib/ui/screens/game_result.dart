@@ -31,14 +31,30 @@ class GameResult extends StatelessWidget {
   final String p2Point;
   final bool areYouWon;
 
-  GameResult(this.xApiKey, this.p1FullName, this.p1MemberId, this.p1Photo, this.p2Name, this.p2MemberId, this.p2Image, this.gameCat1,
-      this.gameCat2, this.gameCat3, this.gameCat4, this.playerType, this.gameType, this.cardsToPlay, this.p1Point, this.p2Point, this.areYouWon);
+  GameResult(
+      this.xApiKey,
+      this.p1FullName,
+      this.p1MemberId,
+      this.p1Photo,
+      this.p2Name,
+      this.p2MemberId,
+      this.p2Image,
+      this.gameCat1,
+      this.gameCat2,
+      this.gameCat3,
+      this.gameCat4,
+      this.playerType,
+      this.gameType,
+      this.cardsToPlay,
+      this.p1Point,
+      this.p2Point,
+      this.areYouWon);
 
   @override
   Widget build(BuildContext context) {
     setScreenOrientationToLandscape();
     saveGameResultToServer(context);
-    return  WillPopScope(
+    return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
           resizeToAvoidBottomInset: false,
@@ -54,12 +70,10 @@ class GameResult extends StatelessWidget {
                       margin: EdgeInsets.fromLTRB(0, 10, 0, 20),
                       child: Pulse(
                         child: Image.asset('assets/images/bg_victory.png', fit: BoxFit.contain),
-                        preferences:
-                        AnimationPreferences(duration: const Duration(milliseconds: 5500), autoPlay: AnimationPlayStates.Loop),
+                        preferences: AnimationPreferences(duration: const Duration(milliseconds: 5500), autoPlay: AnimationPlayStates.Loop),
                       ),
                     ),
-                    preferences:
-                    AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
+                    preferences: AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
                   ),
 
                   //Lottie.asset('assets/animations/lottiefiles/confetti-on-transparent-background.json',
@@ -81,7 +95,7 @@ class GameResult extends StatelessWidget {
                               radius: 30,
                               child: FadeInImage.assetNetwork(
                                 placeholder: 'assets/icons/png/circle-avator-default-img.png',
-                                image: areYouWon? p1Photo: p2Image,
+                                image: areYouWon ? p1Photo : p2Image,
                                 fit: BoxFit.fill,
                                 width: 65,
                                 height: 65,
@@ -90,18 +104,23 @@ class GameResult extends StatelessWidget {
                           ),
                         ),
                         preferences:
-                        AnimationPreferences(duration: const Duration(milliseconds: 3000), autoPlay: AnimationPlayStates.Forward),
+                            AnimationPreferences(duration: const Duration(milliseconds: 3000), autoPlay: AnimationPlayStates.Forward),
                       ),
                       FadeInDownBig(
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child:
-                          Text(areYouWon? p1FullName.toUpperCase(): p2Name.toUpperCase(),
-                            style: TextStyle(color: Colors.blue[100], fontFamily: 'montserrat',
-                              fontWeight: FontWeight.w900, fontSize: 18,),),
+                          child: Text(
+                            areYouWon ? p1FullName.toUpperCase() : p2Name.toUpperCase(),
+                            style: TextStyle(
+                              color: Colors.blue[100],
+                              fontFamily: 'montserrat',
+                              fontWeight: FontWeight.w900,
+                              fontSize: 18,
+                            ),
+                          ),
                         ),
                         preferences:
-                        AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
+                            AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
                       ),
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -115,7 +134,7 @@ class GameResult extends StatelessWidget {
                               height: 25,
                             ),
                             preferences:
-                            AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Loop),
+                                AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Loop),
                           ),
                           FadeInLeftBig(
                             child: Padding(
@@ -132,14 +151,16 @@ class GameResult extends StatelessWidget {
                               ),
                             ),
                             preferences:
-                            AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
+                                AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
                           ),
                           RubberBand(
-                            child: SvgPicture.asset('assets/icons/svg/competition.svg',
+                            child: SvgPicture.asset(
+                              'assets/icons/svg/competition.svg',
                               width: 35,
-                              height: 35,),
+                              height: 35,
+                            ),
                             preferences:
-                            AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Loop),
+                                AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Loop),
                           ),
                           Flip(
                             child: Padding(
@@ -156,7 +177,7 @@ class GameResult extends StatelessWidget {
                               ),
                             ),
                             preferences:
-                            AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
+                                AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
                           ),
                           HeartBeat(
                             child: IconButton(
@@ -165,11 +186,11 @@ class GameResult extends StatelessWidget {
                               onPressed: null,
                             ),
                             preferences:
-                            AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Loop),
+                                AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Loop),
                           ),
                           FadeInRightBig(
                             child: Text(
-                              areYouWon? p1Point: p2Point,
+                              areYouWon ? p1Point : p2Point,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontSize: 16,
@@ -179,7 +200,7 @@ class GameResult extends StatelessWidget {
                                   color: Colors.blue[100]),
                             ),
                             preferences:
-                            AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
+                                AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
                           ),
                         ],
                       ),
@@ -196,17 +217,19 @@ class GameResult extends StatelessWidget {
                                     onTapAudio('button');
                                     SharedPreferenceHelper().getUserSavedData().then((sharedPrefModel) {
                                       Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (BuildContext context) => Home(
-                                                xApiKey: sharedPrefModel.xApiKey,
-                                                memberId: sharedPrefModel.memberId,
-                                              ),),);
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (BuildContext context) => Home(
+                                            xApiKey: sharedPrefModel.xApiKey,
+                                            memberId: sharedPrefModel.memberId,
+                                          ),
+                                        ),
+                                      ).then((value) => Navigator.of(context, rootNavigator: true).pop());
                                     });
                                   },
                                   height: 30,
                                   width: 120,
-                                  child:  Text(
+                                  child: Text(
                                     "Home",
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
@@ -219,7 +242,7 @@ class GameResult extends StatelessWidget {
                                 ),
                               ),
                               preferences:
-                              AnimationPreferences(duration: const Duration(milliseconds: 2500), autoPlay: AnimationPlayStates.Loop),
+                                  AnimationPreferences(duration: const Duration(milliseconds: 2500), autoPlay: AnimationPlayStates.Loop),
                             ),
                             Pulse(
                               child: Padding(
@@ -230,7 +253,7 @@ class GameResult extends StatelessWidget {
                                   },
                                   height: 30,
                                   width: 120,
-                                  child:  Text(
+                                  child: Text(
                                     "Play Again",
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
@@ -243,12 +266,12 @@ class GameResult extends StatelessWidget {
                                 ),
                               ),
                               preferences:
-                              AnimationPreferences(duration: const Duration(milliseconds: 2500), autoPlay: AnimationPlayStates.Loop),
+                                  AnimationPreferences(duration: const Duration(milliseconds: 2500), autoPlay: AnimationPlayStates.Loop),
                             ),
                           ],
                         ),
                         preferences:
-                        AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
+                            AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
                       ),
                     ],
                   ),
@@ -280,39 +303,6 @@ class GameResult extends StatelessWidget {
     */
 
       apiBloc.fetchSaveGameResultRes(xApiKey, matchDetails, gameCat2);
-      /*showDialog(
-      context: context,
-      barrierDismissible: true,
-      useSafeArea: true,
-      builder: (BuildContext context) {
-        return Dialog(
-          backgroundColor: Colors.transparent,
-          child: Stack(
-            children: [
-              ZoomIn(
-                child: Center(
-                  child: Lottie.asset('assets/animations/lottiefiles/sports-loading.json',
-                      height: 330, width: 330, repeat: true, animate: true),
-                ),
-                preferences: AnimationPreferences(duration: const Duration(milliseconds: 800), autoPlay: AnimationPlayStates.Forward),
-              ),
-              StreamBuilder(
-                stream: apiBloc.saveGameResultRes,
-                builder: (context, AsyncSnapshot<SaveGameResultResModel> snapshot) {
-                  if (snapshot.hasData) {
-                    return Container();
-                  } else if (snapshot.hasError) {
-                    return showSnackBar('Could not save game result', context);
-                  }
-                  return Container();
-                },
-              ),
-            ],
-          ),
-        );
-      },
-    );*/
-
     }
   }
 }

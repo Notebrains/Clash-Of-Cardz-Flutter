@@ -12,7 +12,6 @@ import 'package:clash_of_cardz_flutter/helper/shared_preference_data.dart';
 import 'package:clash_of_cardz_flutter/model/responses/profile_res_model.dart';
 import 'package:clash_of_cardz_flutter/ui/screens/about.dart';
 import 'package:clash_of_cardz_flutter/ui/screens/game_rules.dart';
-import 'package:clash_of_cardz_flutter/ui/screens/old_screen/old_leaderboard.dart';
 import 'package:clash_of_cardz_flutter/ui/screens/login.dart';
 import 'package:clash_of_cardz_flutter/ui/screens/profile.dart';
 import 'package:clash_of_cardz_flutter/ui/screens/setting.dart';
@@ -359,7 +358,6 @@ class _MyHomePageState extends State<OldHomeScreen> {
                             ),
                             onPressed: () {
                               onTapAudio('icon');
-                              Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => OldLeaderboard()));
                             },
                           ),
                           decoration: Views.boxDecorationWidgetForIconWithBgColor(Colors.amber[700], 4.0, Colors.grey, 5.0, 5.0, 3.0),

@@ -1,6 +1,6 @@
 
 
-import 'package:gapless_audio_loop/gapless_audio_loop.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/libraries/gapless_audio_loop.dart';
 
 class Globals {
   static GaplessAudioLoop audioPlayerInstance;

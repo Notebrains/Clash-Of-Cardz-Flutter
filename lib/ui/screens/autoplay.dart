@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:math';
+import 'package:clash_of_cardz_flutter/ui/styles/size_config.dart';
 import 'package:clash_of_cardz_flutter/ui/widgets/custom/no_cards_found.dart';
 import 'package:clash_of_cardz_flutter/ui/widgets/include_screens/include_game_play_dialogs.dart';
 import 'package:flutter/cupertino.dart';
@@ -130,9 +131,11 @@ class AutoPlay extends StatelessWidget {
                                               builder: (BuildContext context, bool value, Widget child) {
                                                 // This builder will only get called when the _counter
                                                 // is updated.
+                                                //print('---- 215: ${SizeConfig.widthMultiplier * 54.8}');
+                                                //print('---- 301: ${SizeConfig.heightMultiplier * 36.7}');
                                                 return Container(
-                                                  width: 215,
-                                                  height: 301,
+                                                  width: SizeConfig.widthMultiplier * 54.8,
+                                                  height: SizeConfig.heightMultiplier * 36.7,
                                                   child: BounceInLeft(
                                                     child: buildPlayerOneCard(
                                                       context,
@@ -196,10 +199,10 @@ class AutoPlay extends StatelessWidget {
 
                                             HeartBeat(
                                             child: AvatarGlow(
-                                              endRadius: 27,
+                                              endRadius: 25,
                                               glowColor: Colors.white,
                                               child: Container(
-                                                width: 55,
+                                                width: 50,
                                                 child: Center(
                                                   child: Image.asset(
                                                     'assets/icons/png/img_vs.png',
@@ -217,8 +220,8 @@ class AutoPlay extends StatelessWidget {
                                                 // This builder will only get called when the _counter
                                                 // is updated.
                                                 return Container(
-                                                  width: 215,
-                                                  height: 302,
+                                                  width: SizeConfig.widthMultiplier * 54.8,
+                                                  height: SizeConfig.heightMultiplier * 36.8,
                                                   child: BounceInRight(
                                                     child: buildPlayerTwoCard(
                                                       context,

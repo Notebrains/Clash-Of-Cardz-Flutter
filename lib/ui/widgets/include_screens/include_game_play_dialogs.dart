@@ -426,8 +426,9 @@ void showGameExitDialog(BuildContext context) {
                                   child: Container(
                                     alignment: Alignment.center,
                                     margin: EdgeInsets.all(20),
+                                    padding: EdgeInsets.all(16),
                                     color: Colors.grey.shade200.withOpacity(0.1),
-                                    child: Lottie.asset('assets/animations/lottiefiles/no-data-found-sad-face.json', repeat: true, animate: true),
+                                    child: Lottie.asset('assets/animations/lottiefiles/cries.json', repeat: true, animate: true),
                                   ),
                                 ),
                                 Expanded(

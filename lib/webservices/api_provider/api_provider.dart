@@ -32,7 +32,7 @@ class ApiProvider {
     };
 
     http.Response response = await http.post(
-      UrlConstants.login,
+      Uri.parse(UrlConstants.login),
       headers: headers,
       body: requestBody,
     );
@@ -48,7 +48,7 @@ class ApiProvider {
 
   Future<GameOptionResModel> gameOptApi(String xApiKey) async {
     final response = await client.get(
-      UrlConstants.gameCategory,
+      Uri.parse(UrlConstants.gameCategory),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'x-api-key': xApiKey,
@@ -66,7 +66,7 @@ class ApiProvider {
 
   Future<LeaderboardResModel> leaderboardApi(String xApiKey) async {
     final response = await client.post(
-      UrlConstants.leaderboard,
+      Uri.parse(UrlConstants.leaderboard),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'x-api-key': xApiKey,
@@ -93,7 +93,7 @@ class ApiProvider {
     };
 
     http.Response response = await http.post(
-      UrlConstants.statistic,
+      Uri.parse(UrlConstants.statistic),
       headers: headers,
       body: requestBody,
     );
@@ -119,7 +119,7 @@ class ApiProvider {
     };
 
     http.Response response = await http.post(
-      UrlConstants.game_friends,
+      Uri.parse(UrlConstants.game_friends),
       headers: headers,
       body: requestBody,
     );
@@ -135,7 +135,7 @@ class ApiProvider {
 
   Future<CardsResModel> cardsApi(String xApiKey) async {
     final response = await client.post(
-      UrlConstants.cards,
+      Uri.parse(UrlConstants.cards),
       headers: <String, String>{
         "Content-Type": 'application/x-www-form-urlencoded',
         'x-api-key': xApiKey,
@@ -159,7 +159,7 @@ class ApiProvider {
     };
 
     http.Response response = await http.post(
-      UrlConstants.profile,
+      Uri.parse(UrlConstants.profile),
       headers: headers,
       body: requestBody,
     );
@@ -195,7 +195,7 @@ class ApiProvider {
     };
 
     http.Response response = await http.post(
-      UrlConstants.cardsToPlay,
+      Uri.parse(UrlConstants.cardsToPlay),
       headers: headers,
       body: requestBody,
     );
@@ -218,7 +218,7 @@ class ApiProvider {
     };
 
     http.Response response = await http.post(
-      UrlConstants.matchMaking,
+      Uri.parse(UrlConstants.matchMaking),
       headers: headers,
       body: requestBody,
     );
@@ -243,7 +243,7 @@ class ApiProvider {
     print('----- ${requestBody.toString()}');
 
     http.Response response = await http.post(
-      UrlConstants.saveMatch,
+      Uri.parse(UrlConstants.saveMatch),
       headers: headers,
       body: requestBody,
     );
@@ -265,7 +265,7 @@ class ApiProvider {
     };
 
     http.Response response = await http.post(
-      UrlConstants.cms_game_data,
+      Uri.parse(UrlConstants.cms_game_data),
       headers: headers,
       body: requestBody,
     );
@@ -287,7 +287,7 @@ class ApiProvider {
     };
 
     http.Response response = await http.post(
-      UrlConstants.notification_on_off,
+      Uri.parse(UrlConstants.notification_on_off),
       headers: headers,
       body: requestBody,
     );
@@ -323,7 +323,7 @@ class ApiProvider {
     };
 
     http.Response response = await http.post(
-      UrlConstants.send_notification_to_friend_for_battle,
+      Uri.parse(UrlConstants.send_notification_to_friend_for_battle),
       headers: headers,
       body: requestBody,
     );

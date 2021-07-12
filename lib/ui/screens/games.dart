@@ -1,3 +1,4 @@
+import 'package:clash_of_cardz_flutter/ui/styles/size_config.dart';
 import 'package:clash_of_cardz_flutter/ui/widgets/custom/no_data_found.dart';
 import 'package:clash_of_cardz_flutter/ui/widgets/include_screens/player_info_back_btn.dart';
 import 'package:clash_of_cardz_flutter/ui/widgets/libraries/shimmer.dart';
@@ -49,23 +50,22 @@ class Games extends StatelessWidget {
   Widget buildUI(BuildContext context, Response response) {
     return Container(
       color: Color(0xFF314453),
-      padding: EdgeInsets.fromLTRB(50, 0, 50, 0),
+      padding: EdgeInsets.fromLTRB(16, 0, 0, 0),
       height: MediaQuery.of(context).size.height - 70,
       child: ListView.builder(
           scrollDirection: Axis.horizontal,
           itemCount: response.cmsMeta.length,
           itemBuilder: (context, index) {
             return Container(
-              padding: EdgeInsets.fromLTRB(15, 16, 5, 24),
+              padding: EdgeInsets.fromLTRB(5, 16, 5, 24),
+              margin: EdgeInsets.fromLTRB(5, 0, 8, 0),
               //width: MediaQuery.of(context).size.width * 0.3,
               child: ClipPath(
                 clipper: CharacterCardBackgroundClipper(),
                 child: Container(
-                  height: 280,
-                  width: 190,
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
-                      colors: [Colors.orange.shade400, Colors.deepOrange],
+                      colors: [Color(0xFF335B7F), Color(0xFF4B7497)],
                       begin: Alignment.topRight,
                       end: Alignment.bottomLeft,
                     ),
@@ -78,7 +78,7 @@ class Games extends StatelessWidget {
                         child: Pulse(
                           child: Padding(
                             padding: const EdgeInsets.only(top: 28),
-                            child: Image.network(response.cmsMeta[index].image, width: 210),
+                            child: Image.network(response.cmsMeta[index].image, width: 200),
                           ),
                           preferences: AnimationPreferences(duration: const Duration(milliseconds: 2000), autoPlay: AnimationPlayStates.Loop),
                         ),
@@ -86,10 +86,10 @@ class Games extends StatelessWidget {
 
                       Shimmer.fromColors(
                         baseColor: Colors.white70,
-                        highlightColor: Colors.deepOrange,
+                        highlightColor: Colors.cyanAccent,
                         child: Text(response.cmsMeta[index].title.toUpperCase() ?? '',
                           textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 16, fontFamily: 'montserrat', color: Colors.white, fontWeight: FontWeight.bold),
+                          style: TextStyle(fontSize: 15, fontFamily: 'neuropol_x_rg', color: Colors.white, fontWeight: FontWeight.bold),
                         ),
                       ),
                     ],

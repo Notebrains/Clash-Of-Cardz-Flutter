@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:ui';
 
+import 'package:clash_of_cardz_flutter/ui/styles/size_config.dart';
 import 'package:clash_of_cardz_flutter/ui/widgets/custom/no_cards_found.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -100,7 +101,7 @@ class Gameplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //print('----game cats: $gameCat1 , $gameCat2 , $gameCat3, $gameCat4, $gameType, $cardsToPlay, $playerType');
+    print('----game cats: $gameCat1 , $gameCat2 , $gameCat3, $gameCat4, $gameType, $cardsToPlay, $playerType');
     initFirebaseCredentials();
     setScreenOrientationToLandscape();
 
@@ -122,9 +123,7 @@ class Gameplay extends StatelessWidget {
               return Stack(
                 fit: StackFit.expand,
                 children: [
-                  Image.asset(getRandomBgImgFromAsset(),
-                    fit: BoxFit.cover,
-                  ),
+                  Image.asset(getRandomBgImgFromAsset(), fit: BoxFit.cover,),
 
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -156,9 +155,11 @@ class Gameplay extends StatelessWidget {
                                         builder: (BuildContext context, int value, Widget child) {
                                           // This builder will only get called when the _counter
                                           //is updated.
+                                          //print('---- 220: ${SizeConfig.widthMultiplier * 54}');
+                                          //print('---- 300: ${SizeConfig.heightMultiplier * 36.5}');
                                           return Container(
-                                            width: 220,
-                                            height: 300,
+                                            width: SizeConfig.widthMultiplier * 54,
+                                            height: SizeConfig.heightMultiplier * 36.5,
                                             child: BounceInLeft(
                                               child: buildCardAsP1(
                                                 context,
@@ -208,10 +209,10 @@ class Gameplay extends StatelessWidget {
 
                                       RubberBand(
                                         child: AvatarGlow(
-                                          endRadius: 40,
+                                          endRadius: 30,
                                           glowColor: Colors.white,
                                           child: Container(
-                                            width: 60,
+                                            width: 55,
                                             child: Center(
                                               child: Image.asset(
                                                 'assets/icons/png/img_vs.png',
@@ -228,9 +229,11 @@ class Gameplay extends StatelessWidget {
                                         builder: (BuildContext context, int value, Widget child) {
                                           // This builder will only get called when the _counter
                                           // is updated.
+                                          //print('---- 150: ${SizeConfig.widthMultiplier * 38.5}');
+                                          //print('---- 210: ${SizeConfig.heightMultiplier * 25.5}');
                                           return Container(
-                                            width: 150,
-                                            height: 210,
+                                            width: SizeConfig.widthMultiplier * 38,
+                                            height: SizeConfig.heightMultiplier * 25.5,
                                             alignment: AlignmentDirectional.bottomCenter,
                                             child: BounceInRight(
                                               child: buildSecondCard(
@@ -327,7 +330,7 @@ class Gameplay extends StatelessWidget {
     _gamePlayRef = FirebaseDatabase.instance.reference().child('gamePlay');
 
     //Removing gameRoom bcoz its not needed after this point
-    FirebaseDatabase.instance.reference().child('gameRoom').child(gameRoomName.replaceAll('gamePlay', 'gr')).remove();
+    FirebaseDatabase.instance.reference().child('gameRoom').child(gameRoomName.replaceAll('gamePlay', 'gr')).remove(); //change here
   }
 
   void manageP1AndP2Data() async{
@@ -345,59 +348,6 @@ class Gameplay extends StatelessWidget {
     }
   }
 
-  /*void retrieveFirebaseData() async {
-    try {
-      _gameRoomRef.once().then((onValue) {
-        onValue.value.forEach((playerDetailsKey, playerDetailsValue) {
-          if (playerDetailsKey.contains(p1MemberIdPref)) {
-            Map playersDetailsInRoom = playerDetailsValue;
-            //if p1 in game room is you then adding game room p1 in your data else
-            // if game room p2 is you then adding game room p2 data in your data.
-
-            //After getting p1Id and p2Id creating game room name
-            this.gameRoomName = 'gamePlay-${playersDetailsInRoom['p1Id']}-${playersDetailsInRoom['p2Id']}';
-            print('-----gameRoomName: $_gameRoomName');
-
-            if (p1MemberIdPref == playersDetailsInRoom['p1Id']) {
-              //you are playing as p1
-              isPlayAsP1 = true; // this is different than whoIsPlaying var
-              isYourNextTurn = true;
-              whoIsPlaying = 'p1';
-              this.p1FullName = playersDetailsInRoom['p1Name'];
-              this.p1MemberId = playersDetailsInRoom['p1Id'];
-              this.p1Photo = playersDetailsInRoom['p1Image'];
-
-              this.p2Name = playersDetailsInRoom['p2Name'];
-              this.p2MemberId = playersDetailsInRoom['p2Id'];
-              this.p2Image = playersDetailsInRoom['p2Image'];
-            } else if (p1MemberIdPref == playersDetailsInRoom['p2Id']) {
-              //you are playing as p2
-              isPlayAsP1 = false;
-              isYourNextTurn = false;
-              whoIsPlaying = 'p2';
-              this.p1FullName = playersDetailsInRoom['p2Name'];
-              this.p1MemberId = playersDetailsInRoom['p2Id'];
-              this.p1Photo = playersDetailsInRoom['p2Image'];
-
-              this.p2Name = playersDetailsInRoom['p1Name'];
-              this.p2MemberId = playersDetailsInRoom['p1Id'];
-              this.p2Image = playersDetailsInRoom['p1Image'];
-            }
-
-            this.categoryName = playersDetailsInRoom['category'];
-            this.subcategoryName = playersDetailsInRoom['subCategory'];
-            this.gameType = playersDetailsInRoom['gameType'];
-            this.cardsToPlay = playersDetailsInRoom['cardCount'];
-
-            listeningToFirebaseDataUpdate(gameRoomName);
-          }
-        });
-      });
-
-    } catch (e) {
-      print(e);
-    }
-  }*/
 
   updateGamePlayStatus(String attrTitle, String attrValue, String winBasis, String winPoints) async{
     if (isPlayAsP1) {

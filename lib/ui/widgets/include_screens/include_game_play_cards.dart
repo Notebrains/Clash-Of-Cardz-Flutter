@@ -29,7 +29,11 @@ Widget buildCardAsP1(
   int cardListSize = (cardsList.length / 2).round();
 
   try {
-    //print('----card list1 length : $isPlayAsP1 , $indexOfCardDeck');
+    print('---- isPlayAsP1, card list1 length : $isPlayAsP1 , ${cardsList.length}');
+
+    for (int i = 0; i < cardsList.length; i++) {
+      print('----cardsList length : ${cardsList[i].cardName}');
+    }
 
     if (isPlayAsP1) {
       for (int i = 0; i < cardListSize; i++) {
@@ -95,6 +99,13 @@ Widget buildCardAsP1(
             ),
 
             TxtInsideDottedLine(text: isYourNextTurn ?'TAP TO \nSELECT A CARD': 'PLEASE WAIT...\nUNTIL P-2 SELECT STATS', width: 140, height: 80,),
+
+            Align(
+                alignment: Alignment.bottomCenter,
+                child: Lottie.asset(
+                    isYourNextTurn? 'assets/animations/lottiefiles/tap_finger.json' :
+                    'assets/animations/lottiefiles/timer-progress-animation.json',
+                    width: 70, height: 70)),
           ],
         ),
         onTap: () {
@@ -152,7 +163,8 @@ Widget buildCardAsP1(
                   placeholder: 'assets/images/cricket_1.png',
                   image: isPlayAsP1 ? cardsList[indexOfCardDeck].cardImg : cardsList[cardListSize + indexOfCardDeck].cardImg,
                   height: 135,
-                  width: 135),
+                  width: 135,
+              ),
             ),
           ),
           Align(
