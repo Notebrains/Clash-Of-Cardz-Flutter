@@ -63,7 +63,7 @@ class IncludeProfile extends StatelessWidget {
                       width: 70,
                       height: 70,
                       margin: EdgeInsets.only(top: 12, bottom: 12),
-                      decoration: Views.boxDecorationWidgetForPngImage(data.response[0].image, 4.0, Colors.lightBlueAccent, 5.0, 5.0, 3.0),
+                      decoration: Views.boxDecorationWidgetForPngImage(data.response[0].image, 4.0, Colors.black87, 5.0, 5.0, 3.0),
                       child: FadeInImage.assetNetwork(
                         placeholder: 'assets/icons/png/NoImageFound.png',
                         image: data.response[0].image ?? '',

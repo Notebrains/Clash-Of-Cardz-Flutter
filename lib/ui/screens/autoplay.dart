@@ -58,6 +58,7 @@ class AutoPlay extends StatelessWidget {
   final ValueNotifier<int> computerCard2ValueNotify = ValueNotifier<int>(0);
   final ValueNotifier<bool> gameScoreStatusValueNotify = ValueNotifier<bool>(false);
 
+
   @override
   Widget build(BuildContext context) {
     print('----game cats autoplay: $gameCat1 , $gameCat2 , $gameCat3, $gameCat4, $cardToPlay, $playerType, $gameType, ');
@@ -93,11 +94,10 @@ class AutoPlay extends StatelessWidget {
                   return Stack(
                     fit: StackFit.expand,
                     children: [
-                      FadeInImage.assetNetwork(
-                        placeholder: 'assets/images/bg_img13.png',
-                        image: snapshot.data.response.subcategoryBackground ?? '',
-                        fit: BoxFit.cover,
+                      Image.asset(getRandomBgImgFromAsset(),
+                      fit: BoxFit.cover,
                       ),
+
                       Row(
                         children: [
                           Expanded(

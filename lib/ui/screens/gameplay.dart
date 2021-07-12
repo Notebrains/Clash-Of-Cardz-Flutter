@@ -100,7 +100,7 @@ class Gameplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('----game cats: $gameCat1 , $gameCat2 , $gameCat3, $gameCat4, $gameType, $cardsToPlay, $playerType');
+    //print('----game cats: $gameCat1 , $gameCat2 , $gameCat3, $gameCat4, $gameType, $cardsToPlay, $playerType');
     initFirebaseCredentials();
     setScreenOrientationToLandscape();
 
@@ -122,9 +122,7 @@ class Gameplay extends StatelessWidget {
               return Stack(
                 fit: StackFit.expand,
                 children: [
-                  FadeInImage.assetNetwork(
-                    placeholder: 'assets/images/bg_img11.png',
-                    image: snapshot.data.response.subcategoryBackground ?? '',
+                  Image.asset(getRandomBgImgFromAsset(),
                     fit: BoxFit.cover,
                   ),
 
@@ -415,8 +413,8 @@ class Gameplay extends StatelessWidget {
     this.winBasis = winBasis;
     this.winPoints = winPoints;
 
-    print('-------p1TurnStatus: $p1TurnStatus');
-    print('----p2TurnStatus: $p2TurnStatus');
+    //print('-------p1TurnStatus: $p1TurnStatus');
+    //print('----p2TurnStatus: $p2TurnStatus');
 
     updateGamePlayStatusToFirebase();
   }
@@ -437,7 +435,7 @@ class Gameplay extends StatelessWidget {
 
   void listeningToFirebaseDataUpdate(String gameRoomName) async {
     gamePlaySubscription = _gamePlayRef.onChildChanged.listen((Event event){
-      print('----- ${event.snapshot.key}');
+      //print('----- ${event.snapshot.key}');
       if (event.snapshot.key == gameRoomName) {
         var changeMapData = event.snapshot.value;
 
@@ -466,7 +464,7 @@ class Gameplay extends StatelessWidget {
               if (!isPlayAsP1) {
                 indexSelectedByP2 = changeMapData['selectedArrayPos'];
 
-                print('----11 whoIsPlaying: $whoIsPlaying, isYourNextTurn: $isYourNextTurn');
+                //print('----11 whoIsPlaying: $whoIsPlaying, isYourNextTurn: $isYourNextTurn');
                 whoIsPlaying = 'p2';
                 isYourNextTurn = true;
                 card1ValueNotify.value +=1;
@@ -477,7 +475,7 @@ class Gameplay extends StatelessWidget {
               indexSelectedByP2 = changeMapData['selectedArrayPos'];
 
               //card2ValueNotify.value +=1;
-              print('----22 whoIsPlaying: $whoIsPlaying, isYourNextTurn: $isYourNextTurn');
+              //print('----22 whoIsPlaying: $whoIsPlaying, isYourNextTurn: $isYourNextTurn');
               if (whoIsPlaying == 'p2' && !isYourNextTurn) {
                 card1ValueNotify.value +=1;
               }
@@ -537,11 +535,17 @@ class Gameplay extends StatelessWidget {
                 }
               }
             }
-          } 
+          }
           else if (isP1Surrender == 'true' || haveISurrendered  == 'true') {
-            print('----isP1Surrender: $isP1Surrender, haveISurrendered: $haveISurrendered');
-            //showToast(_scaffoldKey.currentContext, '$p2Name surrender');
-            gotoResultScreen(_scaffoldKey.currentContext, statesModelGlobal);
+            //print('----isP1Surrender: $isP1Surrender, haveISurrendered: $haveISurrendered');
+            try {
+              showToast(_scaffoldKey.currentContext, 'Surrender The Match');
+              gotoResultScreen(_scaffoldKey.currentContext, statesModelGlobal);
+            } catch (e) {
+              gotoResultScreen(_scaffoldKey.currentContext, statesModelGlobal);
+              print(e);
+            }
+
           }
         } catch (e) {
           print(e);
@@ -647,7 +651,7 @@ class Gameplay extends StatelessWidget {
               print('-----statesModel.player2TotalPoints: ${statesModelGlobal.player2TotalPoints} ');
               */
 
-              print('-----statesModel.cardCountOnDeck: ${statesModelGlobal.cardCountOnDeck}');
+              //print('-----statesModel.cardCountOnDeck: ${statesModelGlobal.cardCountOnDeck}');
 
               if (isWon == 'true') {
                 statesModelGlobal.playerOneTrump = statesModelGlobal.playerOneTrump + 1;
@@ -738,7 +742,7 @@ class Gameplay extends StatelessWidget {
     String p1Points = '0';
     String p2Points = '0';
     if (isP1Surrender == 'false' && haveISurrendered == 'false') {
-      print('---- : ${1}');
+      //print('---- : ${1}');
       if (statesModel.player1TotalPoints > statesModel.player2TotalPoints) {
         areYouWon = true;
         p1Points = statesModel.player1TotalPoints.toString();
@@ -754,7 +758,7 @@ class Gameplay extends StatelessWidget {
         p2Points = statesModel.player2TotalPoints.toString();
       }
     } else if (isP1Surrender == 'true' && haveISurrendered == 'true') {
-      print('---- : ${2}');
+      //print('---- : ${2}');
       areYouWon = false;
       p1Points = '0';
       p2Points = statesModel.player2TotalPoints.toString();
@@ -763,7 +767,7 @@ class Gameplay extends StatelessWidget {
       areYouWon = true;
       p1Points = statesModel.player1TotalPoints.toString();
       p2Points = '0';
-      print('---- : ${3}');
+      //print('---- : ${3}');
     }
 
     print('---- areYouWon: $areYouWon , isP1Surrender: $isP1Surrender, haveISurrendered: $haveISurrendered, '

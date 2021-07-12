@@ -1,20 +1,14 @@
-import 'dart:async';
 import 'dart:ui';
 
 import 'package:clash_of_cardz_flutter/ui/widgets/custom/horizontal_progress_indicator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:clash_of_cardz_flutter/bloc/api_bloc.dart';
-import 'package:clash_of_cardz_flutter/helper/exten_fun/base_application_fun.dart';
 import 'package:clash_of_cardz_flutter/model/responses/friends_res_model.dart';
-import 'package:clash_of_cardz_flutter/model/responses/match_making_res_model.dart';
-import 'package:clash_of_cardz_flutter/ui/screens/gameplay.dart';
 import 'package:flutter_animator/flutter_animator.dart';
-import 'package:lottie/lottie.dart';
 import 'package:clash_of_cardz_flutter/ui/widgets/include_screens/include_waiting_for_friend.dart';
 import 'package:shape_of_view/shape_of_view.dart';
 
-import 'include_searching_players.dart';
 
 Widget friendList(BuildContext context, String xApiKey, String memberId, String gameCat1, String gameCat2, String gameCat3,
     String gameCat4, String cardsToPlay, String playerType) {
@@ -100,15 +94,6 @@ Widget searchableUsersWidget(BuildContext context, FriendsResModel data, String 
                           ),
                         ),
                         onTap: () {
-                          //showPlayerSearchingDialog(context);
-                          /*Navigator.push(context,
-                            CupertinoPageRoute(
-                              builder: (context) => new Gameplay(
-                                name: dataList[index].fullname,
-                                friendId: dataList[index].freindId,),
-                            ),
-                          );*/
-
                           sendNotificationToOtherPlayerByApi(
                             context,
                             xApiKey,

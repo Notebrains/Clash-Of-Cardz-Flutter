@@ -111,7 +111,7 @@ class _MyHomePageState extends State<OldHomeScreen> {
                           height: 40,
                           margin: EdgeInsets.all(5),
                           child: IconButton(
-                            icon: Image.asset('assets/icons/png/share.png'),
+                            icon: Image.asset(''),
                             onPressed: () {
                               onTapAudio('icon');
                               _onShare(context, Constants.shareAndroidTxt, Constants.appName);

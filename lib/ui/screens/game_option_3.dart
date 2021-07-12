@@ -96,7 +96,7 @@ class _GameOptionThreeState extends State<GameOptionThree> {
               ),
 
               //building friend list ui in drawer
-              friendList(context, xApiKey, p1MemberId, widget.gameCat1, widget.gameCat2, widget.gameCat3, widget.gameCat4, gamePlayType, playerType),
+              friendList(context, xApiKey, p1MemberId, widget.gameCat1, widget.gameCat2, widget.gameCat3, widget.gameCat4, cardsToPlay, playerType),
             ],
           ),
         ),

@@ -75,7 +75,8 @@ class ApiBloc {
   final _cardsResFetcher = PublishSubject<CardsResModel>();
   Stream<CardsResModel> get cardsRes => _cardsResFetcher.stream;
 
-  fetchCardsRes(String xApiKey,
+  fetchCardsRes(
+      String xApiKey,
       String catagory,
       String subCatagory,
       String subsubcatagory,

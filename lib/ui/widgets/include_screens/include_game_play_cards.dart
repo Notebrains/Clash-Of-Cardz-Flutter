@@ -29,7 +29,7 @@ Widget buildCardAsP1(
   int cardListSize = (cardsList.length / 2).round();
 
   try {
-    print('----card list1 length : $isPlayAsP1 , $indexOfCardDeck');
+    //print('----card list1 length : $isPlayAsP1 , $indexOfCardDeck');
 
     if (isPlayAsP1) {
       for (int i = 0; i < cardListSize; i++) {
@@ -99,9 +99,9 @@ Widget buildCardAsP1(
         ),
         onTap: () {
 
-          print('----whoIsPlaying $whoIsPlaying');
-          print('----isYourNextTurn $isYourNextTurn');
-          print('----selectedIndexOfP2Card $selectedIndexOfP2Card');
+          //print('----whoIsPlaying $whoIsPlaying');
+          //print('----isYourNextTurn $isYourNextTurn');
+          //print('----selectedIndexOfP2Card $selectedIndexOfP2Card');
 
           if (isYourNextTurn) {
             cardKeyOfPlayerOne.currentState.toggleCard();

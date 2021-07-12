@@ -87,7 +87,7 @@ class _SplashScreenState extends State<SplashScreen> with WidgetsBindingObserver
                                 //print("Tap Event");
                               },
                               text: [
-                                "CLASH OF CARDZ",
+                                "\nCLASH OF CARDZ",
                                 //"LET'S PLAY",
                                 //"CLASH OF CARDZ",
                                 //"ROCK & ROLL",
@@ -118,11 +118,11 @@ class _SplashScreenState extends State<SplashScreen> with WidgetsBindingObserver
                   Expanded(
                     flex: 1,
                     child: Container(
-                      margin: EdgeInsets.symmetric(vertical: 20),
+                      margin: EdgeInsets.only(bottom: 20),
                       width: 600,
                       height: 20,
                       child: ClipRRect(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                        borderRadius: BorderRadius.all(Radius.circular(12)),
                         child: HorizontalProgressIndicator(),
                       ),
                     ),

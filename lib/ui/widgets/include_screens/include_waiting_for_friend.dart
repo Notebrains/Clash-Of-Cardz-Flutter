@@ -74,11 +74,11 @@ class IncludeWaitingForFriendState extends State<IncludeWaitingForFriend> with S
     SharedPreferenceHelper().getUserSavedData().then((sharedPrefUserProfileModel) => {
       print('Fb pref ${sharedPrefUserProfileModel.memberId}'),
 
-      xApiKey = sharedPrefUserProfileModel.xApiKey ?? 'NA',
-      fullName = sharedPrefUserProfileModel.fullName ?? 'NA',
-      memberId = sharedPrefUserProfileModel.memberId ?? 'NA',
-      photo = sharedPrefUserProfileModel.photo ?? 'NA',
-      points = sharedPrefUserProfileModel.points ?? 'NA',
+      xApiKey = sharedPrefUserProfileModel.xApiKey ?? '',
+      fullName = sharedPrefUserProfileModel.fullName ?? '',
+      memberId = sharedPrefUserProfileModel.memberId ?? '',
+      photo = sharedPrefUserProfileModel.photo ?? '',
+      points = sharedPrefUserProfileModel.points ?? '0',
     });
 
     controller.addListener(() {
@@ -128,73 +128,64 @@ class IncludeWaitingForFriendState extends State<IncludeWaitingForFriend> with S
                             children: <Widget>[
                               Lottie.asset(
                                 'assets/animations/lottiefiles/sports-loading.json',
-                                height: SizeConfig.heightMultiplier * 33,
-                                width: SizeConfig.heightMultiplier * 33,
+                                height: SizeConfig.heightMultiplier * 30,
+                                width: SizeConfig.heightMultiplier * 30,
                               ),
 
                               Container(
                                 height: getScreenHeight(context) / 6.0,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    TweenAnimationBuilder<Duration>(
-                                        duration: Duration(minutes: 5),
-                                        tween: Tween(end: Duration(minutes: 5), begin: Duration.zero),
-                                        onEnd: () {
-                                          //print('Timer Ended');
+                                child: TweenAnimationBuilder<Duration>(
+                                    duration: Duration(minutes: 5),
+                                    tween: Tween(end: Duration(minutes: 5), begin: Duration.zero),
+                                    onEnd: () {
+                                      //print('Timer Ended');
 
-                                          //remove first user from firebase if requested player has not joined.
-                                          _friendDetailsRef.child(fbJoinedPlayerList[0].firebasePlayerKey).remove();
+                                      //remove first user from firebase if requested player has not joined.
+                                      _friendDetailsRef.child(fbJoinedPlayerList[0].firebasePlayerKey).remove();
 
 
-                                          Toast.show("Player has not joined the match", context, duration: Toast.lengthLong, gravity:  Toast.bottom,
-                                              backgroundColor: Colors.deepOrange,
-                                              textStyle:  TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 20,
-                                                shadows: [
-                                                  Shadow(color: Colors.white),
-                                                ],
-                                              ));
+                                      Toast.show("Player has not accepted the challenge", context, duration: Toast.lengthLong, gravity:  Toast.bottom,
+                                          backgroundColor: Colors.black26,
+                                          textStyle:  TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.normal,
+                                            fontSize: 20,
+                                            shadows: [
+                                              Shadow(color: Colors.white),
+                                            ],
+                                          ));
 
-                                          Navigator.push(
-                                            context, CupertinoPageRoute(builder: (context) => Home(xApiKey: xApiKey, memberId: memberId,),
+                                      Navigator.push(
+                                        context, CupertinoPageRoute(builder: (context) => Home(xApiKey: xApiKey, memberId: memberId,),
+                                      ),
+                                      );
+                                    },
+                                    builder: (BuildContext context, Duration value, Widget child) {
+                                      //adding 0 at first if min or sec show in single digit
+                                      final minutes = (value.inMinutes).toString().padLeft(2, "0");
+                                      final seconds = (value.inSeconds % 60).toString().padLeft(2, "0");
+                                      return Center(
+                                        child: Text(
+                                          '$minutes : $seconds',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 33,
+                                            shadows: [
+                                              Shadow(color: Colors.white),
+                                            ],
                                           ),
-                                          );
-                                        },
-                                        builder: (BuildContext context, Duration value, Widget child) {
-                                          //adding 0 at first if min or sec show in single digit
-                                          final minutes = (value.inMinutes).toString().padLeft(2, "0");
-                                          final seconds = (value.inSeconds % 60).toString().padLeft(2, "0");
-                                          return Center(
-                                            child: Text(
-                                              '$minutes : $seconds',
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 36,
-                                                shadows: [
-                                                  Shadow(color: Colors.white),
-                                                ],
-                                              ),
-                                            ),
-                                          );
-                                        }),
-                                  ],
-                                ),
+                                        ),
+                                      );
+                                    }),
                               ),
 
                               Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(top: 8.0),
-                                  child: Text(
-                                    'Waiting for your friend to accept the request',
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 24, fontFamily: 'montserrat', fontWeight: FontWeight.bold),
-                                  ),
+                                child: Text(
+                                  'Waiting for your friend to accept the challenge',
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 24, fontFamily: 'montserrat', fontWeight: FontWeight.normal),
                                 ),
                               ),
                             ],
