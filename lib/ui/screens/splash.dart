@@ -173,7 +173,7 @@ class _SplashScreenState extends State<SplashScreen> with WidgetsBindingObserver
 
 
   void initMessaging() async {
-    var androidInit = AndroidInitializationSettings('ic_launcher');
+    var androidInit = AndroidInitializationSettings('ic_notification');
     var iosInit = IOSInitializationSettings();
     var initSetting = InitializationSettings(android: androidInit, iOS: iosInit);
 

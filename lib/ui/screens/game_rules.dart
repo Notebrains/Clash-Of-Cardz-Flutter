@@ -22,21 +22,25 @@ class GameRule extends StatefulWidget {
 }
 
 class _GameRuleState extends State<GameRule> {
-  BuildContext context;
   final CarouselController _controller = CarouselController();
 
   @override
-  Widget build(BuildContext context) {
-    this.context = context;
-    setScreenOrientationToLandscape();
+  void initState() {
+    super.initState();
     apiBloc.fetchCmsRes(widget.xApiKey, 'game-rules');
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    setScreenOrientationToLandscape();
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Color(0xFF364B5A),
       body: StreamBuilder(
         stream: apiBloc.cmsResModel,
         builder: (context, AsyncSnapshot<CmsResModel> snapshot) {
-          if (snapshot.hasData) {
+          if (snapshot.hasData && snapshot.data.status == 1) {
             return buildUI(snapshot.data.response);
           } else if (!snapshot.hasData) {
             return frostedGlassWithProgressBarWidget(context);
@@ -52,15 +56,11 @@ class _GameRuleState extends State<GameRule> {
         margin: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 16.0),
         child: ClipRRect(
           borderRadius: BorderRadius.all(Radius.circular(8.0)),
-          child: Stack(
-            children: <Widget>[
-              FadeInImage.assetNetwork(
-                fit: BoxFit.fill,
-                placeholder: '',
-                image: item ?? '',
-                width: double.infinity - 60,
-              ),
-            ],
+          child: FadeInImage.assetNetwork(
+            fit: BoxFit.fill,
+            placeholder: 'assets/animations/gifs/loader.gif',
+            image: item,
+            width: double.infinity - 60,
           ),
         ),
       ),
@@ -118,7 +118,7 @@ class _GameRuleState extends State<GameRule> {
                               style: TextStyle(
                                   fontSize: 12,
                                   fontStyle: FontStyle.normal,
-                                  fontFamily: 'neuropol_x_rg',
+                                  fontFamily: 'montserrat',
                                   fontWeight: FontWeight.bold,
                                   color: Colors.black87,
                               ),
