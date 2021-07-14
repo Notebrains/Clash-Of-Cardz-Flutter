@@ -475,7 +475,6 @@ class _GameOptionThreeState extends State<GameOptionThree> {
                       playerType: playerType,
                       gameType: gamePlayTypeLists[index],
                       cardsToPlay: cardsToPlay,
-                      //change here
                       xApiKey: xApiKey,
                       p1FullName: p1FullName,
                       p1MemberId: p1MemberId,

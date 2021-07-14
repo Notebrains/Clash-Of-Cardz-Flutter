@@ -1,8 +1,9 @@
 import 'dart:async';
-import 'dart:io';
-
+import 'dart:convert';
 import 'package:clash_of_cardz_flutter/ui/styles/size_config.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/include_screens/include_waiting_for_friend.dart';
 import 'package:clash_of_cardz_flutter/ui/widgets/libraries/gapless_audio_loop.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/libraries/shimmer.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:clash_of_cardz_flutter/helper/exten_fun/base_application_fun.dart';
@@ -10,26 +11,26 @@ import 'package:clash_of_cardz_flutter/helper/globals.dart';
 import 'package:clash_of_cardz_flutter/helper/shared_preference_data.dart';
 import 'package:clash_of_cardz_flutter/ui/screens/login.dart';
 import 'package:clash_of_cardz_flutter/ui/widgets/custom/horizontal_progress_indicator.dart';
-import 'package:clash_of_cardz_flutter/ui/widgets/libraries/animated_text_kit/animated_text_kit.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import '../../main.dart';
 import 'home.dart';
-
 
 class SplashScreen extends StatefulWidget {
   final Color backgroundColor = Colors.white;
   final TextStyle styleTextUnderTheLoader = TextStyle(
-      fontSize: 18.0, fontWeight: FontWeight.bold, color: Colors.black,
+    fontSize: 18.0,
+    fontWeight: FontWeight.bold,
+    color: Colors.black,
   );
 
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> with WidgetsBindingObserver{
+class _SplashScreenState extends State<SplashScreen> with WidgetsBindingObserver {
   final splashDelay = 6;
   FirebaseMessaging messaging = FirebaseMessaging.instance;
   FlutterLocalNotificationsPlugin fltNotification;
-
 
   @override
   void initState() {
@@ -47,7 +48,6 @@ class _SplashScreenState extends State<SplashScreen> with WidgetsBindingObserver
       }
     });
   }
-
 
   @override
   void setState(fn) {
@@ -70,90 +70,67 @@ class _SplashScreenState extends State<SplashScreen> with WidgetsBindingObserver
       String xApiKey = sharedPrefUserProfileModel.xApiKey ?? 'NA';
       String memberId = sharedPrefUserProfileModel.memberId ?? 'NA';
 
-      if(xApiKey != 'NA' && memberId != 'NA'){
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) =>
-            Home(xApiKey: xApiKey, memberId: memberId,),),);
+      if (xApiKey != 'NA' && memberId != 'NA') {
+        MyRootApp.navigatorKey.currentState.pushReplacement(MaterialPageRoute(builder: (context) => Home(
+              xApiKey: xApiKey,
+              memberId: memberId,
+            ),
+          ),
+        );
       } else {
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => LogIn()));
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (BuildContext context) => LogIn(),
+          ),
+        );
       }
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Container(
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      backgroundColor: Colors.transparent,
+      body: Container(
+        width: double.maxFinite,
+        height: double.maxFinite,
         decoration: new BoxDecoration(
           image: new DecorationImage(
             image: new AssetImage("assets/images/bg_img3.png"),
             fit: BoxFit.cover,
           ),
         ),
-        child: Scaffold(
-          resizeToAvoidBottomInset: false,
-          backgroundColor: Colors.transparent,
-          body: Stack(
-            fit: StackFit.expand,
-            children: <Widget>[
-              Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  Expanded(
-                    flex: 6,
-                    child: Container(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          SizedBox(
-                            child: ColorizeAnimatedTextKit(
-                              onTap: () {
-                                //print("Tap Event");
-                              },
-                              text: [
-                                "\nCLASH OF CARDZ",
-                                //"LET'S PLAY",
-                                //"CLASH OF CARDZ",
-                                //"ROCK & ROLL",
-                              ],
-                              textStyle: TextStyle(
-                                  fontSize: 60.0,
-                                  fontStyle: FontStyle.normal,
-                                  fontFamily: 'Rapier'),
-                              colors: [
-                                Color(0xFF364B5A),
-                                Colors.blueAccent,
-                                Colors.cyanAccent[400],
-                              ],
-                              textAlign: TextAlign.center,
-                              alignment: AlignmentDirectional.center,
-                              // or Alignment.topLeft
-                              isRepeatingAnimation: true,
-                              repeatForever: true,
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 5.0),
-                          ),
-                        ],
-                      ),
-                    ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(top: 50),
+              child: Shimmer.fromColors(
+                baseColor: Color(0xFF364B5A),
+                highlightColor: Colors.cyanAccent[400],
+                child: Text(
+                  'CLASH OF CARDZ',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 60.0,
+                    fontFamily: 'Rapier',
+                    color: Colors.lightBlueAccent,
                   ),
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      margin: EdgeInsets.only(bottom: 20),
-                      width: SizeConfig.widthMultiplier * 180,
-                      height: 20,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.all(Radius.circular(25)),
-                        child: HorizontalProgressIndicator(),
-                      ),
-                    ),
-                  ),
-                ],
+                ),
               ),
-            ],
-          ),
+            ),
+            Container(
+              width: SizeConfig.widthMultiplier * 180,
+              height: 20,
+              child: ClipRRect(
+                borderRadius: BorderRadius.all(Radius.circular(25)),
+                child: HorizontalProgressIndicator(),
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -171,16 +148,15 @@ class _SplashScreenState extends State<SplashScreen> with WidgetsBindingObserver
     }
   }
 
-
   void initMessaging() async {
     var androidInit = AndroidInitializationSettings('ic_notification');
     var iosInit = IOSInitializationSettings();
     var initSetting = InitializationSettings(android: androidInit, iOS: iosInit);
 
     const AndroidNotificationChannel channel = AndroidNotificationChannel(
-      'tlt_channel_id', // id
-      'The laundry time', // title
-      'This notification is from  TLT.', // description
+      'coc_channel_id', // id
+      'Clash Of Cardz', // title
+      'This notification is from  Clash Of Cardz', // description
       importance: Importance.max,
     );
 
@@ -216,10 +192,9 @@ class _SplashScreenState extends State<SplashScreen> with WidgetsBindingObserver
               ),
               iOS: IOSNotificationDetails(),
             ),
-            payload: message.data['notification_data']??'');
+            payload: message.data['game_data'] ?? '');
 
-        fltNotification.initialize(initSetting,
-            onSelectNotification: onSelectNotification);
+        fltNotification.initialize(initSetting, onSelectNotification: onSelectNotification);
       }
     });
   }
@@ -227,11 +202,7 @@ class _SplashScreenState extends State<SplashScreen> with WidgetsBindingObserver
   Future onSelectNotification(String payload) async {
     if (payload != null && payload.isNotEmpty) {
       print('----payload: $payload');
-      try {
-        // get data from payload and navigate to screen
-      } catch (e) {
-        print(e);
-      }
+      openPageWithData(payload);
     }
   }
 
@@ -264,99 +235,63 @@ class _SplashScreenState extends State<SplashScreen> with WidgetsBindingObserver
     //print('----Firebase notification data onClicked 1: ${initialMessage.data}');
     //print('----Firebase notification contentAvailable onClicked 1: ${initialMessage.contentAvailable}');
 
-    if (initialMessage != null && initialMessage.data['notification_data'] != null) {
+    if (initialMessage != null && initialMessage.data['game_data'] != null) {
       print('----Firebase notification data onClicked 1: ${initialMessage.data}');
-      try {
-        /*final responseJson = json.decode(initialMessage.data['notification_data']);
-        var model = BulkOrderNotificationModel.fromJson(responseJson);
-        print('----Fb noti orderId 1: ${model.orderId}');
-
-        SharedPreferenceHelper().getUserCustomerId().then((customerId) => {
-          if (customerId.isNotEmpty)
-            {
-              Future.delayed(const Duration(milliseconds: 2000), () =>
-                  MyRootApp.navigatorKey.currentState.push(MaterialPageRoute(builder: (context) => BulkOrderPreview(
-                    customerId: customerId,
-                    orderId: model.orderId,
-                  )))),
-            }
-          else
-            {
-              Future.delayed(const Duration(milliseconds: 2000), () =>
-                  MyRootApp.navigatorKey.currentState.pushReplacement(MaterialPageRoute(builder: (context) => Intro()))),
-            }
-        });*/
-      } catch (e) {
-        print(e);
-      }
+      openPageWithData(initialMessage.data['game_data']);
     } else {
-      /*SharedPreferenceHelper().getUserCustomerId().then((customerId) => {
-        //print('-----2 $customerId'),
-        if (customerId.isNotEmpty)
-          {
-            SharedPreferenceHelper().getCartCount().then((value) => {
-              Future.delayed(const Duration(milliseconds: 2000), () =>
-                  MyRootApp.navigatorKey.currentState.pushReplacement(MaterialPageRoute(builder: (context) => Home(
-                    cartCount: value,
-                  )))),
-            })
-          }
-        else
-          {
-            Future.delayed(const Duration(milliseconds: 2000), () =>
-                MyRootApp.navigatorKey.currentState.pushReplacement(MaterialPageRoute(builder: (context) => Intro()))),
-          }
-      });*/
+      _loadWidget();
     }
 
     // Also handle any interaction when the app is in the background via a
     // Stream listener
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      if (message != null && message.data['notification_data'] != null) {
-        print('----Firebase notification data onClicked 2: ${message.data}');
-        try {
-          /*final responseJson = json.decode(message.data['notification_data']);
-          var model = BulkOrderNotificationModel.fromJson(responseJson);
-          print('----Fb background notification orderId 2: ${model.orderId}');
-
-          SharedPreferenceHelper().getUserCustomerId().then((customerId) => {
-            if (customerId.isNotEmpty)
-              {
-                Future.delayed(const Duration(milliseconds: 2000), () =>
-                    MyRootApp.navigatorKey.currentState.pushReplacement(MaterialPageRoute(builder: (context) => BulkOrderPreview(
-                      customerId: customerId,
-                      orderId: model.orderId,
-                    )))),
-              }
-            else
-              {
-                Future.delayed(const Duration(milliseconds: 2000), () =>
-                    MyRootApp.navigatorKey.currentState.pushReplacement(MaterialPageRoute(builder: (context) => Intro()))),
-              }
-          });
-          */
-        } catch (e) {
-          print(e);
-        }
+      print('----Firebase notification data onClicked 2: ${message.data}');
+      if (message != null && message.data['game_data'] != null) {
+        openPageWithData(message.data['game_data']);
       } else {
-        /*SharedPreferenceHelper().getUserCustomerId().then((customerId) => {
-          //print('-----2 $customerId'),
-          if (customerId.isNotEmpty)
-            {
-              SharedPreferenceHelper().getCartCount().then((value) => {
-                Future.delayed(const Duration(milliseconds: 2000), () =>
-                    MyRootApp.navigatorKey.currentState.pushReplacement(MaterialPageRoute(builder: (context) => Home(
-                      cartCount: value,
-                    )))),
-              })
-            }
-          else
-            {
-              Future.delayed(const Duration(milliseconds: 2000), () =>
-                  MyRootApp.navigatorKey.currentState.pushReplacement(MaterialPageRoute(builder: (context) => Intro()))),
-            }
-        });*/
+        _loadWidget();
       }
     });
   }
+
+  void openPageWithData(String payload) {
+    try {
+      // get data from payload and navigate to screen
+      var gameNotiData = json.decode(payload);
+      print('-----openPageWithData: $gameNotiData');
+      /*
+      output
+      {gameType: test, friendName: Imdadul, gameCat4: 1991-2000, friendId: MEM000033, playerType: bowler, friendImage:
+      https://lh3.googleusercontent.com/a-/AOh14GhhY4WoN2ln1gzcQE_QSQ3tOtyjWCk3oHEniCp4=s96-c, gameCat1: sports, gameCat2: cricket,
+       gameCat3: IPL, cardsToPlay: 120}
+       */
+
+      print('----- ${gameNotiData['gameCat1']}');
+      //output  ----- sports
+
+
+      Future.delayed(const Duration(milliseconds: 2000), () =>
+          MyRootApp.navigatorKey.currentState.pushReplacement(MaterialPageRoute(builder: (context) => IncludeWaitingForFriend(
+            gameCat1: gameNotiData['gameCat1'],
+            gameCat2: gameNotiData['gameCat2'],
+            gameCat3: gameNotiData['gameCat3'],
+            gameCat4: gameNotiData['gameCat4'],
+            gameType: gameNotiData['gameType'],
+            playerType: gameNotiData['playerType'],
+            cardsToPlay: gameNotiData['cardsToPlay'],
+            friendId: gameNotiData['friendId'],
+            friendName: gameNotiData['friendName'],
+            friendImage: gameNotiData['friendImage'],
+            joinedPlayerType: 'joinedAsFriend',
+          ),),),);
+    } catch (e) {
+      print(e);
+    }
+  }
 }
+
+/*
+Message data: {game_data: {"gameType":"test","friendName":"Imdadul","gameCat4":"1991-2000","friendId":"MEM000033",
+"playerType":"bowler","friendImage":"https:\/\/lh3.googleusercontent.com\/a-\/AOh14GhhY4WoN2ln1gzcQE_QSQ3tOtyjWCk3oHEniCp4=s96-c",
+"gameCat1":"sports","gameCat2":"cricket","gameCat3":"IPL","cardsToPlay":"120"}, click_action: FLUTTER_NOTIFICATION_CLICK}
+*/

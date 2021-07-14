@@ -38,88 +38,84 @@ Widget searchableUsersWidget(BuildContext context, FriendsResModel data, String 
     builder: (context, value, _) {
       return Stack(
         children: [
-          Expanded(
-            child: Container(
-              padding: EdgeInsets.only(top: 60),
-              color: Color(0xFF253845),
-              height: MediaQuery.of(context).size.height,
-              width: double.infinity,
-              child: ListView.builder(
-                  physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-                  itemCount: searching ? filtered.value.length : dataList.length,
-                  itemBuilder: (context, index) {
-                    //final item = searching ? filtered.value[index] : dataList[index].fullname;
-                    return SlideInLeft(
-                      child: InkWell(
-                        child: Container(
-                          margin: EdgeInsets.fromLTRB(18, 5, 5, 5),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              ShapeOfView(
-                                height: 45,
-                                width: 45,
-                                shape: CircleShape(borderColor: Colors.cyanAccent, borderWidth: 1.0),
-                                elevation: 8,
-                                child: FadeInImage.assetNetwork(
-                                  placeholder: 'assets/icons/png/circle-avator-default-img.png',
-                                  image: dataList[index].photo,
-                                  fit: BoxFit.cover,
-                                ),
+          Container(
+            padding: EdgeInsets.only(top: 55),
+            color: Color(0xFF253845),
+            height: MediaQuery.of(context).size.height - 43,
+            width: double.infinity,
+            child: ListView.builder(
+                physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+                itemCount: searching ? filtered.value.length : dataList.length,
+                itemBuilder: (context, index) {
+                  //final item = searching ? filtered.value[index] : dataList[index].fullname;
+                  return SlideInLeft(
+                    child: InkWell(
+                      child: Container(
+                        margin: EdgeInsets.fromLTRB(18, 5, 5, 5),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            ShapeOfView(
+                              height: 40,
+                              width: 40,
+                              shape: CircleShape(borderColor: Colors.cyanAccent, borderWidth: 1.0),
+                              elevation: 8,
+                              child: FadeInImage.assetNetwork(
+                                placeholder: 'assets/icons/png/circle-avator-default-img.png',
+                                image: dataList[index].photo,
+                                fit: BoxFit.cover,
                               ),
+                            ),
 
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    Padding(
-                                      padding: const EdgeInsets.fromLTRB(8, 6, 0, 3),
-                                      child: Text(
-                                        dataList[index].fullname,
-                                        style: TextStyle(color: Colors.white, fontSize: 15),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 8),
-                                      child: dataList[index].liveStatus == 1
-                                          ? Text('Online',
-                                              style: TextStyle(color: Colors.cyanAccent, fontSize: 12, letterSpacing: .3))
-                                          : Text('Offline', style: TextStyle(color: Colors.white60, fontSize: 12, letterSpacing: .3)),
-                                    ),
-                                  ],
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Padding(
+                                  padding: const EdgeInsets.fromLTRB(8, 6, 0, 3),
+                                  child: Text(
+                                    dataList[index].fullname,
+                                    style: TextStyle(color: Colors.white, fontSize: 14),
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 8),
+                                  child: dataList[index].liveStatus == 1
+                                      ? Text('Online',
+                                          style: TextStyle(color: Colors.cyanAccent, fontSize: 11, letterSpacing: .3),)
+                                      : Text('Offline', style: TextStyle(color: Colors.white60, fontSize: 11, letterSpacing: .3),),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
-                        onTap: () {
-                          sendNotificationToOtherPlayerByApi(
-                            context,
-                            xApiKey,
-                            memberId,
-                            gameCat1,
-                            gameCat2,
-                            gameCat3,
-                            gameCat4,
-                            cardsToPlay,
-                            playerType,
-                            dataList[index].freindId,
-                            dataList[index].fullname,
-                            dataList[index].photo,
-                          );
-                        },
                       ),
-                      preferences:
-                          AnimationPreferences(duration: const Duration(milliseconds: 1300), autoPlay: AnimationPlayStates.Forward),
-                    );
-                  }),
-            ),
+                      onTap: () {
+                        sendNotificationToOtherPlayerByApi(
+                          context,
+                          xApiKey,
+                          memberId,
+                          gameCat1,
+                          gameCat2,
+                          gameCat3,
+                          gameCat4,
+                          cardsToPlay,
+                          playerType,
+                          dataList[index].freindId,
+                          dataList[index].fullname,
+                          dataList[index].photo,
+                        );
+                      },
+                    ),
+                    preferences:
+                        AnimationPreferences(duration: const Duration(milliseconds: 1300), autoPlay: AnimationPlayStates.Forward),
+                  );
+                }),
           ),
 
           Container(
             height: 43,
-            margin: EdgeInsets.fromLTRB(12, 0, 8, 0),
+            margin: EdgeInsets.fromLTRB(12, 0, 12, 0),
             padding: const EdgeInsets.symmetric(vertical: 1, horizontal: 12),
             decoration: BoxDecoration(
               color: Colors.white.withAlpha(30),
@@ -192,9 +188,12 @@ Widget searchableUsersWidget(BuildContext context, FriendsResModel data, String 
 
 void sendNotificationToOtherPlayerByApi(BuildContext context, String xApiKey, String memberId, String gameCat1, String gameCat2,
     String gameCat3, String gameCat4, String cardsToPlay, String playerType, String friendId, String friendName, String friendImage) {
-  apiBloc.sendNotificationToFriendApi(xApiKey, 'Battle with friends', '$friendName request to play match. Play Now', friendId, gameCat1,
+
+  //sending friendId = member id to api bcoz friend will get sender id as a p2 id
+  apiBloc.sendNotificationToFriendApi(xApiKey, 'Clash with friends', '$friendName request to play match. Play Now', friendId, gameCat1,
       gameCat2, gameCat3, gameCat4, 'vs Friends', playerType, cardsToPlay, memberId, friendName, friendImage);
 
+  print('---- friend Id: $friendId, memberId: $memberId');
   showDialog(
     context: context,
     builder: (_) => IncludeWaitingForFriend(

@@ -13,7 +13,6 @@ class GaplessAudioLoop {
   String _loadedFile;
   int _id;
   double _volume = 1.0;
-
   double get volume => _volume;
 
   void setVolume(double volume) async {

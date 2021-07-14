@@ -261,7 +261,7 @@ void showSurrenderDialog(BuildContext context, {Function() onOkTap}) {
     builder: (BuildContext context) {
       return Dialog(
         backgroundColor: Colors.transparent,
-        child: ZoomIn(
+        child: SlideInDown(
           child: Center(
             child: Container(
               width: SizeConfig.widthMultiplier * 160,
@@ -385,7 +385,7 @@ void showSurrenderDialog(BuildContext context, {Function() onOkTap}) {
               ),
             ),
           ),
-          preferences: AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
+          preferences: AnimationPreferences(duration: const Duration(milliseconds: 600), autoPlay: AnimationPlayStates.Forward),
         ),
       );
     },
@@ -400,7 +400,7 @@ void showGameExitDialog(BuildContext context) {
     builder: (BuildContext context) {
       return Dialog(
         backgroundColor: Colors.transparent,
-        child: ZoomIn(
+        child: SlideInDown(
           child: Center(
             child: Container(
               width: SizeConfig.widthMultiplier * 150,
@@ -533,7 +533,7 @@ void showGameExitDialog(BuildContext context) {
               ),
             ),
           ),
-          preferences: AnimationPreferences(duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
+          preferences: AnimationPreferences(duration: const Duration(milliseconds: 600), autoPlay: AnimationPlayStates.Forward),
         ),
       );
     },

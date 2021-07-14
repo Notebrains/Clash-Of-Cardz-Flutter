@@ -13,11 +13,9 @@ import 'package:clash_of_cardz_flutter/model/responses/login_res_model.dart';
 import 'package:clash_of_cardz_flutter/ui/widgets/animations/spring_button.dart';
 import 'package:clash_of_cardz_flutter/ui/widgets/custom/carousel_auto_slider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_animator/flutter_animator.dart';
-import 'dart:convert';
 import 'dart:async';
 import 'package:lottie/lottie.dart';
 import 'home.dart';
@@ -43,9 +41,6 @@ class _LogInState extends State<LogIn> {
     print('----Firebase Token: $firebaseToken');
   }
 
-  // local notification
-  // FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-
   @override
   void initState() {
     super.initState();
@@ -53,107 +48,8 @@ class _LogInState extends State<LogIn> {
     //getMessage();
   }
 
-/*
-  void getMessage() {
-    /*
-    {notification: {title: testing, body: push}, data: {click_action: FLUTTER_NOTIFICATION_CLICK,
-    game_data: {"gameType":"vs friends","friendName":"Rex","gameCat4":"2008-2021","friendId":"MEM00001","playerType":"Bowler",
-    "friendImage":"https:\/\/predictfox.com\/trumpcard\/assets\/uploads\/carddetails\/16086354135.png","gameCat1":"Sports","gameCat2":"Cricket",
-    "gameCat3":"Ipl","cardsToPlay":"14"}}}
-    */
-
-    _firebaseMessaging.configure(onMessage: (Map<String, dynamic> message) async {
-      print('firebase noti: on message: $message');
-      var gameNotiData = json.decode(message['data']['game_data']);
-      print('---- ${gameNotiData['friendName']}');
-
-      String jsonDataStr = message['data']['game_data'];
-
-      showBigPictureNotification(jsonDataStr);
-    }, onResume: (Map<String, dynamic> message) async {
-      print('firebase noti: on resume $message');
-      //setState(() => _message = message["notification"]["title"]);
-      // (App in background)
-      // From Notification bar when user click notification we get this event.
-      // on this event navigate to a particular page.
-
-      var gameNotiData = json.decode(message['data']['game_data']);
-
-      // Assuming you will create classes to handle JSON data. :)
-      showDialog(
-          context: context,
-          builder: (_) => IncludeWaitingForFriend(
-                gameCat1: gameNotiData['gameCat1'],
-                // change here
-                gameCat2: gameNotiData['gameCat2'],
-                gameCat3: gameNotiData['gameCat3'],
-                gameCat4: gameNotiData['gameCat4'],
-                gameType: gameNotiData['gameType'],
-                playerType: gameNotiData['playerType'],
-                cardsToPlay: gameNotiData[''],
-                friendId: gameNotiData['friendId'],
-                friendName: gameNotiData['friendName'],
-                friendImage: gameNotiData['friendImage'],
-                joinedPlayerType: 'joinedAsFriend',
-              ));
-    }, onLaunch: (Map<String, dynamic> message) async {
-      print('firebase noti: on launch $message');
-      //setState(() => _message = message["notification"]["title"]);
-    });
-  }
-
-  //change here
-  Future<void> showBigPictureNotification(String jsonDataStr) async {
-    var bigPictureStyleInformation = BigPictureStyleInformation(DrawableResourceAndroidBitmap("ic_notification"),
-        largeIcon: DrawableResourceAndroidBitmap("ic_notification"),
-        contentTitle: 'Clash Of Cardz',
-        htmlFormatContentTitle: true,
-        summaryText: 'Your friend request to play match. Play Now',
-        htmlFormatSummaryText: true);
-    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-        'big text channel id', 'big text channel name', 'big text channel description',
-        styleInformation: bigPictureStyleInformation);
-    var iOSPlatformChannelSpecifics = new IOSNotificationDetails();
-    var platformChannelSpecifics = NotificationDetails(androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
-    await flutterLocalNotificationsPlugin.show(0, 'big text title', 'silent body', platformChannelSpecifics, payload: jsonDataStr);
-  }
-
-  ///////local notification
-  Future onSelectNotification(String jsonDataStr) async {
-    var gameNotiData = json.decode(jsonDataStr);
-    print('----- $gameNotiData');
-    print('----- ${gameNotiData['gameCat1']}');
-    showDialog(
-      context: context,
-      builder: (_) => IncludeWaitingForFriend(
-        gameCat1: gameNotiData['gameCat1'],
-        // change here
-        gameCat2: gameNotiData['gameCat2'],
-        gameCat3: gameNotiData['gameCat3'],
-        gameCat4: gameNotiData['gameCat4'],
-        gameType: gameNotiData['gameType'],
-        playerType: gameNotiData['playerType'],
-        cardsToPlay: gameNotiData[''],
-        friendId: gameNotiData['friendId'],
-        friendName: gameNotiData['friendName'],
-        friendImage: gameNotiData['friendImage'],
-        joinedPlayerType: 'joinedAsFriend',
-      ),
-    );
-  }
-
- void initLocalNotification() async{
-    WidgetsFlutterBinding.ensureInitialized();
-    notificationAppLaunchDetails =
-    await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
-    await initNotifications(flutterLocalNotificationsPlugin);
-    requestIOSPermissions(flutterLocalNotificationsPlugin);
-
-  }*/
-
   @override
   Widget build(BuildContext context) {
-    Firebase.initializeApp();
     this.context = context;
     return Scaffold(
       resizeToAvoidBottomInset: false,

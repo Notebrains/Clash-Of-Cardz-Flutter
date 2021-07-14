@@ -330,7 +330,7 @@ class Gameplay extends StatelessWidget {
     _gamePlayRef = FirebaseDatabase.instance.reference().child('gamePlay');
 
     //Removing gameRoom bcoz its not needed after this point
-    FirebaseDatabase.instance.reference().child('gameRoom').child(gameRoomName.replaceAll('gamePlay', 'gr')).remove(); //change here
+    FirebaseDatabase.instance.reference().child('gameRoom').child(gameRoomName.replaceAll('gamePlay', 'gr')).remove();
   }
 
   void manageP1AndP2Data() async{

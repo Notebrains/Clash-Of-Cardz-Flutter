@@ -120,50 +120,70 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForPlayer> wi
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
-                              Lottie.asset(
-                                'assets/animations/lottiefiles/sports-loading.json',
-                                height: SizeConfig.heightMultiplier * 31,
-                                width: SizeConfig.heightMultiplier * 31,
+                              Align(
+                                alignment: Alignment.topRight,
+                                child: Container(
+                                  width: 30,
+                                  height: 30,
+                                  margin: EdgeInsets.only(top: 12, right: 12),
+                                  child: FloatingActionButton(
+                                    mini: true,
+                                    tooltip: 'close',
+                                    elevation: 0,
+                                    backgroundColor: Colors.transparent,
+                                    child: Icon(
+                                      Icons.close,
+                                      color: Colors.white,
+                                    ),
+                                    onPressed: () {
+                                      funAfterNoPlayerFound();
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                ),
                               ),
 
-                              Container(
-                                height: getScreenHeight(context) / 6.0,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    TweenAnimationBuilder<Duration>(
-                                        duration: Duration(minutes: 10),
-                                        tween: Tween(begin: Duration.zero, end: Duration(minutes: 10), ),
-                                        onEnd: () {
-                                          funAfterNoPlayerFound();
-                                        },
-                                        builder: (BuildContext context, Duration value, Widget child) {
-                                          //adding 0 at first if min or sec show in single digit
-                                          final minutes = (value.inMinutes).toString().padLeft(2, "0");
-                                          final seconds = (value.inSeconds % 60).toString().padLeft(2, "0");
-                                          return Center(
-                                            child: Text(
-                                              '$minutes : $seconds',
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 30,
-                                                shadows: [
-                                                  Shadow(color: Colors.white),
-                                                ],
-                                              ),
+                              Lottie.asset(
+                                'assets/animations/lottiefiles/sports-loading.json',
+                                height: SizeConfig.heightMultiplier * 25,
+                                width: SizeConfig.heightMultiplier * 25,
+                              ),
+
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  TweenAnimationBuilder<Duration>(
+                                      duration: Duration(minutes: 10),
+                                      tween: Tween(begin: Duration.zero, end: Duration(minutes: 10), ),
+                                      onEnd: () {
+                                        funAfterNoPlayerFound();
+                                      },
+                                      builder: (BuildContext context, Duration value, Widget child) {
+                                        //adding 0 at first if min or sec show in single digit
+                                        final minutes = (value.inMinutes).toString().padLeft(2, "0");
+                                        final seconds = (value.inSeconds % 60).toString().padLeft(2, "0");
+                                        return Center(
+                                          child: Text(
+                                            '$minutes : $seconds',
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 30,
+                                              shadows: [
+                                                Shadow(color: Colors.white),
+                                              ],
                                             ),
-                                          );
-                                        }),
-                                  ],
-                                ),
+                                          ),
+                                        );
+                                      }),
+                                ],
                               ),
 
                               Expanded(
                                 child: Padding(
-                                  padding: const EdgeInsets.only(top: 8.0),
+                                  padding: const EdgeInsets.only(top: 12.0),
                                   child: Text(
                                     'Searching for player',
                                     style: TextStyle(

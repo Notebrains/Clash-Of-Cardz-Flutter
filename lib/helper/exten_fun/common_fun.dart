@@ -40,7 +40,7 @@ void showToast(BuildContext context, String message) {
       textStyle: TextStyle(
         color: Colors.white,
         fontWeight: FontWeight.bold,
-        fontSize: 16,
+        fontSize: 14,
         fontFamily: 'montserrat',
         shadows: [
           Shadow(color: Colors.white),

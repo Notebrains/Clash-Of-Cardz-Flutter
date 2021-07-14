@@ -61,6 +61,7 @@ class IncludeWaitingForFriendState extends State<IncludeWaitingForFriend> with S
   var memberId = '';
   var points = '';
   var photo = '';
+  bool isGamePlayPageOpened = false;
 
   @override
   void initState() {
@@ -72,8 +73,7 @@ class IncludeWaitingForFriendState extends State<IncludeWaitingForFriend> with S
     scaleAnimation = CurvedAnimation(parent: controller, curve: Curves.elasticInOut);
 
     SharedPreferenceHelper().getUserSavedData().then((sharedPrefUserProfileModel) => {
-      print('Fb pref ${sharedPrefUserProfileModel.memberId}'),
-
+      print('Pref member id: ${sharedPrefUserProfileModel.memberId}'),
       xApiKey = sharedPrefUserProfileModel.xApiKey ?? '',
       fullName = sharedPrefUserProfileModel.fullName ?? '',
       memberId = sharedPrefUserProfileModel.memberId ?? '',
@@ -107,16 +107,16 @@ class IncludeWaitingForFriendState extends State<IncludeWaitingForFriend> with S
           scale: scaleAnimation,
           child: Stack(
             children: <Widget>[
-              new ConstrainedBox(
+               ConstrainedBox(
                 constraints: const BoxConstraints.expand(),
               ),
               Center(
-                child: new ClipRect(
-                  child: new BackdropFilter(
-                    filter: new ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
-                    child: new Container(
-                      decoration: new BoxDecoration(color: Colors.grey.shade50.withOpacity(0.1)),
-                      child: new Center(
+                child:  ClipRect(
+                  child:  BackdropFilter(
+                    filter:  ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
+                    child:  Container(
+                      decoration:  BoxDecoration(color: Colors.grey.shade50.withOpacity(0.1)),
+                      child:  Center(
                         child: Container(
                           margin: EdgeInsets.all(5.0),
                           padding: EdgeInsets.all(5.0),
@@ -126,68 +126,93 @@ class IncludeWaitingForFriendState extends State<IncludeWaitingForFriend> with S
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
-                              Lottie.asset(
-                                'assets/animations/lottiefiles/sports-loading.json',
-                                height: SizeConfig.heightMultiplier * 30,
-                                width: SizeConfig.heightMultiplier * 30,
-                              ),
-
-                              Container(
-                                height: getScreenHeight(context) / 6.0,
-                                child: TweenAnimationBuilder<Duration>(
-                                    duration: Duration(minutes: 5),
-                                    tween: Tween(end: Duration(minutes: 5), begin: Duration.zero),
-                                    onEnd: () {
-                                      //print('Timer Ended');
-
-                                      //remove first user from firebase if requested player has not joined.
-                                      _friendDetailsRef.child(fbJoinedPlayerList[0].firebasePlayerKey).remove();
-
-
-                                      Toast.show("Player has not accepted the challenge", context, duration: Toast.lengthLong, gravity:  Toast.bottom,
-                                          backgroundColor: Colors.black26,
-                                          textStyle:  TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.normal,
-                                            fontSize: 20,
-                                            shadows: [
-                                              Shadow(color: Colors.white),
-                                            ],
-                                          ));
-
-                                      Navigator.push(
-                                        context, CupertinoPageRoute(builder: (context) => Home(xApiKey: xApiKey, memberId: memberId,),
-                                      ),
-                                      );
+                              Align(
+                                alignment: Alignment.topRight,
+                                child: Container(
+                                  width: 30,
+                                  height: 30,
+                                  margin: EdgeInsets.only(top: 12, right: 12),
+                                  child: FloatingActionButton(
+                                    mini: true,
+                                    tooltip: 'close',
+                                    elevation: 0,
+                                    backgroundColor: Colors.transparent,
+                                    child: Icon(
+                                      Icons.close,
+                                      color: Colors.white,
+                                    ),
+                                    onPressed: () {
+                                      Navigator.pop(context);
                                     },
-                                    builder: (BuildContext context, Duration value, Widget child) {
-                                      //adding 0 at first if min or sec show in single digit
-                                      final minutes = (value.inMinutes).toString().padLeft(2, "0");
-                                      final seconds = (value.inSeconds % 60).toString().padLeft(2, "0");
-                                      return Center(
-                                        child: Text(
-                                          '$minutes : $seconds',
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 33,
-                                            shadows: [
-                                              Shadow(color: Colors.white),
-                                            ],
-                                          ),
-                                        ),
-                                      );
-                                    }),
-                              ),
-
-                              Expanded(
-                                child: Text(
-                                  'Waiting for your friend to accept the challenge',
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 24, fontFamily: 'montserrat', fontWeight: FontWeight.normal),
+                                  ),
                                 ),
                               ),
+
+                              Lottie.asset(
+                                'assets/animations/lottiefiles/sports-loading.json',
+                                height: SizeConfig.heightMultiplier * 25,
+                                width: SizeConfig.heightMultiplier * 25,
+                              ),
+
+                              TweenAnimationBuilder<Duration>(
+                                  duration: Duration(minutes: 3),
+                                  tween: Tween(end: Duration(minutes: 3), begin: Duration.zero),
+                                  onEnd: () {
+                                    //print('Timer Ended');
+
+                                    //remove first user from firebase if requested player has not joined.
+                                    _friendDetailsRef.child(fbJoinedPlayerList[0].firebasePlayerKey).remove();
+
+
+                                    Toast.show("Player has not accepted the challenge", context, duration: Toast.lengthLong,
+                                        gravity:  Toast.bottom,
+                                        backgroundColor: Colors.black26,
+                                        textStyle:  TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.normal,
+                                          fontSize: 20,
+                                          shadows: [
+                                            Shadow(color: Colors.white),
+                                          ],
+                                        ));
+
+                                    Navigator.push(
+                                      context, CupertinoPageRoute(builder: (context) => Home(xApiKey: xApiKey, memberId: memberId,),
+                                    ),
+                                    );
+                                  },
+                                  builder: (BuildContext context, Duration value, Widget child) {
+                                    //adding 0 at first if min or sec show in single digit
+                                    final minutes = (value.inMinutes).toString().padLeft(2, "0");
+                                    final seconds = (value.inSeconds % 60).toString().padLeft(2, "0");
+                                    return Center(
+                                      child: Text(
+                                        '$minutes : $seconds',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 33,
+                                          shadows: [
+                                            Shadow(color: Colors.white),
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  }),
+
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(top: 12),
+                                  child: Text(
+                                    'Waiting for your friend to accept the challenge',
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 24, fontFamily: 'montserrat', fontWeight: FontWeight.normal),
+                                  ),
+                                ),
+                              ),
+
+
                             ],
                           ),
                         ),
@@ -209,8 +234,7 @@ class IncludeWaitingForFriendState extends State<IncludeWaitingForFriend> with S
   }
 
   void retrieveFirebaseData() {
-    //print('Fb retrieveFirebaseData method called');
-
+    print('Fb retrieveFirebaseData method called 2');
     // Demonstrates configuring the database directly
     final FirebaseDatabase database = FirebaseDatabase(app: firebaseApp);
     _friendDetailsRef = database.reference().child('friendDetails');
@@ -219,35 +243,41 @@ class IncludeWaitingForFriendState extends State<IncludeWaitingForFriend> with S
     fbJoinedPlayerList = [];
     _friendDetailsRef.once().then((onValue) {
       Map playerDetailsList = onValue.value;
-
       try{
-        int joinedPlayerSize = playerDetailsList.length;
+        //int joinedPlayerSize = playerDetailsList.length;
         //print('Fb joinedPlayerSize: $joinedPlayerSize');
 
         // Execute forEach()
         playerDetailsList.forEach((playerDetailsKey, playerDetailsValue) {
-          print('Player Details List: { key: $playerDetailsKey, value: $playerDetailsValue}');
+          print('----Player Details List: { key: $playerDetailsKey, value: $playerDetailsValue}');
 
           if (playerDetailsValue.containsValue(memberId) || playerDetailsValue.containsValue(widget.friendId)) {
-
-            //print('Fb  Fb data filter list: ');
-
-            fbJoinedPlayerList.add(FirebasePlayerDetailsModel(playerDetailsValue['playerName'], playerDetailsValue['userId'], playerDetailsValue['image'], playerDetailsKey));
+            print('----playerDetailsValue: ${playerDetailsValue['playerName']}');
+            fbJoinedPlayerList.add(
+                FirebasePlayerDetailsModel(
+                    playerDetailsValue['playerName'],
+                    playerDetailsValue['userId'],
+                    playerDetailsValue['image'],
+                    playerDetailsKey,
+                ),
+            );
 
             print('Fb fbJoinedPlayerList size 1: ${fbJoinedPlayerList.length}');
             if(widget.joinedPlayerType == 'joinedAsFriend' && fbJoinedPlayerList.length == 0){
-              Toast.show('Your friend left the match', context, duration: Toast.lengthLong, gravity:  Toast.bottom, backgroundColor: Colors.white);
+              Toast.show('Your friend left the match',
+                  context, duration: Toast.lengthLong, gravity:
+              Toast.bottom, backgroundColor: Colors.white);
 
               Navigator.of(context).pop();
             }
           }
-
         });
 
         // After getting player list from fb, updating fb and start playing
         updateFirebaseJoinedPlayerDetails();
 
       } catch(e){
+        print(e);
         // After getting player list from fb, updating fb and start playing
         updateFirebaseJoinedPlayerDetails();
       }
@@ -257,10 +287,11 @@ class IncludeWaitingForFriendState extends State<IncludeWaitingForFriend> with S
 
 
   Future<void> updateFirebaseJoinedPlayerDetails() async {
+    print('Fb updateFirebaseJoinedPlayerDetails method called');
     print('Fb fbJoinedPlayerList size 2: ${fbJoinedPlayerList.length} join type: ${widget.joinedPlayerType}');
     //if player is already looking for player then take 1 player and remove that player else join as host
     if (fbJoinedPlayerList.length == 0 && widget.joinedPlayerType == 'joinedAsPlayer') {
-      print('Fb push player called');
+      print('Fb push player called 1 ');
 
       _friendDetailsRef.push().set(<String, String>{
         //count: ${transactionResult.dataSnapshot.value}
@@ -278,8 +309,7 @@ class IncludeWaitingForFriendState extends State<IncludeWaitingForFriend> with S
       });
 
     } else if(fbJoinedPlayerList.length == 1 && widget.joinedPlayerType == 'joinedAsFriend'){
-
-      print('Fb push friend called');
+      print('Fb push friend called 2 : ${widget.friendId}');
       _friendDetailsRef.push().set(<String, String>{
         'playerName': widget.friendName,
         'image': widget.friendImage,
@@ -295,26 +325,33 @@ class IncludeWaitingForFriendState extends State<IncludeWaitingForFriend> with S
       });
 
     } else if(fbJoinedPlayerList.length == 2) {
+      print('Fb push friend called 3');
+
       //removing both players when they matched and start the match
+      print('-----fbJoinedPlayerList[0].playerName: ${fbJoinedPlayerList[0].playerName}');
+      print('-----fbJoinedPlayerList[1].playerName: ${fbJoinedPlayerList[1].playerName}');
+
       _friendDetailsRef.child(fbJoinedPlayerList[0].firebasePlayerKey).remove();
       _friendDetailsRef.child(fbJoinedPlayerList[1].firebasePlayerKey).remove();
 
       //start the game
-      openGamePlayPage(fbJoinedPlayerList[1].playerName ,fbJoinedPlayerList[1].userId ,fbJoinedPlayerList[1].photo);
+      openGamePlayPage(fbJoinedPlayerList[0].playerName ,fbJoinedPlayerList[0].userId ,fbJoinedPlayerList[0].photo,
+          fbJoinedPlayerList[1].playerName ,fbJoinedPlayerList[1].userId ,fbJoinedPlayerList[1].photo);
     }
   }
 
   void listeningToFirebaseDataUpdate() {
+    print('Fb listeningToFirebaseDataUpdate method called');
+
     //getting joinedPlayerCount when it changed
     final FirebaseDatabase database = FirebaseDatabase(app: firebaseApp);
-
     database.setPersistenceEnabled(true);
     database.setPersistenceCacheSizeBytes(10000000);
 
     playerDetailsSubscription = _friendDetailsRef.limitToFirst(1).onChildAdded.listen((Event event) {
       print('Fb Child added: ${event.snapshot.value}');
 
-      //getting updated firebase list when new player added.
+      //getting updated firebase list when  player added.
       retrieveFirebaseData();
 
     }, onError: (Object o) {
@@ -323,21 +360,38 @@ class IncludeWaitingForFriendState extends State<IncludeWaitingForFriend> with S
     });
   }
 
-  void openGamePlayPage(String player2Name, player2Id, player2Image) {
-    Navigator.push(
-      context,
-      CupertinoPageRoute(
-        builder: (context) =>
-            Pvp(xApiKey: xApiKey, p1Name: fullName, p1Id: memberId, p1Image: photo, p2Name: player2Name, p2Id: player2Id, p2Image: player2Image,
-              gameCat1: widget.gameCat1,
-              gameCat2: widget.gameCat2,
-              gameCat3: widget.gameCat3,
-              gameCat4: widget.gameCat4,
-              playerType: widget.playerType,
-              gameType: widget.gameType,
-              cardsToPlay: widget.cardsToPlay,)
-      ),
-    ).then((value) => Navigator.of(context).pop());
+  void openGamePlayPage(String player1Name, player1Id, player1Image, String player2Name, player2Id, player2Image,) {
+    print('Fb openGamePlayPage method called');
+    print('Fb p1 name 1: $player1Name');
+    print('Fb p2 name 1: $player2Name');
+
+    if (!isGamePlayPageOpened) {
+      isGamePlayPageOpened = true;
+      print('Fb isGamePlayPageOpened called: $isGamePlayPageOpened');
+      print('Fb p1 name 2: $player1Name - $player1Id');
+      print('Fb p2 name 2: $player2Name - $player2Id');
+      Navigator.push(
+        context,
+        CupertinoPageRoute(
+            builder: (context) =>
+                Pvp(xApiKey: xApiKey,
+                  p1Name: player1Name,
+                  p1Id: player1Id,
+                  p1Image: player1Image,
+                  p2Name: player2Name,
+                  p2Id: player2Id,
+                  p2Image: player2Image,
+                  gameCat1: widget.gameCat1,
+                  gameCat2: widget.gameCat2,
+                  gameCat3: widget.gameCat3,
+                  gameCat4: widget.gameCat4,
+                  playerType: widget.playerType,
+                  gameType: widget.gameType,
+                  cardsToPlay: widget.cardsToPlay,
+                )
+        ),
+      ).then((value) => Navigator.of(context).pop());
+    }
   }
 
   @override
@@ -345,5 +399,4 @@ class IncludeWaitingForFriendState extends State<IncludeWaitingForFriend> with S
     super.dispose();
     playerDetailsSubscription.cancel();
   }
-
 }

@@ -105,7 +105,7 @@ Widget buildStatisticsScreen(StatisticsResModel model) {
                                 elevation: 8,
                                 child: FadeInImage.assetNetwork(
                                   placeholder: 'assets/icons/png/circle-avator-default-img.png',
-                                  image: model.response[index].matchData[0].photo,
+                                  image: model.response[index].matchData[0].photo??'',
                                   fit: BoxFit.cover,
                                 ),
                               ),
@@ -119,7 +119,7 @@ Widget buildStatisticsScreen(StatisticsResModel model) {
                                         style: TextStyle(color: Colors.blue.shade200, fontSize: 14, fontWeight: FontWeight.normal)),
 
                                     Text(
-                                      'Earned ${model.response[index].matchData[0].points} coins',
+                                      'Earned ${model.response[index].matchData[0].points} point',
                                       style: TextStyle(color: Colors.blue.shade50, fontWeight: FontWeight.normal, fontSize: 11,),
                                     ),
                                   ],
@@ -161,7 +161,7 @@ Widget buildStatisticsScreen(StatisticsResModel model) {
                               elevation: 8,
                               child: FadeInImage.assetNetwork(
                                 placeholder: 'assets/icons/png/circle-avator-default-img.png',
-                                image: model.response[index].matchData[1].photo,
+                                image: model.response[index].matchData[1].photo??'',
                                 fit: BoxFit.cover,
                               ),
                             ),

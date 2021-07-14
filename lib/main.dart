@@ -21,6 +21,7 @@ Future<void> main() async {
 
 class MyRootApp extends StatelessWidget {
   // This widget is the root of your application.
+  static GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
@@ -36,6 +37,7 @@ class MyRootApp extends StatelessWidget {
                 );
               },
               debugShowCheckedModeBanner: false,
+              navigatorKey: navigatorKey,
               home: SplashScreen(),
             );
           },
