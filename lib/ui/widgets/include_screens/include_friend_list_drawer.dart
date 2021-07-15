@@ -44,7 +44,9 @@ Widget searchableUsersWidget(BuildContext context, FriendsResModel data, String 
             height: MediaQuery.of(context).size.height - 43,
             width: double.infinity,
             child: ListView.builder(
-                physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+                physics: const BouncingScrollPhysics(
+                    parent: AlwaysScrollableScrollPhysics(),
+                ),
                 itemCount: searching ? filtered.value.length : dataList.length,
                 itemBuilder: (context, index) {
                   //final item = searching ? filtered.value[index] : dataList[index].fullname;
@@ -189,25 +191,26 @@ Widget searchableUsersWidget(BuildContext context, FriendsResModel data, String 
 void sendNotificationToOtherPlayerByApi(BuildContext context, String xApiKey, String memberId, String gameCat1, String gameCat2,
     String gameCat3, String gameCat4, String cardsToPlay, String playerType, String friendId, String friendName, String friendImage) {
 
-  //sending friendId = member id to api bcoz friend will get sender id as a p2 id
+  //Friend id = Who is sending notification
+  //Receiver id = who is receiving notification
   apiBloc.sendNotificationToFriendApi(xApiKey, 'Clash with friends', '$friendName request to play match. Play Now', friendId, gameCat1,
       gameCat2, gameCat3, gameCat4, 'vs Friends', playerType, cardsToPlay, memberId, friendName, friendImage);
 
   print('---- friend Id: $friendId, memberId: $memberId');
-  showDialog(
-    context: context,
-    builder: (_) => IncludeWaitingForFriend(
-      gameCat1: gameCat1,
-      gameCat2: gameCat2,
-      gameCat3: gameCat3,
-      gameCat4: gameCat4,
-      gameType: 'vs Friends',
-      playerType: playerType,
-      cardsToPlay: cardsToPlay,
-      friendId: friendId,
-      friendName: friendName,
-      friendImage: friendImage,
-      joinedPlayerType: 'joinedAsPlayer',
-    ),
+
+  Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => IncludeWaitingForFriend(
+    gameCat1: gameCat1,
+    gameCat2: gameCat2,
+    gameCat3: gameCat3,
+    gameCat4: gameCat4,
+    gameType: 'vs Friends',
+    playerType: playerType,
+    cardsToPlay: cardsToPlay,
+    friendId: friendId,
+    friendName: friendName,
+    friendImage: friendImage,
+    joinedPlayerType: 'joinedAsPlayer',
+  ),
+  ),
   );
 }

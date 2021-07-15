@@ -64,8 +64,7 @@ class _PvpState extends State<Pvp> {
 
   @override
   Widget build(BuildContext context) {
-    print(
-        '----game cats pvp: ${widget.gameCat1} , ${widget.gameCat2} , ${widget.gameCat3}, ${widget.gameCat4}, ${widget.playerType}, ${widget.cardsToPlay}, ${widget.gameType}');
+    //print('----game cats pvp: ${widget.gameCat1} , ${widget.gameCat2} , ${widget.gameCat3}, ${widget.gameCat4}, ${widget.playerType}, ${widget.cardsToPlay}, ${widget.gameType}');
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -125,8 +124,8 @@ class _PvpState extends State<Pvp> {
                 children: [
                   ZoomInRight(
                     child: ShapeOfView(
-                      height: SizeConfig.heightMultiplier * 18,
-                      width: SizeConfig.heightMultiplier * 18,
+                      height: SizeConfig.heightMultiplier * 17,
+                      width: SizeConfig.heightMultiplier * 17,
                       shape: CircleShape(borderColor: Colors.lightBlueAccent, borderWidth: 5),
                       elevation: 12,
                       child: FadeInImage.assetNetwork(

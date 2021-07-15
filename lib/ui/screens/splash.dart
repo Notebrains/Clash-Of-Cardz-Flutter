@@ -71,7 +71,10 @@ class _SplashScreenState extends State<SplashScreen> with WidgetsBindingObserver
       String memberId = sharedPrefUserProfileModel.memberId ?? 'NA';
 
       if (xApiKey != 'NA' && memberId != 'NA') {
-        MyRootApp.navigatorKey.currentState.pushReplacement(MaterialPageRoute(builder: (context) => Home(
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (BuildContext context) =>Home(
               xApiKey: xApiKey,
               memberId: memberId,
             ),
@@ -269,7 +272,28 @@ class _SplashScreenState extends State<SplashScreen> with WidgetsBindingObserver
       print('----- ${gameNotiData['gameCat1']}');
       //output  ----- sports
 
+      Future.delayed(const Duration(milliseconds: 2000), () =>
+          Navigator.pushReplacement(
+            MyRootApp.navigatorKey.currentContext,
+            MaterialPageRoute(
+              builder: (BuildContext context) => IncludeWaitingForFriend(
+                gameCat1: gameNotiData['gameCat1'],
+                gameCat2: gameNotiData['gameCat2'],
+                gameCat3: gameNotiData['gameCat3'],
+                gameCat4: gameNotiData['gameCat4'],
+                gameType: gameNotiData['gameType'],
+                playerType: gameNotiData['playerType'],
+                cardsToPlay: gameNotiData['cardsToPlay'],
+                friendId: gameNotiData['friendId'],
+                friendName: gameNotiData['friendName'],
+                friendImage: gameNotiData['friendImage'],
+                joinedPlayerType: 'joinedAsFriend',
+              ),
+            ),
+          ),
+      );
 
+/*
       Future.delayed(const Duration(milliseconds: 2000), () =>
           MyRootApp.navigatorKey.currentState.pushReplacement(MaterialPageRoute(builder: (context) => IncludeWaitingForFriend(
             gameCat1: gameNotiData['gameCat1'],
@@ -283,7 +307,7 @@ class _SplashScreenState extends State<SplashScreen> with WidgetsBindingObserver
             friendName: gameNotiData['friendName'],
             friendImage: gameNotiData['friendImage'],
             joinedPlayerType: 'joinedAsFriend',
-          ),),),);
+          ),),),);*/
     } catch (e) {
       print(e);
     }

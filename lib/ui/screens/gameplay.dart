@@ -155,11 +155,11 @@ class Gameplay extends StatelessWidget {
                                         builder: (BuildContext context, int value, Widget child) {
                                           // This builder will only get called when the _counter
                                           //is updated.
-                                          //print('---- 220: ${SizeConfig.widthMultiplier * 54}');
+                                          print('---- 220: ${SizeConfig.widthMultiplier * 53}');
                                           //print('---- 300: ${SizeConfig.heightMultiplier * 36.5}');
                                           return Container(
-                                            width: SizeConfig.widthMultiplier * 54,
-                                            height: SizeConfig.heightMultiplier * 36.5,
+                                            width: SizeConfig.widthMultiplier * 53,
+                                            height: SizeConfig.heightMultiplier * 37,
                                             child: BounceInLeft(
                                               child: buildCardAsP1(
                                                 context,
@@ -222,17 +222,18 @@ class Gameplay extends StatelessWidget {
                                           ),
                                         ),
                                         preferences: AnimationPreferences(
-                                            duration: const Duration(milliseconds: 4000), autoPlay: AnimationPlayStates.Loop),
+                                            duration: const Duration(milliseconds: 4000),
+                                            autoPlay: AnimationPlayStates.Loop),
                                       ),
 
                                       ValueListenableBuilder(
                                         builder: (BuildContext context, int value, Widget child) {
                                           // This builder will only get called when the _counter
                                           // is updated.
-                                          //print('---- 150: ${SizeConfig.widthMultiplier * 38.5}');
-                                          //print('---- 210: ${SizeConfig.heightMultiplier * 25.5}');
+                                          // print('---- 150: ${SizeConfig.widthMultiplier * 38.5}');
+                                          // print('---- 210: ${SizeConfig.heightMultiplier * 25.5}');
                                           return Container(
-                                            width: SizeConfig.widthMultiplier * 38,
+                                            width: SizeConfig.widthMultiplier * 37,
                                             height: SizeConfig.heightMultiplier * 25.5,
                                             alignment: AlignmentDirectional.bottomCenter,
                                             child: BounceInRight(
@@ -315,8 +316,7 @@ class Gameplay extends StatelessWidget {
               );
             } else if (!snapshot.hasData ) {
               return frostedGlassWithProgressBarWidget(context);
-            } else
-              return NoCardFound();
+            } else return NoCardFound();
           },
         ),
       ),
@@ -347,7 +347,6 @@ class Gameplay extends StatelessWidget {
       whoIsPlaying = 'p2';
     }
   }
-
 
   updateGamePlayStatus(String attrTitle, String attrValue, String winBasis, String winPoints) async{
     if (isPlayAsP1) {
@@ -722,8 +721,6 @@ class Gameplay extends StatelessWidget {
 
     print('---- areYouWon: $areYouWon , isP1Surrender: $isP1Surrender, haveISurrendered: $haveISurrendered, '
         'player1TotalPoints: ${statesModel.player1TotalPoints.toString()}, player2TotalPoints: ${statesModel.player2TotalPoints.toString()}');
-
-
 
     //remove game when match is complete
     //_gameRoomRef.child(gameRoomName).remove();

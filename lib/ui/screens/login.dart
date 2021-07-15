@@ -1,3 +1,4 @@
+import 'package:clash_of_cardz_flutter/ui/styles/size_config.dart';
 import 'package:clash_of_cardz_flutter/ui/widgets/custom/no_data_found.dart';
 import 'package:clash_of_cardz_flutter/ui/widgets/libraries/shimmer.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -398,8 +399,7 @@ class _LogInState extends State<LogIn> {
             children: [
               ZoomIn(
                 child: Center(
-                  child: Lottie.asset('assets/animations/lottiefiles/sports-loading.json',
-                      height: 330, width: 330, repeat: true, animate: true),
+                  child: Lottie.asset('assets/animations/lottiefiles/sports-loading.json', height: SizeConfig.heightMultiplier * 32, width: SizeConfig.heightMultiplier * 32, repeat: true, animate: true),
                 ),
                 preferences: AnimationPreferences(duration: const Duration(milliseconds: 800), autoPlay: AnimationPlayStates.Forward),
               ),
