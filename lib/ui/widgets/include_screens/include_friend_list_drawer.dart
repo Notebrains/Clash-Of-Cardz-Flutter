@@ -1,22 +1,21 @@
 import 'dart:ui';
-
 import 'package:clash_of_cardz_flutter/ui/widgets/custom/horizontal_progress_indicator.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/include_screens/include_searching_for_friend.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:clash_of_cardz_flutter/bloc/api_bloc.dart';
 import 'package:clash_of_cardz_flutter/model/responses/friends_res_model.dart';
 import 'package:flutter_animator/flutter_animator.dart';
-import 'package:clash_of_cardz_flutter/ui/widgets/include_screens/include_waiting_for_friend.dart';
 import 'package:shape_of_view/shape_of_view.dart';
 
 
 Widget friendList(BuildContext context, String xApiKey, String memberId, String gameCat1, String gameCat2, String gameCat3,
-    String gameCat4, String cardsToPlay, String playerType) {
+    String gameCat4, String cardsToPlay, String playerType, String playerName, String playerImg) {
   return StreamBuilder(
     stream: apiBloc.friendsRes,
     builder: (context, AsyncSnapshot<FriendsResModel> snapshot) {
       if (snapshot.hasData && snapshot.data.status != 0) {
-        return searchableUsersWidget(context, snapshot.data, xApiKey, memberId, gameCat1, gameCat2, gameCat3, gameCat4, cardsToPlay, playerType);
+        return searchableUsersWidget(context, snapshot.data, xApiKey, memberId, gameCat1, gameCat2, gameCat3, gameCat4, cardsToPlay, playerType, playerName, playerImg);
       } else return Container(
           color: Color(0xFF364B5A),
           child: HorizontalProgressIndicator(),
@@ -26,7 +25,7 @@ Widget friendList(BuildContext context, String xApiKey, String memberId, String 
 }
 
 Widget searchableUsersWidget(BuildContext context, FriendsResModel data, String xApiKey, String memberId, String gameCat1, String gameCat2,
-    String gameCat3, String gameCat4, String cardsToPlay, String playerType) {
+    String gameCat3, String gameCat4, String cardsToPlay, String playerType, String playerName, String playerImg) {
   List<Response> dataList = data.response;
 
   ValueNotifier<List<Response>> filtered = ValueNotifier<List<Response>>([]);
@@ -105,7 +104,7 @@ Widget searchableUsersWidget(BuildContext context, FriendsResModel data, String 
                           playerType,
                           dataList[index].freindId,
                           dataList[index].fullname,
-                          dataList[index].photo,
+                          dataList[index].photo, playerName, playerImg
                         );
                       },
                     ),
@@ -188,17 +187,38 @@ Widget searchableUsersWidget(BuildContext context, FriendsResModel data, String 
   );
 }
 
-void sendNotificationToOtherPlayerByApi(BuildContext context, String xApiKey, String memberId, String gameCat1, String gameCat2,
-    String gameCat3, String gameCat4, String cardsToPlay, String playerType, String friendId, String friendName, String friendImage) {
+void sendNotificationToOtherPlayerByApi(BuildContext context, String xApiKey, String memberId,  String gameCat1, String gameCat2,
+    String gameCat3, String gameCat4, String cardsToPlay, String playerType, String friendId, String friendName, String friendImage,
+    String playerName, String playerImg,
+    ) {
 
   //Friend id = Who is sending notification
   //Receiver id = who is receiving notification
-  apiBloc.sendNotificationToFriendApi(xApiKey, 'Clash with friends', '$friendName request to play match. Play Now', friendId, gameCat1,
-      gameCat2, gameCat3, gameCat4, 'vs Friends', playerType, cardsToPlay, memberId, friendName, friendImage);
+  apiBloc.sendNotificationToFriendApi(xApiKey, 'Clash with friends', '$friendName request to play match. $gameCat2-$cardsToPlay', friendId, gameCat1,
+      gameCat2, gameCat3, gameCat4, 'vs Friends', playerType, cardsToPlay, friendId, friendName, friendImage);
 
-  print('---- friend Id: $friendId, memberId: $memberId');
+  print('---- friend Id: $friendId, memberId: $memberId, gameCat2: $gameCat2, cardsToPlay: $cardsToPlay');
 
-  Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => IncludeWaitingForFriend(
+
+
+   Navigator.push(context, MaterialPageRoute(
+    builder: (BuildContext context) => IncludeSearchingForFriend(
+      gameCat1: gameCat1,
+      gameCat2: gameCat2,
+      gameCat3: gameCat3,
+      gameCat4: gameCat4,
+      playerType: playerType,
+      gameType: 'vs Friends',
+      cardsToPlay: cardsToPlay,
+      xApiKey: xApiKey,
+      p1FullName: playerName,
+      p1MemberId: memberId,
+      p1Photo: playerImg,
+    ),),);
+
+
+/*  Navigator.push(context, MaterialPageRoute(
+    builder: (BuildContext context) => IncludeWaitingForFriend(
     gameCat1: gameCat1,
     gameCat2: gameCat2,
     gameCat3: gameCat3,
@@ -210,7 +230,5 @@ void sendNotificationToOtherPlayerByApi(BuildContext context, String xApiKey, St
     friendName: friendName,
     friendImage: friendImage,
     joinedPlayerType: 'joinedAsPlayer',
-  ),
-  ),
-  );
+    ),),);*/
 }

@@ -1,20 +1,13 @@
 import 'dart:async';
 import 'dart:ui';
-import 'package:clash_of_cardz_flutter/bloc/api_bloc.dart';
-import 'package:clash_of_cardz_flutter/model/responses/send_notification_to_friend_res_model.dart';
 import 'package:clash_of_cardz_flutter/ui/styles/size_config.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:clash_of_cardz_flutter/helper/exten_fun/base_application_fun.dart';
 import 'package:clash_of_cardz_flutter/helper/shared_preference_data.dart';
 import 'package:clash_of_cardz_flutter/model/arguments/firebase_player_details_model.dart';
 import 'package:clash_of_cardz_flutter/ui/screens/pvp.dart';
-import 'package:clash_of_cardz_flutter/ui/screens/home.dart';
-import 'dart:io' show Platform;
-
 import 'package:clash_of_cardz_flutter/ui/widgets/libraries/flutter_toast.dart';
 
 class IncludeWaitingForFriend extends StatefulWidget {
@@ -74,8 +67,10 @@ class IncludeWaitingForFriendState extends State<IncludeWaitingForFriend> with S
       //print('----Fb new child added value: ${data.snapshot.value}');
       print('----Fb new child added value playerName: ${data.snapshot.value['playerName']}');
 
-      retrieveFirebaseData();
-    } );
+      setState(() {
+
+      });
+    });
 
     SharedPreferenceHelper().getUserSavedData().then((sharedPrefUserProfileModel) => {
       print('Pref member id: ${sharedPrefUserProfileModel.memberId}'),
@@ -119,7 +114,7 @@ class IncludeWaitingForFriendState extends State<IncludeWaitingForFriend> with S
                 child:  BackdropFilter(
                   filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
                   child: Container(
-                    decoration: BoxDecoration(color: Colors.black45),
+                    decoration: BoxDecoration(color: Colors.black54),
                     child:  Center(
                       child: Container(
                         margin: EdgeInsets.all(5.0),
@@ -229,7 +224,6 @@ class IncludeWaitingForFriendState extends State<IncludeWaitingForFriend> with S
     print('Fb retrieveFirebaseData method called 2');
 
     //get child items present in fb db.
-    fbJoinedPlayerList = [];
     _dbRefFriendDetails.once().then((DataSnapshot snapshot) {
       print('Data : ${snapshot.value}');
       Map playerDetailsList = snapshot.value;
@@ -237,13 +231,14 @@ class IncludeWaitingForFriendState extends State<IncludeWaitingForFriend> with S
         //int joinedPlayerSize = playerDetailsList.length;
         //print('Fb joinedPlayerSize: $joinedPlayerSize');
 
-        if ( playerDetailsList != null) {
+        if ( playerDetailsList != null && playerDetailsList.length > 0) {
           // Execute forEach()
+          fbJoinedPlayerList = [];
           playerDetailsList.forEach((playerDetailsKey, playerDetailsValue) {
             print('----Player Details List: { key: $playerDetailsKey, value: $playerDetailsValue}');
-
             if (playerDetailsValue.containsValue(memberId) || playerDetailsValue.containsValue(widget.friendId)) {
               print('----playerDetailsValue: ${playerDetailsValue['playerName']}');
+
               fbJoinedPlayerList.add(
                 FirebasePlayerDetailsModel(
                   playerDetailsValue['playerName'],
@@ -276,15 +271,21 @@ class IncludeWaitingForFriendState extends State<IncludeWaitingForFriend> with S
     });
   }
 
-
-  void updateFirebaseJoinedPlayerDetails()  {
+  void updateFirebaseJoinedPlayerDetails() {
     print('Fb updateFirebaseJoinedPlayerDetails method called');
+
+    //this fun helps to remove duplicate elements and keep only unique value
+    fbJoinedPlayerList =  fbJoinedPlayerList.toSet().toList();
+    fbJoinedPlayerList.forEach((value) {
+      print('------fbJoined Player List: value: ${value.userId}}');
+    });
+
     print('Fb fbJoinedPlayerList size 2: ${fbJoinedPlayerList.length} join type: ${widget.joinedPlayerType}');
     //if player is already looking for player then take 1 player and remove that player else join as host
     if (fbJoinedPlayerList.length == 0 && widget.joinedPlayerType == 'joinedAsPlayer') {
       print('Fb push player called 1 ');
 
-      _dbRefFriendDetails.push().set(<String, String>{
+      _dbRefFriendDetails.child(widget.friendId).push().set(<String, String>{
         //count: ${transactionResult.dataSnapshot.value}
         'playerName': fullName,
         'image': photo,
@@ -301,7 +302,7 @@ class IncludeWaitingForFriendState extends State<IncludeWaitingForFriend> with S
 
     } else if(fbJoinedPlayerList.length == 1 && widget.joinedPlayerType == 'joinedAsFriend'){
       print('Fb push friend called 2 : ${widget.friendId}');
-      _dbRefFriendDetails.push().set(<String, String>{
+      _dbRefFriendDetails.child(memberId).push().set(<String, String>{
         'playerName': fullName,
         'image': photo,
         'userId': memberId,
@@ -322,9 +323,9 @@ class IncludeWaitingForFriendState extends State<IncludeWaitingForFriend> with S
       print('-----fbJoinedPlayerList[0].playerName: ${fbJoinedPlayerList[0].firebasePlayerKey}');
       print('-----fbJoinedPlayerList[1].playerName: ${fbJoinedPlayerList[1].firebasePlayerKey}');
 
-      _dbRefFriendDetails.child(fbJoinedPlayerList[0].firebasePlayerKey).remove();
-      _dbRefFriendDetails.child(fbJoinedPlayerList[1].firebasePlayerKey).remove();
-
+      //_dbRefFriendDetails.child(fbJoinedPlayerList[0].firebasePlayerKey).remove();
+      //_dbRefFriendDetails.child(fbJoinedPlayerList[1].firebasePlayerKey).remove();
+      _dbRefFriendDetails.remove();
       // start the game
       openGamePlayPage(fbJoinedPlayerList[0].playerName ,fbJoinedPlayerList[0].userId ,fbJoinedPlayerList[0].photo,
           fbJoinedPlayerList[1].playerName ,fbJoinedPlayerList[1].userId ,fbJoinedPlayerList[1].photo);
@@ -332,15 +333,9 @@ class IncludeWaitingForFriendState extends State<IncludeWaitingForFriend> with S
   }
 
   void openGamePlayPage(String player1Name, player1Id, player1Image, String player2Name, player2Id, player2Image,) {
-    print('Fb openGamePlayPage method called');
-    print('Fb p1 name 1: $player1Name');
-    print('Fb p2 name 1: $player2Name');
-
     if (!isGamePlayPageOpened && player1Id != player2Id) {
       isGamePlayPageOpened = true;
       print('Fb isGamePlayPageOpened called: $isGamePlayPageOpened');
-      print('Fb p1 name 2: $player1Name - $player1Id');
-      print('Fb p2 name 2: $player2Name - $player2Id');
       Navigator.push(
         context,
         CupertinoPageRoute(
@@ -359,7 +354,7 @@ class IncludeWaitingForFriendState extends State<IncludeWaitingForFriend> with S
                   playerType: widget.playerType,
                   gameType: widget.gameType,
                   cardsToPlay: widget.cardsToPlay,
-                )
+                ),
         ),
       );
     } else if (player1Id == player2Id) {
@@ -371,7 +366,9 @@ class IncludeWaitingForFriendState extends State<IncludeWaitingForFriend> with S
             fontWeight: FontWeight.normal,
             fontSize: 18,
             shadows: [Shadow(color: Colors.white),],
-          ));
+          ),
+      );
+      //Navigator.pop(context);
     }
   }
 

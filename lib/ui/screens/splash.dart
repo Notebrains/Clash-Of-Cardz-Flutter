@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:clash_of_cardz_flutter/ui/styles/size_config.dart';
-import 'package:clash_of_cardz_flutter/ui/widgets/include_screens/include_waiting_for_friend.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/include_screens/include_searching_for_friend.dart';
 import 'package:clash_of_cardz_flutter/ui/widgets/libraries/gapless_audio_loop.dart';
 import 'package:clash_of_cardz_flutter/ui/widgets/libraries/shimmer.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -271,31 +271,24 @@ class _SplashScreenState extends State<SplashScreen> with WidgetsBindingObserver
 
       print('----- ${gameNotiData['gameCat1']}');
       //output  ----- sports
-
-      Future.delayed(const Duration(milliseconds: 2000), () =>
-          Navigator.pushReplacement(
-            MyRootApp.navigatorKey.currentContext,
-            MaterialPageRoute(
-              builder: (BuildContext context) => IncludeWaitingForFriend(
-                gameCat1: gameNotiData['gameCat1'],
-                gameCat2: gameNotiData['gameCat2'],
-                gameCat3: gameNotiData['gameCat3'],
-                gameCat4: gameNotiData['gameCat4'],
-                gameType: gameNotiData['gameType'],
-                playerType: gameNotiData['playerType'],
-                cardsToPlay: gameNotiData['cardsToPlay'],
-                friendId: gameNotiData['friendId'],
-                friendName: gameNotiData['friendName'],
-                friendImage: gameNotiData['friendImage'],
-                joinedPlayerType: 'joinedAsFriend',
-              ),
-            ),
-          ),
+      MyRootApp.navigatorKey.currentState.push(
+          MaterialPageRoute(builder: (_) => IncludeSearchingForFriend(
+            gameCat1: gameNotiData['gameCat1'],
+            gameCat2: gameNotiData['gameCat2'],
+            gameCat3: gameNotiData['gameCat3'],
+            gameCat4: gameNotiData['gameCat4'],
+            gameType: 'vs Friends',
+            playerType: gameNotiData['playerType'],
+            cardsToPlay: gameNotiData['cardsToPlay'],
+            xApiKey: '56005600',
+            p1FullName: gameNotiData['friendName'],
+            p1MemberId: gameNotiData['friendId'],
+            p1Photo: gameNotiData['friendImage'],
+          ),),
       );
 
-/*
-      Future.delayed(const Duration(milliseconds: 2000), () =>
-          MyRootApp.navigatorKey.currentState.pushReplacement(MaterialPageRoute(builder: (context) => IncludeWaitingForFriend(
+      /*MyRootApp.navigatorKey.currentState.push(
+          MaterialPageRoute(builder: (_) => IncludeWaitingForFriend(
             gameCat1: gameNotiData['gameCat1'],
             gameCat2: gameNotiData['gameCat2'],
             gameCat3: gameNotiData['gameCat3'],
@@ -307,7 +300,8 @@ class _SplashScreenState extends State<SplashScreen> with WidgetsBindingObserver
             friendName: gameNotiData['friendName'],
             friendImage: gameNotiData['friendImage'],
             joinedPlayerType: 'joinedAsFriend',
-          ),),),);*/
+          ),),
+      );*/
     } catch (e) {
       print(e);
     }

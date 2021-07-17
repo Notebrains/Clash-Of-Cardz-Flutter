@@ -6,13 +6,20 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:clash_of_cardz_flutter/helper/constantvalues/constants.dart';
+import 'package:clash_of_cardz_flutter/helper/exten_fun/base_application_fun.dart';
 import 'package:clash_of_cardz_flutter/helper/exten_fun/common_fun.dart';
+import 'package:clash_of_cardz_flutter/helper/shared_preference_data.dart';
 import 'package:clash_of_cardz_flutter/model/arguments/firebase_player_details_model.dart';
+import 'package:clash_of_cardz_flutter/ui/screens/gameplay.dart';
 import 'package:clash_of_cardz_flutter/ui/screens/home.dart';
 import 'package:clash_of_cardz_flutter/ui/screens/pvp.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/custom/loading_sports_frosted_glass.dart';
+import 'dart:io' show Platform;
 
+import 'package:clash_of_cardz_flutter/ui/widgets/libraries/flutter_toast.dart';
 
-class IncludeSearchingForPlayer extends StatefulWidget {
+class IncludeSearchingForFriend extends StatefulWidget {
   final String gameCat1;
   final String gameCat2;
   final String gameCat3;
@@ -25,7 +32,7 @@ class IncludeSearchingForPlayer extends StatefulWidget {
   final String p1MemberId;
   final String p1Photo;
 
-  const IncludeSearchingForPlayer({Key key,
+  const IncludeSearchingForFriend({Key key,
     this.gameCat1,
     this.gameCat2,
     this.gameCat3,
@@ -42,7 +49,7 @@ class IncludeSearchingForPlayer extends StatefulWidget {
   State<StatefulWidget> createState() => IncludeSearchingForPlayerState();
 }
 
-class IncludeSearchingForPlayerState extends State<IncludeSearchingForPlayer> with SingleTickerProviderStateMixin {
+class IncludeSearchingForPlayerState extends State<IncludeSearchingForFriend> with SingleTickerProviderStateMixin {
   AnimationController controller;
   Animation<double> scaleAnimation;
   List <FirebasePlayerDetailsModel> fbJoinedPlayerList = [];
@@ -52,9 +59,7 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForPlayer> wi
   StreamSubscription<Event> _gameRoomSubscription;
   StreamSubscription<Event> playerDetailsSubscription;
   DatabaseError _error;
-
   FirebaseApp firebaseApp;
-
 
   bool isHost = false;
   String _gameRoomName = 'gr';
@@ -94,6 +99,15 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForPlayer> wi
           scale: scaleAnimation,
           child: Stack(
             children: <Widget>[
+              Container(
+                decoration:  BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage("assets/images/bg_img3.png"),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+
               new ConstrainedBox(
                 constraints: const BoxConstraints.expand(),
               ),
@@ -178,7 +192,7 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForPlayer> wi
                                 child: Padding(
                                   padding: const EdgeInsets.only(top: 12.0),
                                   child: Text(
-                                    'Searching for player',
+                                    'Waiting for your friend to accept the challenge',
                                     style: TextStyle(
                                         color: Colors.white, fontSize: 24, fontFamily: 'montserrat', fontWeight: FontWeight.bold),
                                   ),
@@ -204,7 +218,7 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForPlayer> wi
     // Demonstrates configuring the database directly
     //var firebaseInstance = FirebaseDatabase.instance;
     final FirebaseDatabase database = FirebaseDatabase(app: firebaseApp);
-    _playerDetailsRef = database.reference().child('playerDetails');
+    _playerDetailsRef = database.reference().child('friendDetails');
     _gameRoom = database.reference().child('gameRoom');
   }
 
@@ -212,7 +226,7 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForPlayer> wi
     // Demonstrates configuring the database directly
     //var firebaseInstance = FirebaseDatabase.instance;
     final FirebaseDatabase database = FirebaseDatabase(app: firebaseApp);
-    _playerDetailsRef = database.reference().child('playerDetails');
+    _playerDetailsRef = database.reference().child('friendDetails');
     _gameRoom = database.reference().child('gameRoom');
 
 
@@ -237,7 +251,7 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForPlayer> wi
             //print('---- Fb data filter list: ${widget.categoryName}, ${widget.subcategoryName}, ${widget.gameType}, ${widget.cardsToPlay}');
 
             fbJoinedPlayerList.add(FirebasePlayerDetailsModel(playerDetailsValue['playerName'], playerDetailsValue['userId'], playerDetailsValue['image'], playerDetailsKey));
-            }
+          }
         });
         // After getting player list from fb, updating fb and start playing
         updateFirebaseJoinedPlayerDetails();
@@ -361,19 +375,19 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForPlayer> wi
       String gameRoomKey = event.snapshot.key;
       if (gameRoomKey.contains(widget.p1MemberId)) {
         openGamePlayPage(
-            event.snapshot.value['p1Name'],
-            event.snapshot.value['p1Id'],
-            event.snapshot.value['p1Image'],
-            event.snapshot.value['p2Name'],
-            event.snapshot.value['p2Id'],
-            event.snapshot.value['p2Image'],
-            event.snapshot.value['gameCat1'],
-            event.snapshot.value['gameCat2'],
-            event.snapshot.value['gameCat3'],
-            event.snapshot.value['gameCat4'],
-            event.snapshot.value['playerType'],
-            event.snapshot.value['gameType'],
-            event.snapshot.value['cardCount'],
+          event.snapshot.value['p1Name'],
+          event.snapshot.value['p1Id'],
+          event.snapshot.value['p1Image'],
+          event.snapshot.value['p2Name'],
+          event.snapshot.value['p2Id'],
+          event.snapshot.value['p2Image'],
+          event.snapshot.value['gameCat1'],
+          event.snapshot.value['gameCat2'],
+          event.snapshot.value['gameCat3'],
+          event.snapshot.value['gameCat4'],
+          event.snapshot.value['playerType'],
+          event.snapshot.value['gameType'],
+          event.snapshot.value['cardCount'],
         );
 
         print('--------- joinedUserType ${event.snapshot.value['p1Id']}');

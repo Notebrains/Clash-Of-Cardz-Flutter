@@ -155,7 +155,7 @@ class Gameplay extends StatelessWidget {
                                         builder: (BuildContext context, int value, Widget child) {
                                           // This builder will only get called when the _counter
                                           //is updated.
-                                          print('---- 220: ${SizeConfig.widthMultiplier * 53}');
+                                          //print('---- 220: ${SizeConfig.widthMultiplier * 53}');
                                           //print('---- 300: ${SizeConfig.heightMultiplier * 36.5}');
                                           return Container(
                                             width: SizeConfig.widthMultiplier * 53,
