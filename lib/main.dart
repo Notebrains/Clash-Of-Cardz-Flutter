@@ -31,11 +31,6 @@ class MyRootApp extends StatelessWidget {
             SizeConfig().init(constraints, orientation);
             return MaterialApp(
               //theme: AppTheme.lightTheme,
-              builder: (context, child) {
-                return MediaQuery(
-                  child: child, data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
-                );
-              },
               debugShowCheckedModeBanner: false,
               navigatorKey: navigatorKey,
               home: SplashScreen(),

@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:clash_of_cardz_flutter/ui/styles/size_config.dart';
 import 'package:clash_of_cardz_flutter/ui/widgets/custom/outlined_btn_gradient_border.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -293,15 +294,20 @@ Widget buildCard1(
                         HeartBeat(
                           child: Row(
                             children: [
-                              Text(
-                                cardsAttributeList[indexOfCardDeck][index].value,
-                                textAlign: TextAlign.start,
-                                style: TextStyle(
-                                    fontSize: 10,
-                                    fontStyle: FontStyle.normal,
-                                    fontFamily: 'neuropol_x_rg',
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.indigo),
+                              Flexible(
+                                child: Text(
+                                  cardsAttributeList[indexOfCardDeck][index].value,
+                                  textAlign: TextAlign.start,
+                                  overflow: TextOverflow.clip,
+                                  maxLines: 1,
+                                  softWrap: false,
+                                  style: TextStyle(
+                                      fontSize: 10,
+                                      fontStyle: FontStyle.normal,
+                                      fontFamily: 'neuropol_x_rg',
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.indigo),
+                                ),
                               ),
 
                               Padding(
@@ -354,45 +360,58 @@ Widget buildCard1(
           ),
         ),
 
+
         Column(
           children: [
             Padding(
-              padding: EdgeInsets.only(left: 25, top: 12, right: 5, bottom: 5),
+              padding: EdgeInsets.only(left: 46, top: 5, right: 5, bottom: 5),
               child: RotationTransition(
                 alignment: Alignment.topLeft,
-                turns: new AlwaysStoppedAnimation(90 / 360),
-                child: Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(right: 4),
-                      child: Shimmer.fromColors(
-                        baseColor: Colors.white,
-                        highlightColor: Colors.orange[300],
-                        child: Text(
-                          isPlayAsP1 ? cardsList[indexOfCardDeck].cardName : cardsList[cardListSize + indexOfCardDeck].cardName,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                            fontSize: 16,
+                turns: AlwaysStoppedAnimation(90 / 360),
+                child: Container(
+                  width: SizeConfig.heightMultiplier * 37.5,
+                  height: SizeConfig.heightMultiplier * 5.2,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: ShapeOfView(
+                          height: 17,
+                          width: 17,
+                          shape: CircleShape(borderColor: Colors.white, borderWidth: 1),
+                          elevation: 1,
+                          child: CircleAvatar(
+                            radius: 30,
+                            child: FadeInImage.assetNetwork(
+                              placeholder: 'assets/icons/png/white-flag.png',
+                              image: isPlayAsP1 ? cardsList[indexOfCardDeck].flagImage : cardsList[cardListSize + indexOfCardDeck].flagImage,
+                            ),
                           ),
                         ),
                       ),
-                    ),
 
-                    ShapeOfView(
-                      height: 16,
-                      width: 16,
-                      shape: CircleShape(borderColor: Colors.white, borderWidth: 1),
-                      elevation: 1,
-                      child: CircleAvatar(
-                        radius: 30,
-                        child: FadeInImage.assetNetwork(
-                          placeholder: 'assets/icons/png/white-flag.png',
-                          image: isPlayAsP1 ? cardsList[indexOfCardDeck].flagImage : cardsList[cardListSize + indexOfCardDeck].flagImage,
+                      Expanded(
+                        child: Shimmer.fromColors(
+                          baseColor: Colors.white,
+                          highlightColor: Colors.orange[800],
+                          child: Text(
+                            isPlayAsP1 ? cardsList[indexOfCardDeck].cardName : cardsList[cardListSize + indexOfCardDeck].cardName,
+                            style: TextStyle(
+                              fontFamily: 'montserrat',
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
+                              fontSize: 16,
+                            ),
+                            textAlign: TextAlign.start,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
+                            softWrap: false,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -519,15 +538,20 @@ Widget buildCard2(
                       HeartBeat(
                         child: Row(
                           children: [
-                            Text(
-                              cardsAttributeListOfP2[indexOfCardDeck][index].value,
-                              textAlign: TextAlign.start,
-                              style: TextStyle(
-                                  fontSize: 10,
-                                  fontStyle: FontStyle.normal,
-                                  fontFamily: 'neuropol_x_rg',
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.indigo),
+                            Flexible(
+                              child: Text(
+                                cardsAttributeListOfP2[indexOfCardDeck][index].value,
+                                textAlign: TextAlign.start,
+                                overflow: TextOverflow.clip,
+                                maxLines: 1,
+                                softWrap: false,
+                                style: TextStyle(
+                                    fontSize: 10,
+                                    fontStyle: FontStyle.normal,
+                                    fontFamily: 'neuropol_x_rg',
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.indigo),
+                              ),
                             ),
 
                             Padding(
@@ -581,43 +605,58 @@ Widget buildCard2(
         ),
 
         // Player name, flag , image in card
+
         Column(
           children: [
             Padding(
-              padding: EdgeInsets.only(left: 25, top: 12, right: 5, bottom: 3),
+              padding: EdgeInsets.only(left: 46, top: 12, right: 5, bottom: 3),
               child: RotationTransition(
                 alignment: Alignment.topLeft,
-                turns: new AlwaysStoppedAnimation(90 / 360),
-                child: Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(right: 4),
-                      child: Shimmer.fromColors(
-                        baseColor: Colors.white,
-                        highlightColor: Colors.orange[800],
-                        child: Text(
-                          isPlayAsP1 ? cardsList[cardListSizeForP2 + indexOfCardDeck].cardName : cardsList[indexOfCardDeck].cardName,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                            fontSize: 16,
+                turns: AlwaysStoppedAnimation(90 / 360),
+                child: Container(
+                  width: SizeConfig.heightMultiplier * 37.5,
+                  height: SizeConfig.heightMultiplier * 5.2,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: ShapeOfView(
+                          height: 16,
+                          width: 16,
+                          shape: CircleShape(borderColor: Colors.white, borderWidth: 1),
+                          elevation: 1,
+                          child: CircleAvatar(
+                            radius: 30,
+                            child: FadeInImage.assetNetwork(
+                              placeholder: 'assets/icons/png/white-flag.png',
+                              image: isPlayAsP1 ? cardsList[cardListSizeForP2 + indexOfCardDeck].flagImage: cardsList[indexOfCardDeck].flagImage,
+                            ),
                           ),
                         ),
                       ),
-                    ),
 
-                    Container(
-                      height: 16,
-                      width: 16,
-                      child: CircleAvatar(
-                        radius: 30,
-                        child: FadeInImage.assetNetwork(
-                          placeholder: 'assets/icons/png/white-flag.png',
-                          image: isPlayAsP1 ? cardsList[cardListSizeForP2 + indexOfCardDeck].flagImage:  cardsList[indexOfCardDeck].flagImage,
+                      Expanded(
+                        child: Shimmer.fromColors(
+                          baseColor: Colors.white,
+                          highlightColor: Colors.orange[800],
+                          child: Text(
+                            isPlayAsP1 ? cardsList[cardListSizeForP2 + indexOfCardDeck].cardName : cardsList[indexOfCardDeck].cardName,
+                            style: TextStyle(
+                              fontFamily: 'montserrat',
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
+                              fontSize: 16,
+                            ),
+                            textAlign: TextAlign.start,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
+                            softWrap: false,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),

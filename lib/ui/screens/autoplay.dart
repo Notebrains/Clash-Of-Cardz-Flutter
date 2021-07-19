@@ -54,6 +54,7 @@ class AutoPlay extends StatelessWidget {
   String p1MemberId = '';
   String p1Points = '';
   String p1Photo = '';
+  int gameTime = 5;
 
   final ValueNotifier<bool> p1Card1ValueNotify = ValueNotifier<bool>(true);
   final ValueNotifier<int> computerCard2ValueNotify = ValueNotifier<int>(0);
@@ -62,12 +63,11 @@ class AutoPlay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('----game cats autoplay: $gameCat1 , $gameCat2 , $gameCat3, $gameCat4, $cardToPlay, $playerType, $gameType, ');
-
+    //print('----game cats autoplay: $gameCat1 , $gameCat2 , $gameCat3, $gameCat4, $cardToPlay, $playerType, $gameType, ');
     setScreenOrientationToLandscape();
-    getSavedUserDataFromPref();
-
+    getSavedUserDataFromPref(cardToPlay);
     String gameId = 'computer';
+
     apiBloc.fetchCardsRes(
       xApiKey,
       gameCat1,
@@ -114,6 +114,7 @@ class AutoPlay extends StatelessWidget {
                                   children: [
                                     gamePlayTimerUi(
                                       context,
+                                      gameTime,
                                       onTimeEnd: (bool isTimeEnded) => {
                                         //print('Timer Ended');
                                         showTimesUpDialog(context, statesModel),
@@ -537,7 +538,25 @@ class AutoPlay extends StatelessWidget {
     );
   }
 
-  void getSavedUserDataFromPref() {
+  void getSavedUserDataFromPref(String cardToPlay) {
+    switch(cardToPlay){
+      case '14':
+        gameTime = 5;
+        break;
+
+      case '22':
+        gameTime = 10;
+        break;
+
+      case '30':
+        gameTime = 15;
+        break;
+
+      default :
+        gameTime = 5;
+    }
+
+
     SharedPreferenceHelper().getUserSavedData().then((sharedPrefUserProfileModel) => {
           p1xApiKey = sharedPrefUserProfileModel.xApiKey ?? 'NA',
           p1MemberId = sharedPrefUserProfileModel.memberId ?? 'NA',

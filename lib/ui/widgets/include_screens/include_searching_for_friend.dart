@@ -115,91 +115,88 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForFriend> wi
                 child: new ClipRect(
                   child: new BackdropFilter(
                     filter: new ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
-                    child: new Container(
-                      decoration: new BoxDecoration(color: Colors.grey.shade50.withOpacity(0.1)),
-                      child: new Center(
-                        child: Container(
-                          margin: EdgeInsets.all(5.0),
-                          padding: EdgeInsets.all(5.0),
-                          height: MediaQuery.of(context).size.height,
-                          decoration: ShapeDecoration(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0))),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              Align(
-                                alignment: Alignment.topRight,
-                                child: Container(
-                                  width: 30,
-                                  height: 30,
-                                  margin: EdgeInsets.only(top: 12, right: 12),
-                                  child: FloatingActionButton(
-                                    mini: true,
-                                    tooltip: 'close',
-                                    elevation: 0,
-                                    backgroundColor: Colors.transparent,
-                                    child: Icon(
-                                      Icons.close,
-                                      color: Colors.white,
-                                    ),
-                                    onPressed: () {
+                    child: new Center(
+                      child: Container(
+                        margin: EdgeInsets.all(5.0),
+                        padding: EdgeInsets.all(5.0),
+                        height: MediaQuery.of(context).size.height,
+                        decoration: ShapeDecoration(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0))),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Align(
+                              alignment: Alignment.topRight,
+                              child: Container(
+                                width: 30,
+                                height: 30,
+                                margin: EdgeInsets.only(top: 12, right: 12),
+                                child: FloatingActionButton(
+                                  mini: true,
+                                  tooltip: 'close',
+                                  elevation: 0,
+                                  backgroundColor: Colors.transparent,
+                                  child: Icon(
+                                    Icons.close,
+                                    color: Colors.white,
+                                  ),
+                                  onPressed: () {
+                                    funAfterNoPlayerFound();
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                              ),
+                            ),
+
+                            Lottie.asset(
+                              'assets/animations/lottiefiles/sports-loading.json',
+                              height: SizeConfig.heightMultiplier * 25,
+                              width: SizeConfig.heightMultiplier * 25,
+                            ),
+
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                TweenAnimationBuilder<Duration>(
+                                    duration: Duration(minutes: 10),
+                                    tween: Tween(begin: Duration.zero, end: Duration(minutes: 10), ),
+                                    onEnd: () {
                                       funAfterNoPlayerFound();
-                                      Navigator.pop(context);
                                     },
-                                  ),
-                                ),
-                              ),
-
-                              Lottie.asset(
-                                'assets/animations/lottiefiles/sports-loading.json',
-                                height: SizeConfig.heightMultiplier * 25,
-                                width: SizeConfig.heightMultiplier * 25,
-                              ),
-
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  TweenAnimationBuilder<Duration>(
-                                      duration: Duration(minutes: 10),
-                                      tween: Tween(begin: Duration.zero, end: Duration(minutes: 10), ),
-                                      onEnd: () {
-                                        funAfterNoPlayerFound();
-                                      },
-                                      builder: (BuildContext context, Duration value, Widget child) {
-                                        //adding 0 at first if min or sec show in single digit
-                                        final minutes = (value.inMinutes).toString().padLeft(2, "0");
-                                        final seconds = (value.inSeconds % 60).toString().padLeft(2, "0");
-                                        return Center(
-                                          child: Text(
-                                            '$minutes : $seconds',
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 30,
-                                              shadows: [
-                                                Shadow(color: Colors.white),
-                                              ],
-                                            ),
+                                    builder: (BuildContext context, Duration value, Widget child) {
+                                      //adding 0 at first if min or sec show in single digit
+                                      final minutes = (value.inMinutes).toString().padLeft(2, "0");
+                                      final seconds = (value.inSeconds % 60).toString().padLeft(2, "0");
+                                      return Center(
+                                        child: Text(
+                                          '$minutes : $seconds',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 30,
+                                            shadows: [
+                                              Shadow(color: Colors.white),
+                                            ],
                                           ),
-                                        );
-                                      }),
-                                ],
-                              ),
+                                        ),
+                                      );
+                                    }),
+                              ],
+                            ),
 
-                              Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(top: 12.0),
-                                  child: Text(
-                                    'Waiting for your friend to accept the challenge',
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 24, fontFamily: 'montserrat', fontWeight: FontWeight.bold),
-                                  ),
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.only(top: 12.0),
+                                child: Text(
+                                  'Waiting for your friend to accept the challenge',
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 24, fontFamily: 'montserrat', fontWeight: FontWeight.bold),
                                 ),
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
                     ),

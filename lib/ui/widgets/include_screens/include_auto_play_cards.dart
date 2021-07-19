@@ -27,8 +27,8 @@ Widget buildPlayerOneCard(
   List<List<Attribute>> cardsAttributeListP1 = [];
   List<List<Attribute>> cardsAttributeListOfP2 = [];
   String isPlayer1Won = 'false';
-  int p1SelectedAttributeValue = 0;
-  int p2SelectedAttributeValue = 0;
+  double p1SelectedAttributeValue = 0.0;
+  double p2SelectedAttributeValue = 0.0;
   int winPoint = 0;
   int cardListSizeForP2 = (cardsList.length / 2).round();
   final ValueNotifier<int> isButtonTappedValueNotify = ValueNotifier<int>(77);
@@ -54,8 +54,8 @@ Widget buildPlayerOneCard(
       if (whoIsPlaying == 'player') {
         onClickActionOnP1AutoPlayCard(0, 'false', 0, true);
       } if (isPlayerTurn && whoIsPlaying == 'computer') {
-        p1SelectedAttributeValue = double.parse(cardsAttributeListP1[indexOfCardDeck][indexOfCardDeckSelectForComputer].value).toInt();
-        p2SelectedAttributeValue = double.parse(cardsAttributeListOfP2[indexOfCardDeck][indexOfCardDeckSelectForComputer].value).toInt();
+        p1SelectedAttributeValue = double.parse(cardsAttributeListP1[indexOfCardDeck][indexOfCardDeckSelectForComputer].value);
+        p2SelectedAttributeValue = double.parse(cardsAttributeListOfP2[indexOfCardDeck][indexOfCardDeckSelectForComputer].value);
         String p1CardStatsTitle = cardsAttributeListP1[indexOfCardDeck][indexOfCardDeckSelectForComputer].name;
         String p2CardStatsTitle = cardsAttributeListOfP2[indexOfCardDeck][indexOfCardDeckSelectForComputer].name;
         int winPoint = int.parse(cardsAttributeListP1[indexOfCardDeck][indexOfCardDeckSelectForComputer].winPoints);
@@ -119,6 +119,14 @@ Widget buildPlayerOneCard(
             ),
 
             TxtInsideDottedLine(text: whoIsPlaying == 'player' ? Constants.p1CardText1 : Constants.p1CardText4, width: 140, height: 100,),
+
+            Align(
+                alignment: Alignment.bottomCenter,
+                child: Lottie.asset(
+                    whoIsPlaying == 'player' ? 'assets/animations/lottiefiles/tap_finger.json' :
+                    'assets/animations/lottiefiles/timer-progress-animation.json',
+                    width: 65, height: 65),
+            ),
           ],
         ),
         onTap: () {
@@ -219,15 +227,20 @@ Widget buildPlayerOneCard(
                                 HeartBeat(
                                   child: Row(
                                     children: [
-                                      Text(
-                                        cardsAttributeListP1[indexOfCardDeck][index].value,
-                                        textAlign: TextAlign.start,
-                                        style: TextStyle(
-                                            fontSize: 10,
-                                            fontStyle: FontStyle.normal,
-                                            fontFamily: 'neuropol_x_rg',
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.indigo),
+                                      Flexible(
+                                        child: Text(
+                                          cardsAttributeListP1[indexOfCardDeck][index].value,
+                                          textAlign: TextAlign.start,
+                                          overflow: TextOverflow.clip,
+                                          maxLines: 1,
+                                          softWrap: false,
+                                          style: TextStyle(
+                                              fontSize: 10,
+                                              fontStyle: FontStyle.normal,
+                                              fontFamily: 'neuropol_x_rg',
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.indigo),
+                                        ),
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.only(left: 2),
@@ -359,8 +372,8 @@ Widget buildPlayerTwoCard(
   List<List<Attribute>> cardsAttributeListOfP2 = [];
   List<List<Attribute>> cardsAttributeListP1 = [];
   String isPlayer1Won = 'false';
-  int p1SelectedAttributeValue = 0;
-  int p2SelectedAttributeValue = 0;
+  double p1SelectedAttributeValue = 0.0;
+  double p2SelectedAttributeValue = 0.0;
   int winPoint = 0;
   int cardListSizeForP2 = (cardsList.length / 2).round();
   //int indexOfCardDeckForP2 = cardListSizeForP2 + indexOfCardDeck;
@@ -381,8 +394,8 @@ Widget buildPlayerTwoCard(
 
   Widget doFlip(bool isComputerTurn, GlobalKey<FlipCardState> cardKeyOfPlayerTwo) {
     //p1 and p2 card will be touched in same position. So both index will be same.
-    p1SelectedAttributeValue = 0;
-    p2SelectedAttributeValue = 0;
+    p1SelectedAttributeValue = 0.0;
+    p2SelectedAttributeValue = 0.0;
     winPoint = 0;
 
     if(whoIsPlaying == 'computer' && isP1SelectedStats){
@@ -396,8 +409,8 @@ Widget buildPlayerTwoCard(
       });
 
     } else if (isComputerTurn && whoIsPlaying == 'player' && isP1SelectedStats) {
-      p1SelectedAttributeValue = double.parse(cardsAttributeListP1[indexOfCardDeck][p1SelectedIndexOfAttributeList].value).toInt();
-      p2SelectedAttributeValue = double.parse(cardsAttributeListOfP2[indexOfCardDeck][p1SelectedIndexOfAttributeList].value).toInt();
+      p1SelectedAttributeValue = double.parse(cardsAttributeListP1[indexOfCardDeck][p1SelectedIndexOfAttributeList].value);
+      p2SelectedAttributeValue = double.parse(cardsAttributeListOfP2[indexOfCardDeck][p1SelectedIndexOfAttributeList].value);
       String p1CardStatsTitle = cardsAttributeListP1[indexOfCardDeck][p1SelectedIndexOfAttributeList].name;
       String p2CardStatsTitle = cardsAttributeListOfP2[indexOfCardDeck][p1SelectedIndexOfAttributeList].name;
 
@@ -651,15 +664,20 @@ Widget buildPlayerTwoCard(
                         HeartBeat(
                           child: Row(
                             children: [
-                              Text(
-                                cardsAttributeListOfP2[indexOfCardDeck][index].value,
-                                textAlign: TextAlign.start,
-                                style: TextStyle(
-                                    fontSize: 10,
-                                    fontStyle: FontStyle.normal,
-                                    fontFamily: 'neuropol_x_rg',
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.indigo),
+                              Flexible(
+                                child: Text(
+                                  cardsAttributeListOfP2[indexOfCardDeck][index].value,
+                                  textAlign: TextAlign.start,
+                                  overflow: TextOverflow.clip,
+                                  maxLines: 1,
+                                  softWrap: false,
+                                  style: TextStyle(
+                                      fontSize: 10,
+                                      fontStyle: FontStyle.normal,
+                                      fontFamily: 'neuropol_x_rg',
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.indigo),
+                                ),
                               ),
                               Padding(
                                 padding: const EdgeInsets.only(left: 2),

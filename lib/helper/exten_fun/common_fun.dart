@@ -33,19 +33,22 @@ String getFirstWordFromText(String txt) {
 }
 
 void showToast(BuildContext context, String message) {
-  Toast.show(message, context,
-      duration: Toast.lengthLong,
-      gravity: Toast.bottom,
-      backgroundColor: Colors.black87.withOpacity(0.5),
-      textStyle: TextStyle(
-        color: Colors.white,
-        fontWeight: FontWeight.bold,
-        fontSize: 14,
-        fontFamily: 'montserrat',
-        shadows: [
-          Shadow(color: Colors.white),
-        ],
-      ));
+  if (context != null) {
+    Toast.show(message, context,
+        duration: Toast.lengthLong,
+        gravity: Toast.bottom,
+        backgroundColor: Colors.black87.withOpacity(0.5),
+        textStyle: TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+          fontSize: 14,
+          fontFamily: 'montserrat',
+          shadows: [
+            Shadow(color: Colors.white),
+          ],
+        ),
+    );
+  }
 }
 
 String getRandomBgImgFromAsset() {

@@ -11,7 +11,7 @@ import 'package:flutter_animator/flutter_animator.dart';
 import 'package:clash_of_cardz_flutter/helper/exten_fun/base_application_fun.dart';
 
 Widget gamePlayTimerUi(
-  BuildContext context, {
+  BuildContext context, int gameTime, {
   Function(bool isTimeEnded) onTimeEnd,
 }) {
   return Container(
@@ -23,8 +23,8 @@ Widget gamePlayTimerUi(
         Padding(
           padding: const EdgeInsets.only(left: 0.0, top: 0),
           child: TweenAnimationBuilder<Duration>(
-              duration: Duration(minutes: 5),
-              tween: Tween(begin: Duration(minutes: 5), end: Duration.zero),
+              duration: Duration(minutes: gameTime),
+              tween: Tween(begin: Duration(minutes: gameTime), end: Duration.zero),
               onEnd: () {
                 onTimeEnd(true);
               },

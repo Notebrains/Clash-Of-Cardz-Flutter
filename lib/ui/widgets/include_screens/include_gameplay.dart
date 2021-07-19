@@ -243,7 +243,7 @@ class BuildPlayer1Screen extends StatelessWidget{
                 ),
               ),
 
-              HeadShake(
+              /*HeadShake(
                 child: Container(
                   width: 28,
                   height: 28,
@@ -260,7 +260,7 @@ class BuildPlayer1Screen extends StatelessWidget{
                 preferences: AnimationPreferences(
                     duration: const Duration(milliseconds: 5500),
                     autoPlay: AnimationPlayStates.Loop),
-              ),
+              ),*/
             ],
           ),
         ],
@@ -297,7 +297,6 @@ class BuildPlayer1Screen extends StatelessWidget{
         ),
         //change the number as you want
         children:  List.generate(gridListSize, (index) {
-
           return HeartBeat(
             child: GestureDetector(
               child: Card(

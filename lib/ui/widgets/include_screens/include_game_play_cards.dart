@@ -1,12 +1,12 @@
+import 'package:clash_of_cardz_flutter/ui/styles/size_config.dart';
 import 'package:clash_of_cardz_flutter/ui/widgets/custom/txt_inside_doted_line.dart';
+import 'package:clash_of_cardz_flutter/ui/widgets/libraries/animated_text_kit/typer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 import 'package:shape_of_view/shape_of_view.dart';
 import 'package:clash_of_cardz_flutter/helper/exten_fun/base_application_fun.dart';
 import 'package:clash_of_cardz_flutter/model/responses/cards_res_model.dart';
-import 'package:clash_of_cardz_flutter/ui/widgets/libraries/animated_text_kit/wavy.dart';
 import 'package:clash_of_cardz_flutter/ui/widgets/libraries/edge_alert.dart';
-import 'package:clash_of_cardz_flutter/ui/widgets/libraries/f_dotted_line.dart';
 import 'package:clash_of_cardz_flutter/ui/widgets/libraries/flip_card.dart';
 import 'package:clash_of_cardz_flutter/ui/widgets/libraries/shimmer.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -157,25 +157,26 @@ Widget buildCardAsP1(
           Align(
             alignment: Alignment.topCenter,
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(5.0),
               child: FadeInImage.assetNetwork(
                   fit: BoxFit.cover,
                   placeholder: 'assets/images/cricket_1.png',
                   image: isPlayAsP1 ? cardsList[indexOfCardDeck].cardImg : cardsList[cardListSize + indexOfCardDeck].cardImg,
-                  height: 135,
+                  height: 125,
                   width: 135,
               ),
             ),
           ),
           Align(
-            alignment: Alignment.bottomLeft,
+            alignment: Alignment.bottomCenter,
             child: Container(
               width: 200,
-              height: 25,
+              height: 22,
               child: BounceInLeft(
-                child: WavyAnimatedTextKit(
-                  textStyle: TextStyle(fontSize: 12.0, color: Colors.white, fontWeight: FontWeight.normal),
-                  text: ['*Select a stats to play'],
+                child: TyperAnimatedTextKit(
+                  textAlign: TextAlign.center,
+                  textStyle: TextStyle(fontSize: 12.0, color: Colors.white60, fontWeight: FontWeight.normal),
+                  text: ['*Tap on a stat to play'],
                   isRepeatingAnimation: true,
                 ),
                 preferences: AnimationPreferences(duration: const Duration(milliseconds: 3000), autoPlay: AnimationPlayStates.Forward),
@@ -197,11 +198,11 @@ Widget buildCardAsP1(
                     childAspectRatio: 5 / 3,
                     physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
                     // if you want IOS bouncing effect, otherwise remove this line
-                    padding: EdgeInsets.all(4),
+                    padding: EdgeInsets.all(0),
                     //change the number as you want
                     children: List.generate(cardsAttributeList[indexOfCardDeck].length, (index) {
                       return Container(
-                        padding: index == selectedIndexOfP2Card || index == isButtonTappedValueNotify.value? EdgeInsets.only(left: 3, top: 1):EdgeInsets.all(0),
+                        padding: index == selectedIndexOfP2Card || index == isButtonTappedValueNotify.value? EdgeInsets.only(left: 3, top: 1, right: 1) : EdgeInsets.all(0),
                         decoration: BoxDecoration(
                           color: index == selectedIndexOfP2Card || index == isButtonTappedValueNotify.value? Colors.white24: Colors.transparent,
                           border: index == selectedIndexOfP2Card || index == isButtonTappedValueNotify.value? Border.all(color: Colors.white):Border.all(color: Colors.transparent),
@@ -220,15 +221,21 @@ Widget buildCardAsP1(
                                 HeartBeat(
                                   child: Row(
                                     children: [
-                                      Text(
-                                        cardsAttributeList[indexOfCardDeck][index].value,
-                                        textAlign: TextAlign.start,
-                                        style: TextStyle(
-                                            fontSize: 10,
-                                            fontStyle: FontStyle.normal,
-                                            fontFamily: 'neuropol_x_rg',
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.indigo),
+                                      Flexible(
+                                        child: Text(
+                                          cardsAttributeList[indexOfCardDeck][index].value,
+                                          textAlign: TextAlign.start,
+                                          overflow: TextOverflow.clip,
+                                          maxLines: 1,
+                                          softWrap: false,
+                                          style: TextStyle(
+                                              fontSize: 10,
+                                              fontStyle: FontStyle.normal,
+                                              fontFamily: 'neuropol_x_rg',
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.indigo,
+                                          ),
+                                        ),
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.only(left: 3),
@@ -299,41 +306,54 @@ Widget buildCardAsP1(
           Column(
             children: [
               Padding(
-                padding: EdgeInsets.only(left: 25, top: 5, right: 5, bottom: 5),
+                padding: EdgeInsets.only(left: 46, top: 5, right: 5, bottom: 5),
                 child: RotationTransition(
                   alignment: Alignment.topLeft,
-                  turns: new AlwaysStoppedAnimation(90 / 360),
-                  child: Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(right: 4),
-                        child: Shimmer.fromColors(
-                          baseColor: Colors.white,
-                          highlightColor: Colors.grey[400],
-                          child: Text(
-                            isPlayAsP1 ? cardsList[indexOfCardDeck].cardName : cardsList[cardListSize + indexOfCardDeck].cardName,
-                            style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              color: Colors.white,
-                              fontSize: 16,
+                  turns: AlwaysStoppedAnimation(90 / 360),
+                  child: Container(
+                    width: SizeConfig.heightMultiplier * 37.5,
+                    height: SizeConfig.heightMultiplier * 5.2,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: ShapeOfView(
+                            height: 17,
+                            width: 17,
+                            shape: CircleShape(borderColor: Colors.white, borderWidth: 1),
+                            elevation: 1,
+                            child: CircleAvatar(
+                              radius: 30,
+                              child: FadeInImage.assetNetwork(
+                                placeholder: 'assets/icons/png/white-flag.png',
+                                image:  isPlayAsP1 ? cardsList[indexOfCardDeck].flagImage : cardsList[cardListSize + indexOfCardDeck].flagImage,
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      ShapeOfView(
-                        height: 17,
-                        width: 17,
-                        shape: CircleShape(borderColor: Colors.white, borderWidth: 1),
-                        elevation: 1,
-                        child: CircleAvatar(
-                          radius: 30,
-                          child: FadeInImage.assetNetwork(
-                            placeholder: 'assets/icons/png/white-flag.png',
-                            image:  isPlayAsP1 ? cardsList[indexOfCardDeck].flagImage : cardsList[cardListSize + indexOfCardDeck].flagImage,
+
+                        Expanded(
+                          child: Shimmer.fromColors(
+                            baseColor: Colors.white,
+                            highlightColor: Colors.orangeAccent,
+                            child: Text(
+                              isPlayAsP1 ? cardsList[indexOfCardDeck].cardName : cardsList[cardListSize + indexOfCardDeck].cardName,
+                              style: TextStyle(
+                                fontFamily: 'montserrat',
+                                fontWeight: FontWeight.w600,
+                                color: Colors.white,
+                                fontSize: 16,
+                              ),
+                              textAlign: TextAlign.start,
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 2,
+                              softWrap: false,
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -481,9 +501,10 @@ Widget buildSecondCard(
                     isPlayAsP1 ? cardsList[cardListSizeForP2 + indexOfCardDeck].cardName : cardsList[indexOfCardDeck].cardName,
                     textAlign:TextAlign.center,
                     style: TextStyle(
+                      fontFamily: 'montserrat',
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
-                      fontSize: 17,
+                      fontSize: 14,
                     ),
                   ),
                 ),
