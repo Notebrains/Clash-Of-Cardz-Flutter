@@ -199,9 +199,7 @@ void sendNotificationToOtherPlayerByApi(BuildContext context, String xApiKey, St
 
   print('---- friend Id: $friendId, memberId: $memberId, gameCat2: $gameCat2, cardsToPlay: $cardsToPlay');
 
-
-
-   Navigator.push(context, MaterialPageRoute(
+  Navigator.push(context, MaterialPageRoute(
     builder: (BuildContext context) => IncludeSearchingForFriend(
       gameCat1: gameCat1,
       gameCat2: gameCat2,

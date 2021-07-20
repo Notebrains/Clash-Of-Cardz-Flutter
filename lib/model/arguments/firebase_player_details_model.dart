@@ -1,7 +1,4 @@
-
-import 'package:equatable/equatable.dart';
-
-class FirebasePlayerDetailsModel extends Equatable{
+class FirebasePlayerDetailsModel{
   String playerName = '';
   String userId = '';
   String photo = '';

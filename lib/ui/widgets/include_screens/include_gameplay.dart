@@ -15,7 +15,7 @@ class BuildPlayer1Screen extends StatelessWidget{
   String p2Name = '';
   ValueNotifier<bool> gameScoreStatusValueNotify;
 
-  BuildPlayer1Screen(int length, String p1fullName, String p2Name, ValueNotifier<bool> gameScoreStatusValueNotify){
+  BuildPlayer1Screen(int length, String p1fullName, String p2Name){
     this.listLength = (length/2).round();
     this.p1Name = p1fullName;
     this.p2Name = p2Name;
@@ -283,7 +283,7 @@ class BuildPlayer1Screen extends StatelessWidget{
     //print('---- card Count 11 ${statesModel.cardCountOnDeck}');
 
     return Container(
-      padding: EdgeInsets.only(top: 5, left: 4,),
+      padding: EdgeInsets.only(left: 4,),
       height: 110,
       width: 100,
       child:  GridView(
@@ -298,23 +298,17 @@ class BuildPlayer1Screen extends StatelessWidget{
         //change the number as you want
         children:  List.generate(gridListSize, (index) {
           return HeartBeat(
-            child: GestureDetector(
-              child: Card(
-                elevation: 5,
-                shadowColor: Colors.grey,
-                color: Colors.orange,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                  child: Image.asset(
-                    'assets/images/bg_card_back.png',
-                    width: 55,
-                  ),
+            child: Card(
+              elevation: 5,
+              shadowColor: Colors.grey,
+              color: Colors.orange,
+              child: ClipRRect(
+                borderRadius: BorderRadius.all(Radius.circular(4.0)),
+                child: Image.asset(
+                  'assets/images/bg_card_back.png',
+                  width: 55,
                 ),
               ),
-
-              onTap: (){
-
-              },
             ),
             preferences: AnimationPreferences(
                 offset: Duration(milliseconds: 3000),

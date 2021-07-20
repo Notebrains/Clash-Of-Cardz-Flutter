@@ -95,244 +95,233 @@ class Gameplay extends StatelessWidget {
   //firebase data init
   DatabaseReference _gamePlayRef;
   StreamSubscription<Event> gamePlaySubscription;
-  FirebaseApp firebaseApp;
 
   final ValueNotifier<int> card1ValueNotify = ValueNotifier<int>(77);
   final ValueNotifier<int> card2ValueNotify = ValueNotifier<int>(77);
-  final ValueNotifier<bool> gameScoreStatusValueNotify = ValueNotifier<bool>(false);
 
   @override
   Widget build(BuildContext context) {
     //print('----game cats: $gameCat1 , $gameCat2 , $gameCat3, $gameCat4, $gameType, $cardsToPlay, $playerType');
-    initFirebaseCredentials();
     setScreenOrientationToLandscape();
-    manageP1AndP2Data(cardsToPlay);
+    initFirebaseAndManageP1AndP2Data(cardsToPlay);
 
     apiBloc.fetchCardsRes(xApiKey, gameCat1, gameCat2, gameCat3, gameCat4, cardsToPlay, gameRoomName, playerType,);
-    return WillPopScope(
-      onWillPop: () async => false,
-      child: Scaffold(
-        key: _scaffoldKey,
-        resizeToAvoidBottomInset: false,
-        body: ChangeNotifierProvider(
-          create: (context) => statesModelGlobal,
-          child: StreamBuilder(
-            stream: apiBloc.cardsRes,
-            builder: (context, AsyncSnapshot<CardsResModel> snapshot) {
-              if (snapshot.hasData && snapshot.data.status == 1 && snapshot.data.response.cards.length > 0) {
-                updateGamePlayStatusToFirebase();
-                listeningToFirebaseDataUpdate(gameRoomName);
-                cards = snapshot.data.response.cards;
-                return Stack(
-                  fit: StackFit.expand,
-                  children: [
-                    Image.asset(getRandomBgImgFromAsset(), fit: BoxFit.cover,),
 
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Expanded(
-                          flex: 3,
-                          child: BuildPlayer1Screen(cards.length, p1FullName, p2Name, gameScoreStatusValueNotify),
-                        ),
-                        Expanded(
-                          flex: 8,
-                          child: Consumer<GamePlayStatesModel>(
-                            builder: (context, statesModel, child) => Container(
-                              //width: getScreenWidth(context) - 400,
-                              child: Column(
-                                children: [
-                                  gamePlayTimerUi(context, gameTime, onTimeEnd: (bool isTimeEnded) => {
-                                    showTimesUpDialog(context, statesModel)
-                                  },),
+    return ChangeNotifierProvider(
+        create: (context) => statesModelGlobal,
+        child: WillPopScope(
+          onWillPop: () async => false,
+          child: Scaffold(
+            key: _scaffoldKey,
+            resizeToAvoidBottomInset: false,
+            body: StreamBuilder(
+              stream: apiBloc.cardsRes,
+              builder: (context, AsyncSnapshot<CardsResModel> snapshot) {
+                if (snapshot.hasData && snapshot.data.status == 1 && snapshot.data.response.cards.length > 0) {
+                  updateGamePlayStatusToFirebase();
+                  listeningToFirebaseDataUpdate(gameRoomName);
+                  cards = snapshot.data.response.cards;
+                  return Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      Image.asset(getRandomBgImgFromAsset(), fit: BoxFit.cover,),
 
-                                  Container(
-                                    height: getScreenHeight(context) / 1.5,
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: [
-                                        ValueListenableBuilder(
-                                          builder: (BuildContext context, int value, Widget child) {
-                                            // This builder will only get called when the _counter
-                                            //is updated.
-                                            //print('---- 220: ${SizeConfig.widthMultiplier * 53}');
-                                            //print('---- 300: ${SizeConfig.heightMultiplier * 36.5}');
-                                            return Container(
-                                              width: SizeConfig.widthMultiplier * 53,
-                                              height: SizeConfig.heightMultiplier * 37,
-                                              child: BounceInLeft(
-                                                child: buildCardAsP1(
-                                                  context,
-                                                  isPlayAsP1,
-                                                  cards,
-                                                  indexOfCardDeck,
-                                                  isYourNextTurn,
-                                                  indexSelectedByP2,
-                                                  whoIsPlaying,
-                                                  onClickActionOnP1GameplayCard: (int indexOfP1Card, String attributeTitle,
-                                                      String attributeValue, String winBasis, String winPoints, bool isFlipped) =>
-                                                  {
-                                                    //print('----p1c clicked'),
-                                                    if (isFlipped && whoIsPlaying == 'p1')
-                                                      {
-                                                        isP1CardFlipped = isFlipped,
-                                                        isP1SelectedStats = false,
-                                                        //rebuild 2Card on flip
-                                                        card2ValueNotify.value += 1,
-                                                        //updateGamePlayStatus( statesModel, attributeTitle, attributeValue, winBasis, winPoints),
-                                                      }
-                                                    else
-                                                      {
-                                                        isP1SelectedStats = true,
-                                                        this.indexOfP1Card = indexOfP1Card,
-                                                        statesModelGlobal = statesModel,
-                                                        if (whoIsPlaying == 'p2'){
-                                                          updateGamePlayStatus( attributeTitle, attributeValue, winBasis, winPoints),
-                                                        } else {
-                                                          //card2ValueNotify.value += 1,
-                                                          //update p2 thinking
-                                                          updateGamePlayStatus(attributeTitle, attributeValue, winBasis, winPoints),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            flex: 3,
+                            child: BuildPlayer1Screen(cards.length, p1FullName, p2Name),
+                          ),
+                          Expanded(
+                            flex: 8,
+                            child: Consumer<GamePlayStatesModel>(
+                              builder: (context, statesModel, child) => Container(
+                                //width: getScreenWidth(context) - 400,
+                                child: Column(
+                                  children: [
+                                    gamePlayTimerUi(context, gameTime, onTimeEnd: (bool isTimeEnded) => {
+                                      showTimesUpDialog(context, statesModel)
+                                    },),
+
+                                    Container(
+                                      height: getScreenHeight(context) / 1.5,
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          ValueListenableBuilder(
+                                            builder: (BuildContext context, int value, Widget child) {
+                                              // This builder will only get called when the _counter
+                                              //is updated.
+                                              //print('---- 220: ${SizeConfig.widthMultiplier * 53}');
+                                              //print('---- 300: ${SizeConfig.heightMultiplier * 36.5}');
+                                              return Container(
+                                                width: SizeConfig.widthMultiplier * 53,
+                                                height: SizeConfig.heightMultiplier * 37,
+                                                child: BounceInLeft(
+                                                  child: buildCardAsP1(
+                                                    context,
+                                                    isPlayAsP1,
+                                                    cards,
+                                                    indexOfCardDeck,
+                                                    isYourNextTurn,
+                                                    indexSelectedByP2,
+                                                    whoIsPlaying,
+                                                    onClickActionOnP1GameplayCard: (int indexOfP1Card, String attributeTitle,
+                                                        String attributeValue, String winBasis, String winPoints, bool isFlipped) =>
+                                                    {
+                                                      //print('----p1c clicked'),
+                                                      if (isFlipped && whoIsPlaying == 'p1')
+                                                        {
+                                                          isP1CardFlipped = isFlipped,
+                                                          isP1SelectedStats = false,
+                                                          //rebuild 2Card on flip
+                                                          card2ValueNotify.value += 1,
+                                                          //updateGamePlayStatus( statesModel, attributeTitle, attributeValue, winBasis, winPoints),
                                                         }
-                                                      }
-                                                  },
+                                                      else
+                                                        {
+                                                          isP1SelectedStats = true,
+                                                          this.indexOfP1Card = indexOfP1Card,
+                                                          statesModelGlobal = statesModel,
+                                                          if (whoIsPlaying == 'p2'){
+                                                            updateGamePlayStatus( attributeTitle, attributeValue, winBasis, winPoints),
+                                                          } else {
+                                                            //card2ValueNotify.value += 1,
+                                                            //update p2 thinking
+                                                            updateGamePlayStatus(attributeTitle, attributeValue, winBasis, winPoints),
+                                                          }
+                                                        }
+                                                    },
+                                                  ),
+                                                  preferences: AnimationPreferences(
+                                                      duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
                                                 ),
-                                                preferences: AnimationPreferences(
-                                                    duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
-                                              ),
-                                            );
-                                          },
-                                          valueListenable: card1ValueNotify,
-                                          // The child parameter is most helpful if the child is
-                                          // expensive to build and does not depend on the value from
-                                          // the notifier.
-                                        ),
+                                              );
+                                            },
+                                            valueListenable: card1ValueNotify,
+                                            // The child parameter is most helpful if the child is
+                                            // expensive to build and does not depend on the value from
+                                            // the notifier.
+                                          ),
 
-                                        RubberBand(
-                                          child: AvatarGlow(
-                                            endRadius: 30,
-                                            glowColor: Colors.white,
-                                            child: Container(
-                                              width: 50,
-                                              child: Center(
-                                                child: Image.asset(
-                                                  'assets/icons/png/img_vs.png',
-                                                  color: Colors.blueGrey,
+                                          RubberBand(
+                                            child: AvatarGlow(
+                                              endRadius: 30,
+                                              glowColor: Colors.white,
+                                              child: Container(
+                                                width: 50,
+                                                child: Center(
+                                                  child: Image.asset(
+                                                    'assets/icons/png/img_vs.png',
+                                                    color: Colors.blueGrey,
+                                                  ),
                                                 ),
                                               ),
                                             ),
+                                            preferences: AnimationPreferences(
+                                                duration: const Duration(milliseconds: 4000),
+                                                autoPlay: AnimationPlayStates.Loop),
                                           ),
-                                          preferences: AnimationPreferences(
-                                              duration: const Duration(milliseconds: 4000),
-                                              autoPlay: AnimationPlayStates.Loop),
-                                        ),
 
-                                        ValueListenableBuilder(
-                                          builder: (BuildContext context, int value, Widget child) {
-                                            // This builder will only get called when the _counter
-                                            // is updated.
-                                            // print('---- 150: ${SizeConfig.widthMultiplier * 38.5}');
-                                            // print('---- 210: ${SizeConfig.heightMultiplier * 25.5}');
-                                            return Container(
-                                              width: SizeConfig.widthMultiplier * 36.5,
-                                              height: SizeConfig.heightMultiplier * 26.5,
-                                              alignment: AlignmentDirectional.bottomCenter,
-                                              child: BounceInRight(
-                                                child: buildSecondCard(
-                                                  context,
-                                                  indexOfP1Card,
-                                                  indexOfCardDeck,
-                                                  cards,
-                                                  isP1CardFlipped,
-                                                  p1TurnStatus,
-                                                  p2TurnStatus,
-                                                  isPlayAsP1,
+                                          ValueListenableBuilder(
+                                            builder: (BuildContext context, int value, Widget child) {
+                                              // This builder will only get called when the _counter
+                                              // is updated.
+                                              // print('---- 150: ${SizeConfig.widthMultiplier * 38.5}');
+                                              // print('---- 210: ${SizeConfig.heightMultiplier * 25.5}');
+                                              return Container(
+                                                width: SizeConfig.widthMultiplier * 36.5,
+                                                height: SizeConfig.heightMultiplier * 26.5,
+                                                alignment: AlignmentDirectional.bottomCenter,
+                                                child: BounceInRight(
+                                                  child: buildSecondCard(
+                                                    context,
+                                                    indexOfP1Card,
+                                                    indexOfCardDeck,
+                                                    cards,
+                                                    isP1CardFlipped,
+                                                    p1TurnStatus,
+                                                    p2TurnStatus,
+                                                    isPlayAsP1,
+                                                  ),
+                                                  preferences: AnimationPreferences(
+                                                      duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
                                                 ),
-                                                preferences: AnimationPreferences(
-                                                    duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
-                                              ),
-                                            );
-                                          },
-                                          valueListenable: card2ValueNotify,
-                                          // The child parameter is most helpful if the child is
-                                          // expensive to build and does not depend on the value from
-                                          // the notifier.
-                                        ),
-                                      ],
+                                              );
+                                            },
+                                            valueListenable: card2ValueNotify,
+                                            // The child parameter is most helpful if the child is
+                                            // expensive to build and does not depend on the value from
+                                            // the notifier.
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                  ),
 
-                                  ValueListenableBuilder(
-                                    builder: (BuildContext context, bool isListShow, Widget child) {
-                                      return Expanded(
-                                        child: RotateInUpLeft(
-                                          child: Container(
-                                            padding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 8.0),
-                                            height: 30,
-                                            child: ListView.builder(
-                                              physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-                                              scrollDirection: Axis.horizontal,
-                                              itemCount: playerResultStatusList.length,
-                                              itemBuilder: (context, index) {
-                                                return Card(
-                                                  elevation: 5,
-                                                  shadowColor: Colors.lightBlueAccent,
-                                                  color: Colors.blueGrey,
-                                                  child: setResultStatus(index),
-                                                );
-                                              },
-                                            ),
-                                          ),
-                                          preferences: AnimationPreferences(
-                                              duration: const Duration(milliseconds: 400), autoPlay: AnimationPlayStates.Forward),
+                                    RotateInUpLeft(
+                                      child: Container(
+                                        padding: EdgeInsets.fromLTRB(5, 8, 5, 0),
+                                        height: 55,
+                                        child: ListView.builder(
+                                          physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+                                          scrollDirection: Axis.horizontal,
+                                          itemCount: playerResultStatusList.length,
+                                          itemBuilder: (context, index) {
+                                            return Card(
+                                              elevation: 2,
+                                              shadowColor: Colors.grey,
+                                              color: Colors.white.withOpacity(0.5),
+                                              child: Padding(
+                                                padding: const EdgeInsets.all(3.0),
+                                                child: setResultStatus(index),
+                                              ),
+                                            );
+                                          },
                                         ),
-                                      );
-                                    },
-                                    valueListenable: gameScoreStatusValueNotify,
-                                  ),
-                                ],
+                                      ),
+                                      preferences: AnimationPreferences(
+                                          duration: const Duration(milliseconds: 400), autoPlay: AnimationPlayStates.Forward),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
-                        ),
 
-                        Expanded(
-                          flex: 3,
-                          child: BuildPlayerTwoScreen(listLength: (cards.length/2).round(),
-                            p2Name: p2Name, memberId: p1MemberId, onPressed: (){
-                              showSurrenderDialog(context, onOkTap:(){
-                                isP1Surrender = 'true';
-                                haveISurrendered = 'true';
-                                updateGamePlayStatusToFirebase();
-                              });
-                            },),
-                        ),
-                      ],
-                    ),
-                  ],
-                );
-              } else if (!snapshot.hasData ) {
-                return frostedGlassWithProgressBarWidget(context);
-              } else return NoCardFound();
-            },
+                          Expanded(
+                            flex: 3,
+                            child: BuildPlayerTwoScreen(listLength: (cards.length/2).round(),
+                              p2Name: p2Name, memberId: p1MemberId, onPressed: (){
+                                showSurrenderDialog(context, onOkTap:(){
+                                  isP1Surrender = 'true';
+                                  haveISurrendered = 'true';
+                                  updateGamePlayStatusToFirebase();
+                                });
+                              },),
+                          ),
+                        ],
+                      ),
+                    ],
+                  );
+                } else if (!snapshot.hasData ) {
+                  return frostedGlassWithProgressBarWidget(context);
+                } else return NoCardFound();
+              },
+            ),
           ),
         ),
-      ),
     );
   }
 
-  Future<void> initFirebaseCredentials() async {
-    WidgetsFlutterBinding.ensureInitialized();
-    await Firebase.initializeApp();
-    FirebaseDatabase.instance.setPersistenceEnabled(true);
-    _gamePlayRef = FirebaseDatabase.instance.reference().child('gamePlay');
 
+  void initFirebaseAndManageP1AndP2Data(String cardsToPlay){
+    _gamePlayRef = FirebaseDatabase.instance.reference().child('gamePlay');
     //Removing gameRoom bcoz its not needed after this point
     FirebaseDatabase.instance.reference().child('gameRoom').child(gameRoomName.replaceAll('gamePlay', 'gr')).remove();
-  }
-
-  void manageP1AndP2Data(String cardsToPlay) async{
+    
     //if p1 in game room is you then adding game room p1 in your data else
     // if game room p2 is you then adding game room p2 data in your data.
     //print('-----Game play Name: $gameRoomName');
@@ -513,12 +502,15 @@ class Gameplay extends StatelessWidget {
     });
   }
 
-  void showWinOrLossDialog(String areYouWon) async{
+  void showWinOrLossDialog(String areYouWon) async {
     if (areYouWon == 'true') {
+      playerResultStatusList.add("won");
       showWinDialog(_scaffoldKey.currentContext, areYouWon, 'win-result.json', 'You Won', p1Photo, 4000);
     } else if(areYouWon == 'false'){
+      playerResultStatusList.add("sad");
       showWinDialog(_scaffoldKey.currentContext, areYouWon, 'sad-star.json', '\n\n\n\nYou Loose', '', 3500);
     }  else if(areYouWon == 'draw'){
+      playerResultStatusList.add("sad");
       showWinDialog(_scaffoldKey.currentContext, areYouWon, 'sad-star.json', '\n\n\n\nDraw Match', '', 3500);
     }
   }
@@ -526,7 +518,7 @@ class Gameplay extends StatelessWidget {
   Widget setResultStatus(int index) {
     return playerResultStatusList[index] == 'won'
         ? SvgPicture.asset('assets/icons/svg/${playerResultStatusList[index]}.svg', height: 25, width: 25)
-        : SvgPicture.asset('assets/icons/svg/${playerResultStatusList[index]}.svg', height: 25, width: 25);
+        : SvgPicture.asset('assets/icons/svg/${playerResultStatusList[index]}.svg', height: 25, width: 23);
   }
 
   void showWinDialog(BuildContext context, String isWon, String lottieFileName, String message,
@@ -563,16 +555,17 @@ class Gameplay extends StatelessWidget {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.all(5.0),
                         child: Text(
                           message,
                           textAlign: TextAlign.start,
                           style: TextStyle(
-                              fontSize: 13,
+                              fontSize: 16,
                               fontStyle: FontStyle.normal,
                               fontFamily: 'montserrat',
                               fontWeight: FontWeight.bold,
-                              color: Colors.white),
+                              color: Colors.white,
+                          ),
                         ),
                       ),
                     ],
@@ -592,13 +585,11 @@ class Gameplay extends StatelessWidget {
 
       Timer(Duration(milliseconds: animHideTime), () {
         Navigator.pop(dialogContext);
-
         bool isMatchEndedStatus = statesModelGlobal.cardCountOnDeck == 1 ? true : false;
 
         showBothCardsDialog(context, cards, indexOfP1Card, indexOfCardDeck, isMatchEndedStatus, isPlayAsP1,
             isWon, onClickActionOnPlayAgain: (bool isMatchEnded) {
           try{
-            if (!isMatchEnded) {
               indexOfCardDeck = indexOfCardDeck + 1;
 
               /*
@@ -633,8 +624,8 @@ class Gameplay extends StatelessWidget {
                   isYourNextTurn = true;
                   whoIsPlaying = 'p1';
                   showToast(context, "Your Turn To Play");
-                } else {
-                  isYourNextTurn = false;
+                } else if (whoIsPlaying == 'p2'){
+                  isYourNextTurn = true;
                   whoIsPlaying = 'p2';
                   showToast(context, '$p2Name Turn To Play');
                 }
@@ -653,16 +644,11 @@ class Gameplay extends StatelessWidget {
                   statesModelGlobal.player1TotalPoints,
                   statesModelGlobal.player2TotalPoints);
 
-              _scaffoldKey.currentContext.read<GamePlayStatesModel>().updateCardCountOnDeck(statesModelGlobal.cardCountOnDeck - 1);
-
-            } else if (context != null) {
-              gotoResultScreen(context, statesModelGlobal);
-            } else if (_scaffoldKey.currentContext != null) {
-              gotoResultScreen(_scaffoldKey.currentContext, statesModelGlobal);
-            } else if (MyRootApp.navigatorKey.currentContext != null) {
-              gotoResultScreen(MyRootApp.navigatorKey.currentContext, statesModelGlobal);
-            }
-
+              if (!isMatchEnded) {
+                _scaffoldKey.currentContext.read<GamePlayStatesModel>().updateCardCountOnDeck(statesModelGlobal.cardCountOnDeck - 1);
+              } else {
+                gotoResultScreen(_scaffoldKey.currentContext, statesModelGlobal);
+              }
           } catch(e){
             print(e);
           }
@@ -733,8 +719,8 @@ class Gameplay extends StatelessWidget {
       //print('---- : ${3}');
     }
 
-    print('---- areYouWon: $areYouWon , isP1Surrender: $isP1Surrender, haveISurrendered: $haveISurrendered, '
-        'player1TotalPoints: ${statesModel.player1TotalPoints.toString()}, player2TotalPoints: ${statesModel.player2TotalPoints.toString()}');
+    //print('---- areYouWon: $areYouWon , isP1Surrender: $isP1Surrender, haveISurrendered: $haveISurrendered, '
+        //'player1TotalPoints: ${statesModel.player1TotalPoints.toString()}, player2TotalPoints: ${statesModel.player2TotalPoints.toString()}');
 
     //remove game when match is complete
     //_gameRoomRef.child(gameRoomName).remove();

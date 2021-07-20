@@ -184,7 +184,7 @@ class _PvpState extends State<Pvp> {
                       cardToPlay: widget.cardsToPlay,
                     ),
                   ),
-                  ModalRoute.withName("/Gameplay"),
+                  ModalRoute.withName("/Autoplay"),
                 );
               } else if (p1MemberIdPref == widget.p1Id) {
                 Navigator.pushAndRemoveUntil(
@@ -207,7 +207,8 @@ class _PvpState extends State<Pvp> {
                             gameType: widget.gameType,
                             cardsToPlay: widget.cardsToPlay,
                             gameRoomName: gameRoomName,
-                          )),
+                          ),
+                  ),
                   ModalRoute.withName("/Gameplay"),
                 );
               } else if (p1MemberIdPref == widget.p2Id) {
@@ -231,7 +232,8 @@ class _PvpState extends State<Pvp> {
                             gameType: widget.gameType,
                             cardsToPlay: widget.cardsToPlay,
                             gameRoomName: gameRoomName,
-                          )),
+                          ),
+                  ),
                   ModalRoute.withName("/Gameplay"),
                 );
               }

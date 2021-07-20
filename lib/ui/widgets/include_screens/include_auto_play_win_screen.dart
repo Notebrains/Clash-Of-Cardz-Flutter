@@ -268,7 +268,6 @@ Widget buildCard1(
           ),
         ),
 
-
         showOrHideWinnerImg(isWon),
 
         Align(
@@ -435,7 +434,7 @@ Widget buildCard1(
 }
 
 Widget showOrHideWinnerImg(String isWon) {
-  return isWon == 'true'? Align(
+  return isWon == 'false' ||  isWon == 'draw'  ? Container() : Align(
     alignment: Alignment.topRight,
     child: Padding(
       padding: const EdgeInsets.all(5),
@@ -450,7 +449,7 @@ Widget showOrHideWinnerImg(String isWon) {
       ),
 
     ),
-  ): Container();
+  );
 
 }
 

@@ -195,7 +195,7 @@ class ApiProvider {
     };
 
     http.Response response = await http.post(
-      Uri.parse(UrlConstants.cardsToPlay),
+      Uri.parse(UrlConstants.cards),
       headers: headers,
       body: requestBody,
     );

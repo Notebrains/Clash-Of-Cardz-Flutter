@@ -11,12 +11,10 @@ import 'package:flutter_animator/flutter_animator.dart';
 class BuildPlayer1Screen extends StatelessWidget{
   int listLength = 0;
   String p1FullName = 'Player 1';
-  ValueNotifier<bool> gameScoreStatusValueNotify;
 
-  BuildPlayer1Screen(int length, String p1fullName, ValueNotifier<bool> gameScoreStatusValueNotify){
+  BuildPlayer1Screen(int length, String p1fullName,){
     this.listLength = (length/2).round();
     this.p1FullName = p1fullName;
-    this.gameScoreStatusValueNotify = gameScoreStatusValueNotify;
   }
 
   @override
@@ -250,9 +248,6 @@ class BuildPlayer1Screen extends StatelessWidget{
                         icon: Image.asset(
                             'assets/icons/png/ic_right.png'),
                         onPressed: () {
-                          if(gameScoreStatusValueNotify.value){
-                            gameScoreStatusValueNotify.value = false;
-                          } else gameScoreStatusValueNotify.value = true;
                         },
                       ),
                     ),

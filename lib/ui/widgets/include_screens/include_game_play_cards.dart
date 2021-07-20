@@ -29,11 +29,11 @@ Widget buildCardAsP1(
   int cardListSize = (cardsList.length / 2).round();
 
   try {
-    print('---- isPlayAsP1, card list1 length : $isPlayAsP1 , ${cardsList.length}');
+    /*print('---- isPlayAsP1, card list1 length : $isPlayAsP1 , ${cardsList.length}');
 
     for (int i = 0; i < cardsList.length; i++) {
       print('----cardsList length : ${cardsList[i].cardName}');
-    }
+    }*/
 
     if (isPlayAsP1) {
       for (int i = 0; i < cardListSize; i++) {

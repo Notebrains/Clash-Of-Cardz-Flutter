@@ -286,22 +286,6 @@ class _SplashScreenState extends State<SplashScreen> with WidgetsBindingObserver
             p1Photo: gameNotiData['friendImage'],
           ),),
       );
-
-      /*MyRootApp.navigatorKey.currentState.push(
-          MaterialPageRoute(builder: (_) => IncludeWaitingForFriend(
-            gameCat1: gameNotiData['gameCat1'],
-            gameCat2: gameNotiData['gameCat2'],
-            gameCat3: gameNotiData['gameCat3'],
-            gameCat4: gameNotiData['gameCat4'],
-            gameType: gameNotiData['gameType'],
-            playerType: gameNotiData['playerType'],
-            cardsToPlay: gameNotiData['cardsToPlay'],
-            friendId: gameNotiData['friendId'],
-            friendName: gameNotiData['friendName'],
-            friendImage: gameNotiData['friendImage'],
-            joinedPlayerType: 'joinedAsFriend',
-          ),),
-      );*/
     } catch (e) {
       print(e);
     }

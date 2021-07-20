@@ -90,8 +90,8 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForFriend> wi
 
   @override
   Widget build(BuildContext context) {
-    print('----game cats searching player 1: ${widget.gameCat1} , ${widget.gameCat2} , ${widget.gameCat3}, ${widget.gameCat4},'
-        ' ${widget.gameType}, ${widget.playerType}, ${widget.cardsToPlay}');
+    //print('----game cats searching player 1: ${widget.gameCat1} , ${widget.gameCat2} , ${widget.gameCat3}, ${widget.gameCat4},'
+        //' ${widget.gameType}, ${widget.playerType}, ${widget.cardsToPlay}');
     return Center(
       child: Material(
         color: Colors.transparent,
@@ -100,7 +100,7 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForFriend> wi
           child: Stack(
             children: <Widget>[
               Container(
-                decoration:  BoxDecoration(
+                decoration: BoxDecoration(
                   image: DecorationImage(
                     image: AssetImage("assets/images/bg_img3.png"),
                     fit: BoxFit.cover,
@@ -108,96 +108,92 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForFriend> wi
                 ),
               ),
 
-              new ConstrainedBox(
+              ConstrainedBox(
                 constraints: const BoxConstraints.expand(),
               ),
               Center(
                 child: new ClipRect(
                   child: new BackdropFilter(
                     filter: new ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
-                    child: new Center(
-                      child: Container(
-                        margin: EdgeInsets.all(5.0),
-                        padding: EdgeInsets.all(5.0),
-                        height: MediaQuery.of(context).size.height,
-                        decoration: ShapeDecoration(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0))),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            Align(
-                              alignment: Alignment.topRight,
-                              child: Container(
-                                width: 30,
-                                height: 30,
-                                margin: EdgeInsets.only(top: 12, right: 12),
-                                child: FloatingActionButton(
-                                  mini: true,
-                                  tooltip: 'close',
-                                  elevation: 0,
-                                  backgroundColor: Colors.transparent,
-                                  child: Icon(
-                                    Icons.close,
-                                    color: Colors.white,
-                                  ),
-                                  onPressed: () {
+                    child: Container(
+                      height: MediaQuery.of(context).size.height,
+                      color: Colors.black45,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Align(
+                            alignment: Alignment.topRight,
+                            child: Container(
+                              width: 30,
+                              height: 30,
+                              margin: EdgeInsets.only(top: 12, right: 12),
+                              child: FloatingActionButton(
+                                mini: true,
+                                tooltip: 'close',
+                                elevation: 0,
+                                backgroundColor: Colors.transparent,
+                                child: Icon(
+                                  Icons.close,
+                                  color: Colors.white,
+                                ),
+                                onPressed: () {
+                                  funAfterNoPlayerFound();
+                                  Navigator.pop(context);
+                                },
+                              ),
+                            ),
+                          ),
+
+                          Lottie.asset(
+                            'assets/animations/lottiefiles/sports-loading.json',
+                            height: SizeConfig.heightMultiplier * 25,
+                            width: SizeConfig.heightMultiplier * 25,
+                          ),
+
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              TweenAnimationBuilder<Duration>(
+                                  duration: Duration(minutes: 10),
+                                  tween: Tween(begin: Duration.zero, end: Duration(minutes: 10), ),
+                                  onEnd: () {
                                     funAfterNoPlayerFound();
-                                    Navigator.pop(context);
                                   },
-                                ),
-                              ),
-                            ),
-
-                            Lottie.asset(
-                              'assets/animations/lottiefiles/sports-loading.json',
-                              height: SizeConfig.heightMultiplier * 25,
-                              width: SizeConfig.heightMultiplier * 25,
-                            ),
-
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                TweenAnimationBuilder<Duration>(
-                                    duration: Duration(minutes: 10),
-                                    tween: Tween(begin: Duration.zero, end: Duration(minutes: 10), ),
-                                    onEnd: () {
-                                      funAfterNoPlayerFound();
-                                    },
-                                    builder: (BuildContext context, Duration value, Widget child) {
-                                      //adding 0 at first if min or sec show in single digit
-                                      final minutes = (value.inMinutes).toString().padLeft(2, "0");
-                                      final seconds = (value.inSeconds % 60).toString().padLeft(2, "0");
-                                      return Center(
-                                        child: Text(
-                                          '$minutes : $seconds',
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 30,
-                                            shadows: [
-                                              Shadow(color: Colors.white),
-                                            ],
-                                          ),
+                                  builder: (BuildContext context, Duration value, Widget child) {
+                                    //adding 0 at first if min or sec show in single digit
+                                    final minutes = (value.inMinutes).toString().padLeft(2, "0");
+                                    final seconds = (value.inSeconds % 60).toString().padLeft(2, "0");
+                                    return Center(
+                                      child: Text(
+                                        '$minutes : $seconds',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 30,
+                                          shadows: [
+                                            Shadow(color: Colors.white),
+                                          ],
                                         ),
-                                      );
-                                    }),
-                              ],
-                            ),
+                                      ),
+                                    );
+                                  }),
+                            ],
+                          ),
 
-                            Expanded(
-                              child: Padding(
-                                padding: const EdgeInsets.only(top: 12.0),
-                                child: Text(
-                                  'Waiting for your friend to accept the challenge',
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 24, fontFamily: 'montserrat', fontWeight: FontWeight.bold),
-                                ),
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 12.0),
+                              child: Text(
+                                'Waiting for your friend to accept the challenge',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 24, fontFamily: 'montserrat', fontWeight: FontWeight.bold),
                               ),
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
@@ -234,8 +230,8 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForFriend> wi
         Map playerDetailsList = onValue.value;
         // Execute forEach()
         playerDetailsList.forEach((playerDetailsKey, playerDetailsValue) {
-          print('Player Details List: { key: $playerDetailsKey, value: $playerDetailsValue}');
-          print('Fb ***: ${playerDetailsValue['userId']}');
+          //print('Player Details List: { key: $playerDetailsKey, value: $playerDetailsValue}');
+          //print('Fb ***: ${playerDetailsValue['userId']}');
 
           if (playerDetailsValue.containsValue(widget.gameCat1) &&
               playerDetailsValue.containsValue(widget.gameCat2) &&
@@ -264,7 +260,7 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForFriend> wi
     //below method is called only for testing
     //createGameRoom('MEM000001', 'Sam', Constants.imgUrlTest);
 
-    print('Fb fb Joined Player List size: ${fbJoinedPlayerList.length}');
+    //print('Fb fb Joined Player List size: ${fbJoinedPlayerList.length}');
     if(fbJoinedPlayerList.length == 0){
       _playerDetailsRef.push().set(<String, String>{
         //count: ${transactionResult.dataSnapshot.value}
@@ -323,7 +319,7 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForFriend> wi
           cardCount == widget.cardsToPlay &&
           !fbJoinedPlayerList.contains(firebasePlayerId)
       ) {
-        print('-----new player added $firebasePlayerId');
+        //print('-----new player added $firebasePlayerId');
         if (fbJoinedPlayerList.length == 0) {
           fbJoinedPlayerList.add(FirebasePlayerDetailsModel(firebasePlayerName, firebasePlayerId, firebasePlayerImage, playerDetailsKey));
         } else if(firebasePlayerId != widget.p1MemberId){
@@ -391,7 +387,7 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForFriend> wi
       }
     }, onError: (Object o) {
       final DatabaseError error = o;
-      print('Error: ${error.code} ${error.message}');
+      //print('Error: ${error.code} ${error.message}');
     });
   }
 
@@ -412,7 +408,7 @@ class IncludeSearchingForPlayerState extends State<IncludeSearchingForFriend> wi
 
   void openGamePlayPage(String p1Name, String p1Id, String p1Img, String p2Name, String p2Id, String p2Img, String gameCat1, String gameCat2,
       String gameCat3, String gameCat4, String playerType, String gameType, String cardsToPlay) {
-    print('----game cats searching player 2: ${widget.gameCat1} , ${widget.gameCat2} , ${widget.gameCat3}, ${widget.gameCat4}');
+    //print('----game cats searching player 2: ${widget.gameCat1} , ${widget.gameCat2} , ${widget.gameCat3}, ${widget.gameCat4}');
 
     Navigator.push(
       context,

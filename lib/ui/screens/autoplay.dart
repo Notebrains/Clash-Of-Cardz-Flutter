@@ -58,7 +58,6 @@ class AutoPlay extends StatelessWidget {
 
   final ValueNotifier<bool> p1Card1ValueNotify = ValueNotifier<bool>(true);
   final ValueNotifier<int> computerCard2ValueNotify = ValueNotifier<int>(0);
-  final ValueNotifier<bool> gameScoreStatusValueNotify = ValueNotifier<bool>(false);
 
 
   @override
@@ -95,7 +94,8 @@ class AutoPlay extends StatelessWidget {
                   return Stack(
                     fit: StackFit.expand,
                     children: [
-                      Image.asset(getRandomBgImgFromAsset(),
+                      Image.asset(
+                        getRandomBgImgFromAsset(),
                       fit: BoxFit.cover,
                       ),
 
@@ -103,102 +103,101 @@ class AutoPlay extends StatelessWidget {
                         children: [
                           Expanded(
                             flex: 4,
-                            child: BuildPlayer1Screen(cards.length, p1FullName, gameScoreStatusValueNotify),
+                            child: BuildPlayer1Screen(cards.length, p1FullName),
                           ),
 
                           Expanded(
                             flex: 13,
                             child: Consumer<AutoPlayStatesModel>(
-                              builder: (context, statesModel, child) => Container(
-                                child: Column(
-                                  children: [
-                                    gamePlayTimerUi(
-                                      context,
-                                      gameTime,
-                                      onTimeEnd: (bool isTimeEnded) => {
-                                        //print('Timer Ended');
-                                        showTimesUpDialog(context, statesModel),
-                                      },
-                                    ),
+                              builder: (context, statesModel, child) => Column(
+                                children: [
+                                  gamePlayTimerUi(
+                                    context,
+                                    gameTime,
+                                    onTimeEnd: (bool isTimeEnded) => {
+                                      //print('Timer Ended');
+                                      showTimesUpDialog(context, statesModel),
+                                    },
+                                  ),
 
-                                    Container(
-                                      height: getScreenHeight(context) / 1.5,
-                                      child: Center(
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                          children: [
-                                            ValueListenableBuilder(
-                                              builder: (BuildContext context, bool value, Widget child) {
-                                                // This builder will only get called when the _counter
-                                                // is updated.
-                                                //print('---- 215: ${SizeConfig.widthMultiplier * 54.8}');
-                                                //print('---- 301: ${SizeConfig.heightMultiplier * 36.7}');
-                                                return Container(
-                                                  width: SizeConfig.widthMultiplier * 54.8,
-                                                  height: SizeConfig.heightMultiplier * 36.7,
-                                                  child: BounceInLeft(
-                                                    child: buildPlayerOneCard(
-                                                      context,
-                                                      cards,
-                                                      indexOfCardDeck,
-                                                      p1Card1ValueNotify.value,
-                                                      whoIsPlaying,
-                                                      indexOfCardDeckSelectForComputer,
-                                                      onClickActionOnP1AutoPlayCard:
-                                                          (int indexOfP1Card, String isWon, int winPoint, bool isFlipped) => {
-                                                        print('----p1c clicked'),
-                                                        if (isFlipped && whoIsPlaying == 'player')
-                                                          {
-                                                            isP1CardFlipped = isFlipped,
-                                                            isP1SelectedStats = false,
-                                                            computerCard2ValueNotify.value += 1,
-                                                          }
-                                                        else
-                                                          {
-                                                            isP1SelectedStats = true,
-                                                            this.indexOfP1Card = indexOfP1Card,
-                                                            if (whoIsPlaying == 'computer')
-                                                              {
-                                                                if (isWon == 'true')
-                                                                  {
-                                                                    onTapAudio('match_win'),
-                                                                    playerResultStatusList.add("won"), // "won" is lottie file name
-                                                                    //showing lottie anim depending on win or loose
-                                                                    showWinDialog(context, statesModel, 'true', 'win-result.json', 'You Won',
-                                                                        p1Photo, 4000, winPoint),
-                                                                  }
-                                                                else if(isWon == 'false') {
-                                                                    onTapAudio('match_lost'),
-                                                                    playerResultStatusList.add("sad"), // "sad" is lottie file name
-                                                                    //showing lottie anim depending on win or loose
-                                                                    showWinDialog(context, statesModel, 'false', 'sad-star.json',
-                                                                        '\n\n\n\nYou Loose', '', 3500, winPoint),
-                                                                  } else if(isWon == 'draw'){
-
-                                                                  onTapAudio('match_draw'),
-                                                                  playerResultStatusList.add("sad"), // "sad" is lottie file name
+                                  Container(
+                                    height: getScreenHeight(context) / 1.5,
+                                    child: Center(
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          ValueListenableBuilder(
+                                            builder: (BuildContext context, bool value, Widget child) {
+                                              // This builder will only get called when the _counter
+                                              // is updated.
+                                              //print('---- 215: ${SizeConfig.widthMultiplier * 54.8}');
+                                              //print('---- 301: ${SizeConfig.heightMultiplier * 36.7}');
+                                              return Container(
+                                                width: SizeConfig.widthMultiplier * 54.8,
+                                                height: SizeConfig.heightMultiplier * 36.7,
+                                                child: BounceInLeft(
+                                                  child: buildPlayerOneCard(
+                                                    context,
+                                                    cards,
+                                                    indexOfCardDeck,
+                                                    p1Card1ValueNotify.value,
+                                                    whoIsPlaying,
+                                                    indexOfCardDeckSelectForComputer,
+                                                    onClickActionOnP1AutoPlayCard:
+                                                        (int indexOfP1Card, String isWon, int winPoint, bool isFlipped) => {
+                                                      print('----p1c clicked'),
+                                                      if (isFlipped && whoIsPlaying == 'player')
+                                                        {
+                                                          isP1CardFlipped = isFlipped,
+                                                          isP1SelectedStats = false,
+                                                          computerCard2ValueNotify.value += 1,
+                                                        }
+                                                      else
+                                                        {
+                                                          isP1SelectedStats = true,
+                                                          this.indexOfP1Card = indexOfP1Card,
+                                                          if (whoIsPlaying == 'computer')
+                                                            {
+                                                              if (isWon == 'true')
+                                                                {
+                                                                  onTapAudio('match_win'),
+                                                                  playerResultStatusList.add("won"), // "won" is lottie file name
                                                                   //showing lottie anim depending on win or loose
-                                                                  showWinDialog(context, statesModel, 'draw', 'sad-star.json',
-                                                                      '\n\n\n\nDraw Match', '', 3500, winPoint),
-                                                                },
-                                                              }
-                                                            else
-                                                              {
-                                                                computerCard2ValueNotify.value += 1,
-                                                              }
-                                                          }
-                                                      },
-                                                    ),
-                                                    preferences: AnimationPreferences(
-                                                        duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
-                                                  ),
-                                                );
-                                              },
-                                              valueListenable: p1Card1ValueNotify,
-                                            ),
+                                                                  showWinDialog(context, statesModel, 'true', 'win-result.json', 'You Won',
+                                                                      p1Photo, 4000, winPoint),
+                                                                }
+                                                              else if(isWon == 'false') {
+                                                                onTapAudio('match_lost'),
+                                                                playerResultStatusList.add("sad"), // "sad" is lottie file name
+                                                                //showing lottie anim depending on win or loose
+                                                                showWinDialog(context, statesModel, 'false', 'sad-star.json',
+                                                                    '\n\n\n\nYou Loose', '', 3500, winPoint),
+                                                              } else if(isWon == 'draw'){
 
-                                            HeartBeat(
+                                                                onTapAudio('match_draw'),
+                                                                playerResultStatusList.add("sad"), // "sad" is lottie file name
+                                                                //showing lottie anim depending on win or loose
+                                                                showWinDialog(context, statesModel, 'draw', 'sad-star.json',
+                                                                    '\n\n\n\nDraw Match', '', 3500, winPoint),
+                                                              },
+                                                            }
+                                                          else
+                                                            {
+                                                              computerCard2ValueNotify.value += 1,
+                                                            }
+                                                        }
+                                                    },
+                                                  ),
+                                                  preferences: AnimationPreferences(
+                                                      duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
+                                                ),
+                                              );
+                                            },
+                                            valueListenable: p1Card1ValueNotify,
+                                          ),
+
+                                          HeartBeat(
                                             child: AvatarGlow(
                                               endRadius: 25,
                                               glowColor: Colors.white,
@@ -216,43 +215,43 @@ class AutoPlay extends StatelessWidget {
                                                 duration: const Duration(milliseconds: 2000), autoPlay: AnimationPlayStates.Loop),
                                           ),
 
-                                            ValueListenableBuilder(
-                                              builder: (BuildContext context, int value, Widget child) {
-                                                // This builder will only get called when the _counter
-                                                // is updated.
-                                                return Container(
-                                                  width: SizeConfig.widthMultiplier * 54.8,
-                                                  height: SizeConfig.heightMultiplier * 36.8,
-                                                  child: BounceInRight(
-                                                    child: buildPlayerTwoCard(
-                                                      context,
-                                                      indexOfP1Card,
-                                                      indexOfCardDeck,
-                                                      cards,
-                                                      isP1SelectedStats,
-                                                      whoIsPlaying,
-                                                      indexOfCardDeckSelectForComputer,
-                                                      isP1CardFlipped,
-                                                      isP1SelectedStats,
-                                                      onClickActionOnP2AutoPlayCard: (String isWon, int winPoint) => {
-                                                        print('---- p2c data called ${statesModel.isCardOneTouched}, $isWon, $winPoint'),
-                                                        if (whoIsPlaying == 'player')
-                                                          {
-                                                            if (isWon == 'true')
-                                                              {
-                                                                onTapAudio('match_win'),
-                                                                playerResultStatusList.add("won"), // "won" is lottie file name
-                                                                //showing lottie anim depending on win or loose
-                                                                showWinDialog(context, statesModel, 'true', 'win-result.json', 'You Won',
-                                                                    p1Photo, 4000, winPoint),
-                                                              } else if(isWon == 'false')
-                                                              {
-                                                                onTapAudio('match_lost'),
-                                                                playerResultStatusList.add("sad"), // "sad" is lottie file name
-                                                                //showing lottie anim depending on win or loose
-                                                                showWinDialog(context, statesModel, 'false', 'sad-star.json',
-                                                                    '\n\n\n\nYou Loose', '', 3500, winPoint),
-                                                              }else if(isWon == 'draw')
+                                          ValueListenableBuilder(
+                                            builder: (BuildContext context, int value, Widget child) {
+                                              // This builder will only get called when the _counter
+                                              // is updated.
+                                              return Container(
+                                                width: SizeConfig.widthMultiplier * 54.8,
+                                                height: SizeConfig.heightMultiplier * 36.8,
+                                                child: BounceInRight(
+                                                  child: buildPlayerTwoCard(
+                                                    context,
+                                                    indexOfP1Card,
+                                                    indexOfCardDeck,
+                                                    cards,
+                                                    isP1SelectedStats,
+                                                    whoIsPlaying,
+                                                    indexOfCardDeckSelectForComputer,
+                                                    isP1CardFlipped,
+                                                    isP1SelectedStats,
+                                                    onClickActionOnP2AutoPlayCard: (String isWon, int winPoint) => {
+                                                      print('---- p2c data called ${statesModel.isCardOneTouched}, $isWon, $winPoint'),
+                                                      if (whoIsPlaying == 'player')
+                                                        {
+                                                          if (isWon == 'true')
+                                                            {
+                                                              onTapAudio('match_win'),
+                                                              playerResultStatusList.add("won"), // "won" is lottie file name
+                                                              //showing lottie anim depending on win or loose
+                                                              showWinDialog(context, statesModel, 'true', 'win-result.json', 'You Won',
+                                                                  p1Photo, 4000, winPoint),
+                                                            } else if(isWon == 'false')
+                                                            {
+                                                              onTapAudio('match_lost'),
+                                                              playerResultStatusList.add("sad"), // "sad" is lottie file name
+                                                              //showing lottie anim depending on win or loose
+                                                              showWinDialog(context, statesModel, 'false', 'sad-star.json',
+                                                                  '\n\n\n\nYou Loose', '', 3500, winPoint),
+                                                            }else if(isWon == 'draw')
                                                               {
                                                                 onTapAudio('match_draw'),
                                                                 playerResultStatusList.add("sad"), // "sad" is lottie file name
@@ -260,55 +259,54 @@ class AutoPlay extends StatelessWidget {
                                                                 showWinDialog(context, statesModel, 'isWon', 'sad-star.json',
                                                                     '\n\n\n\nDraw Match', '', 3500, winPoint),
                                                               },
-                                                          }
-                                                        else
-                                                          {
-                                                            p1Card1ValueNotify.value = true,
-                                                          }
-                                                      },
-                                                    ),
-                                                    preferences: AnimationPreferences(
-                                                        duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
+                                                        }
+                                                      else
+                                                        {
+                                                          p1Card1ValueNotify.value = true,
+                                                        }
+                                                    },
                                                   ),
-                                                );
-                                              },
-                                              valueListenable: computerCard2ValueNotify,
-                                              // The child parameter is most helpful if the child is
-                                              // expensive to build and does not depend on the value from
-                                              // the notifier.
-                                            ),
-                                          ],
-                                        ),
+                                                  preferences: AnimationPreferences(
+                                                      duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
+                                                ),
+                                              );
+                                            },
+                                            valueListenable: computerCard2ValueNotify,
+                                            // The child parameter is most helpful if the child is
+                                            // expensive to build and does not depend on the value from
+                                            // the notifier.
+                                          ),
+                                        ],
                                       ),
                                     ),
+                                  ),
 
-                                    RotateInUpLeft(
-                                      child: Container(
-                                        alignment: Alignment.center,
-                                        padding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 5.0),
-                                        height: 55,
-                                        child: ListView.builder(
-                                          physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-                                          scrollDirection: Axis.horizontal,
-                                          itemCount: playerResultStatusList.length,
-                                          itemBuilder: (context, index) {
-                                            return Card(
-                                              elevation: 5,
-                                              shadowColor: Colors.lightBlueAccent,
-                                              color: Colors.blueGrey,
-                                              child: Padding(
-                                                padding: const EdgeInsets.all(3.0),
-                                                child: setResultStatus(index),
-                                              ),
-                                            );
-                                          },
-                                        ),
+                                  RotateInUpLeft(
+                                    child: Container(
+                                      alignment: Alignment.center,
+                                      padding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 5.0),
+                                      height: 55,
+                                      child: ListView.builder(
+                                        physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+                                        scrollDirection: Axis.horizontal,
+                                        itemCount: playerResultStatusList.length,
+                                        itemBuilder: (context, index) {
+                                          return Card(
+                                            elevation: 5,
+                                            shadowColor: Colors.lightBlueAccent,
+                                            color: Colors.blueGrey,
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(3.0),
+                                              child: setResultStatus(index),
+                                            ),
+                                          );
+                                        },
                                       ),
-                                      preferences: AnimationPreferences(
-                                          duration: const Duration(milliseconds: 400), autoPlay: AnimationPlayStates.Forward),
                                     ),
-                                  ],
-                                ),
+                                    preferences: AnimationPreferences(
+                                        duration: const Duration(milliseconds: 400), autoPlay: AnimationPlayStates.Forward),
+                                  ),
+                                ],
                               ),
                             ),
                           ),

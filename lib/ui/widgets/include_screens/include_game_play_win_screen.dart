@@ -423,12 +423,12 @@ Widget buildCard1(
 }
 
 Widget showOrHideWinnerImg(String isWon) {
-  return isWon == 'true' ? Align(
+  return isWon == 'false' || isWon == 'draw'  ? Container() : Align(
     alignment: Alignment.topRight,
     child: Padding(
       padding: const EdgeInsets.all(5),
       child: Tada(
-        child:  SvgPicture.asset(
+        child: SvgPicture.asset(
           'assets/icons/svg/win.svg',
           width: 30,
           height: 30,
@@ -438,7 +438,7 @@ Widget showOrHideWinnerImg(String isWon) {
       ),
 
     ),
-  ): Container();
+  );
 }
 
 Widget buildCard2(

@@ -27,13 +27,14 @@ class _GameRuleState extends State<GameRule> {
   @override
   void initState() {
     super.initState();
+
+    setScreenOrientationToLandscape();
     apiBloc.fetchCmsRes(widget.xApiKey, 'game-rules');
+
   }
 
   @override
   Widget build(BuildContext context) {
-    setScreenOrientationToLandscape();
-
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Color(0xFF364B5A),
@@ -44,27 +45,11 @@ class _GameRuleState extends State<GameRule> {
             return buildUI(snapshot.data.response);
           } else if (!snapshot.hasData) {
             return frostedGlassWithProgressBarWidget(context);
-          } else
-            return NoDataFound();
+          } else return NoDataFound();
         },
       ),
     );
   }
-
-  List<Widget> imageSliders = imgList
-      .map((item) => Container(
-        margin: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 16.0),
-        child: ClipRRect(
-          borderRadius: BorderRadius.all(Radius.circular(8.0)),
-          child: FadeInImage.assetNetwork(
-            fit: BoxFit.fill,
-            placeholder: 'assets/animations/gifs/loader.gif',
-            image: item,
-            width: double.infinity - 60,
-          ),
-        ),
-      ),
-  ).toList();
 
   Widget buildUI(Response response) {
     for(int i =0 ; i< response.cmsMeta.length; i++){
@@ -77,7 +62,19 @@ class _GameRuleState extends State<GameRule> {
           Column(
             children: <Widget>[
               CarouselSlider(
-                items: imageSliders,
+                items: imgList.map((item) => Container(
+                  margin: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 16.0),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                    child: FadeInImage.assetNetwork(
+                      fit: BoxFit.fill,
+                      placeholder: 'assets/animations/gifs/loader.gif',
+                      image: item,
+                      width: double.infinity - 60,
+                    ),
+                  ),
+                ),
+                ).toList(),
                 options: CarouselOptions(viewportFraction: 1.0, enlargeCenterPage: true, height: MediaQuery.of(context).size.height - 55),
                 carouselController: _controller,
               ),
@@ -158,10 +155,11 @@ class _GameRuleState extends State<GameRule> {
           Align(
             alignment: Alignment.topRight,
             child: Container(
-              width: 30,
-              height: 30,
+              width: 25,
+              height: 25,
               margin: EdgeInsets.all(12),
               child: FloatingActionButton(
+                elevation: 0,
                 mini: true,
                 tooltip: 'Previous',
                 backgroundColor: Colors.cyanAccent,
