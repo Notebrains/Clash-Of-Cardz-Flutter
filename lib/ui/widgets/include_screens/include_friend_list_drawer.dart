@@ -197,7 +197,8 @@ void sendNotificationToOtherPlayerByApi(BuildContext context, String xApiKey, St
 
   //Friend id = Who is sending notification
   //Receiver id = who is receiving notification
-  apiBloc.sendNotificationToFriendApi(xApiKey, 'Clash with friends', '$friendName request to play $gameCat2 match - $cardsToPlay cards', friendId, gameCat1,
+  //wants to play a game with you for 14 cards Cricket
+  apiBloc.sendNotificationToFriendApi(xApiKey, 'Clash Of Cardz', '$playerName wants to play $gameCat2 match - $cardsToPlay cards', friendId, gameCat1,
       gameCat2, gameCat3, gameCat4, 'vs Friends', playerType, cardsToPlay, friendId, friendName, friendImage);
 
   //print('---- friend Id: $friendId, memberId: $memberId, gameCat2: $gameCat2, cardsToPlay: $cardsToPlay');

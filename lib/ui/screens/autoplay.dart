@@ -54,6 +54,7 @@ class AutoPlay extends StatelessWidget {
   String p1MemberId = '';
   String p1Points = '';
   String p1Photo = '';
+  String uniqueId = '';
   int gameTime = 5;
 
   final ValueNotifier<bool> p1Card1ValueNotify = ValueNotifier<bool>(true);
@@ -91,6 +92,7 @@ class AutoPlay extends StatelessWidget {
               builder: (context, AsyncSnapshot<CardsResModel> snapshot) {
                 if (snapshot.hasData && snapshot.data.status == 1 && snapshot.data.response.cards.length > 0) {
                   print('----uniqueId : ${snapshot.data.response.uniqueId}');
+                  uniqueId = snapshot.data.response.uniqueId;
                   cards = snapshot.data.response.cards;
                   return Stack(
                     fit: StackFit.expand,
@@ -532,6 +534,7 @@ class AutoPlay extends StatelessWidget {
                 isSurrender? '0' : statesModel.player1TotalPoints.toString(),
                 statesModel.player2TotalPoints.toString(), //change here
                 areYouWon,
+                uniqueId,
               ),
       ),
     );

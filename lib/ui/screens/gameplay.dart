@@ -67,9 +67,9 @@ class Gameplay extends StatefulWidget {
   _GameplayState createState() => _GameplayState();
 }
 
-class _GameplayState extends State<Gameplay> {
+class _GameplayState extends State<Gameplay>  with WidgetsBindingObserver{
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-
+  AppLifecycleState _lastLifecycleState;
   GamePlayStatesModel statesModelGlobal = GamePlayStatesModel();
 
   final List<String> playerResultStatusList = [];
@@ -87,6 +87,9 @@ class _GameplayState extends State<Gameplay> {
   String p1Points = '';
 
   String winBasis = '';
+
+  //this id needed to save game result one time even api hit from two device
+  String uniqueId = '';
 
   String winPoints = '';
 
@@ -129,6 +132,8 @@ class _GameplayState extends State<Gameplay> {
     setScreenOrientationToLandscape();
 
     initFirebaseAndManageP1AndP2Data(widget.cardsToPlay);
+
+    WidgetsBinding.instance.addObserver(this);
   }
 
 
@@ -147,7 +152,7 @@ class _GameplayState extends State<Gameplay> {
               stream: apiBloc.cardsRes,
               builder: (context, AsyncSnapshot<CardsResModel> snapshot) {
                 if (snapshot.hasData && snapshot.data.status == 1 && snapshot.data.response.cards.length > 0) {
-                  print('----uniqueId : ${snapshot.data.response.uniqueId}');
+                  uniqueId = snapshot.data.response.uniqueId;
                   updateGamePlayStatusToFirebase();
                   listeningToFirebaseDataUpdate(widget.gameRoomName);
                   cards = snapshot.data.response.cards;
@@ -761,9 +766,30 @@ class _GameplayState extends State<Gameplay> {
                     widget.xApiKey, widget.p1FullName, widget.p1MemberId, widget.p1Photo, widget.p2Name,
                     widget.p2MemberId, widget.p2Image, widget.gameCat1, widget.gameCat2,
                     widget.gameCat3, widget.gameCat4, widget.playerType, widget.gameType,
-                    widget.cardsToPlay, p1Points, p2Points, areYouWon,
+                    widget.cardsToPlay, p1Points, p2Points, areYouWon, uniqueId
                   ),
             ),
           );
+  }
+
+@override
+  void dispose() {
+  WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+
+    print('---- dispose method called');
+    isP1Surrender = 'true';
+    haveISurrendered = 'true';
+    updateGamePlayStatusToFirebase();
+
+    gamePlaySubscription.cancel();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    setState(() {
+      print('----_lastLifecycleState : $state');
+      _lastLifecycleState = state;
+    });
   }
 }

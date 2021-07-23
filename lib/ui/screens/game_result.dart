@@ -29,6 +29,7 @@ class GameResult extends StatelessWidget {
   final String p1Point;
   final String p2Point;
   final bool areYouWon;
+  final String uniqueId;
 
   GameResult(
       this.xApiKey,
@@ -47,7 +48,8 @@ class GameResult extends StatelessWidget {
       this.cardsToPlay,
       this.p1Point,
       this.p2Point,
-      this.areYouWon);
+      this.areYouWon,
+      this.uniqueId);
 
   @override
   Widget build(BuildContext context) {
@@ -275,10 +277,11 @@ class GameResult extends StatelessWidget {
   }
 
   void saveGameResultToServer(BuildContext context) async {
+    print('---- uniqueId: $uniqueId, $cardsToPlay');
     if (gameType != 'vs Computer') {
       var matchDetails = [
-        {"member_id": p1MemberId,"no_card": cardsToPlay, "win": areYouWon ? "1" : '0', "loss": areYouWon ? "0" : '1', "points": p1Point},
-        {"member_id": p2MemberId, "no_card": cardsToPlay, "win": areYouWon ? "0" : '1', "loss": areYouWon ? "1" : '0', "points": p2Point}
+        {"unique_id": uniqueId,"member_id": p1MemberId,"no_card": cardsToPlay, "win": areYouWon ? "1" : '0', "loss": areYouWon ? "0" : '1', "points": p1Point},
+        {"unique_id": uniqueId,"member_id": p1MemberId, "no_card": cardsToPlay, "win": areYouWon ? "0" : '1', "loss": areYouWon ? "1" : '0', "points": p2Point}
       ];
 
       /* // sample of matchDetails body
