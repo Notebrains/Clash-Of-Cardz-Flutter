@@ -59,7 +59,6 @@ Widget buildStatisticsScreen(StatisticsResModel model) {
                           ],
                         ),
 
-
                         Shimmer.fromColors(
                           baseColor: Colors.cyanAccent,
                           highlightColor: Colors.lightBlueAccent,
@@ -77,8 +76,6 @@ Widget buildStatisticsScreen(StatisticsResModel model) {
                             ),
                           ),
                         ),
-
-
                       ],
                     ),
                     Padding(

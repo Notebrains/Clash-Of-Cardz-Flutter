@@ -50,6 +50,7 @@ class CardsResModel {
 
 class Response {
   String _catagory;
+  String _unique_id;
   String _subcatagory;
   String _subcategoryBackground;
   String _subcategoryAudio;
@@ -60,6 +61,7 @@ class Response {
   List<Cards> _cards;
 
   String get catagory => _catagory;
+  String get uniqueId => _unique_id;
   String get subcatagory => _subcatagory;
   String get subcategoryBackground => _subcategoryBackground;
   String get subcategoryAudio => _subcategoryAudio;
@@ -70,8 +72,9 @@ class Response {
   List<Cards> get cards => _cards;
 
   Response({
-      String catagory, 
-      String subcatagory, 
+      String uniqueId,
+      String catagory,
+      String subcatagory,
       String subcategoryBackground, 
       String subcategoryAudio, 
       String subsubcategoryName, 
@@ -79,6 +82,7 @@ class Response {
       String cardType, 
       String cardCount, 
       List<Cards> cards}){
+    _unique_id = uniqueId;
     _catagory = catagory;
     _subcatagory = subcatagory;
     _subcategoryBackground = subcategoryBackground;
@@ -91,6 +95,7 @@ class Response {
 }
 
   Response.fromJson(dynamic json) {
+    _unique_id = json["unique_id"];
     _catagory = json["catagory"];
     _subcatagory = json["subcatagory"];
     _subcategoryBackground = json["subcategory_background"];
@@ -109,6 +114,7 @@ class Response {
 
   Map<String, dynamic> toJson() {
     var map = <String, dynamic>{};
+    map["unique_id"] = _unique_id;
     map["catagory"] = _catagory;
     map["subcatagory"] = _subcatagory;
     map["subcategory_background"] = _subcategoryBackground;
@@ -122,7 +128,6 @@ class Response {
     }
     return map;
   }
-
 }
 
 /// card_name : "Abu Nechim"

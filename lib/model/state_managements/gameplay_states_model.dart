@@ -27,19 +27,10 @@ class GamePlayStatesModel with ChangeNotifier {
 
   int cardsDeckIndex = 1;
 
-
-  void updateAutoPlayStates(
-      int indexOfP1Card,
-      String attributeTitle,
-      String attributeValue,
-      bool isCardOneTouched,
-      bool isCardTwoTouched
-      ) {
-
+  void updateAutoPlayStates(int indexOfP1Card, String attributeTitle, String attributeValue, bool isCardOneTouched, bool isCardTwoTouched) {
     name = 'Kiron';
 
     this.indexOfP1Card = indexOfP1Card;
-
     this.isCardOneTouched = isCardOneTouched;
     this.isCardTwoTouched = isCardTwoTouched;
     this.attributeValue = attributeValue;
@@ -47,12 +38,7 @@ class GamePlayStatesModel with ChangeNotifier {
     notifyListeners();
   }
 
-
-  void updatePlayerScoreboards(
-      int playerOneTrump,
-      int playerTwoTrump,
-      int player1TotalPoints,
-      int player2TotalPoints) {
+  void updatePlayerScoreboards(int playerOneTrump, int playerTwoTrump, int player1TotalPoints, int player2TotalPoints) {
     this.player1TotalPoints = player1TotalPoints;
     this.player2TotalPoints = player2TotalPoints;
     this.playerOneTrump = playerOneTrump;
@@ -61,14 +47,11 @@ class GamePlayStatesModel with ChangeNotifier {
     notifyListeners();
   }
 
-
-
   void showPlayerMatchStatus(bool isShowPlayerMathStatus) {
     this.isShowPlayerMatchStatus = isShowPlayerMathStatus;
 
     notifyListeners();
   }
-
 
   void updateCardCountOnDeck(int cardCountOnDeck) {
     this.cardCountOnDeck = cardCountOnDeck;

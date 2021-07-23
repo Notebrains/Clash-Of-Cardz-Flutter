@@ -277,8 +277,8 @@ class GameResult extends StatelessWidget {
   void saveGameResultToServer(BuildContext context) async {
     if (gameType != 'vs Computer') {
       var matchDetails = [
-        {"member_id": p1MemberId, "win": areYouWon ? "1" : '0', "loss": areYouWon ? "0" : '1', "points": p1Point},
-        {"member_id": p2MemberId, "win": areYouWon ? "0" : '1', "loss": areYouWon ? "1" : '0', "points": p2Point}
+        {"member_id": p1MemberId,"no_card": cardsToPlay, "win": areYouWon ? "1" : '0', "loss": areYouWon ? "0" : '1', "points": p1Point},
+        {"member_id": p2MemberId, "no_card": cardsToPlay, "win": areYouWon ? "0" : '1', "loss": areYouWon ? "1" : '0', "points": p2Point}
       ];
 
       /* // sample of matchDetails body

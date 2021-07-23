@@ -35,6 +35,7 @@ Widget buildCardAsP1(
       print('----cardsList length : ${cardsList[i].cardName}');
     }*/
 
+    //set p1 data
     if (isPlayAsP1) {
       for (int i = 0; i < cardListSize; i++) {
         cardsAttributeList.add(cardsList[i].attribute);

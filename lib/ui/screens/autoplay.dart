@@ -90,6 +90,7 @@ class AutoPlay extends StatelessWidget {
               stream: apiBloc.cardsRes,
               builder: (context, AsyncSnapshot<CardsResModel> snapshot) {
                 if (snapshot.hasData && snapshot.data.status == 1 && snapshot.data.response.cards.length > 0) {
+                  print('----uniqueId : ${snapshot.data.response.uniqueId}');
                   cards = snapshot.data.response.cards;
                   return Stack(
                     fit: StackFit.expand,

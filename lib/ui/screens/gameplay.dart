@@ -25,7 +25,7 @@ import 'package:clash_of_cardz_flutter/ui/widgets/include_screens/include_gamepl
 import 'package:clash_of_cardz_flutter/ui/widgets/libraries/avatar_glow.dart';
 import 'game_result.dart';
 
-class Gameplay extends StatelessWidget {
+class Gameplay extends StatefulWidget {
   final String xApiKey;
   bool isPlayAsP1;
   final String p1FullName;
@@ -63,20 +63,33 @@ class Gameplay extends StatelessWidget {
     this.gameRoomName,
   }): super(key: key);
 
+  @override
+  _GameplayState createState() => _GameplayState();
+}
+
+class _GameplayState extends State<Gameplay> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   GamePlayStatesModel statesModelGlobal = GamePlayStatesModel();
+
   final List<String> playerResultStatusList = [];
+
   List<Cards> cards = [];
+
   int indexOfP1Card = 0;
+
   int indexSelectedByP2 = 55;
+
   int indexOfCardDeck = 0;
+
   int gameTime = 5;
 
   String p1Points = '';
+
   String winBasis = '';
+
   String winPoints = '';
 
-  // game play stats attr
   String p1TurnStatus = 'no',
       p2TurnStatus = 'no',
       p1SelectedAttr = '',
@@ -86,26 +99,42 @@ class Gameplay extends StatelessWidget {
       winner = 'p1';
 
   bool isYourNextTurn = false;
-  bool isP1CardFlipped = false;
-  bool isP1SelectedStats = false;
-  String isP1Surrender = 'false';
-  String haveISurrendered = 'false';
-  String whoIsPlaying = 'p1'; //Always p1 plays the first turn
 
-  //firebase data init
+  bool isP1CardFlipped = false;
+
+  bool isP1SelectedStats = false;
+
+  //this flag use to open dialog only open one time even app is minimized
+  bool isWinLossDialogOpened = false;
+
+  String isP1Surrender = 'false';
+
+  String haveISurrendered = 'false';
+
+  String whoIsPlaying = 'p1';
   DatabaseReference _gamePlayRef;
+
   StreamSubscription<Event> gamePlaySubscription;
 
   final ValueNotifier<int> card1ValueNotify = ValueNotifier<int>(77);
+
   final ValueNotifier<int> card2ValueNotify = ValueNotifier<int>(77);
+
+  @override
+  void initState() {
+    super.initState();
+
+    apiBloc.fetchCardsRes(widget.xApiKey, widget.gameCat1, widget.gameCat2, widget.gameCat3, widget.gameCat4, widget.cardsToPlay, widget.gameRoomName, widget.playerType,);
+
+    setScreenOrientationToLandscape();
+
+    initFirebaseAndManageP1AndP2Data(widget.cardsToPlay);
+  }
+
 
   @override
   Widget build(BuildContext context) {
     //print('----game cats: $gameCat1 , $gameCat2 , $gameCat3, $gameCat4, $gameType, $cardsToPlay, $playerType');
-    setScreenOrientationToLandscape();
-    initFirebaseAndManageP1AndP2Data(cardsToPlay);
-
-    apiBloc.fetchCardsRes(xApiKey, gameCat1, gameCat2, gameCat3, gameCat4, cardsToPlay, gameRoomName, playerType,);
 
     return ChangeNotifierProvider(
         create: (context) => statesModelGlobal,
@@ -118,8 +147,9 @@ class Gameplay extends StatelessWidget {
               stream: apiBloc.cardsRes,
               builder: (context, AsyncSnapshot<CardsResModel> snapshot) {
                 if (snapshot.hasData && snapshot.data.status == 1 && snapshot.data.response.cards.length > 0) {
+                  print('----uniqueId : ${snapshot.data.response.uniqueId}');
                   updateGamePlayStatusToFirebase();
-                  listeningToFirebaseDataUpdate(gameRoomName);
+                  listeningToFirebaseDataUpdate(widget.gameRoomName);
                   cards = snapshot.data.response.cards;
                   return Stack(
                     fit: StackFit.expand,
@@ -132,7 +162,7 @@ class Gameplay extends StatelessWidget {
                         children: [
                           Expanded(
                             flex: 3,
-                            child: BuildPlayer1Screen(cards.length, p1FullName, p2Name),
+                            child: BuildPlayer1Screen(cards.length, widget.p1FullName, widget.p2Name),
                           ),
                           Expanded(
                             flex: 8,
@@ -163,7 +193,7 @@ class Gameplay extends StatelessWidget {
                                                 child: BounceInLeft(
                                                   child: buildCardAsP1(
                                                     context,
-                                                    isPlayAsP1,
+                                                    widget.isPlayAsP1,
                                                     cards,
                                                     indexOfCardDeck,
                                                     isYourNextTurn,
@@ -245,7 +275,7 @@ class Gameplay extends StatelessWidget {
                                                     isP1CardFlipped,
                                                     p1TurnStatus,
                                                     p2TurnStatus,
-                                                    isPlayAsP1,
+                                                    widget.isPlayAsP1,
                                                   ),
                                                   preferences: AnimationPreferences(
                                                       duration: const Duration(milliseconds: 1500), autoPlay: AnimationPlayStates.Forward),
@@ -294,7 +324,7 @@ class Gameplay extends StatelessWidget {
                           Expanded(
                             flex: 3,
                             child: BuildPlayerTwoScreen(listLength: (cards.length/2).round(),
-                              p2Name: p2Name, memberId: p1MemberId, onPressed: (){
+                              p2Name: widget.p2Name, memberId: widget.p1MemberId, onPressed: (){
                                 showSurrenderDialog(context, onOkTap:(){
                                   isP1Surrender = 'true';
                                   haveISurrendered = 'true';
@@ -316,21 +346,21 @@ class Gameplay extends StatelessWidget {
     );
   }
 
-
   void initFirebaseAndManageP1AndP2Data(String cardsToPlay){
     _gamePlayRef = FirebaseDatabase.instance.reference().child('gamePlay');
     //Removing gameRoom bcoz its not needed after this point
-    FirebaseDatabase.instance.reference().child('gameRoom').child(gameRoomName.replaceAll('gamePlay', 'gr')).remove();
-    
+    FirebaseDatabase.instance.reference().child('gameRoom').child(widget.gameRoomName.replaceAll('gamePlay', 'gr')).remove();
+
     //if p1 in game room is you then adding game room p1 in your data else
     // if game room p2 is you then adding game room p2 data in your data.
     //print('-----Game play Name: $gameRoomName');
     //print('-----Game room Name: ${gameRoomName.replaceAll('gamePlay', 'gr')}');
     //print('-----pref member id: $isPlayAsP1, $p1MemberId, $p2MemberId, $p1FullName');
-    if (isPlayAsP1) {
+
+    if (widget.isPlayAsP1) {
       isYourNextTurn = true;
       whoIsPlaying = 'p1';
-    } else if (isPlayAsP1) {
+    } else if (widget.isPlayAsP1) {
       isYourNextTurn = false;
       whoIsPlaying = 'p2';
     }
@@ -354,7 +384,7 @@ class Gameplay extends StatelessWidget {
   }
 
   updateGamePlayStatus(String attrTitle, String attrValue, String winBasis, String winPoints) async{
-    if (isPlayAsP1) {
+    if (widget.isPlayAsP1) {
       p1TurnStatus = 'yes';
       p1SelectedAttr = attrTitle;
       p1SelectedAttrValue = attrValue;
@@ -374,7 +404,7 @@ class Gameplay extends StatelessWidget {
   }
 
   void updateGamePlayStatusToFirebase() async{
-    _gamePlayRef.child(gameRoomName).set({
+    _gamePlayRef.child(widget.gameRoomName).set({
       'isP1TurnComplete': p1TurnStatus,
       'isP2TurnComplete': p2TurnStatus,
       'selectedArrayPos': indexOfP1Card,
@@ -392,16 +422,6 @@ class Gameplay extends StatelessWidget {
       //print('----- ${event.snapshot.key}');
       if (event.snapshot.key == gameRoomName) {
         var changeMapData = event.snapshot.value;
-
-        /*  print('Gp on data changed ${event.snapshot.key}');
-            print('Gp isP1TurnComplete: ${changeMapData['isP1TurnComplete']}');
-            print('Gp isP2TurnComplete: ${event.snapshot.value['isP2TurnComplete']}');
-            print('Gp p1SelectedAttr: ${event.snapshot.value['p1SelectedAttr']}');
-            print('Gp p1SelectedAttrValue: ${event.snapshot.value['p1SelectedAttrValue']}');
-            print('Gp p2SelectedAttr: ${event.snapshot.value['p2SelectedAttr']}');
-            print('Gp p2SelectedAttrValue: ${event.snapshot.value['p2SelectedAttrValue']}');
-        */
-
         // event.snapshot.value is return map. Below line getting values from map using keys
         p1TurnStatus = changeMapData['isP1TurnComplete'];
         p2TurnStatus = changeMapData['isP2TurnComplete'];
@@ -415,7 +435,7 @@ class Gameplay extends StatelessWidget {
         try {
           if (isP1Surrender  == 'false' && haveISurrendered  == 'false') {
             if (p1TurnStatus == 'yes' && p2TurnStatus == 'no') {
-              if (!isPlayAsP1) {
+              if (!widget.isPlayAsP1) {
                 indexSelectedByP2 = changeMapData['selectedArrayPos'];
 
                 //print('----11 whoIsPlaying: $whoIsPlaying, isYourNextTurn: $isYourNextTurn');
@@ -438,6 +458,8 @@ class Gameplay extends StatelessWidget {
               whoIsPlaying = 'p2';
 
             } else if (p1TurnStatus == 'yes' && p2TurnStatus == 'yes') {
+              print('---- showWinOrLossDialog called 0');
+
               // winBasis and winPints will be same for both player. So I am getting those value when p1 selected first value
 
               double p1CardValue = double.parse(p1SelectedAttrValue);
@@ -445,7 +467,7 @@ class Gameplay extends StatelessWidget {
 
               String areYouWon = 'false';
               if (winBasis == 'Highest Value') {
-                if(isPlayAsP1){
+                if(widget.isPlayAsP1){
                   if (p1CardValue > p2CardValue) {
                     areYouWon = 'true';
                   } else if (p1CardValue < p2CardValue) {
@@ -467,7 +489,7 @@ class Gameplay extends StatelessWidget {
                   showWinOrLossDialog(areYouWon);
                 }
               } else if (winBasis == 'Lowest Value') {
-                if(isPlayAsP1){
+                if(widget.isPlayAsP1){
                   if (p1CardValue > p2CardValue) {
                     areYouWon = 'true';
                   } else if (p1CardValue < p2CardValue) {
@@ -503,15 +525,20 @@ class Gameplay extends StatelessWidget {
   }
 
   void showWinOrLossDialog(String areYouWon) async {
-    if (areYouWon == 'true') {
-      playerResultStatusList.add("won");
-      showWinDialog(_scaffoldKey.currentContext, areYouWon, 'win-result.json', 'You Won', p1Photo, 4000);
-    } else if(areYouWon == 'false'){
-      playerResultStatusList.add("sad");
-      showWinDialog(_scaffoldKey.currentContext, areYouWon, 'sad-star.json', '\n\n\n\nYou Loose', '', 3500);
-    }  else if(areYouWon == 'draw'){
-      playerResultStatusList.add("sad");
-      showWinDialog(_scaffoldKey.currentContext, areYouWon, 'sad-star.json', '\n\n\n\nDraw Match', '', 3500);
+    isWinLossDialogOpened = false;
+    print('---- showWinOrLossDialog called 1');
+
+    if (!isWinLossDialogOpened) {
+      if (areYouWon == 'true') {
+        playerResultStatusList.add("won");
+        showWinDialog(_scaffoldKey.currentContext, areYouWon, 'win-result.json', 'You Won', widget.p1Photo, 4000);
+      } else if(areYouWon == 'false'){
+        playerResultStatusList.add("sad");
+        showWinDialog(_scaffoldKey.currentContext, areYouWon, 'sad-star.json', '\n\n\n\nYou Loose', '', 3500);
+      }  else if(areYouWon == 'draw'){
+        playerResultStatusList.add("sad");
+        showWinDialog(_scaffoldKey.currentContext, areYouWon, 'sad-star.json', '\n\n\n\nDraw Match', '', 3500);
+      }
     }
   }
 
@@ -523,11 +550,13 @@ class Gameplay extends StatelessWidget {
 
   void showWinDialog(BuildContext context, String isWon, String lottieFileName, String message,
       String photoUrl, int animHideTime) async {
+    isWinLossDialogOpened = true;
 
+    print('---- showWinOrLossDialog called 2');
     BuildContext dialogContext;
     showDialog(
       context: context,
-      barrierDismissible: true,
+      barrierDismissible: false,
       useSafeArea: true,
       builder: (BuildContext context) {
         dialogContext = context;
@@ -587,7 +616,7 @@ class Gameplay extends StatelessWidget {
         Navigator.pop(dialogContext);
         bool isMatchEndedStatus = statesModelGlobal.cardCountOnDeck == 1 ? true : false;
 
-        showBothCardsDialog(context, cards, indexOfP1Card, indexOfCardDeck, isMatchEndedStatus, isPlayAsP1,
+        showBothCardsDialog(context, cards, indexOfP1Card, indexOfCardDeck, isMatchEndedStatus, widget.isPlayAsP1,
             isWon, onClickActionOnPlayAgain: (bool isMatchEnded) {
           try{
               indexOfCardDeck = indexOfCardDeck + 1;
@@ -601,7 +630,7 @@ class Gameplay extends StatelessWidget {
               print('-----statesModel.player2TotalPoints: ${statesModelGlobal.player2TotalPoints} ');
               */
 
-              //print('-----statesModel.cardCountOnDeck: ${statesModelGlobal.cardCountOnDeck}');
+              print('-----statesModel.cardCountOnDeck: ${statesModelGlobal.cardCountOnDeck}');
 
               if (isWon == 'true') {
                 statesModelGlobal.playerOneTrump = statesModelGlobal.playerOneTrump + 1;
@@ -611,41 +640,42 @@ class Gameplay extends StatelessWidget {
                 statesModelGlobal.player2TotalPoints = statesModelGlobal.player2TotalPoints + int.parse(winPoints);
               }
 
-              if (isWon =='true') {
-                isYourNextTurn = true;
-                whoIsPlaying = 'p1';
-                showToast(context, "Your Turn To Play");
-              } else if(isWon =='false'){
-                isYourNextTurn = false;
-                whoIsPlaying = 'p2';
-                showToast(context, '$p2Name Turn To Play');
-              } else if(isWon =='draw'){
-                if (whoIsPlaying == 'p1') {
+              if (!isMatchEnded) {
+                if (isWon =='true') {
                   isYourNextTurn = true;
                   whoIsPlaying = 'p1';
                   showToast(context, "Your Turn To Play");
-                } else if (whoIsPlaying == 'p2'){
-                  isYourNextTurn = true;
+                } else if(isWon =='false'){
+                  isYourNextTurn = false;
                   whoIsPlaying = 'p2';
-                  showToast(context, '$p2Name Turn To Play');
+                  showToast(context, '${widget.p2Name} Turn To Play');
+                } else if(isWon =='draw'){
+                  if (whoIsPlaying == 'p1') {
+                    isYourNextTurn = true;
+                    whoIsPlaying = 'p1';
+                    showToast(context, "Your Turn To Play");
+                  } else if (whoIsPlaying == 'p2'){
+                    isYourNextTurn = true;
+                    whoIsPlaying = 'p2';
+                    showToast(context, '${widget.p2Name} Turn To Play');
+                  }
                 }
-              }
 
-              isP1CardFlipped = false;
-              indexSelectedByP2 = 55;
+                isP1CardFlipped = false;
+                indexSelectedByP2 = 55;
 
-              p1TurnStatus = 'no';
-              p2TurnStatus = 'no';
-              updateGamePlayStatusToFirebase();
+                p1TurnStatus = 'no';
+                p2TurnStatus = 'no';
+                updateGamePlayStatusToFirebase();
 
-              _scaffoldKey.currentContext.read<GamePlayStatesModel>().updatePlayerScoreboards(
+
+                _scaffoldKey.currentContext.read<GamePlayStatesModel>().updatePlayerScoreboards(
                   statesModelGlobal.playerOneTrump,
                   statesModelGlobal.playerTwoTrump,
                   statesModelGlobal.player1TotalPoints,
                   statesModelGlobal.player2TotalPoints);
 
-              if (!isMatchEnded) {
-                _scaffoldKey.currentContext.read<GamePlayStatesModel>().updateCardCountOnDeck(statesModelGlobal.cardCountOnDeck - 1);
+              _scaffoldKey.currentContext.read<GamePlayStatesModel>().updateCardCountOnDeck(statesModelGlobal.cardCountOnDeck - 1);
               } else {
                 gotoResultScreen(_scaffoldKey.currentContext, statesModelGlobal);
               }
@@ -720,31 +750,20 @@ class Gameplay extends StatelessWidget {
     }
 
     //print('---- areYouWon: $areYouWon , isP1Surrender: $isP1Surrender, haveISurrendered: $haveISurrendered, '
-        //'player1TotalPoints: ${statesModel.player1TotalPoints.toString()}, player2TotalPoints: ${statesModel.player2TotalPoints.toString()}');
+    //'player1TotalPoints: ${statesModel.player1TotalPoints.toString()}, player2TotalPoints: ${statesModel.player2TotalPoints.toString()}');
 
-    //remove game when match is complete
-    //_gameRoomRef.child(gameRoomName).remove();
-    //dispose firebase ref subs
-    gamePlaySubscription.cancel();
 
     Navigator.push(
-            context,
+      _scaffoldKey.currentContext,
             CupertinoPageRoute(
               builder: (context) =>
                   GameResult(
-                    xApiKey, p1FullName, p1MemberId, p1Photo, p2Name,
-                    p2MemberId, p2Image, gameCat1, gameCat2,
-                    gameCat3, gameCat4, playerType, gameType,
-                    cardsToPlay, p1Points, p2Points, areYouWon,
+                    widget.xApiKey, widget.p1FullName, widget.p1MemberId, widget.p1Photo, widget.p2Name,
+                    widget.p2MemberId, widget.p2Image, widget.gameCat1, widget.gameCat2,
+                    widget.gameCat3, widget.gameCat4, widget.playerType, widget.gameType,
+                    widget.cardsToPlay, p1Points, p2Points, areYouWon,
                   ),
             ),
           );
   }
-
-/*@override
-  void dispose() {
-    super.dispose();
-    playerDetailsSubscription.cancel();
-    _joinedPlayerSubscription.cancel();
-  }*/
 }

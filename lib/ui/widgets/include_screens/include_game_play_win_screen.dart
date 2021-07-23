@@ -12,9 +12,7 @@ import 'package:clash_of_cardz_flutter/ui/widgets/libraries/shimmer.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 void showBothCardsDialog(BuildContext context, List<Cards> cards, int indexOfSelectedCard, int indexOfCardDeck, bool isMatchEnded,
-    bool isPlayAsP1,  String isWon,{
-  Function(bool isMatchEnded) onClickActionOnPlayAgain,
-}) async {
+    bool isPlayAsP1,  String isWon, {Function(bool isMatchEnded) onClickActionOnPlayAgain,}) async {
 
   showDialog(
     context: context,
@@ -137,8 +135,8 @@ void showBothCardsDialog(BuildContext context, List<Cards> cards, int indexOfSel
                                             tween: Tween(begin: Duration(seconds: 7), end: Duration.zero),
                                             onEnd: () {
                                               try {
-                                                onClickActionOnPlayAgain(isMatchEnded);
                                                 Navigator.pop(context);
+                                                onClickActionOnPlayAgain(isMatchEnded);
                                               } catch (e) {
                                                 print(e);
                                               }
@@ -165,8 +163,8 @@ void showBothCardsDialog(BuildContext context, List<Cards> cards, int indexOfSel
                                       ],
                                     ),
                                     onPressed: () {
-                                      onClickActionOnPlayAgain(isMatchEnded);
                                       Navigator.pop(context);
+                                      onClickActionOnPlayAgain(isMatchEnded);
                                     },
                                   ),
                                 ),
