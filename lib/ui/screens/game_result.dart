@@ -280,24 +280,30 @@ class GameResult extends StatelessWidget {
     print('---- p1 , p2 id: $p1MemberId, $p2MemberId,');
     if (gameType != 'vs Computer') {
       var matchDetails = [
-        {"unique_id": uniqueId,"member_id": p1MemberId,"no_card": cardsToPlay, "win": areYouWon ? "1" : '0', "loss": areYouWon ? "0" : '1', "points": p1Point},
-        {"unique_id": uniqueId,"member_id": p2MemberId, "no_card": cardsToPlay, "win": areYouWon ? "0" : '1', "loss": areYouWon ? "1" : '0', "points": p2Point}
+        {"member_id": p1MemberId,"no_card": cardsToPlay, "win": areYouWon ? "1" : '0', "loss": areYouWon ? "0" : '1', "points": p1Point},
+        {"member_id": p2MemberId, "no_card": cardsToPlay, "win": areYouWon ? "0" : '1', "loss": areYouWon ? "1" : '0', "points": p2Point}
       ];
 
       /* // sample of matchDetails body
-    [{     "member_id": "MEM000004",
-            "win": "1",
-            "loss": "0",
-            "points": "550",
-
-        },{     "member_id": "MEM000002",
-            "win": "0",
-            "loss": "1",
-            "points": "0"
-        }]
+    "match_result": [
+    {
+      "member_id": "MEM000037",
+      "no_card": "14",
+      "win": "1",
+      "loss": "0",
+      "points": "20"
+    },
+    {
+      "member_id": "MEM000028",
+      "no_card": "14",
+      "win": "0",
+      "loss": "1",
+      "points": "0"
+    }
+  ]
     */
 
-      apiBloc.fetchSaveGameResultRes(xApiKey, matchDetails, gameCat2);
+      apiBloc.fetchSaveGameResultRes(xApiKey, matchDetails, gameCat2, uniqueId);
     }
   }
 }

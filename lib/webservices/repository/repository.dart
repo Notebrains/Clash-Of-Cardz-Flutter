@@ -52,8 +52,8 @@ class Repository {
   Future<MatchMakingResModel> fetchMatchReqToFriendApi(String xApiKey) =>
       appApiProvider.fetchMatchReqToFriendApi(xApiKey);
 
-  Future<SaveGameResultResModel> fetchSaveGameResultApi(String xApiKey,List<Map<String, String>> matchDetails, String category) =>
-      appApiProvider.fetchSaveGameResultApi(xApiKey, matchDetails, category);
+  Future<SaveGameResultResModel> fetchSaveGameResultApi(String xApiKey,List<Map<String, String>> matchDetails, String category, String uniqueId) =>
+      appApiProvider.fetchSaveGameResultApi(xApiKey, matchDetails, category, uniqueId);
 
   Future<CmsResModel> fetchCmsApi(String xApiKey, String slug,) =>
       appApiProvider.fetchCmsApi(xApiKey, slug);

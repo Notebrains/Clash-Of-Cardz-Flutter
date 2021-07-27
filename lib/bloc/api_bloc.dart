@@ -123,8 +123,8 @@ class ApiBloc {
 
   Stream<SaveGameResultResModel> get saveGameResultRes => _saveGameResultResFetcher.stream;
 
-  fetchSaveGameResultRes(String xApiKey, List<Map<String, String>> matchDetails, String category) async {
-    SaveGameResultResModel model = await _repository.fetchSaveGameResultApi(xApiKey, matchDetails, category);
+  fetchSaveGameResultRes(String xApiKey, List<Map<String, String>> matchDetails, String category, String uniqueId) async {
+    SaveGameResultResModel model = await _repository.fetchSaveGameResultApi(xApiKey, matchDetails, category, uniqueId);
     _saveGameResultResFetcher.sink.add(model);
   }
 

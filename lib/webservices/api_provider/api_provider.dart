@@ -231,12 +231,13 @@ class ApiProvider {
     }
   }
 
-  Future<SaveGameResultResModel> fetchSaveGameResultApi(String xApiKey, List<Map<String, String>> matchDetails, String category) async {
+  Future<SaveGameResultResModel> fetchSaveGameResultApi(String xApiKey, List<Map<String, String>> matchDetails, String category, String uniqueId, ) async {
     Map<String, String> headers = {"Content-Type": 'application/x-www-form-urlencoded', 'x-api-key': xApiKey};
 
     var requestBody = {
       'match_result': json.encode(matchDetails),
       'category': category,
+      'unique_id': uniqueId,
     };
 
     print('----- ${json.encode(requestBody)}');

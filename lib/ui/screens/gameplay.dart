@@ -465,7 +465,6 @@ class _GameplayState extends State<Gameplay>  with WidgetsBindingObserver{
               whoIsPlaying = 'p2';
 
             } else if (p1TurnStatus == 'yes' && p2TurnStatus == 'yes') {
-              print('---- showWinOrLossDialog called 0');
 
               // winBasis and winPints will be same for both player. So I am getting those value when p1 selected first value
 
@@ -530,8 +529,6 @@ class _GameplayState extends State<Gameplay>  with WidgetsBindingObserver{
 
   void showWinOrLossDialog(String areYouWon) async {
     isWinLossDialogOpened = false;
-    print('---- showWinOrLossDialog called 1');
-
     if (!isWinLossDialogOpened) {
       if (areYouWon == 'true') {
         playerResultStatusList.add("won");
@@ -556,7 +553,6 @@ class _GameplayState extends State<Gameplay>  with WidgetsBindingObserver{
       String photoUrl, int animHideTime) async {
     isWinLossDialogOpened = true;
 
-    print('---- showWinOrLossDialog called 2');
     BuildContext dialogContext;
     showDialog(
       context: context,
