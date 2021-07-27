@@ -165,10 +165,12 @@ class _GameplayState extends State<Gameplay>  with WidgetsBindingObserver{
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
+
                           Expanded(
                             flex: 3,
                             child: BuildPlayer1Screen(cards.length, widget.p1FullName, widget.p2Name),
                           ),
+
                           Expanded(
                             flex: 8,
                             child: Consumer<GamePlayStatesModel>(
@@ -480,7 +482,6 @@ class _GameplayState extends State<Gameplay>  with WidgetsBindingObserver{
                   } else if (p1CardValue == p2CardValue) {
                     areYouWon = 'draw';
                   }
-
                   showWinOrLossDialog(areYouWon);
                 } else {
                   if (p1CardValue > p2CardValue) {
@@ -490,28 +491,26 @@ class _GameplayState extends State<Gameplay>  with WidgetsBindingObserver{
                   } else if (p1CardValue == p2CardValue) {
                     areYouWon = 'draw';
                   }
-
                   showWinOrLossDialog(areYouWon);
                 }
               } else if (winBasis == 'Lowest Value') {
                 if(widget.isPlayAsP1){
                   if (p1CardValue > p2CardValue) {
-                    areYouWon = 'true';
-                  } else if (p1CardValue < p2CardValue) {
                     areYouWon = 'false';
+                  } else if (p1CardValue < p2CardValue) {
+                    areYouWon = 'true';
                   } else if (p1CardValue == p2CardValue) {
                     areYouWon = 'draw';
                   }
                   showWinOrLossDialog(areYouWon);
                 }else {
                   if (p1CardValue > p2CardValue) {
-                    areYouWon = 'false';
-                  } else if (p1CardValue < p2CardValue) {
                     areYouWon = 'true';
+                  } else if (p1CardValue < p2CardValue) {
+                    areYouWon = 'false';
                   } else if (p1CardValue == p2CardValue) {
                     areYouWon = 'draw';
                   }
-
                   showWinOrLossDialog(areYouWon);
                 }
               }
